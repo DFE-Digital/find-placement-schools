@@ -2,4 +2,13 @@ $govuk-global-styles: true;
 $govuk-new-link-styles: true;
 $govuk-assets-path: "/";
 
-@import "govuk-frontend/dist/govuk";
+@use "govuk-frontend/dist/govuk/all";
+
+.govuk-header__link .govuk-header__logotype {
+  height: 30px;
+}
+
+.govuk-header__link:focus .govuk-header__logotype {
+  content: url(/images/department-for-education_black.png);
+  height: 30px;
+}
