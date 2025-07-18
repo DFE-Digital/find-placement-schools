@@ -65,6 +65,7 @@ gem "govuk-components"
 gem "govuk_design_system_formbuilder"
 
 group :test, :development do
+  gem "erb_lint", require: false
   gem "rspec"
   gem "rspec-rails"
 end
