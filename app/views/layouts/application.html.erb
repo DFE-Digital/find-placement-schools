@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" class="govuk-template">
+<html lang="en" class="govuk-template--rebranded">
   <head>
-    <title><%= [yield(:page_title).presence, t('service.name')].compact.join(' - ') %></title>
+    <title><%= [yield(:page_title).presence, t("service.name")].compact.join(" - ") %></title>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= tag :meta, name: 'viewport', content: 'width=device-width, initial-scale=1' %>
-    <%= tag :meta, property: 'og:image', content: asset_path('images/govuk-opengraph-image.png') %>
-    <%= tag :meta, name: 'theme-color', content: '#0b0c0c' %>
-    <%= favicon_link_tag asset_path('images/favicon.ico') %>
-    <%= favicon_link_tag asset_path('images/govuk-icon-mask.svg'), rel: 'mask-icon', type: 'image/svg', color: "#0b1c0c" %>
-    <%= favicon_link_tag asset_path('images/govuk-icon-180.png'), rel: 'apple-touch-icon', type: 'image/png', size: '180x180' %>
+    <%= tag :meta, name: "viewport", content: "width=device-width, initial-scale=1" %>
+    <%= tag :meta, property: "og:image", content: asset_path("rebrand/images/govuk-opengraph-image.png") %>
+    <%= tag :meta, name: "theme-color", content: "#1d70b8" %>
+    <%= favicon_link_tag asset_path("rebrand/images/favicon.ico") %>
+    <%= favicon_link_tag asset_path("rebrand/images/govuk-icon-mask.svg"), rel: "mask-icon", type: "image/svg", color: "#0b1c0c" %>
+    <%= favicon_link_tag asset_path("rebrand/images/govuk-icon-180.png"), rel: "apple-touch-icon", type: "image/png", size: "180x180" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
@@ -19,16 +19,20 @@
 
   <body class="govuk-template__body">
     <script>
-      document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+      document.body.className += " js-enabled" + ("noModule" in HTMLScriptElement.prototype ? " govuk-frontend-supported" : "");
     </script>
 
     <%= govuk_skip_link %>
 
-    <%= govuk_header(full_width_border: true) %>
+    <%= govuk_header(full_width_border: true) do |header| %>
+      <% header.with_custom_logo do %>
+        <%= image_tag asset_path("/images/department-for-education_white.png"), alt: "Department for Education", class: "govuk-header__logotype" %>
+      <% end %>
+    <% end %>
 
     <%=
       govuk_service_navigation(
-        service_name: "GOV.UK Rails Boilerplate",
+        service_name: "Find ITT Placements",
         navigation_items: [
           { text: "Navigation item 1", href: "#", active: true },
           { text: "Navigation item 2", href: "#" },
