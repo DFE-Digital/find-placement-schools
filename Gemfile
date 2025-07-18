@@ -68,6 +68,7 @@ group :test, :development do
   gem "erb_lint", require: false
   gem "rspec"
   gem "rspec-rails"
+  gem "strong_migrations"
 end
 
 group :development, :production do
