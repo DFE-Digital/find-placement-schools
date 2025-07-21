@@ -8,8 +8,7 @@ class CreateOrganisations < ActiveRecord::Migration[8.0]
       t.float :longitude
       t.float :latitude
       t.string :email_address
-      t.boolean :school
-      t.boolean :provider
+      t.string :type
       t.timestamps
     end
   end
