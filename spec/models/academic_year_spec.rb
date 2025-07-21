@@ -1,0 +1,21 @@
+require 'rails_helper'
+
+RSpec.describe AcademicYear, type: :model do
+  describe "associations" do
+    it { is_expected.to have_many(:placement_preferences) }
+  end
+
+  describe "validations" do
+    subject(:academic_year) do
+      build(:academic_year,
+            name: "2023 to 2024",
+            starts_on: Date.current,
+            ends_on: Date.current + 1.day)
+    end
+
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_presence_of(:starts_on) }
+    it { is_expected.to validate_presence_of(:ends_on) }
+    it { is_expected.to validate_comparison_of(:ends_on).is_greater_than_or_equal_to(:starts_on) }
+  end
+end
