@@ -14,3 +14,8 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym "RESTful"
 # end
+
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.acronym "CSV" # Comma-Separated Values
+  inflect.acronym "GIAS" # Get Information About Schools https://get-information-schools.service.gov.uk/
+end
