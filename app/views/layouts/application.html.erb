@@ -29,17 +29,18 @@
         <%= image_tag asset_path("/images/department-for-education_white.png"), alt: "Department for Education", class: "govuk-header__logotype" %>
       <% end %>
     <% end %>
-
-    <%=
-      govuk_service_navigation(
-        service_name: "Find ITT Placements",
-        navigation_items: [
-          { text: "Navigation item 1", href: "#", active: true },
-          { text: "Navigation item 2", href: "#" },
-          { text: "Navigation item 3", href: "#" }
-        ]
-      )
-    %>
+    <% if user_signed_in? %>
+      <%=
+        govuk_service_navigation(
+          service_name: "Find ITT Placements",
+          navigation_items: [
+            { text: "Navigation item 1", href: "#", active: true },
+            { text: "Navigation item 2", href: "#" },
+            { text: "Sign out", href: sign_out_path }
+          ]
+        )
+      %>
+    <% end %>
 
     <div class="govuk-width-container">
       <main class="govuk-main-wrapper" id="main-content" role="main">
