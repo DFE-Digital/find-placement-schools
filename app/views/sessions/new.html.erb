@@ -1,0 +1,11 @@
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">Sign in with persona</h1>
+
+      <% if ENV["SIGN_IN_METHOD"] == "persona" %>
+        <%= govuk_button_to t(".sign_in_with_persona"), personas_path, method: :get %>
+      <% end %>
+    </div>
+  </div>
+</div>
