@@ -43,6 +43,11 @@ gem "csv", "~> 3.3"
 
 gem "geocoder", "~> 1.8"
 
+# DfE Sign-in
+gem "omniauth"
+gem "omniauth_openid_connect"
+gem "omniauth-rails_csrf_protection"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -66,6 +71,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "webmock", "~> 3.25"
   gem "timecop", "~> 0.9.10"
