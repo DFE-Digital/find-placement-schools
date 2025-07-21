@@ -1,0 +1,33 @@
+<h2 class="govuk-heading-m">
+  <%= persona.first_name %>
+</h2>
+
+<strong class="govuk-tag govuk-tag--<%= persona_data[:tag_colour] %> govuk-!-margin-bottom-5">
+  <%= persona_data[:persona_type] %>
+</strong>
+
+<p class="govuk-body">
+  <%= persona_data[:description] %>
+</p>
+
+<% if persona_data[:roles].present? %>
+  <p class="govuk-body">
+    <%= "#{persona.first_name}’s role includes:" %>
+  </p>
+  <ul class="govuk-list govuk-list--bullet">
+    <% persona_data[:roles].each do |role| %>
+      <li><%= role %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= form_tag("/auth/developer/callback", method: "post", data: { turbo: false }) do %>
+  <%= hidden_field_tag "email_address", persona.email_address %>
+  <%= hidden_field_tag "first_name", persona.first_name %>
+  <%= hidden_field_tag "last_name", persona.last_name %>
+  <button type="submit" class="govuk-button govuk-!-margin-bottom-2">
+    Sign in as <%= persona.first_name %>
+  </button>
+<% end %>
+
+<hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l">
