@@ -82,7 +82,7 @@ RSpec.describe GIAS::CSVImporter do
   end
 
   describe "Removing schools that have been closed" do
-    context "when the school has not placement preferences" do
+    context "when the school has no placement preferences" do
       let(:school) { create(:organisation, :school, urn: "999") }
 
       before { school }

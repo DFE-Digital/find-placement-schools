@@ -77,9 +77,15 @@ class GIAS::CSVImporter < ApplicationService
   def associate_schools_to_addresses(address_records)
     Rails.logger.debug "Associating schools to addresses... "
 
+    # Preload all schools into a hash for efficient lookup
+    schools_by_urn = School.all.index_by(&:urn)
+
     address_data = address_records.map do |address|
+      school = schools_by_urn[address[:school_urn]]
+      raise ActiveRecord::RecordNotFound, "School with URN #{address[:school_urn]} not found" unless school
+
       {
-        organisation_id: School.find_by!(urn: address[:school_urn]).id,
+        organisation_id: school.id,
         address_1: address[:address1],
         address_2: address[:address2],
         address_3: address[:address3],

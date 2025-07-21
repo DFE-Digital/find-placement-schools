@@ -14,7 +14,7 @@ RSpec.describe GIAS::CSVTransformer do
     # Stub GIAS::CSVTransformer::CoordinateTransformer to control the latitude/longitude
     # values in this test, because proj cs2cs output can vary slightly depending on platform
     # and we need it to exactly match the values in the transformed CSV.
-    # This test is primarily concerned with the overall content and strucutre of the
+    # This test is primarily concerned with the overall content and structure of the
     # transformed CSV rather than specific latitude/longitude values.
     stub_coordinate_transformer
     expected_output = File.read("spec/fixtures/gias/gias_subset_transformed.csv")

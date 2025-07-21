@@ -7,17 +7,18 @@ class GIAS::CSVTransformer < ApplicationService
   def call
     output_csv = CSV.new(output_file)
 
-    CSV.new(input_file, headers: true, return_headers: true).each do |row|
-      if row.header_row?
-        output_csv << header_row(row)
-      elsif school_in_scope?(row)
-        output_csv << school_row(row)
+    begin
+      CSV.new(input_file, headers: true, return_headers: true).each do |row|
+        if row.header_row?
+          output_csv << header_row(row)
+        elsif school_in_scope?(row)
+          output_csv << school_row(row)
+        end
       end
+    ensure
+      # Close the IO handle to the cs2cs process
+      coordinate_transformer.close
     end
-
-    # Close the IO handle to the cs2cs process
-    coordinate_transformer.close
-
     # Rewind the file so it's ready for reading
     output_file.rewind
     output_file
@@ -92,12 +93,13 @@ class GIAS::CSVTransformer < ApplicationService
 
     delegate :close, to: :cs2cs
 
-    def initialize
+    def initialize(cs2cs_command: "cs2cs")
       # cs2cs is provided as part of the PROJ library
       # Mac: brew install proj
       # Linux (Debian): apt-get install proj-bin
       # Usage: https://proj.org/en/9.4/apps/cs2cs.html
-      @cs2cs = IO.popen([ "cs2cs", "-d", "10", SOURCE_CRS, TARGET_CRS ], "r+")
+      raise "cs2cs command not found" unless system("which #{cs2cs_command} > /dev/null 2>&1")
+      @cs2cs = IO.popen([ cs2cs_command, "-d", "10", SOURCE_CRS, TARGET_CRS ], "r+")
     end
 
     def transform(easting:, northing:)
