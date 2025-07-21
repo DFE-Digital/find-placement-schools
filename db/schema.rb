@@ -62,8 +62,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_084655) do
     t.float "longitude"
     t.float "latitude"
     t.string "email_address"
-    t.boolean "school"
-    t.boolean "provider"
+    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_organisations_on_code"
