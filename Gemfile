@@ -66,6 +66,7 @@ gem "govuk_design_system_formbuilder"
 
 group :test, :development do
   gem "erb_lint", require: false
+  gem "factory_bot_rails"
   gem "rspec"
   gem "rspec-rails"
   gem "strong_migrations"
