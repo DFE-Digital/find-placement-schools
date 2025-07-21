@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_21_084655) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_21_133642) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -22,8 +22,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_084655) do
 
   create_table "academic_years", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.string "starts_on", null: false
-    t.string "ends_on", null: false
+    t.date "starts_on", null: false
+    t.date "ends_on", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_academic_years_on_name", unique: true
@@ -40,7 +40,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_084655) do
     t.string "postcode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["organisation_id"], name: "index_organisation_addresses_on_organisation_id"
+    t.index ["organisation_id"], name: "index_organisation_addresses_on_organisation_id", unique: true
   end
 
   create_table "organisation_contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -65,9 +65,33 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_084655) do
     t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "admissions_policy"
+    t.string "district_admin_code"
+    t.string "district_admin_name"
+    t.string "gender"
+    t.string "group"
+    t.date "last_inspection_date"
+    t.string "local_authority_code"
+    t.string "local_authority_name"
+    t.integer "maximum_age"
+    t.integer "minimum_age"
+    t.integer "percentage_free_school_meals"
+    t.string "phase"
+    t.string "rating"
+    t.string "religious_character"
+    t.integer "school_capacity"
+    t.string "send_provision"
+    t.string "special_classes"
+    t.string "telephone"
+    t.integer "total_boys"
+    t.integer "total_girls"
+    t.integer "total_pupils"
+    t.string "type_of_establishment"
+    t.string "urban_or_rural"
+    t.string "website"
     t.index ["code"], name: "index_organisations_on_code"
     t.index ["ukprn"], name: "index_organisations_on_ukprn"
-    t.index ["urn"], name: "index_organisations_on_urn"
+    t.index ["urn"], name: "index_organisations_on_urn", unique: true, where: "((type)::text = 'School'::text)"
   end
 
   create_table "placement_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
