@@ -1,4 +1,6 @@
 class GIAS::CSVTransformer < ApplicationService
+  require "open3"
+
   def initialize(input_file)
     @input_file = input_file
     @output_file = Tempfile.new
@@ -98,7 +100,7 @@ class GIAS::CSVTransformer < ApplicationService
       # Mac: brew install proj
       # Linux (Debian): apt-get install proj-bin
       # Usage: https://proj.org/en/9.4/apps/cs2cs.html
-      raise "cs2cs command not found" unless system("which #{cs2cs_command} > /dev/null 2>&1")
+      raise "cs2cs command not found" unless Open3.capture3("which", cs2cs_command).last.success?
       @cs2cs = IO.popen([ cs2cs_command, "-d", "10", SOURCE_CRS, TARGET_CRS ], "r+")
     end
 
