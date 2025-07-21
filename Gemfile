@@ -70,9 +70,22 @@ group :test, :development do
   gem "rspec"
   gem "rspec-rails"
   gem "strong_migrations"
+  gem "dotenv-rails", "~> 3.1"
 end
 
 group :development, :production do
   gem "amazing_print"
   gem "rails_semantic_logger"
 end
+
+gem "mission_control-jobs", "~> 1.1"
+
+gem "down", "~> 5.4"
+
+gem "csv", "~> 3.3"
+
+gem "geocoder", "~> 1.8"
+
+gem "webmock", "~> 3.25"
+
+gem "timecop", "~> 0.9.10"
