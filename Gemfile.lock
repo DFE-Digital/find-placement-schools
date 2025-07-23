@@ -49,6 +49,10 @@ GEM
       globalid (>= 0.3.6)
     activemodel (8.0.2)
       activesupport (= 8.0.2)
+    activemodel-serializers-xml (1.0.3)
+      activemodel (>= 5.0.0.a)
+      activesupport (>= 5.0.0.a)
+      builder (~> 3.1)
     activerecord (8.0.2)
       activemodel (= 8.0.2)
       activesupport (= 8.0.2)
@@ -128,6 +132,13 @@ GEM
       railties (>= 6.1)
     down (5.4.2)
       addressable (~> 2.8)
+    draper (4.0.4)
+      actionpack (>= 5.0)
+      activemodel (>= 5.0)
+      activemodel-serializers-xml (>= 1.0)
+      activesupport (>= 5.0)
+      request_store (>= 1.0)
+      ruby2_keywords
     drb (2.2.3)
     ed25519 (1.4.0)
     email_validator (2.2.4)
@@ -387,6 +398,8 @@ GEM
     regexp_parser (2.10.0)
     reline (0.6.2)
       io-console (~> 0.5)
+    request_store (1.7.0)
+      rack (>= 1.4)
     reverse_markdown (3.0.0)
       nokogiri
     rexml (3.4.1)
@@ -441,6 +454,7 @@ GEM
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
+    ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     securerandom (0.4.1)
     selenium-webdriver (4.34.0)
@@ -578,6 +592,7 @@ DEPENDENCIES
   debug
   dotenv-rails (~> 3.1)
   down (~> 5.4)
+  draper (~> 4.0)
   erb_lint
   factory_bot_rails
   geocoder (~> 1.8)

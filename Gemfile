@@ -93,3 +93,5 @@ group :development, :production do
   gem "amazing_print"
   gem "rails_semantic_logger"
 end
+
+gem "draper", "~> 4.0"
