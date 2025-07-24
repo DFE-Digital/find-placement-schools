@@ -11,8 +11,6 @@ class Organisation < ApplicationRecord
 
   geocoded_by :address_string
 
-  private
-
   def address_string
     [
      address_1,
