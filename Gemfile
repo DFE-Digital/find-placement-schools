@@ -43,6 +43,10 @@ gem "csv", "~> 3.3"
 
 gem "geocoder", "~> 1.8"
 
+gem "draper", "~> 4.0"
+
+gem "pagy", "~> 9.3"
+
 # DfE Sign-in
 gem "omniauth"
 gem "omniauth_openid_connect"
@@ -93,5 +97,3 @@ group :development, :production do
   gem "amazing_print"
   gem "rails_semantic_logger"
 end
-
-gem "draper", "~> 4.0"
