@@ -1,4 +1,17 @@
 en:
   service:
-    name: GOV.UK Frontend on Rails
+    name: Find ITT placements
     email: my-service@email
+  date:
+    formats:
+      month: "%B"
+      long: "%-d %B %Y"
+      long_with_day: "%A %-d %B %Y"
+      short: "%d/%m/%Y"
+  time:
+    formats:
+      long: "%-d %B %Y %H:%M"
+      long_with_seconds: "%-d %B %Y %H:%M:%S"
+      time: "%H:%M"
+      time_on_date: "%l:%M%P on %A %-d %B %Y"
+      date_at_time: "%-d %B %Y at %l:%M%P"
