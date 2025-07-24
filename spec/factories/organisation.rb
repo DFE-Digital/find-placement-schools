@@ -1,9 +1,15 @@
 FactoryBot.define do
   factory :organisation do
-    trait :school do
+    factory :school, class: School do
       type { "School" }
       name { "Hogwarts" }
-      urn { "123456" }
+      sequence(:urn) { _1 }
+    end
+
+    factory :provider, class: Provider do
+      type { "Provider" }
+      name { "Order of the Phoenix" }
+      sequence(:code) { _1 }
     end
   end
 end
