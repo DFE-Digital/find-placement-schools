@@ -27,7 +27,7 @@ RSpec.describe "Sessions", type: :request do
       follow_redirect!
 
       expect(response).to have_http_status(:success)
-      expect(response).to render_template(:home)
+      expect(response).to render_template("change_organisation/index")
       expect(session["dfe_sign_in_user"]).not_to be_nil
       expect(user.reload.last_signed_in_at).not_to be_nil
     ensure
