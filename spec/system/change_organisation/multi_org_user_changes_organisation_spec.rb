@@ -1,0 +1,70 @@
+require "rails_helper"
+
+RSpec.describe "Multi org user changes organisation", type: :system do
+  scenario do
+    given_i_am_signed_in
+    then_i_see_the_change_organisation_page
+
+    when_i_select_hogwarts
+    then_i_see_the_placement_preferences_page_for_hogwarts
+
+    when_i_click_on_hogwarts_change_organisation_link
+    then_i_see_the_change_organisation_page
+
+    when_i_select_order_of_the_phoenix
+    then_i_see_the_find_placements_page_for_order_of_the_phoenix
+  end
+
+  private
+
+  def given_i_am_signed_in
+    @hogwarts = create(:school, name: "Hogwarts")
+    @order_of_the_phoenix = create(:provider, name: "Order of the Phoenix")
+
+    sign_in_user(organisations: [ @hogwarts, @order_of_the_phoenix ])
+  end
+
+  def then_i_see_the_change_organisation_page
+    expect(page).to have_title("Change organisation")
+    expect(page).to have_h1("Change organisation")
+    expect(page).to have_h2("Schools")
+    expect(page).to have_summary_list_row("Hogwarts", expected_action: "Change")
+    expect(page).to have_link("Change", href: "/change_organisation/#{@hogwarts.id}/update_organisation")
+    expect(page).to have_h2("Providers")
+    expect(page).to have_summary_list_row("Order of the Phoenix", expected_action: "Change")
+    expect(page).to have_link("Change", href: "/change_organisation/#{@order_of_the_phoenix.id}/update_organisation")
+  end
+
+  def when_i_select_hogwarts
+    click_link "Change Hogwarts"
+  end
+
+  def then_i_see_the_placement_preferences_page_for_hogwarts
+    expect(page).to have_title("Placement preferences")
+    expect(page).to have_link("Hogwarts (change)", href: "/change_organisation")
+    expect(service_navigation).to have_current_item("Placement preferences")
+    expect(page).to have_success_banner("You have changed your organisation to Hogwarts")
+    expect(page).to have_caption("Hogwarts")
+    expect(page).to have_h1("Placement preferences")
+  end
+
+  def when_i_click_on_hogwarts_change_organisation_link
+    click_link "Hogwarts (change)"
+  end
+
+  def when_i_select_order_of_the_phoenix
+    click_link "Change Order of the Phoenix"
+  end
+
+  def then_i_see_the_find_placements_page_for_order_of_the_phoenix
+    expect(page).to have_title("Find placements")
+    expect(page).to have_link("Order of the Phoenix (change)", href: "/change_organisation")
+    expect(service_navigation).to have_current_item("Find placements")
+    expect(page).to have_success_banner("You have changed your organisation to Order of the Phoenix")
+    expect(page).to have_h1("Find placements")
+  end
+
+  def when_i_click_on_order_of_the_phoenix_organisation_link
+    click_link "Order of the Phoenix (change)"
+  end
+end

@@ -36,6 +36,7 @@ class ApplicationController < ActionController::Base
     redirect_to sign_in_path
   end
 
+  # Not currently using this method, but keeping it for future use
   def after_sign_in_path
     if requested_path.present?
       requested_path
