@@ -97,3 +97,5 @@ group :development, :production do
   gem "amazing_print"
   gem "rails_semantic_logger"
 end
+
+gem "capybara-screenshot", "~> 1.0"
