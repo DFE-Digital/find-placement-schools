@@ -9,6 +9,196 @@ $govuk-assets-path: "/";
 }
 
 .govuk-header__link:focus .govuk-header__logotype {
-  content: url(/images/department-for-education_black.png);
+  content: url("/images/department-for-education_black.png");
   height: 30px;
+}
+
+
+.govuk-header__navigation-list {
+  display: flex;
+  justify-content: flex-end;
+
+  & > li:not(:last-child)::after {
+    content: "|";
+    margin-left: 15px;
+  }
+}
+
+@media (min-width: 48.0625em) {
+  .govuk-template--rebranded .govuk-header__navigation {
+    padding: 16px 0 8px;
+  }
+}
+
+.content-header {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.app-search-results {
+  padding-top: 15px;
+  margin: 0;
+  padding-left: 0;
+  border-top: 1px solid #b1b4b6;
+}
+@media (min-width: 40.0625em) {
+  .app-search-results {
+    padding-top: 20px;
+  }
+}
+
+.app-search-results__item {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #b1b4b6;
+  display: block;
+}
+@media (min-width: 40.0625em) {
+  .app-search-results__item {
+    margin-bottom: 20px;
+  }
+}
+
+.app-search-result__item-title {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 700;
+  font-size: 1.1875rem;
+  line-height: 1.3157894737;
+  margin-bottom: 15px;
+  margin-top: 0;
+}
+@media print {
+  .app-search-result__item-title {
+    font-family: sans-serif;
+  }
+}
+@media print {
+  .app-search-result__item-title {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-search-result__item-title {
+    margin-bottom: 20px;
+  }
+}
+
+.app-search-results-header {
+  border-top: 1px solid #b1b4b6;
+  padding: 10px 0;
+}
+@media (min-width: 48.0625em) {
+  .app-search-results-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.app-result-detail {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1.3157894737;
+  color: #0b0c0c;
+  margin-bottom: 15px;
+  margin: 0;
+}
+@media print {
+  .app-result-detail {
+    font-family: sans-serif;
+  }
+}
+@media print {
+  .app-result-detail {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+@media print {
+  .app-result-detail {
+    color: #000000;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-result-detail {
+    margin-bottom: 20px;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-result-detail {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+}
+
+@media (max-width: 40.0525em) {
+  .app-result-detail__row {
+    margin-bottom: 5px;
+  }
+}
+@media (min-width: 40.0625em) {
+  .app-result-detail__row {
+    display: table-row;
+  }
+}
+
+.app-result-detail__key,
+.app-result-detail__value {
+  margin: 0;
+  padding-bottom: 5px;
+}
+@media (min-width: 40.0625em) {
+  .app-result-detail__key,
+  .app-result-detail__value {
+    display: table-cell;
+    padding-top: 0;
+    padding-right: 20px;
+  }
+}
+.app-result-detail__key .govuk-body,
+.app-result-detail__value .govuk-body {
+  margin-bottom: 5px;
+}
+.app-result-detail__key .govuk-hint,
+.app-result-detail__value .govuk-hint {
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.25;
+  margin-bottom: 5px;
+}
+@media print {
+  .app-result-detail__key .govuk-hint,
+  .app-result-detail__value .govuk-hint {
+    font-family: sans-serif;
+  }
+}
+@media print {
+  .app-result-detail__key .govuk-hint,
+  .app-result-detail__value .govuk-hint {
+    font-size: 14pt;
+    line-height: 1.2;
+  }
+}
+
+.app-result-detail__key {
+  font-weight: bold;
+}
+@media (min-width: 40.0625em) {
+  .app-result-detail__key {
+    color: #505a5f;
+    font-weight: normal;
+    width: 200px;
+  }
 }
