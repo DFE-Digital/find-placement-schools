@@ -18,8 +18,8 @@ RSpec.describe "Multi provider user changes organisation", type: :system do
   private
 
   def given_i_am_signed_in
-    @order_of_the_phoenix = create(:provider, name: "Order of the Phoenix")
-    @ministry_of_magic = create(:provider, name: "Ministry of Magic")
+    @order_of_the_phoenix = build(:provider, name: "Order of the Phoenix")
+    @ministry_of_magic = build(:provider, name: "Ministry of Magic")
 
     sign_in_user(organisations: [ @order_of_the_phoenix, @ministry_of_magic ])
   end

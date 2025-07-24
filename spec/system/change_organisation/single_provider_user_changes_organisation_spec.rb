@@ -10,7 +10,7 @@ RSpec.describe "Single provider user changes organisation", type: :system do
   private
 
   def given_i_am_signed_in
-    @provider = create(:provider, name: "Order of the Phoenix")
+    @provider = build(:provider, name: "Order of the Phoenix")
     sign_in_user(organisations: [ @provider ])
   end
 

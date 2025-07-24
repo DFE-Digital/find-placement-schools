@@ -18,8 +18,8 @@ RSpec.describe "Multi org user changes organisation", type: :system do
   private
 
   def given_i_am_signed_in
-    @hogwarts = create(:school, name: "Hogwarts")
-    @order_of_the_phoenix = create(:provider, name: "Order of the Phoenix")
+    @hogwarts = build(:school, name: "Hogwarts")
+    @order_of_the_phoenix = build(:provider, name: "Order of the Phoenix")
 
     sign_in_user(organisations: [ @hogwarts, @order_of_the_phoenix ])
   end
