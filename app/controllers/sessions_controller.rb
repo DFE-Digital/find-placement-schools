@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  include OrganisationRedirectable
+
   skip_before_action :authenticate_user!, only: %i[new callback failure]
 
   def new; end
@@ -9,7 +11,7 @@ class SessionsController < ApplicationController
 
     if current_user
       current_user.update!(last_signed_in_at: Time.current)
-      redirect_to after_sign_in_path, notice: "Signed in successfully"
+      redirect_to_organisation(current_user)
     else
       DfeSignInUser.end_session!(session)
       redirect_to after_sign_out_path, flash: {
