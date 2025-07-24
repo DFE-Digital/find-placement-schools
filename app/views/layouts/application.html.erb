@@ -28,25 +28,30 @@
       <% header.with_custom_logo do %>
         <%= image_tag asset_path("/images/department-for-education_white.png"), alt: "Department for Education", class: "govuk-header__logotype" %>
       <% end %>
-    <% end %>
-    <% if user_signed_in? %>
-      <%=
-        govuk_service_navigation(
-          service_name: "Find ITT Placements",
-          navigation_items: [
-            { text: "Navigation item 1", href: "#", active: true },
-            { text: "Navigation item 2", href: "#" },
-            { text: "Sign out", href: sign_out_path }
-          ]
-        )
-      %>
+
+      <% if user_signed_in? %>
+        <% if current_organisation.present? && current_user&.organisations&.count > 1  %>
+          <% header.with_navigation_item(text: "#{current_organisation&.name} (change)", href: change_organisation_index_path) %>
+        <% end %>
+        <% header.with_navigation_item(text: "Sign out", href: sign_out_path) %>
+      <% end %>
     <% end %>
 
-    <div class="govuk-width-container">
-      <main class="govuk-main-wrapper" id="main-content" role="main">
-        <%= yield %>
-      </main>
-    </div>
+    <%= render(ServiceNavigationComponent.new(current_user:, current_organisation:)) %>
+
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+      <div class="govuk-width-container">
+        <% unless flash.empty? %>
+          <div class="govuk-!-margin-bottom-0">
+            <%= render(GovukComponent::NotificationBannerComponent.new(title_text: "Success", success: true)) do |nb| %>
+              <% nb.with_heading(text: flash[:notice]) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <%= yield %>
+    </main>
 
     <%= govuk_footer %>
   </body>
