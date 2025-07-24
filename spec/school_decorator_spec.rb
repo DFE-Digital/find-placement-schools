@@ -37,9 +37,7 @@ RSpec.describe SchoolDecorator do
     context "when all address attributes are missing" do
       it "returns nil" do
         school = create(:school)
-        expect(
-          school.decorate.formatted_address,
-          ).to be_nil
+        expect(school.decorate.formatted_address).to be_nil
       end
     end
   end
