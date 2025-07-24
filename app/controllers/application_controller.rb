@@ -6,10 +6,14 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   before_action :authenticate_user!
-  helper_method :user_signed_in?
+  helper_method :current_user, :current_organisation, :user_signed_in?
 
   def current_user
     @current_user ||= DfeSignInUser.load_from_session(session)&.user
+  end
+
+  def current_organisation
+    @current_organisation ||= Organisation.find_by(id: session[:organisation_id]) if session[:organisation_id]
   end
 
   def user_signed_in?
