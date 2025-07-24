@@ -12,7 +12,7 @@ RSpec.describe "School user views organisation details", type: :system do
   private
 
   def given_i_am_signed_in
-    @school = create(
+    @school = build(
       :school,
       name: "Hogwarts",
       ukprn: "100323043",

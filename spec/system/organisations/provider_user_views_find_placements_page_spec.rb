@@ -19,7 +19,7 @@ RSpec.describe "Provider user views find placements", type: :system do
       organisation_address: build(:organisation_address, address_1: "Hogwarts School", address_2: "Hogsmeade", town: "Scotland", postcode: "AB12 3CD"),
     )
 
-    @provider = create(:provider, name: "Order of the Phoenix")
+    @provider = build(:provider, name: "Order of the Phoenix")
 
     sign_in_user(organisations: [ @provider ])
   end

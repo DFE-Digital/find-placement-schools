@@ -12,7 +12,7 @@ RSpec.describe "Provider user views organisation details", type: :system do
   private
 
   def given_i_am_signed_in
-    @provider = create(
+    @provider = build(
       :provider,
       name: "Order of the Phoenix",
       ukprn: "100323043",

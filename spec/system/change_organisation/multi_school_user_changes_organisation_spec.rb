@@ -18,8 +18,8 @@ RSpec.describe "Multi school user changes organisation", type: :system do
   private
 
   def given_i_am_signed_in
-    @hogwarts = create(:school, name: "Hogwarts")
-    @springfield = create(:school, name: "Springfield")
+    @hogwarts = build(:school, name: "Hogwarts")
+    @springfield = build(:school, name: "Springfield")
     sign_in_user(organisations: [ @hogwarts, @springfield ])
   end
 
