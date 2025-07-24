@@ -91,11 +91,10 @@ group :test, :development do
   gem "rspec-rails"
   gem "strong_migrations"
   gem "dotenv-rails", "~> 3.1"
+  gem "capybara-screenshot", "~> 1.0"
 end
 
 group :development, :production do
   gem "amazing_print"
   gem "rails_semantic_logger"
 end
-
-gem "capybara-screenshot", "~> 1.0"
