@@ -601,6 +601,7 @@ DEPENDENCIES
   jsbundling-rails
   kamal
   mission_control-jobs (~> 1.1)
+  pagy (~> 9.3)
   omniauth
   omniauth-rails_csrf_protection
   omniauth_openid_connect
