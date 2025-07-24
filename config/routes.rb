@@ -32,4 +32,11 @@ Rails.application.routes.draw do
     get "/auth/dfe/sign-out" => "sessions#destroy", as: :sign_out
     get "/auth/failure", to: "sessions#failure"
   end
+
+  resources :organisations, only: %i[show index]
+  resources :placement_preferences, only: %i[index]
+  resources :change_organisation, only: %i[index] do
+    get "/update_organisation", to: "change_organisation#update_organisation", as: :update_organisation
+  end
+  resources :admin_dashboard, only: %i[index]
 end

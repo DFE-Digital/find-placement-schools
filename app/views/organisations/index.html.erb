@@ -1,0 +1,54 @@
+<%= content_for :page_title, "Find placements" %>
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">Find placements</h1>
+
+      <ul class="app-search-results">
+        <% schools.each do |school| %>
+          <li class="app-search-results__item">
+            <h2 class="govuk-heading-m">
+              <%= "#{school.name}, #{school.town}" %>
+            </h2>
+
+            <dl class="app-result-detail">
+              <div>
+                <h3 class="govuk-heading-s govuk-!-margin-bottom-2">School details</h3>
+                <div class="app-result-detail__row">
+                  <dt class="app-result-detail__key">
+                    <%= "Phase (age range)" %>
+                  </dt>
+                  <dd class="app-result-detail__value">
+                    <%= "#{school.phase} (#{school.age_range})" %>
+                  </dd>
+                </div>
+                <div class="app-result-detail__row">
+                  <dt class="app-result-detail__key">
+                    Establishment group
+                  </dt>
+                  <dd class="app-result-detail__value">
+                    <%= school.group %>
+                  </dd>
+                </div>
+              </div>
+
+              <div class="govuk-!-margin-top-2">
+                <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Getting there</h3>
+                <div class="app-result-detail__row">
+                  <dt class="app-result-detail__key">
+                    Address
+                  </dt>
+                  <dd class="app-result-detail__value">
+                    <%= school.formatted_address %>
+                  </dd>
+                </div>
+              </div>
+            </dl>
+          </li>
+        <% end %>
+      </ul>
+
+      <%= render PaginationComponent.new(pagy:) %>
+    </div>
+  </div>
+</div>
