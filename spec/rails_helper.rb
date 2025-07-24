@@ -75,6 +75,30 @@ RSpec.configure do |config|
 
   # Include custom helpers here
   config.include GeocodingHelper
+  config.include ViewComponent::TestHelpers, type: :component
+  config.include DfESignInUserHelper
+  config.include GovukComponentMatchers, type: :system
+
+  config.around(:each, :persona_sign_in, type: :system) do |example|
+    ClimateControl.modify SIGN_IN_METHOD: "persona" do
+      Rails.application.reload_routes!
+      example.run
+    end
+
+    ClimateControl.modify SIGN_IN_METHOD: "dfe-sign-in" do
+      Rails.application.reload_routes!
+    end
+  end
+
+  config.around(:each, type: :system) do |example|
+    driven_by Capybara.current_driver
+
+    Capybara.app_host = "http://127.0.0.1"
+    Capybara.asset_host = "http://127.0.0.1:3000"
+    example.run
+    Capybara.asset_host = nil
+    Capybara.app_host = nil
+  end
 
   Shoulda::Matchers.configure do |config|
     config.integrate do |with|
