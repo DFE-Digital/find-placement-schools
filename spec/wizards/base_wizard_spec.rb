@@ -132,6 +132,7 @@ RSpec.describe BaseWizard do
       mock_step = instance_double(BurgerOrderWizard::ChooseBurgerStep)
       args = { wizard:, attributes: nil }
       allow(BurgerOrderWizard::ChooseBurgerStep).to receive(:new).with(args).and_return(mock_step)
+      allow(mock_step).to receive(:attributes).and_return({ "options" => [ "beef", "chicken" ] })
 
       wizard.add_step(BurgerOrderWizard::ChooseBurgerStep)
       expect(wizard.steps[:choose_burger]).to be(mock_step)
