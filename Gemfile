@@ -47,6 +47,8 @@ gem "draper", "~> 4.0"
 
 gem "pagy", "~> 9.3"
 
+gem "httparty"
+
 # DfE Sign-in
 gem "omniauth"
 gem "omniauth_openid_connect"

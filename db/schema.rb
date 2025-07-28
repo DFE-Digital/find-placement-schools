@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_21_133642) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_28_093332) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -109,7 +109,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_21_133642) do
 
   create_table "placement_subjects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
-    t.string "code", null: false
+    t.string "code"
     t.enum "phase", enum_type: "phase"
     t.uuid "parent_subject_id"
     t.datetime "created_at", null: false

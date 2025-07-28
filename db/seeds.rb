@@ -70,3 +70,6 @@ create_user_membership(organisation_name: "Greenwood Primary School", user_first
 create_user_membership(organisation_name: "Northbridge Training", user_first_name: "Mary")
 create_user_membership(organisation_name: "Sunnydale High School", user_first_name: "Patricia")
 create_user_membership(organisation_name: "Riverside College", user_first_name: "Patricia")
+
+# Create subjects
+PublishTeacherTraining::Subject::Import.call
