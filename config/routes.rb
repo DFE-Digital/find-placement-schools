@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     get "/auth/failure", to: "sessions#failure"
   end
 
+  get "/.well-known/appspecific/com.chrome.devtools.json", to: proc { [ 204, {}, [ "" ] ] }
+
   resources :organisations, only: %i[show index]
   resources :placement_preferences, only: %i[index]
   resources :change_organisation, only: %i[index] do
