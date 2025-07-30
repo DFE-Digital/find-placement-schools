@@ -38,7 +38,7 @@ describe SchoolsQuery do
     end
 
     context "when filtering by phase" do
-      let(:params) { { filters: { phases: [query_school.phase] } } }
+      let(:params) { { filters: { phases: [ query_school.phase ] } } }
 
       it "returns the filtered schools" do
         expect(query.call).to include(query_school)
@@ -67,11 +67,11 @@ describe SchoolsQuery do
         )
       end
 
-      let(:location_coordinates) { [query_school.latitude, query_school.longitude] }
+      let(:location_coordinates) { [ query_school.latitude, query_school.longitude ] }
       let(:params) { { location_coordinates: } }
 
       it "returns the filtered schools in order of distance" do
-        expect(query.call).to eq([query_school.becomes(School), close_query_school.becomes(School), far_query_school.becomes(School)])
+        expect(query.call).to eq([ query_school.becomes(School), close_query_school.becomes(School), far_query_school.becomes(School) ])
         expect(query.call).not_to include(non_query_school)
       end
     end

@@ -111,7 +111,7 @@ describe Organisations::FilterForm, type: :model do
             filter: "phases",
             value: "primary",
           ),
-        ).to eq(organisations_path(filters: { phases: ["secondary"] }))
+        ).to eq(organisations_path(filters: { phases: [ "secondary" ] }))
       end
     end
   end
@@ -127,7 +127,7 @@ describe Organisations::FilterForm, type: :model do
       )
     end
   end
-  
+
   describe "#primary_selected?" do
     subject(:filter_form) { described_class.new(params) }
 
