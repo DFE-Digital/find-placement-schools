@@ -78,7 +78,7 @@ RSpec.describe Geocoder::Search do
           { "long_name" => "London", "short_name" => "London", "types" => %w[postal_town] },
           { "long_name" => "Greater London", "short_name" => "Greater London", "types" => %w[administrative_area_level_2 political] },
           { "long_name" => "England", "short_name" => "England", "types" => %w[administrative_area_level_1 political] },
-          { "long_name" => "United Kingdom", "short_name" => "GB", "types" => %w[country political] },
+          { "long_name" => "United Kingdom", "short_name" => "GB", "types" => %w[country political] }
         ],
         "formatted_address" => "London, UK",
         "geometry" =>
@@ -87,8 +87,8 @@ RSpec.describe Geocoder::Search do
           "location_type" => "APPROXIMATE",
           "viewport" => { "northeast" => { "lat" => 51.6723432, "lng" => 0.148271 }, "southwest" => { "lat" => 51.38494009999999, "lng" => -0.3514683 } } },
         "place_id" => "ChIJdd4hrwug2EcRmSrV3Vo6llI",
-        "types" => %w[locality political],
-      },
+        "types" => %w[locality political]
+      }
     ]
   end
 
@@ -101,7 +101,7 @@ RSpec.describe Geocoder::Search do
             { "long_name" => "London", "short_name" => "London", "types" => %w[postal_town] },
             { "long_name" => "Greater London", "short_name" => "Greater London", "types" => %w[administrative_area_level_2 political] },
             { "long_name" => "England", "short_name" => "England", "types" => %w[administrative_area_level_1 political] },
-            { "long_name" => "United Kingdom", "short_name" => "GB", "types" => %w[country political] },
+            { "long_name" => "United Kingdom", "short_name" => "GB", "types" => %w[country political] }
           ],
         "formatted_address" => "London EC3A 5DE, UK",
         "geometry" =>
@@ -110,8 +110,8 @@ RSpec.describe Geocoder::Search do
             "location_type" => "APPROXIMATE",
             "viewport" => { "northeast" => { "lat" => 51.5150424302915, "lng" => -0.07595546970849797 }, "southwest" => { "lat" => 51.5123444697085, "lng" => -0.07865343029150203 } } },
         "place_id" => "ChIJn9fBvkwDdkgRwmpFTepw9nY",
-        "types" => %w[postal_code],
-      },
+        "types" => %w[postal_code]
+      }
     ]
   end
 
@@ -123,7 +123,7 @@ RSpec.describe Geocoder::Search do
           { "long_name" => "London", "short_name" => "London", "types" => %w[postal_town] },
           { "long_name" => "Greater London", "short_name" => "Greater London", "types" => %w[administrative_area_level_2 political] },
           { "long_name" => "England", "short_name" => "England", "types" => %w[administrative_area_level_1 political] },
-          { "long_name" => "United Kingdom", "short_name" => "GB", "types" => %w[country political] },
+          { "long_name" => "United Kingdom", "short_name" => "GB", "types" => %w[country political] }
         ],
         "formatted_address" => "London EC3A, UK",
         "geometry" =>
@@ -132,14 +132,14 @@ RSpec.describe Geocoder::Search do
           "location_type" => "APPROXIMATE",
           "viewport" => { "northeast" => { "lat" => 51.5160754, "lng" => -0.0742659 }, "southwest" => { "lat" => 51.5126515, "lng" => -0.0828445 } } },
         "place_id" => "ChIJLax5sUwDdkgRcxxFTWJf0kY",
-        "types" => %w[postal_code postal_code_prefix] },
+        "types" => %w[postal_code postal_code_prefix] }
     ]
   end
 
   def non_uk_location_response
     [
       { "address_components" => [
-          { "long_name" => "United Kingdom", "short_name" => "GB", "types" => %w[country political] },
+          { "long_name" => "United Kingdom", "short_name" => "GB", "types" => %w[country political] }
         ],
         "formatted_address" => "United Kingdom",
         "geometry" =>
@@ -153,7 +153,7 @@ RSpec.describe Geocoder::Search do
       { "address_components" =>
         [
           { "long_name" => "Texas", "short_name" => "TX", "types" => %w[administrative_area_level_1 political] },
-          { "long_name" => "United States", "short_name" => "US", "types" => %w[country political] },
+          { "long_name" => "United States", "short_name" => "US", "types" => %w[country political] }
         ],
         "formatted_address" => "Texas, USA",
         "geometry" =>
@@ -163,7 +163,7 @@ RSpec.describe Geocoder::Search do
           "viewport" => { "northeast" => { "lat" => 36.50112610000001, "lng" => -93.5080389 }, "southwest" => { "lat" => 25.8371165, "lng" => -106.6456461 } } },
         "partial_match" => true,
         "place_id" => "ChIJSTKCCzZwQIYRPN4IGI8c6xY",
-        "types" => %w[administrative_area_level_1 political] },
+        "types" => %w[administrative_area_level_1 political] }
     ]
   end
 end

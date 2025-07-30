@@ -12,13 +12,13 @@ RSpec.describe ApplicationQuery do
       subject(:test_query) do
         Class.new(ApplicationQuery) do
           def call
-            [1, 2, 3]
+            [ 1, 2, 3 ]
           end
         end
       end
 
       it "forwards the call to the instance method #call" do
-        expect(test_query.call).to eq([1, 2, 3])
+        expect(test_query.call).to eq([ 1, 2, 3 ])
       end
     end
 
