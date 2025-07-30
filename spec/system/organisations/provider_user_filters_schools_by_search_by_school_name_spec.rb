@@ -11,7 +11,7 @@ RSpec.describe "Provider user filters schools by search by location", type: :sys
     when_i_search_for_hogwarts
     and_i_click_on_apply_filters
     then_i_see_hogwarts
-    and_i_do_not_see_beuxbatons
+    and_i_do_not_see_beauxbatons
     and_i_see_the_hogwarts_search_by_name_filter
 
     when_i_click_on_the_hogwarts_search_by_name_filter_tag
@@ -38,7 +38,7 @@ RSpec.describe "Provider user filters schools by search by location", type: :sys
   end
 
   def and_i_am_signed_in
-    sign_in_user(organisations: [@provider])
+    sign_in_user(organisations: [ @provider ])
   end
 
   def then_i_see_the_find_placements_page
@@ -70,8 +70,8 @@ RSpec.describe "Provider user filters schools by search by location", type: :sys
     expect(page).to have_h2("Hogwarts")
   end
 
-  def and_i_do_not_see_beuxbatons
-    expect(page).not_to have_h2("Beuxbatons")
+  def and_i_do_not_see_beauxbatons
+    expect(page).not_to have_h2("Beauxbatons")
   end
 
   def and_i_see_the_hogwarts_search_by_name_filter

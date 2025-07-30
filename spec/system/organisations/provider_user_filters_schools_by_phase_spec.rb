@@ -43,7 +43,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
   end
 
   def and_i_am_signed_in
-    sign_in_user(organisations: [@provider])
+    sign_in_user(organisations: [ @provider ])
   end
 
   def then_i_see_the_find_placements_page

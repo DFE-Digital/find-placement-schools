@@ -38,7 +38,7 @@ RSpec.describe "Provider user filters schools by search by location", type: :sys
   end
 
   def and_i_am_signed_in
-    sign_in_user(organisations: [@provider])
+    sign_in_user(organisations: [ @provider ])
   end
 
   def then_i_see_the_find_placements_page
@@ -122,12 +122,12 @@ RSpec.describe "Provider user filters schools by search by location", type: :sys
     guildford_geocoder_results = instance_double("geocoder_results")
     guildford_geocoder_result = instance_double("geocoder_result")
     allow(guildford_geocoder_results).to receive(:first).and_return(guildford_geocoder_result)
-    allow(guildford_geocoder_result).to receive(:coordinates).and_return([51.23622, -0.570409])
+    allow(guildford_geocoder_result).to receive(:coordinates).and_return([ 51.23622, -0.570409 ])
 
     mordor_geocoder_results = instance_double("geocoder_results")
     mordor_geocoder_result = instance_double("geocoder_result")
     allow(mordor_geocoder_results).to receive(:first).and_return(mordor_geocoder_result)
-    allow(mordor_geocoder_result).to receive(:coordinates).and_return([55.378051, -3.435973])
+    allow(mordor_geocoder_result).to receive(:coordinates).and_return([ 55.378051, -3.435973 ])
 
     allow(Geocoder).to receive(:search).and_return(guildford_geocoder_results, mordor_geocoder_results)
   end
@@ -139,17 +139,17 @@ RSpec.describe "Provider user filters schools by search by location", type: :sys
         "localizedValues" => {
           "distance" => { "text" => "20 mi" },
           "duration" => { "text" => "42 mins" },
-          "staticDuration" => { "text" => "36 mins" },
-        },
+          "staticDuration" => { "text" => "36 mins" }
+        }
       },
       {
         "destinationIndex" => 1,
         "localizedValues" => {
           "distance" => { "text" => "20 mi" },
           "duration" => { "text" => "42 mins" },
-          "staticDuration" => { "text" => "36 mins" },
-        },
-      },
+          "staticDuration" => { "text" => "36 mins" }
+        }
+      }
     ].to_json
 
     stub_request(:post, "https://routes.googleapis.com/distanceMatrix/v2:computeRouteMatrix")
