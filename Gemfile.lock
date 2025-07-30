@@ -627,6 +627,7 @@ DEPENDENCIES
   omniauth
   omniauth-rails_csrf_protection
   omniauth_openid_connect
+  ostruct (~> 0.6.1)
   pagy (~> 9.3)
   pg (~> 1.6)
   propshaft

@@ -51,6 +51,7 @@ gem "httparty", "~> 0.23.1"
 
 gem "stimulus-rails", "~> 1.3"
 
+gem "ostruct", "~> 0.6.1"
 
 # DfE Sign-in
 gem "omniauth"
