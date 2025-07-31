@@ -26,7 +26,7 @@ RSpec.describe TravelTime do
     include_context "with cache"
 
     let(:service) { described_class.call(origin_address:, destinations:) }
-    let(:google_routes_client) { instance_double(Google::RoutesApi) }
+    let(:google_routes_client) { instance_double(Google::RoutesAPI) }
     let(:body) do
       [
         {
@@ -57,7 +57,7 @@ RSpec.describe TravelTime do
     end
 
     before do
-      allow(Google::RoutesApi).to receive(:new).and_return(google_routes_client)
+      allow(Google::RoutesAPI).to receive(:new).and_return(google_routes_client)
       allow(google_routes_client).to receive(:travel_time).and_return(body)
     end
 

@@ -1,5 +1,5 @@
 module Google
-  class RoutesApi
+  class RoutesAPI
     include HTTParty
 
     UNITS = "IMPERIAL".freeze
@@ -7,7 +7,7 @@ module Google
     base_uri "https://routes.googleapis.com"
     headers "Accept" => "application/json",
             "Content-Type" => "application/json;odata.metadata=minimal",
-            "X-Goog-Api-Key" => ENV.fetch("GOOGLE_MAPS_API_KEY", "").to_s,
+            "X-Goog-Api-Key" => ENV.fetch("GOOGLE_MAPS_API_KEY") { raise "Environment variable GOOGLE_MAPS_API_KEY is required but not set" },
             "X-Goog-FieldMask" => "localizedValues,destinationIndex"
 
     def travel_time(origin_address, destinations, travel_mode: "DRIVE")
