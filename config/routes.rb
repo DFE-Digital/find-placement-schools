@@ -41,4 +41,6 @@ Rails.application.routes.draw do
     get "/update_organisation", to: "change_organisation#update_organisation", as: :update_organisation
   end
   resources :admin_dashboard, only: %i[index]
+
+  get "api/google/map-key", to: "api/google#map_key", as: :google_map_key
 end

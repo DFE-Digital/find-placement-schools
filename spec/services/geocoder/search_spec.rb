@@ -30,9 +30,9 @@ RSpec.describe Geocoder::Search do
       partial_uk_postcode_request
     end
 
-    it "returns the first details for the given UK postcode" do
+    it "returns the first details for the given partial UK postcode" do
       expect(
-        described_class.call("EC3A 5DE"),
+        described_class.call("EC3A 5"),
       ).to eq(partial_postcode_response.first)
     end
   end

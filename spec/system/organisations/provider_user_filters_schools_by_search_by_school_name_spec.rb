@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Provider user filters schools by search by location", type: :system do
+RSpec.describe "Provider user filters schools by name", type: :system do
   scenario do
     given_that_schools_exist
     and_i_am_signed_in

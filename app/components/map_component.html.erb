@@ -1,6 +1,6 @@
 <div id="map-component"
      data-controller="map"
-     data-map-key-value="<%= ENV.fetch("GOOGLE_MAPS_API_KEY", "") %>"
+     data-map-csp-nonce-value="<%= content_security_policy_nonce %>"
      data-map-base-latitude-value="<%= base_latitude %>"
      data-map-base-longitude-value="<%= base_longitude %>"
      data-map-map-id-value="<%= map_id %>">

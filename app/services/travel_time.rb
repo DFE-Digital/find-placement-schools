@@ -17,7 +17,7 @@ class TravelTime < ApplicationService
   WALK_TRAVEL_MODE = "WALK".freeze
 
   def routes_client
-    @routes_client ||= Google::RoutesApi.new
+    @routes_client ||= Google::RoutesAPI.new
   end
 
   def combine_destinations_with_travel_data
