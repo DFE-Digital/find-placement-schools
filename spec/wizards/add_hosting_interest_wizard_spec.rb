@@ -340,6 +340,30 @@ RSpec.describe AddHostingInterestWizard do
     end
   end
 
+  describe "#year_groups" do
+    subject(:year_groups) { wizard.year_groups }
+
+    context "when your groups are not selected" do
+      it "returns an empty array" do
+        expect(year_groups).to eq([])
+      end
+    end
+
+    context "when year groups are selected" do
+      let(:state) do
+        {
+          "appetite" => { "appetite" => "actively_looking" },
+          "phase" => { "phases" => %w[primary] },
+          "year_group_selection" => { "year_groups" => %w[reception year_3 mixed_year_groups] }
+        }
+      end
+
+      it "returns the selected year groups" do
+        expect(year_groups).to eq(%w[reception year_3 mixed_year_groups])
+      end
+    end
+  end
+
   describe "#selected_secondary_subjects" do
     subject(:selected_secondary_subjects) { wizard.selected_secondary_subjects }
 
@@ -374,14 +398,48 @@ RSpec.describe AddHostingInterestWizard do
           {
             "appetite" => { "appetite" => "actively_looking" },
             "phase" => { "phases" => %w[secondary] },
-            "secondary_subject_selection" => { "subject_ids" => [ "unknown" ] }
+            "secondary_subject_selection" => { "subject_ids" => %w[unknown] }
           }
         end
 
         it "returns unknown" do
-          [ "unknown" ]
+           expect(selected_secondary_subjects).to eq(%w[unknown])
         end
       end
+    end
+  end
+
+  describe "#key_stages" do
+    subject(:key_stages) { wizard.key_stages }
+
+    context "when key stages are not selected" do
+      it "returns an empty array" do
+        expect(key_stages).to eq([])
+      end
+    end
+
+    context "when your groups are selected" do
+      let(:state) do
+        {
+          "appetite" => { "appetite" => "actively_looking" },
+          "phase" => { "phases" => %w[send] },
+          "key_stage_selection" => { "key_stages" => %w[early_years key_stage_1] }
+        }
+      end
+
+      it "returns the selected year groups" do
+        expect(key_stages).to eq(%w[early_years key_stage_1])
+      end
+    end
+  end
+
+  describe "#step_name_for_child_subjects" do
+    subject(:step_name_for_child_subjects) { wizard.step_name_for_child_subjects(subject: placement_subject) }
+
+    let(:placement_subject) { create(:placement_subject, :secondary) }
+
+    it "returns secondary_child_subject_selection with the subject id appended" do
+      expect(step_name_for_child_subjects).to eq("secondary_child_subject_selection_#{placement_subject.id}".to_sym)
     end
   end
 end
