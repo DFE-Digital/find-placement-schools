@@ -21,7 +21,7 @@ RSpec.describe AddHostingInterestWizard::KeyStageSelectionStep, type: :model do
   describe "#key_stages_for_selection" do
     subject(:key_stages_for_selection) { step.key_stages_for_selection }
 
-    it "returns all year groups, expect for mixed year group" do
+    it "returns all key stages, expect for mixed key stages" do
       expect(key_stages_for_selection).to eq(
         [
           OpenStruct.new(value: "early_years", name: "Early years"),
@@ -38,7 +38,7 @@ RSpec.describe AddHostingInterestWizard::KeyStageSelectionStep, type: :model do
   describe "#mixed_key_stage_option" do
     subject(:mixed_key_stage_option) { step.mixed_key_stage_option }
 
-    it "returns the mixed year group" do
+    it "returns the mixed key stages" do
       expect(mixed_key_stage_option).to eq(
         OpenStruct.new(value: "mixed_key_stages", name: "Mixed key stages"),
       )
