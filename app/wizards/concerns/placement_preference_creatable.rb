@@ -27,10 +27,11 @@ module PlacementPreferenceCreatable
     raise NoMethodError, "#current_user must be implemented"
   end
 
-  def child_subject_names(subject:)
-    return [] unless subject.has_child_subjects? && steps[step_name_for_child_subjects(subject:)].present?
-
-    PlacementSubject.where(id: steps[step_name_for_child_subjects(subject:)].child_subject_ids).order_by_name.pluck(:name)
+  def step_name_for_child_subjects(subject:)
+    step_name(
+      AddHostingInterestWizard::SecondaryChildSubjectSelectionStep,
+      subject.id,
+    )
   end
 
   private
@@ -87,13 +88,6 @@ module PlacementPreferenceCreatable
 
   def send_steps
     add_step(AddHostingInterestWizard::KeyStageSelectionStep)
-  end
-
-  def step_name_for_child_subjects(subject:)
-    step_name(
-      AddHostingInterestWizard::SecondaryChildSubjectSelectionStep,
-      subject.id,
-    )
   end
 
   def phases
