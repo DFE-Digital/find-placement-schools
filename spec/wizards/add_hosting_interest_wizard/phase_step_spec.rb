@@ -43,4 +43,33 @@ RSpec.describe AddHostingInterestWizard::PhaseStep, type: :model do
       )
     end
   end
+
+  describe "#phases" do
+    subject(:phases) { step.phases }
+
+    context "when phases is blank" do
+      it "returns an empty array" do
+        expect(phases).to eq([])
+      end
+    end
+
+    context "when the phases attribute contains a blank element" do
+      let(:attributes) { { phases: [ "primary", nil ] } }
+
+      it "removes the nil element from the phases attribute" do
+        expect(phases).to contain_exactly("primary")
+      end
+    end
+
+    context "when the phases attribute contains no blank elements" do
+      let(:attributes) { { phases: %w[primary secondary] } }
+
+      it "returns the phases attribute unchanged" do
+        expect(phases).to contain_exactly(
+          "primary",
+          "secondary",
+        )
+      end
+    end
+  end
 end
