@@ -13,3 +13,27 @@ en:
               blank: Please select a reason for not taking part in ITT
             other_reason_not_hosting:
               blank: Please enter a reason
+        add_hosting_interest_wizard/school_contact_step:
+          attributes:
+            email_address:
+              blank: Enter an email address
+              invalid: Enter an email address in the correct format, like name@example.com
+        add_hosting_interest_wizard/phase_step:
+          attributes:
+            phases: 
+              blank: Please select which phase you are looking to host placements at
+              inclusion: Please select which phase you are looking to host placements at
+        add_hosting_interest_wizard/year_group_selection_step:
+          attributes:
+            year_groups: 
+              blank: Please select which year groups you are looking to host placements at
+              inclusion: Please select which year groups you are looking to host placements at
+        add_hosting_interest_wizard/secondary_subject_selection_step:
+          attributes:
+            subject_ids: 
+              blank: Please select a secondary subject
+              inclusion: Please select a secondary subject
+        add_hosting_interest_wizard/key_stage_selection_step:
+          attributes:
+            key_stages:
+               blank: Please select a key stage
