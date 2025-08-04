@@ -40,7 +40,9 @@ en:
         title: What education phase can your placements be?
         hint: Select all that apply
         options:
+          primary: Primary
           primary_description: 3 to 11 years
+          secondary: Secondary
           secondary_description: 11 to 19 years
           send: Special educational needs and disabilities (SEND) specific
           send_description: You will be able to select key stages

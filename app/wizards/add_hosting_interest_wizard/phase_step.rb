@@ -14,7 +14,7 @@ class AddHostingInterestWizard::PhaseStep < BaseStep
   def phases_for_selection
     phase_options.map do |phase|
       OpenStruct.new(
-        name: phase.titleize,
+        name: I18n.t("#{locale_path}.options.#{phase}"),
         value: phase,
         description: I18n.t("#{locale_path}.options.#{phase}_description"),
       )
