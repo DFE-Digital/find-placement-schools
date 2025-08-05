@@ -37,3 +37,8 @@ en:
           attributes:
             key_stages:
                blank: Please select a key stage
+        add_hosting_interest_wizard/secondary_child_subject_selection_step:
+          attributes:
+            child_subject_ids: 
+              blank: Please select a subject
+              inclusion: Please select a subject

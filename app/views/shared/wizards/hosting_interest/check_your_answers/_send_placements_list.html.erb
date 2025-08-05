@@ -8,14 +8,14 @@
           <% if key_stage == AddHostingInterestWizard::UNKNOWN_OPTION %>
             <li><%= t(".unknown") %></li>
           <% else %>
-            <li><%= key_stage.titleize %></li>
+            <li><%= key_stage.titleize.capitalize %></li>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
     <% row.with_action(text: t("change"),
                        href: step_path(:key_stage_selection),
-                       visually_hidden_text: t(".send_placements"),
+                       visually_hidden_text: t(".key_stage"),
                        classes: ["govuk-link--no-visited-state"]) %>
   <% end %>
 <% end %>
