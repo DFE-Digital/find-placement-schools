@@ -8,7 +8,11 @@
       <% row.with_value do %>
         <%= govuk_list do %>
           <% current_step.phases.each do |phase| %>
-            <li><%= phase.titleize %></li>
+            <% if phase == "send" %>
+              <li><%= phase.upcase %></li>
+            <% else %>
+              <li><%= phase.titleize %></li>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>

@@ -2,6 +2,9 @@ en:
   placement_preferences:
     show:
       what_happens_next: What happens next?
+    add_hosting_interest:
+      edit:
+        cancel: Cancel
     not_open_preferences:
       panel_title: You are not offering placements this year
       panel_text: Your contact details will not be shown to providers
@@ -11,24 +14,25 @@ en:
       if_you_would_like_to_host_placements:
         If you would like to host placements this year, %{link} to let providers know you’re interested.
       update_your_placement_preferences: update your placement preferences
-    primary_placements_list:
-      year_group: Year group
-      number_of_placements: Number of placements
-      unknown: I don’t know
-      not_entered: Not entered
-      change: Change
-    secondary_placements_list:
-      subject: Subject
-      number_of_placements: Number of placements
-      unknown: I don’t know
-      not_entered: Not entered
-      change: Change
-    send_placements_list:
-      key_stage: Key stage
-      number_of_placements: Number of placements
-      unknown: I don’t know
-      not_entered: Not entered
-      change: Change
+    placement_details:
+      primary_placements_list:
+        year_group: Year group
+        number_of_placements: Number of placements
+        unknown: I don’t know
+        not_entered: Not entered
+        change: Change
+      secondary_placements_list:
+        subject: Subject
+        number_of_placements: Number of placements
+        unknown: I don’t know
+        not_entered: Not entered
+        change: Change
+      send_placements_list:
+        key_stage: Key stage
+        number_of_placements: Number of placements
+        unknown: I don’t know
+        not_entered: Not entered
+        change: Change
     actively_looking_preferences:
       panel_title: Placement information added
       panel_text: Providers can see that you have placements available
