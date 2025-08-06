@@ -12,7 +12,7 @@ module PublishTeacherTraining
       private
 
       def fetch_subject
-        api_response = PublishTeacherTraining::Subject::Api.call
+        api_response = PublishTeacherTraining::Subject::API.call
 
         data = api_response.fetch("data")
         # Find Primary Subject IDs

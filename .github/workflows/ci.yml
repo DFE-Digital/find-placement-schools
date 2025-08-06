@@ -50,11 +50,9 @@ jobs:
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
 
-      # redis:
-      #   image: redis
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432
 
     steps:
       - name: Install required packages
@@ -68,13 +66,29 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+      
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23.11.0
 
-      - name: Run tests
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system
+      - name: Install Node dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build CSS
+        run: yarn run build:css
+
+      - name: Build JS
+        run: yarn run build
+
+      - name: Setup test database
+        run: bin/rails db:test:prepare
+
+      - name: Run unit tests
+        run: bundle exec rspec --tag ~@type:system
+
+      - name: Run system tests
+        run: bundle exec rspec --tag @type:system
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4

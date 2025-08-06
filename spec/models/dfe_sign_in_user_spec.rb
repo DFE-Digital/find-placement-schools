@@ -112,7 +112,6 @@ describe DfeSignInUser do
   describe "#user" do
     it "finds a User by dfe_sign_in_uid" do
       db_user = create(:user, dfe_sign_in_uid: "11111111-2222-3333-4444-555555555555", email_address: "user@example.com")
-      p db_user
 
       session = {
         "dfe_sign_in_user" => {
