@@ -19,9 +19,6 @@
             label: { text: key_stage.name },
             link_errors: i.zero? %>
         <% end %>
-        <%= f.govuk_check_box_divider %>
-        <%= f.govuk_check_box :key_stages, current_step.mixed_key_stage_option.value,
-            label: { text: current_step.mixed_key_stage_option.name } %>
       <% end %>
 
       <%= f.govuk_submit t(".continue") %>

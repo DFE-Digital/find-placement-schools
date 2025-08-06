@@ -4,13 +4,13 @@ class AddHostingInterestWizard::YearGroupSelectionStep < BaseStep
   validates :year_groups, presence: true
 
   def year_groups_for_selection
-    year_groups_as_options
-      .reject { |option| option.value == "mixed_year_groups" }
-  end
-
-  def mixed_year_group_option
-    @mixed_year_group_option ||= year_groups_as_options
-        .find { |option| option.value == "mixed_year_groups" }
+    @year_groups_for_selection ||= year_group_options.map do |value|
+      OpenStruct.new(
+        value:,
+        name: I18n.t(".wizards.add_hosting_interest_wizard.year_group_selection_step.year_groups.#{value}"),
+        description: I18n.t(".wizards.add_hosting_interest_wizard.year_group_selection_step.year_groups.#{value}_description"),
+      )
+    end
   end
 
   def year_groups=(value)
@@ -31,16 +31,6 @@ class AddHostingInterestWizard::YearGroupSelectionStep < BaseStep
       "year_6",
       "mixed_year_groups"
     ]
-  end
-
-  def year_groups_as_options
-    @year_groups_as_options ||= year_group_options.map do |value|
-      OpenStruct.new(
-        value:,
-        name: I18n.t(".wizards.add_hosting_interest_wizard.year_group_selection_step.year_groups.#{value}"),
-        description: I18n.t(".wizards.add_hosting_interest_wizard.year_group_selection_step.year_groups.#{value}_description"),
-      )
-    end
   end
 
   def normalised_year_groups(selected_year_groups)

@@ -22,10 +22,6 @@
             link_errors: i.zero? %>
         <% end %>
         <%= f.govuk_check_box_divider %>
-        <%= f.govuk_check_box :year_groups, current_step.mixed_year_group_option.value,
-            label: { text: current_step.mixed_year_group_option.name },
-            hint: { text: current_step.mixed_year_group_option.description } %>
-        <%= f.govuk_check_box_divider %>
         <%= f.govuk_check_box :year_groups, current_step.unknown_option.value,
             label: { text: current_step.unknown_option.name },
             hint: { text: current_step.unknown_option.description },
