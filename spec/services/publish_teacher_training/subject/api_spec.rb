@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe PublishTeacherTraining::Subject::Api do
+RSpec.describe PublishTeacherTraining::Subject::API do
   before do
     success_stub_request
   end

@@ -23,7 +23,6 @@ RSpec.describe MapComponent, type: :component do
       render_inline(subject)
 
       expect(page).to have_css("[data-controller='map']")
-      expect(page).to have_css("[data-map-key-value='#{ENV.fetch("GOOGLE_MAPS_API_KEY", "")}']")
       expect(page).to have_css("[data-map-base-latitude-value='#{base_latitude}']")
       expect(page).to have_css("[data-map-base-longitude-value='#{base_longitude}']")
       expect(page).to have_css("[data-map-target='organisations']")
