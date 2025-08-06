@@ -29,18 +29,9 @@ RSpec.describe AddHostingInterestWizard::KeyStageSelectionStep, type: :model do
           OpenStruct.new(value: "key_stage_2", name: "Key stage 2"),
           OpenStruct.new(value: "key_stage_3", name: "Key stage 3"),
           OpenStruct.new(value: "key_stage_4", name: "Key stage 4"),
-          OpenStruct.new(value: "key_stage_5", name: "Key stage 5")
+          OpenStruct.new(value: "key_stage_5", name: "Key stage 5"),
+          OpenStruct.new(value: "mixed_key_stages", name: "Mixed key stages")
         ],
-      )
-    end
-  end
-
-  describe "#mixed_key_stage_option" do
-    subject(:mixed_key_stage_option) { step.mixed_key_stage_option }
-
-    it "returns the mixed key stages" do
-      expect(mixed_key_stage_option).to eq(
-        OpenStruct.new(value: "mixed_key_stages", name: "Mixed key stages"),
       )
     end
   end

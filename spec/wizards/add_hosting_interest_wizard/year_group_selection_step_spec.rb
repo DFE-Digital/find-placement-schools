@@ -30,18 +30,9 @@ RSpec.describe AddHostingInterestWizard::YearGroupSelectionStep, type: :model do
           OpenStruct.new(value: "year_3", name: "Year 3", description: "7 to 8 years"),
           OpenStruct.new(value: "year_4", name: "Year 4", description: "8 to 9 years"),
           OpenStruct.new(value: "year_5", name: "Year 5", description: "9 to 10 years"),
-          OpenStruct.new(value: "year_6", name: "Year 6", description: "10 to 11 years")
+          OpenStruct.new(value: "year_6", name: "Year 6", description: "10 to 11 years"),
+          OpenStruct.new(value: "mixed_year_groups", name: "Mixed year groups", description: "")
         ],
-      )
-    end
-  end
-
-  describe "#mixed_year_group_option" do
-    subject(:mixed_year_group_option) { step.mixed_year_group_option }
-
-    it "returns the mixed year group" do
-      expect(mixed_year_group_option).to eq(
-        OpenStruct.new(value: "mixed_year_groups", name: "Mixed year groups", description: ""),
       )
     end
   end
