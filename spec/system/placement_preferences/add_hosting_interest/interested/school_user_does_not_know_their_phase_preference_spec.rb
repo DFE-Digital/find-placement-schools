@@ -1,0 +1,206 @@
+require "rails_helper"
+
+RSpec.describe "School user successfully adds their hosting interest", type: :system do
+  scenario do
+    given_i_am_signed_in
+    and_academic_years_exist
+    and_secondary_subjects_exist
+    when_i_visit_the_new_placement_preferences_url
+    then_i_see_the_appetite_form_page
+
+    when_i_select_maybe
+    and_i_click_on_continue
+    then_i_see_the_education_phase_form_page
+
+    when_i_select_i_do_not_know
+    and_i_click_on_continue
+    then_i_see_the_note_to_providers_form_page
+
+    when_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+
+    when_i_fill_in_the_school_contact_details
+    and_i_click_on_continue
+    then_i_see_the_confirmation_page
+
+    when_i_click_on_back
+    then_i_see_the_school_contact_form_page
+    and_i_see_the_school_contact_inputs_prefilled
+
+    when_i_click_on_back
+    then_i_see_the_note_to_providers_form_page
+
+    when_i_click_on_back
+    then_i_see_the_education_phase_form_page
+    and_i_see_i_do_not_know_selected
+
+    when_i_click_on_continue
+    then_i_see_the_note_to_providers_form_page
+
+    when_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+    and_i_see_the_school_contact_inputs_prefilled
+
+    when_i_click_on_continue
+    then_i_see_the_confirmation_page
+
+    when_i_click_on_confirm
+    then_i_see_the_my_placement_preferences
+  end
+
+  private
+
+  def given_i_am_signed_in
+    @school = build(:school, name: "Hogwarts")
+    sign_in_user(organisations: [ @school ])
+  end
+
+  def and_academic_years_exist
+    @current_academic_year = create(:academic_year, :current)
+    @next_academic_year = @current_academic_year.next
+    @next_academic_year_name = @next_academic_year.name
+  end
+
+  def and_secondary_subjects_exist
+    @english = create(:placement_subject, :secondary, name: "English")
+    @science = create(:placement_subject, :secondary, name: "Science")
+    @mathematics = create(:placement_subject, :secondary, name: "Mathematics")
+  end
+
+  def when_i_visit_the_new_placement_preferences_url
+    visit new_add_hosting_interest_placement_preferences_path
+  end
+
+  def then_i_see_the_appetite_form_page
+    expect(page).to have_title(
+      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+    )
+    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_element(
+      :legend,
+      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+      class: "govuk-fieldset__legend",
+    )
+    expect(page).to have_field("Yes - I can offer placements", type: :radio)
+    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
+    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+  end
+
+  def when_i_select_maybe
+    choose "Maybe - I’m not sure yet"
+  end
+
+  def when_i_click_on_continue
+    click_on "Continue"
+  end
+  alias_method :and_i_click_on_continue,
+               :when_i_click_on_continue
+
+  def then_i_see_the_education_phase_form_page
+    expect(page).to have_title(
+      "What education phase could you offer placements in? - Find ITT placements",
+    )
+    expect(page).to have_caption("Potential placement offer details")
+    expect(page).to have_element(
+      :legend,
+      text: "What education phase could you offer placements in?",
+      class: "govuk-fieldset__legend",
+    )
+    expect(page).to have_hint("Select all that apply")
+    expect(page).to have_field("Primary", type: :checkbox)
+    expect(page).to have_field("Secondary", type: :checkbox)
+    expect(page).to have_field(
+      "Special educational needs and disabilities (SEND) specific",
+      type: :checkbox,
+    )
+    expect(page).to have_field("I don’t know", type: :checkbox)
+  end
+
+  def when_i_select_i_do_not_know
+    check "I don’t know"
+  end
+
+  def then_i_see_the_note_to_providers_form_page
+    expect(page).to have_title(
+      "Is there anything about your school you would like providers to know? (optional) - Find ITT placements",
+    )
+    expect(page).to have_caption("Potential placement details")
+    expect(page).to have_element(
+      :label,
+      text: "Is there anything about your school you would like providers to know? (optional)",
+    )
+    expect(page).to have_field("Is there anything about your school you would like providers to know? (optional)")
+  end
+
+  def then_i_see_the_school_contact_form_page
+    expect(page).to have_title(
+      "Who should providers contact? - Find ITT placements",
+    )
+    expect(page).to have_caption("Contact details")
+    expect(page).to have_h1("Who should providers contact?")
+    expect(page).to have_paragraph(
+      "Choose the person best placed to organise placements for trainee teachers at your school",
+    )
+    expect(page).to have_field("First name")
+    expect(page).to have_field("Last name")
+    expect(page).to have_field("Email address")
+  end
+
+  def when_i_fill_in_the_school_contact_details
+    fill_in "First name", with: "Joe"
+    fill_in "Last name", with: "Bloggs"
+    fill_in "Email address", with: "joe_bloggs@example.com"
+  end
+
+  def then_i_see_the_confirmation_page
+    expect(page).to have_title(
+      "Confirm and share what you may be able to offer - Find ITT placements",
+    )
+    expect(page).to have_h1("Confirm and share what you may be able to offer")
+
+    expect(page).to have_h2("Your information")
+    expect(page).to have_summary_list_row("First name", "Joe")
+    expect(page).to have_summary_list_row("Last name", "Bloggs")
+    expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
+
+    expect(page).to have_h2("Potential education phase")
+    expect(page).to have_summary_list_row("Phase", "Unknown")
+
+    expect(page).to have_h2("Additional information")
+    expect(page).to have_summary_list_row(
+      "Message to providers",
+      "",
+    )
+  end
+
+  def when_i_click_on_back
+    click_on "Back"
+  end
+
+  def and_i_see_the_school_contact_inputs_prefilled
+    expect(page).to have_field("First name", with: "Joe")
+    expect(page).to have_field("Last name", with: "Bloggs")
+    expect(page).to have_field("Email address", with: "joe_bloggs@example.com")
+  end
+
+  def and_i_see_i_do_not_know_selected
+    expect(page).to have_checked_field("I don’t know", type: :checkbox)
+  end
+
+  def when_i_click_on_confirm
+    click_on "Confirm"
+  end
+
+  def then_i_see_the_my_placement_preferences
+    expect(page).to have_title(
+      "What happens next? - Find ITT placements",
+    )
+    expect(page).to have_h1("What happens next?")
+    expect(page).to have_paragraph(
+      "Providers who are looking for schools to work with can contact you on joe_bloggs@example.com.",
+    )
+    expect(page).to have_paragraph(
+      "You do not need to take any further action until providers contact you.",
+    )
+  end
+end

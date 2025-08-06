@@ -4,9 +4,13 @@ en:
       hosting_interest:
         check_your_answers:
           education_phase: Education phase
+          potential_education_phase: Potential education phase
           primary_placements: Primary placements
+          potential_primary_placements: Potential primary placements
           secondary_placements: Secondary placements
+          potential_secondary_placements: Potential secondary placements
           send_placements: SEND placements
+          potential_send_placements: Potential SEND placements
           education_phase_list:
             phase: Phase
           primary_placements_list:

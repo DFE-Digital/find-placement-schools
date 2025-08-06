@@ -10,22 +10,12 @@
   <%= embedded_link_text(
     t(".providers_can_contact_you",
       mailto: mail_to(
-         placement_details.dig("school_contact", "email"),
+         placement_details.dig("school_contact", "email_address"),
       )),
   ) %>
 </p>
 
 <p class="govuk-body"><%= t(".you_do_not_need_to_take_any_further_action") %></p>
-
-<p class="govuk-body">
-  <%= embedded_link_text(
-    t(".once_you_know_which_placements",
-      link: govuk_link_to(
-        t(".add_placements"),
-        "",
-      )),
-  ) %>
-</p>
 
 <% if placement_details.dig("year_group_selection", "year_groups").present? %>
   <h3 class="govuk-heading-s">
