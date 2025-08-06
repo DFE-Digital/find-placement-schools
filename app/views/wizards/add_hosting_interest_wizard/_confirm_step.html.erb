@@ -58,7 +58,7 @@
           <% row.with_key(text: t(".message_to_providers")) %>
           <% row.with_value(text: current_step.note) %>
           <% row.with_action(text: t(".change"),
-                             href: step_path(:note_to_provider),
+                             href: step_path(:note_to_providers),
                              visually_hidden_text: t(".message_to_providers"),
                              classes: ["govuk-link--no-visited-state"]) %>
         <% end %>

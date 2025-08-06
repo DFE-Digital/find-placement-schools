@@ -59,7 +59,7 @@ en:
     interested_preferences:
       panel_title: Information added
       panel_text: Providers can see that you may offer placements
-      what_happens_next: What happens next
+      what_happens_next: What happens next?
       providers_can_contact_you:
         Providers who are looking for schools to work with can contact you on %{mailto}.
       you_do_not_need_to_take_any_further_action: You do not need to take any further action until providers contact you.
