@@ -20,9 +20,6 @@
             link_errors: i.zero? %>
         <% end %>
         <%= f.govuk_check_box_divider %>
-        <%= f.govuk_check_box :key_stages, current_step.mixed_key_stage_option.value,
-            label: { text: current_step.mixed_key_stage_option.name } %>
-        <%= f.govuk_check_box_divider %>
         <%= f.govuk_check_box :key_stages, current_step.unknown_option.value,
             label: { text: current_step.unknown_option.name },
             hint: { text: current_step.unknown_option.description } %>

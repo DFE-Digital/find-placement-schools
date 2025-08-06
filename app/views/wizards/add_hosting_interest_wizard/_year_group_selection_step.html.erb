@@ -20,10 +20,6 @@
             hint: { text: year_group.description },
             link_errors: i.zero? %>
         <% end %>
-        <%= f.govuk_check_box_divider %>
-        <%= f.govuk_check_box :year_groups, current_step.mixed_year_group_option.value,
-            label: { text: current_step.mixed_year_group_option.name },
-            hint: { text: current_step.mixed_year_group_option.description } %>
       <% end %>
 
       <%= f.govuk_submit t(".continue") %>
