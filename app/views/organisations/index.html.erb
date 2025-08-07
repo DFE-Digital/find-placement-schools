@@ -44,6 +44,10 @@
                 <%= "#{school.name}, #{school.town}" %>
               </h2>
 
+              <div class="app-result-detail">
+                <%= render InterestTagComponent.new(school: school, academic_year: AcademicYear.current.next) %>
+              </div>
+
               <dl class="app-result-detail">
                 <div>
                   <h3 class="govuk-heading-s govuk-!-margin-bottom-2">School details</h3>
