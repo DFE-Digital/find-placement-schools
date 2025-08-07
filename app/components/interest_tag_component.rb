@@ -41,7 +41,7 @@ class InterestTagComponent < ApplicationComponent
   def calculated_status
     if actively_looking?
       "actively_looking"
-      elsif open?
+    elsif open?
       "open"
     elsif not_looking?
       "not_open"
