@@ -1,0 +1,8 @@
+en:
+  organisations:
+    filter:
+      itt_status: ITT status
+      schools_to_show: Schools to show
+      schools_to_show_options:
+        active: Only schools using the service
+        all: All schools
