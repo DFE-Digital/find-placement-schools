@@ -13,7 +13,7 @@ RSpec.describe InterestTagComponent, type: :component do
   end
 
   context "when the school is actively looking" do
-    let(:placement_preferences) { [build(:placement_preference, appetite: "actively_looking")] }
+    let(:placement_preferences) { [ build(:placement_preference, appetite: "actively_looking") ] }
 
     it "renders the correct text" do
       expect(page).to have_content "Placements available"
@@ -25,7 +25,7 @@ RSpec.describe InterestTagComponent, type: :component do
   end
 
   context "when the school is interested in hosting" do
-    let(:placement_preferences) { [build(:placement_preference, appetite: "interested")] }
+    let(:placement_preferences) { [ build(:placement_preference, appetite: "interested") ] }
 
     it "renders the correct text" do
       expect(page).to have_content "May offer placements"
@@ -37,7 +37,7 @@ RSpec.describe InterestTagComponent, type: :component do
   end
 
   context "when the school is not open to hosting" do
-    let(:placement_preferences) { [build(:placement_preference, appetite: "not_open")] }
+    let(:placement_preferences) { [ build(:placement_preference, appetite: "not_open") ] }
 
     it "renders the correct text" do
       expect(page).to have_content "Not offering placements"
