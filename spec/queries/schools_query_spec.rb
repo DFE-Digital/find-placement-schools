@@ -11,7 +11,7 @@ describe SchoolsQuery do
       phase: "All-through",
       latitude: 51.648438,
       longitude: 14.350231,
-      placement_preferences: [ build(:placement_preference, appetite: "actively_looking", academic_year: AcademicYear.current.next) ]
+      placement_preferences: [ build(:placement_preference, appetite: "actively_looking", academic_year: AcademicYear.next) ]
     )
   end
   let(:non_query_school) do
@@ -87,8 +87,8 @@ describe SchoolsQuery do
     end
 
     context "when filtering schools by placement preferences" do
-      let(:interested_school) { create(:school, name: "Interested school", placement_preferences: [ build(:placement_preference, :interested, academic_year: AcademicYear.current.next) ]) }
-      let(:not_open_school) { create(:school, name: "Not open school", placement_preferences: [ build(:placement_preference, :not_open, academic_year: AcademicYear.current.next) ]) }
+      let(:interested_school) { create(:school, name: "Interested school", placement_preferences: [ build(:placement_preference, :interested, academic_year: AcademicYear.next) ]) }
+      let(:not_open_school) { create(:school, name: "Not open school", placement_preferences: [ build(:placement_preference, :not_open, academic_year: AcademicYear.next) ]) }
 
       before do
         interested_school

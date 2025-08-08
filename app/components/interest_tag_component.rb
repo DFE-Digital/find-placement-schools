@@ -15,7 +15,7 @@ class InterestTagComponent < ApplicationComponent
 
   private_constant :INTEREST_COLOURS, :INTEREST_TEXT
 
-  def initialize(school:, academic_year:, classes: [], html_attributes: {})
+  def initialize(school:, academic_year: AcademicYear.next, classes: [], html_attributes: {})
     super(classes:, html_attributes:)
 
     @school = school
@@ -51,14 +51,14 @@ class InterestTagComponent < ApplicationComponent
   end
 
   def actively_looking?
-    school.current_hosting_interest(academic_year:)&.actively_looking?
+    school.placement_preference_for(academic_year:)&.actively_looking?
   end
 
   def open?
-    school.current_hosting_interest(academic_year:)&.interested?
+    school.placement_preference_for(academic_year:)&.interested?
   end
 
   def not_looking?
-    school.current_hosting_interest(academic_year:)&.not_open?
+    school.placement_preference_for(academic_year:)&.not_open?
   end
 end
