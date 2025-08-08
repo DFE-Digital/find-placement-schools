@@ -2,7 +2,7 @@
   <div class="app-filter-layout__filter">
     <div class="app-filter__header">
       <div class="app-filter__header-title">
-        <h2 class="govuk-heading-m">Filters</h2>
+        <h2 class="govuk-heading-m"><%= t(".filters") %></h2>
       </div>
       <div class="app-filter__header-action">
         <button class="app-filter__close" type="button" data-action="click->filter#close">
@@ -15,7 +15,7 @@
         <div class="app-filter-layout__selected">
           <div class="app-filter__selected-heading">
             <div class="app-filter__heading-title">
-              <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Selected filters</h2>
+              <h2 class="govuk-heading-m govuk-!-margin-bottom-1"><%= t(".selected_filters") %></h2>
               <p class="govuk-body">
                 <%= govuk_link_to(
                       "Clear filters",
@@ -27,7 +27,7 @@
           </div>
 
           <% if @search_location.present? %>
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Search location</h3>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".search_location") %></h3>
             <ul class="app-filter-tags">
               <li>
                 <%= govuk_link_to(
@@ -44,7 +44,7 @@
           <% end %>
 
           <% if filter_form.search_by_name.present? %>
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Search by name</h3>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".search_by_name") %>></h3>
             <ul class="app-filter-tags">
               <li>
                 <%= govuk_link_to(
@@ -61,7 +61,7 @@
           <% end %>
 
           <% if filter_form.phases.present? %>
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Phase</h3>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".phase") %></h3>
             <ul class="app-filter-tags">
               <% filter_form.phases.each do |phase| %>
                 <li>
@@ -80,7 +80,7 @@
           <% end %>
 
           <% if filter_form.itt_statuses.present? %>
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-0">ITT status</h3>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".itt_status") %></h3>
             <ul class="app-filter-tags">
               <% filter_form.itt_statuses.each do |status| %>
                 <li>
@@ -107,29 +107,29 @@
               url: organisations_path,
               method: "get",
             ) do |form| %>
-          <%= form.govuk_submit "Apply filters" %>
+          <%= form.govuk_submit t(".apply_filters") %>
 
           <div class="app-filter__option">
             <h1 class="govuk-label-wrapper">
-              <label class="govuk-label govuk-label--s">Search by location</label>
+              <label class="govuk-label govuk-label--s"><%= t(".search_location") %></label>
             </h1>
 
             <div class="app-filter__option">
               <div class="govuk-form-group">
-                <%= form.govuk_text_field :search_location, type: :search, value: search_location, label: { hidden: true }, caption: { text: "Enter a town, city or postcode" } %>
-                <p class="govuk-body-s secondary-text">Powered by Google</p>
+                <%= form.govuk_text_field :search_location, type: :search, value: @search_location, label: { hidden: true }, caption: { text: "Enter a town, city or postcode" } %>
+                <p class="govuk-body-s secondary-text"><%= t(".powered_by_google") %></p>
               </div>
             </div>
           </div>
 
           <div class="app-filter__option">
             <h1 class="govuk-label-wrapper">
-              <label class="govuk-label govuk-label--s">Search by name</label>
+              <label class="govuk-label govuk-label--s"><%= t(".search_by_name") %></label>
             </h1>
 
             <div class="app-filter__option">
               <div class="govuk-form-group govuk-!-margin-bottom-2">
-                <%= form.govuk_text_field :search_by_name, type: :search, label: { hidden: true }, caption: { text: "Enter a school name or URN" } %>
+                <%= form.govuk_text_field :search_by_name, type: :search, label: { hidden: true }, caption: { text: t(".search_by_name_prompt") } %>
               </div>
             </div>
           </div>
@@ -167,7 +167,7 @@
           <div class="app-filter__option">
             <%= form.govuk_check_boxes_fieldset(
               :phases,
-              legend: { text: "Phase", size: "s" },
+              legend: { text: t(".phase"), size: "s" },
               small: true,
               multiple: true,
             ) do %>

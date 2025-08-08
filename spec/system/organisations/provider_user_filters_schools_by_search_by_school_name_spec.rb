@@ -54,7 +54,7 @@ RSpec.describe "Provider user filters schools by name", type: :system do
   end
 
   def and_i_see_the_search_by_school_name_filter
-    expect(page).to have_element(:label, text: "Search by name")
+    expect(page).to have_element(:label, text: "Search by school name")
     expect(page).to have_field("Enter a school name or URN", type: :search)
   end
 
