@@ -47,8 +47,6 @@ class SchoolsQuery < ApplicationQuery
     hosting_interests = filter_params[:itt_statuses]
     return scope if hosting_interests.blank?
 
-    # debugger
-
     conditions = []
 
     if hosting_interests.include?("open")
