@@ -39,9 +39,9 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
     @provider = build(:provider, name: "Ministry of Magic")
 
     @placements_available_school = create(:school, phase: "Primary", name: "Hogwarts", placement_preferences:
-      [ build(:placement_preference, appetite: "actively_looking", academic_year: AcademicYear.current.next) ])
+      [ build(:placement_preference, appetite: "actively_looking", academic_year: AcademicYear.next) ])
     @may_offer_school = create(:school, phase: "Secondary", name: "Beauxbatons", placement_preferences:
-      [ build(:placement_preference, appetite: "interested", academic_year: AcademicYear.current.next) ])
+      [ build(:placement_preference, appetite: "interested", academic_year: AcademicYear.next) ])
   end
 
   def and_i_am_signed_in

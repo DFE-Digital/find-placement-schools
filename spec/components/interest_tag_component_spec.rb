@@ -5,7 +5,7 @@ RSpec.describe InterestTagComponent, type: :component do
     described_class.new(school:, academic_year:)
   end
 
-  let(:academic_year) { AcademicYear.current.next }
+  let(:academic_year) { AcademicYear.next }
   let(:school) { create(:school, placement_preferences:) }
 
   before do

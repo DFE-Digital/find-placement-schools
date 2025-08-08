@@ -7,7 +7,7 @@ class School < Organisation
 
   has_many :placement_preferences, foreign_key: :organisation_id
 
-  def current_hosting_interest(academic_year:)
+  def placement_preference_for(academic_year:)
     placement_preferences
       .where(academic_year:)
       .order(created_at: :desc)

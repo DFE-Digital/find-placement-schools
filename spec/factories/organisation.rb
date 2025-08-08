@@ -7,7 +7,7 @@ FactoryBot.define do
 
       trait :with_placement_preferences do
         after(:create) do |school|
-          create(:placement_preference, organisation: school, academic_year: AcademicYear.current.next)
+          create(:placement_preference, organisation: school, academic_year: AcademicYear.next)
         end
       end
     end
