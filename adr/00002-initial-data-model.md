@@ -4,17 +4,20 @@ Date: 2025-07-18
 
 ## Status
 
-Proposed
+Accepted
 
 ---
 
 ## Context
 
-The Department for Education is developing a system to allow providers (users) to find placements that are made available by schools (users). The data model must support:
+This service will track school placement preferences for Initial Teacher Training (ITT). The intent is to allow schools to express their willingness and ability to host placements for trainee teachers, which we hope will facilitate more placements in the market.
 
-- Many-to-many relationships between users and organisations
-- Expression of school placement preferences by academic year
-- Organisation metadata (addresses, contacts, and administrative info)
+To enable us to do this, we need to define a data model that captures:
+
+- Relationships between users, schools, and ITT providers
+- The school interest in hosting placements for each academic year
+- Organisation details such as URN, UKPRN, addresses and contact information
+- Subjects that placements can be categorised by
 
 ### Key domain concepts:
 
@@ -28,16 +31,7 @@ The Department for Education is developing a system to allow providers (users) t
 
 ## Decision
 
-We have defined the initial domain model using the following entities:
-
-## Entity Relationship Diagram (ERD)
-
-This diagram represents our current understanding of the data models that will exist within this application.
-
-There are a few things to bear in mind when reading this:
-
-- This diagram attempts to bridge the gap between a 'high level' list of entities, and a 'low level' database schema. It sits somewhere in between.
-- It is incomplete. As we continue developing our services, this diagram will undoubtedly change and grow.
+We will create a data model using a relational database schema. Our initial model will include the following tables and relationships:
 
 ```mermaid
 erDiagram
@@ -153,68 +147,75 @@ erDiagram
   PlacementPreference }o--|| User : "Created by a user"
 ```
 
-#### `User`
-Represents system users.
-- Fields: `first_name`, `last_name`, `email_address`, `dfe_sign_in_uid`, `last_signed_in_at`
-- Linked to organisations via `UserOrganisation`
-- Tracks current context via `current_organisation_id`
+#### User
+
+Represents a real person who can log into and interact with the service.
+
+- Fields: `first_name`, `last_name`, `email_address`, `admin`, `dfe_sign_in_uid`, `last_signed_in_at`
+- Linked to organisations via `UserOrganisation`, users may belong to multiple organisations.
 - Sign in flow will be handled via DfE Sign-in API, using `dfe_sign_in_uid`
-- Users may belong to multiple organisations (via join table), but one is active (current_organisation_id). This will allow users to maintain context between logins.
+- The `admin` boolean allows for internal DfE users to be distinguished from regular users.
 
-#### `Organisation`
-Represents either a school or a provider via the school and provider booleans.
-- Fields: `urn`, `ukprn`, `code`, `school`, `provider`, `longitude`, `latitude`, `email_address`
-- Longitude and Latitude allow for distance based search between schools and providers via external API call. Providers may not want to assign trainees to schools too far away.
 
-#### `UserOrganisation`
-Join table supporting many-to-many user-organisation relationships.
+#### Organisation
 
-#### `AcademicYear`
-Defines placement periods with `starts_on` and `ends_on` dates.
+Represents either a school or a provider via the type column, this uses Single Table Inheritance (STI).
 
-#### `PlacementPreference`
+- Fields: `urn`, `ukprn`, `code`, `longitude`, `latitude`, `email_address`, `type`, `admissions_policy`, `district_admin_code`, `district_admin_name`, `gender`, `group`, `last_inspection_date`, `local_authority_code`, `local_authority_name`, `maximum_age`, `minimum_age`, `percentage_free_school_meals`, `phase`, `rating`, `rating`, `religious_character`, `school_capacity`, `send_provision`, `special_classes`, `telephone`, `total_boys`, `total_girls`, `type_of_establishment`, `urban_or_rural` and `website`
+- Longitude and latitude are used for distance based searching between schools and a specified location.
+- The vast majority of these fields are sourced from Get Information About Schools (GIAS) and are only relevant for school records.
+
+#### UserMembership
+
+Join table that links `User` and `Organisation` to represent the many-to-many relationship between users and organisations.
+
+- Fields: `organisation_id`, `user_id`
+
+#### AcademicYear
+
+Used to set the placement preferences for each year. Schools utilise academic years to define the start and end of the school year, we have chosen to use this as the basis for our placement preferences.
+
+- Fields: `name`, `starts_on`, `ends_on`
+
+#### PlacementPreference
+
 Records whether and how a school is offering placements.
-- Fields: `appetite` (enum), `placement_details` (JSONB), `created_by`
-- Linked to `organisation`, `academic_year`, and `user`
-- Use of a JSONB field allows flexibility in defining the placement preference. This is useful in the initial setup, but replacing this with a more structured model should be investigated in the future. 
 
-#### `PlacementSubject`
-Defines a hierarchical subject taxonomy.
-- Fields: `name`, `code`, `phase` (enum), `parent_subject_id`
+- Fields: `academic_year_id`, `organisation_id`, `created_by_id`, `appetite`, `placement_details`
+- Has foreign keys for `organisation`, `academic_year`, and `user`
+- Use of a JSONB field allows flexibility in defining the placement preferences. This is useful in the initial setup, but replacing this with a more structured model should be investigated in the future. 
+
+#### PlacementSubject
+
+Stores the subjects that accredited ITT providers can offer placements in.
+
+- Fields: `name`, `code`, `phase`, `parent_subject_id`
 - Phase can be either "primary" or "secondary"
 
-### Supporting Entities
+#### OrganisationAddress 
 
-#### `OrganisationAddress`, `OrganisationDetail`, `OrganisationContact`
-Capture normalised organisation metadata:
-- **Address**: postal fields
-- **Detail**: GIAS data or other rich metadata
-- **Contact**: named people linked to roles and contact info
+Stores the postal address of an organisation, allowing for multiple addresses per organisation.
 
----
+- Fields: `address_1`, `address_2`, `address_3`, `town`, `city`, `county`, `postcode`
 
-## Consequences
 
-- Modular structure makes it easy to evolve the model.
-- JSONB usage in `placement_details` offers flexibility for future changes.
-- Academic year scoping ensures placement data remains timely and relevant.
-- `UserOrganisation` supports real-world user delegation patterns.
+#### OrganisationContact
+
+Stores contact details for individuals at an organisation, such as placement coordinators.
+
+- Fields: `organisation_id`, `first_name`, `last_name`, `email_address`
 
 ---
 
-## Risks / Trade-offs
+## Considerations
 
-- JSONB fields are less queryable and less enforceable via database constraints.
-- Geolocation data in `Organisation` may be inaccurate or stale without an API call to support it - if an institution moves location for example
-- `PlacementSubject` hierarchy requires application-level constraints to avoid invalid trees (e.g. circular references).
+- Usage of a JSONB field in `PlacementPreference` allows for flexible data storage, but may complicate querying and validation.
+- This ERB will need to be refined as we gather more requirements and feedback from users, this isn't a final data model.
 
 ---
 
 ## Next Steps
 
 - Create migrations to instantiate the tables defined in the entity relationship diagram
-- Define enums for `appetite` and `phase`.
-- Seed `academic_years` and `placement_subjects`.
-- Apply foreign key constraints across all relationship tables.
 
 ---
