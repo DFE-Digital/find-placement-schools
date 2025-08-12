@@ -51,14 +51,18 @@ class InterestTagComponent < ApplicationComponent
   end
 
   def actively_looking?
-    school.placement_preference_for(academic_year:)&.actively_looking?
+    placement_preference&.actively_looking?
   end
 
   def open?
-    school.placement_preference_for(academic_year:)&.interested?
+    placement_preference&.interested?
   end
 
   def not_looking?
-    school.placement_preference_for(academic_year:)&.not_open?
+    placement_preference&.not_open?
+  end
+
+  def placement_preference
+    @placement_preference ||= school.placement_preference_for(academic_year:)
   end
 end
