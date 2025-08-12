@@ -44,25 +44,10 @@ class SchoolsQuery < ApplicationQuery
   end
 
   def itt_statuses_condition(scope)
-    hosting_interests = filter_params[:itt_statuses]
-    return scope if hosting_interests.blank?
+    return scope if filter_params[:itt_statuses].blank?
 
-    conditions = []
-
-    if hosting_interests.include?("open")
-      conditions << scope.where(placement_preferences: { appetite: "interested" })
+    scope.where(placement_preferences: { appetite: filter_params[:itt_statuses] })
     end
-
-    if hosting_interests.include?("not_open")
-      conditions << scope.where(placement_preferences: { appetite: "not_open" })
-    end
-
-    if hosting_interests.include?("actively_looking")
-      conditions << scope.where(placement_preferences: { appetite: "actively_looking" })
-    end
-
-    conditions.reduce(scope.none) { |combined_scope, condition| combined_scope.or(condition) }
-  end
 
   def order_condition(scope)
     if params[:location_coordinates].present?
