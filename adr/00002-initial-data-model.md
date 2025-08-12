@@ -156,7 +156,7 @@ Represents a real person who can log into and interact with the service.
 
 Represents either a school or a provider via the type column, this uses Single Table Inheritance (STI).
 
-- Fields: `urn`, `ukprn`, `code`, `longitude`, `latitude`, `email_address`, `type`, `admissions_policy`, `district_admin_code`, `district_admin_name`, `gender`, `group`, `last_inspection_date`, `local_authority_code`, `local_authority_name`, `maximum_age`, `minimum_age`, `percentage_free_school_meals`, `phase`, `rating`, `rating`, `religious_character`, `school_capacity`, `send_provision`, `special_classes`, `telephone`, `total_boys`, `total_girls`, `type_of_establishment`, `urban_or_rural` and `website`
+- Fields: `urn`, `ukprn`, `code`, `longitude`, `latitude`, `email_address`, `type`, `admissions_policy`, `district_admin_code`, `district_admin_name`, `gender`, `group`, `last_inspection_date`, `local_authority_code`, `local_authority_name`, `maximum_age`, `minimum_age`, `percentage_free_school_meals`, `phase`, `rating`, `religious_character`, `school_capacity`, `send_provision`, `special_classes`, `telephone`, `total_boys`, `total_girls`, `type_of_establishment`, `urban_or_rural` and `website`
 - Longitude and latitude are used for distance based searching between schools and a specified location.
 - The vast majority of these fields are sourced from Get Information About Schools (GIAS) and are only relevant for school records.
 
@@ -205,7 +205,7 @@ Stores contact details for individuals at an organisation, such as placement coo
 ## Considerations
 
 - Usage of a JSONB field in `PlacementPreference` allows for flexible data storage, but may complicate querying and validation.
-- This ERB will need to be refined as we gather more requirements and feedback from users, this isn't a final data model.
+- This ERD will need to be refined as we gather more requirements and feedback from users, this isn't a final data model.
 
 ---
 
