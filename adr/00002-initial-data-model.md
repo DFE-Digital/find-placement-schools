@@ -36,115 +36,110 @@ We will create a data model using a relational database schema. Our initial mode
 ```mermaid
 erDiagram
 
-  %% === Core time period model ===
   AcademicYear {
-    uuid id PK "Primary key"
-    string name "E.g. 2024–2025"
-    date starts_on "Term start date"
-    date ends_on "Term end date"
+    uuid id
+    string name
+    date starts_on
+    date ends_on
   }
 
-  %% === User model and identity ===
   User {
-    uuid id PK "Primary key"
-    boolean admin "System admin toggle"
-    string first_name "User’s first name"
-    string last_name "User’s last name"
-    string email_address "Used for sign-in and notifications"
-    uuid dfe_sign_in_uid "External identity ID"
-    datetime last_signed_in_at "Timestamp of last sign-in"
-    uuid organisation_id FK "Legacy or default organisation"
-    uuid current_organisation_id FK "Currently selected org"
+    uuid id
+    boolean admin
+    string first_name
+    string last_name
+    string email_address
+    uuid dfe_sign_in_uid
+    datetime last_signed_in_at
   }
 
-  %% === User to organisation association ===
-  UserOrganisation {
-    uuid id PK "Primary key"
-    uuid organisation_id FK "Organisation the user is linked to"
-    uuid user_id FK "User in the relationship"
+  UserMembership {
+    uuid id
+    uuid organisation_id
+    uuid user_id
   }
 
-  %% Supports many-to-many relationship between users and organisations (e.g. MATs, school groups)
-
-  %% === Organisation model ===
   Organisation {
-    uuid id PK "Primary key"
+    uuid id
     string name "School or provider name"
-    string urn "Unique Reference Number"
-    string ukprn "UK Provider Reference Number"
-    string code "GIAS code"
-    float longitude "Geo location (lon)"
-    float latitude "Geo location (lat)"
-    string email_address "Generic contact email"
-    boolean school "Is a school"
-    boolean provider "Is an ITT provider"
+    string urn
+    string ukprn
+    string code
+    double longitude
+    double latitude
+    string email_address
+    enum type
+    enum admissions_policy
+    string district_admin_code
+    string district_admin_name
+    string gender
+    string group
+    date last_inspection_date
+    string local_authority_code
+    string local_authority_name
+    integer maximum_age
+    integer minimum_age
+    integer percentage_free_school_meals
+    string phase
+    string rating
+    string religious_character
+    integer school_capacity
+    string send_provision
+    string special_classes
+    string telephone
+    integer total_boys
+    integer total_girls
+    string type_of_establishment
+    string urban_or_rural
+    string website
   }
-
-  %% === Organisation metadata ===
-  OrganisationDetail {
-    uuid id PK
-    uuid organisation_id FK "Linked organisation"
-    string gias_stuff "Additional metadata from GIAS"
-  }
-
-  %% Holds additional metadata (e.g. GIAS data), keeping Organisation table lean
 
   OrganisationContact {
-    uuid id PK
-    string first_name "Contact’s first name"
-    string last_name "Contact’s last name"
-    string email_address "Contact’s email"
-    string phone "Contact telephone number"
-    string role "E.g. ‘Placement lead’"
-    uuid organisation_id FK "Linked organisation"
+    uuid id
+    uuid organisation_id
+    string first_name
+    string last_name
+    string email_address
+    string telephone
+    string role
   }
-  %% For listing individual contacts at a school or provider — e.g. placement coordinators
 
   OrganisationAddress {
     uuid id PK
-    string address_1 "Field for information about the address"
-    string address_2 "Field for information about the address"
-    string address_3 "Field for information about the address"
-    string town "Town"
-    string city "City"
-    string county "County"
-    string postcode "Postcode"
-    uuid organisation_id FK "Linked organisation"
+    uuid organisation_id
+    string address_1
+    string address_2
+    string address_3
+    string town
+    string city
+    string county
+    string postcode
   }
-  %% Postal addresses are modeled separately to allow normalisation and optional geocoding
 
-  %% === School placement availability ===
   PlacementPreference {
-    uuid id PK "Primary key"
-    enum appetite "e.g. not_interested, interested, unsure"
-    uuid organisation_id FK "Which school"
-    uuid academic_year_id FK "Which academic year"
-    uuid created_by FK "User who created it"
-    jsonb placement_details "Structured JSON field for quantity of placements, additional notes. Should be strucured more definitively in the future."
+    uuid id PK
+    uuid academic_year_id
+    uuid organisation_id
+    uuid created_by
+    enum appetite
+    jsonb placement_details
   }
-  %% A school’s declaration of whether and how they’re offering placements in a given academic year
-  %% Appetite might be: "not_interested", "interested", or "unsure". Names to be defined in the future.
-  %% `placement_details` is stored in JSONB to allow flexible structured fields
 
-  %% === Subject taxonomy ===
   PlacementSubject {
     uuid id PK
-    string name "E.g. Biology"
-    string code "Unique code"
-    enum phase "Primary, Secondary"
-    uuid parent_subject_id FK "If part of a broader subject group e.g French is part of Modern foreign languages."
+    string name
+    string code
+    enum phase
+    uuid parent_subject_id
   }
-  %% Accredited subjects are categorised by phase (e.g. "primary", "secondary") and support nesting
 
-  %% === Relationships with comments ===
-  OrganisationDetail |o--|| Organisation : "Each detail row belongs to one organisation"
-  OrganisationAddress |o--|| Organisation : "Each address belongs to one organisation"
-  OrganisationContact |o--|| Organisation : "Each contact belongs to one organisation"
-  UserOrganisation }o--|| Organisation : "An organisation has many user links"
-  UserOrganisation }o--|| User : "A user can belong to many organisations"
-  PlacementPreference }o--|| Organisation : "Placement preference belongs to a school"
-  PlacementPreference }o--|| AcademicYear : "Scoped to a specific academic year"
-  PlacementPreference }o--|| User : "Created by a user"
+  OrganisationAddress |o--|| Organisation : ""
+  OrganisationContact |o--|| Organisation : ""
+  UserMembership }o--|| Organisation : ""
+  UserMembership }o--|| User : ""
+  PlacementPreference }o--|| Organisation : ""
+  PlacementPreference }o--|| AcademicYear : ""
+  PlacementPreference }o--|| User : ""
 ```
 
 #### User
