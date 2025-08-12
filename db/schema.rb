@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_30_143307) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_12_092744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -50,6 +50,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_30_143307) do
     t.string "email_address", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role"
+    t.string "telephone"
     t.index ["email_address"], name: "index_organisation_contacts_on_email_address"
     t.index ["organisation_id"], name: "index_organisation_contacts_on_organisation_id"
   end
