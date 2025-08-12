@@ -1,14 +1,14 @@
 class InterestTagComponent < ApplicationComponent
   INTEREST_COLOURS = {
     "actively_looking" => "green",
-    "open" => "yellow",
+    "interested" => "yellow",
     "not_open" => "red",
     "not_participating" => "grey"
   }.freeze
 
   INTEREST_TEXT = {
     "actively_looking" => I18n.t("components.interest_tag_component.actively_looking"),
-    "open" => I18n.t("components.interest_tag_component.open"),
+    "interested" => I18n.t("components.interest_tag_component.interested"),
     "not_open" => I18n.t("components.interest_tag_component.not_open"),
     "not_participating" => I18n.t("components.interest_tag_component.not_participating")
   }.freeze
@@ -41,8 +41,8 @@ class InterestTagComponent < ApplicationComponent
   def calculated_status
     if actively_looking?
       "actively_looking"
-    elsif open?
-      "open"
+    elsif interested?
+      "interested"
     elsif not_looking?
       "not_open"
     else
@@ -54,7 +54,7 @@ class InterestTagComponent < ApplicationComponent
     placement_preference&.actively_looking?
   end
 
-  def open?
+  def interested?
     placement_preference&.interested?
   end
 

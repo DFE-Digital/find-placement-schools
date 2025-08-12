@@ -45,7 +45,7 @@ class Organisations::FilterForm < ApplicationForm
       search_by_name:,
       phases:,
       itt_statuses:,
-        schools_to_show:
+      schools_to_show:
     }
   end
 

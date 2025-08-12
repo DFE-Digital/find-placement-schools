@@ -158,7 +158,7 @@
               small: true,
               multiple: true,
               ) do %>
-              <% %w[actively_looking open not_open].each do |appetite| %>
+              <% PlacementPreference.appetites.values.each do |appetite|%>
                 <%= form.govuk_check_box :itt_statuses, appetite, label: { text: t("components.interest_tag_component.#{appetite}") } %>
               <% end %>
             <% end %>

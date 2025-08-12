@@ -107,7 +107,7 @@ describe SchoolsQuery do
       end
 
       context "when filtering by interested schools" do
-        let(:params) { { filters: { itt_statuses: [ "open" ] } } }
+        let(:params) { { filters: { itt_statuses: [ "interested" ] } } }
 
         it "returns schools with matching placement preferences" do
           expect(query.call).to include(interested_school)
@@ -129,7 +129,7 @@ describe SchoolsQuery do
       end
 
       context "when filtering by multiple statuses" do
-        let(:params) { { filters: { itt_statuses: [ "actively_looking", "open" ] } } }
+        let(:params) { { filters: { itt_statuses: %w[actively_looking interested] } } }
 
         it "returns schools with matching placement preferences" do
           expect(query.call).to include(query_school)
