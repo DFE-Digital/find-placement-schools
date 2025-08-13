@@ -4,6 +4,11 @@ describe SchoolsQuery do
   subject(:query) { described_class.new(params:) }
 
   let(:params) { {} }
+
+  let!(:maths) { create(:placement_subject, name: "Mathematics", code: "MAT", phase: "secondary") }
+  let!(:biology) { create(:placement_subject, name: "Biology", code: "BIO", phase: "secondary") }
+  let!(:science) { create(:placement_subject, name: "Science", code: "SCI", phase: "secondary") }
+
   let(:query_school) do
     create(
       :school,
@@ -11,12 +16,18 @@ describe SchoolsQuery do
       phase: "All-through",
       latitude: 51.648438,
       longitude: 14.350231,
-      placement_preferences: [ build(:placement_preference, appetite: "actively_looking", academic_year: AcademicYear.next) ]
+      placement_preferences: [ build(:placement_preference, appetite: "actively_looking", academic_year: AcademicYear.next, placement_details: {
+            "secondary_subject_selection" => {
+              "subject_ids" => [ maths.id, biology.id ]
+            }
+          }) ]
     )
   end
+
   let(:non_query_school) do
     create(:school, name: "York Secondary School", latitude: 29.732613, longitude: 105.448063)
   end
+
 
   before do
     query_school
@@ -136,6 +147,30 @@ describe SchoolsQuery do
           expect(query.call).to include(interested_school)
           expect(query.call).not_to include(non_query_school)
           expect(query.call).not_to include(not_open_school)
+        end
+      end
+    end
+
+    context "when filtering by subjects" do
+      context "when filtering by a subject" do
+        let(:params) { { filters: { subject_ids: [ maths.id ], schools_to_show: "all" } } }
+        it "returns schools that have that subject in their placement preferences" do
+          expect(query.call).to contain_exactly(query_school)
+        end
+      end
+
+      context "when filtering by multiple subjects (ALL match)" do
+        let(:params) { { filters: { subject_ids: [ maths.id, biology.id ], schools_to_show: "all" } } }
+        it "returns schools that have that subject in their placement preferences" do
+          expect(query.call).to contain_exactly(query_school)
+        end
+      end
+
+      context "when filtering by multiple subject ids (ANY match)" do
+        let(:params) { { filters: { subject_ids: [ science.id, biology.id ], schools_to_show: "all" } } }
+
+        it "returns schools that match any of the selected subjects" do
+          expect(query.call).to contain_exactly(query_school)
         end
       end
     end
