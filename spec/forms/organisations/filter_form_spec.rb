@@ -146,6 +146,7 @@ describe Organisations::FilterForm, type: :model do
           search_location: nil,
           search_by_name: nil,
           schools_to_show: "active",
+          subject_ids: [],
           itt_statuses: [],
           phases: []
         },

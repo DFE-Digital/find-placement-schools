@@ -41,6 +41,7 @@ class OrganisationsController < ApplicationController
       :schools_to_show,
       itt_statuses: [],
       phases: [],
+      subject_ids: [],
       )
   end
 

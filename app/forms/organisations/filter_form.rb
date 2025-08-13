@@ -4,6 +4,7 @@ class Organisations::FilterForm < ApplicationForm
   attribute :search_location, default: nil
   attribute :search_by_name, default: nil
   attribute :phases, default: []
+  attribute :subject_ids, default: []
   attribute :itt_statuses, default: []
   attribute :schools_to_show, default: "active"
 
@@ -43,6 +44,7 @@ class Organisations::FilterForm < ApplicationForm
     {
       search_location:,
       search_by_name:,
+      subject_ids:,
       phases:,
       itt_statuses:,
       schools_to_show:
@@ -63,6 +65,10 @@ class Organisations::FilterForm < ApplicationForm
 
   def secondary_only?
     !primary_selected? && secondary_selected?
+  end
+
+  def subjects
+    PlacementSubject.parent_subjects.secondary
   end
 
   private

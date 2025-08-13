@@ -44,7 +44,7 @@
           <% end %>
 
           <% if filter_form.search_by_name.present? %>
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".search_by_name") %>></h3>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".search_by_name") %></h3>
             <ul class="app-filter-tags">
               <li>
                 <%= govuk_link_to(
@@ -71,6 +71,22 @@
                           filter: "phases",
                           value: phase,
                         ),
+                        class: "app-filter__tag",
+                        no_visited_state: true,
+                      ) %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+
+          <% if filter_form.subject_ids.present? %>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".subjects") %></h3>
+            <ul class="app-filter-tags">
+              <% filter_form.subject_ids.each do |subject_id| %>
+                <li>
+                  <%= govuk_link_to(
+                        PlacementSubject.find(subject_id).name,
+                        filter_form.index_path_without_filter(filter: "subject_ids", value: subject_id),
                         class: "app-filter__tag",
                         no_visited_state: true,
                       ) %>
@@ -173,6 +189,19 @@
             ) do %>
               <% School.distinct.pluck(:phase).each do |phase| %>
                 <%= form.govuk_check_box :phases, phase, label: { text: phase } %>
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="app-filter__option">
+            <%= form.govuk_check_boxes_fieldset(
+                  :subject_ids,
+                  legend: { text: t(".subjects"), size: "s" },
+                  small: true,
+                  multiple: true,
+                ) do %>
+              <% filter_form.subjects.each do |subject| %>
+                <%= form.govuk_check_box :subject_ids, subject.id, label: { text: subject.name } %>
               <% end %>
             <% end %>
           </div>

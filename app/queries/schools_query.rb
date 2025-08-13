@@ -6,6 +6,7 @@ class SchoolsQuery < ApplicationQuery
     scope = schools_to_show_condition(scope)
     scope = search_by_name_condition(scope)
     scope = phase_condition(scope)
+    scope = subject_condition(scope)
     scope = itt_statuses_condition(scope)
     order_condition(scope)
   end
@@ -23,6 +24,13 @@ class SchoolsQuery < ApplicationQuery
     return scope if filter_params[:phases].blank?
 
     scope.where(phase: filter_params[:phases])
+  end
+
+  def subject_condition(scope)
+    return scope if filter_params[:subject_ids].blank?
+
+    scope.where(
+      "(placement_preferences.placement_details #> '{secondary_subject_selection,subject_ids}') ?| array[:options]", options: filter_params[:subject_ids])
   end
 
   def filter_params
@@ -47,7 +55,7 @@ class SchoolsQuery < ApplicationQuery
     return scope if filter_params[:itt_statuses].blank?
 
     scope.where(placement_preferences: { appetite: filter_params[:itt_statuses] })
-    end
+  end
 
   def order_condition(scope)
     if params[:location_coordinates].present?
