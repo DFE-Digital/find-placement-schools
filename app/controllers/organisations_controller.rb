@@ -5,8 +5,19 @@ class OrganisationsController < ApplicationController
 
   def show
     @organisation = Organisation.find(params[:id])
+    if @organisation.is_a?(School)
+      @organisation = @organisation.decorate
+      @placement_preference = @organisation
+        .placement_preference_for(academic_year: AcademicYear.next)
+        .decorate
+      @placement_details = @placement_preference.placement_details
+    end
 
-    render locals: { organisation: @organisation }
+    render locals: {
+      organisation: @organisation,
+      placement_preference: @placement_preference,
+      placement_details: @placement_details
+    }
   end
 
   def index

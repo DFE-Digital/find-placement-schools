@@ -1,0 +1,143 @@
+<%= govuk_summary_list(actions: false) do |summary_list| %>
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".organisation_name")) %>
+    <% row.with_value(text: organisation.name) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".ukprn")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.ukprn)) %>
+  <% end %>
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".urn")) %>
+    <% row.with_value(text: organisation.urn) %>
+  <% end %>
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".telephone_number")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.telephone)) %>
+  <% end %>
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".website")) %>
+    <% if organisation.website.present? %>
+      <% row.with_value do %>
+        <%= govuk_link_to(organisation.website,
+                          organisation.website,
+                          new_tab: true) %>
+      <% end %>
+    <% else %>
+      <% row.with_value(text: t(".unknown"), classes: "govuk-hint") %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<h2 class="govuk-heading-m"><%= t(".additional_details") %></h2>
+
+<%= govuk_summary_list(actions: false) do |summary_list| %>
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".district_admin_name")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.district_admin_name)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".district_admin_code")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.district_admin_code)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".establishment_group")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.group)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".local_authority_name")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.local_authority_name)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".local_authority_code")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.local_authority_code)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".phase_of_education")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.phase)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".gender")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.gender)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".age_range")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.age_range)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".religious_character")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.religious_character)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".admissions_policy")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.admissions_policy)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".urban_or_rural")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.urban_or_rural)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".school_capacity")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.school_capacity)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".number_of_pupils")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.total_pupils)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".number_of_boys")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.total_boys)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".number_of_girls")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.total_girls)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".percent_free_school_meals")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.percentage_free_school_meals_percentage)) %>
+  <% end %>
+<% end %>
+
+<h2 class="govuk-heading-m"><%= t(".send") %></h2>
+
+<%= govuk_summary_list(actions: false) do |summary_list| %>
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".special_classes")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.special_classes)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".send_provision")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.send_provision)) %>
+  <% end %>
+<% end %>
+
+<h2 class="govuk-heading-m"><%= t(".ofsted") %></h2>
+
+<%= govuk_summary_list(actions: false) do |summary_list| %>
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".rating")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.rating)) %>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".last_inspection_date")) %>
+    <% row.with_value(**value_or_unknown(value: organisation.formatted_inspection_date)) %>
+  <% end %>
+<% end %>
