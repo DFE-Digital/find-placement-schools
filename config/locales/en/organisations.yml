@@ -15,15 +15,55 @@ en:
         all: All schools
       powered_by_google: Powered by Google
     show:
-      title: Organisation details
+      title: Organisation details - %{organisation_name}
+      organisation_details: Organisation details
+      location: Location
+      placement_preferences: Placement preferences
+    provider_details:
       organisation_name: Organisation name
       urn: Unique reference number (URN)
       ukprn: UK provider reference number (UKPRN)
       website: Website
       telephone_number: Telephone number
       email: Email
-      address: Address
       unknown: Unknown
+    school_details:
+      organisation_name: Organisation name
+      urn: Unique reference number (URN)
+      ukprn: UK provider reference number (UKPRN)
+      website: Website
+      telephone_number: Telephone number
+      email: Email
+      unknown: Unknown
+      additional_details: Additional details
+      district_admin_name: District administrative name
+      district_admin_code: District administrative code
+      establishment_group: Establishment group
+      local_authority_name: Local authority name
+      local_authority_code: Local authority code
+      phase_of_education: Phase of education
+      gender: Gender
+      age_range: Age range
+      religious_character: Religious character
+      admissions_policy: Admissions policy
+      urban_or_rural: Urban or rural
+      school_capacity: School capacity
+      number_of_pupils: Number of pupils
+      number_of_boys: Number of boys
+      number_of_girls: Number of girls
+      percent_free_school_meals: Percentage free school meals
+      send: Special educational needs and disabilities (SEND)
+      special_classes: Special classes
+      send_provision: SEND provision
+      ofsted: Ofsted
+      rating: Rating
+      last_inspection_date: Last inspection date
+    location_details:
+      address: Address
+    placement_preferences:
+      primary_placements: Primary placements
+      secondary_placements: Secondary placements
+      send_placements: SEND placements
     index:
       title: Find placements
       schools_found:

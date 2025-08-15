@@ -14,6 +14,7 @@ class SchoolDecorator < ApplicationDecorator
   end
 
   def percentage_free_school_meals_percentage
+    return "Unknown" if percentage_free_school_meals.blank?
     "#{percentage_free_school_meals}%" if percentage_free_school_meals.present?
   end
 
