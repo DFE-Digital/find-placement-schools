@@ -20,3 +20,12 @@
       )),
   ) %>
 </p>
+
+<% if placement_details.dig("school_contact", "email_address").present? %>
+  <h3 class="govuk-heading-s">
+    <%= t(".placement_contact") %>
+  </h3>
+
+  <%= render "placement_preferences/placement_details/school_contact_details",
+             placement_details: placement_details, action_link: nil %>
+<% end %>

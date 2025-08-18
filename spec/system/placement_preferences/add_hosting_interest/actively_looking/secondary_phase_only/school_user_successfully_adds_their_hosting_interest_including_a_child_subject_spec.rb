@@ -265,5 +265,10 @@ RSpec.describe "School user successfully adds their hosting interest, including 
 
     expect(page).to have_h3("Secondary placements")
     expect(page).to have_summary_list_row("Subject", "English Science")
+
+    expect(page).to have_h3("Placement contact")
+    expect(page).to have_summary_list_row("First name", "Joe")
+    expect(page).to have_summary_list_row("Last name", "Bloggs")
+    expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
   end
 end

@@ -252,5 +252,10 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_h2("Your placements offers")
     expect(page).to have_h3("Primary placements")
     expect(page).to have_summary_list_row("Year group", "Year 1 Year 5")
+
+    expect(page).to have_h3("Placement contact")
+    expect(page).to have_summary_list_row("First name", "Joe")
+    expect(page).to have_summary_list_row("Last name", "Bloggs")
+    expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
   end
 end

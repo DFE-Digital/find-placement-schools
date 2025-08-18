@@ -1,0 +1,17 @@
+<%# locals: { placement_details: nil, action_link: nil } -%>
+<%= govuk_summary_list(html_attributes: { id: "school_contact" }, actions: action_link.present?) do |summary_list| %>
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".first_name")) %>
+    <% row.with_value(**value_or_unknown(value: placement_details.dig("school_contact", "first_name"))) %>>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".last_name")) %>
+    <% row.with_value(**value_or_unknown(value: placement_details.dig("school_contact", "last_name"))) %>>
+  <% end %>
+
+  <% summary_list.with_row do |row| %>
+    <% row.with_key(text: t(".email_address")) %>
+    <% row.with_value(text: placement_details.dig("school_contact", "email_address")) %>>
+  <% end %>
+<% end %>
