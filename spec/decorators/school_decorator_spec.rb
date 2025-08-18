@@ -69,7 +69,7 @@ RSpec.describe SchoolDecorator do
       it "returns nil" do
         school = build(:school, percentage_free_school_meals: nil)
 
-        expect(school.decorate.percentage_free_school_meals_percentage).to be_nil
+        expect(school.decorate.percentage_free_school_meals_percentage).to eq("Unknown")
       end
     end
   end
