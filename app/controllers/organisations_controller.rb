@@ -48,6 +48,7 @@ class OrganisationsController < ApplicationController
   def filter_params
     params.fetch(:filters, {}).permit(
       :search_location,
+      :search_distance,
       :search_by_name,
       :schools_to_show,
       itt_statuses: [],

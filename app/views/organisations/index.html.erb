@@ -1,4 +1,7 @@
-<%= content_for :page_title, t(".title") %>
+<% content_for :page_title, title_with_error_prefix(
+  t(".title"),
+  error: filter_form.errors.any?,
+) %>
 <div class="govuk-width-container">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-third">
