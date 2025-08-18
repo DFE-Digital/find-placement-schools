@@ -9,8 +9,8 @@ class OrganisationsController < ApplicationController
       @organisation = @organisation.decorate
       @placement_preference = @organisation
         .placement_preference_for(academic_year: AcademicYear.next)
-        .decorate
-      @placement_details = @placement_preference.placement_details
+        &.decorate
+      @placement_details = @placement_preference.placement_details if @placement_preference.present?
     end
 
     render locals: {

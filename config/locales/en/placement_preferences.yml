@@ -14,6 +14,7 @@ en:
       if_you_would_like_to_host_placements:
         If you would like to host placements this year, %{link} to let providers know you’re interested.
       update_your_placement_preferences: update your placement preferences
+      placement_contact: Placement contact
     placement_details:
       primary_placements_list:
         year_group: Year group
@@ -33,6 +34,10 @@ en:
         unknown: I don’t know
         not_entered: Not entered
         change: Change
+      school_contact_details:
+        first_name: First name
+        last_name: Last name
+        email_address: Email address
     actively_looking_preferences:
       panel_title: Placement information added
       panel_text: Providers can see that you have placements available
@@ -45,6 +50,7 @@ en:
       primary_placements: Primary placements
       secondary_placements: Secondary placements
       send_placements: SEND placements
+      placement_contact: Placement contact
       manage_your_placements: Manage your placements
       you_can_edit_placements: "%{link} to change or remove information."
       edit_your_placements: Edit your placements
@@ -70,3 +76,4 @@ en:
       potential_primary_placements: Potential primary school placements
       potential_secondary_placements: Potential secondary school placements
       potential_send_placements: Potential SEND placements
+      placement_contact: Placement contact
