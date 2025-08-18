@@ -2,6 +2,7 @@ class Organisations::FilterForm < ApplicationForm
   include ActiveModel::Attributes
 
   attribute :search_location, default: nil
+  attribute :search_distance, default: nil
   attribute :search_by_name, default: nil
   attribute :phases, default: []
   attribute :subject_ids, default: []
@@ -12,6 +13,7 @@ class Organisations::FilterForm < ApplicationForm
     params.each_value { |v| v.compact_blank! if v.is_a?(Array) }
 
     super(params)
+    validate_search_distance
   end
 
   def filters_selected?
@@ -40,9 +42,16 @@ class Organisations::FilterForm < ApplicationForm
     )
   end
 
+  def validate_search_distance
+    if search_distance.to_i > 50
+      errors.add("Max search distance over 50 miles", "Max search distance exceeded, results capped to 50 miles")
+    end
+  end
+
   def query_params
     {
       search_location:,
+      search_distance:,
       search_by_name:,
       subject_ids:,
       phases:,
@@ -79,3 +88,5 @@ class Organisations::FilterForm < ApplicationForm
     @compacted_attributes ||= attributes.compact_blank
   end
 end
+
+class InvalidSearchDistanceError < StandardError; end
