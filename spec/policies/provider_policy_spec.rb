@@ -6,7 +6,7 @@ RSpec.describe ProviderPolicy do
   let(:provider) { create(:provider) }
   let(:user) { create(:user, organisations:, selected_organisation:) }
   let(:selected_organisation) { nil }
-  let(:organisations) { [provider] }
+  let(:organisations) { [ provider ] }
 
   permissions :show? do
     context "when the selected organisation is not the provider record" do
