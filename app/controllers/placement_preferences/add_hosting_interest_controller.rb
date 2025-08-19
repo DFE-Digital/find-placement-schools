@@ -4,6 +4,8 @@ class PlacementPreferences::AddHostingInterestController < ApplicationController
   before_action :set_school
   before_action :set_wizard
 
+  before_action :authorize_placement_preference
+
   attr_reader :school
 
   def update
@@ -47,5 +49,9 @@ class PlacementPreferences::AddHostingInterestController < ApplicationController
 
   def set_school
     @school = current_organisation
+  end
+
+  def authorize_placement_preference
+    authorize PlacementPreference.new
   end
 end

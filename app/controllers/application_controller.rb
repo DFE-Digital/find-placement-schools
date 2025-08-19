@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
+  include Pundit::Authorization
 
   default_form_builder(GOVUKDesignSystemFormBuilder::FormBuilder)
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
@@ -13,7 +14,9 @@ class ApplicationController < ActionController::Base
   end
 
   def current_organisation
-    @current_organisation ||= Organisation.find_by(id: session[:organisation_id]) if session[:organisation_id]
+    return if (@current_user&.selected_organisation).blank?
+
+    @current_organisation ||= Organisation.find(@current_user.selected_organisation_id)
   end
 
   def user_signed_in?
