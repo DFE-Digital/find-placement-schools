@@ -25,10 +25,10 @@ module OrganisationRedirectable
       else
                organisations_path
       end
-      redirect_to path, flash: {success: false, heading: notice}
+      redirect_to path, flash: { success: false, heading: notice }
     else
       alert = organisation_id ? "You do not have access to this organisation." : nil
-      redirect_to change_organisation_index_path, flash: {success: false, heading: alert}
+      redirect_to change_organisation_index_path, flash: { success: false, heading: alert }
     end
   end
 end
