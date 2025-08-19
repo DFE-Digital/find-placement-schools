@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
   include Pundit::Authorization
 
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
   default_form_builder(GOVUKDesignSystemFormBuilder::FormBuilder)
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
@@ -60,5 +62,14 @@ class ApplicationController < ActionController::Base
 
   def after_sign_out_path
     sign_in_path
+  end
+
+  private
+
+  def user_not_authorized
+    flash[:heading] = "You are not authorized to perform this action."
+    flash[:success] = false
+
+    redirect_back(fallback_location: root_path)
   end
 end
