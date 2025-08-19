@@ -3,7 +3,8 @@ module OrganisationRedirectable
 
   def redirect_to_organisation(user, organisation_id = nil)
     if user.admin?
-      redirect_to admin_dashboard_index_path, notice: "Signed in as #{user.first_name} #{user.last_name}"
+      redirect_to admin_dashboard_index_path,
+                  flash: { heading: "Signed in as #{user.first_name} #{user.last_name}", success: false }
       return
     end
 
@@ -24,10 +25,10 @@ module OrganisationRedirectable
       else
                organisations_path
       end
-      redirect_to path, notice:
+      redirect_to path, flash: {success: false, heading: notice}
     else
       alert = organisation_id ? "You do not have access to this organisation." : nil
-      redirect_to change_organisation_index_path, alert:
+      redirect_to change_organisation_index_path, flash: {success: false, heading: alert}
     end
   end
 end

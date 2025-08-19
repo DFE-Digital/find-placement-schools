@@ -68,7 +68,7 @@ RSpec.describe "Multi org user changes organisation", type: :system do
     expect(page).to have_title("Find placements")
     expect(page).to have_link("Order of the Phoenix (change)", href: "/change_organisation")
     expect(service_navigation).to have_current_item("Find placements")
-    expect(page).to have_success_banner("You have changed your organisation to Order of the Phoenix")
+    expect(page).to have_important_banner("You have changed your organisation to Order of the Phoenix")
     expect(page).to have_h1("Find placements")
   end
 
