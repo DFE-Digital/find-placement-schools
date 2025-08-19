@@ -5,6 +5,8 @@ class OrganisationsController < ApplicationController
 
   def show
     @organisation = Organisation.find(params[:id])
+    authorize @organisation
+
     if @organisation.is_a?(School)
       @organisation = @organisation.decorate
       @placement_preference = @organisation
