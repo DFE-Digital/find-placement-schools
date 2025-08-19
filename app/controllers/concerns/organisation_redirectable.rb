@@ -20,11 +20,11 @@ module OrganisationRedirectable
 
       path = if organisation.is_a?(School) && organisation.placement_preferences.blank?
                new_add_hosting_interest_placement_preferences_path(organisation)
-             elsif organisation.is_a?(School)
+      elsif organisation.is_a?(School)
                placement_preferences_path
-             else
+      else
                organisations_path
-             end
+      end
       redirect_to path, notice:
     else
       alert = organisation_id ? "You do not have access to this organisation." : nil
