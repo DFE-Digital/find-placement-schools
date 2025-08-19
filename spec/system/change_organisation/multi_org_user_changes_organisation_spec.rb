@@ -6,7 +6,7 @@ RSpec.describe "Multi org user changes organisation", type: :system do
     then_i_see_the_change_organisation_page
 
     when_i_select_hogwarts
-    then_i_see_the_placement_preferences_page_for_hogwarts
+    then_i_see_the_placement_preferences_form_page
 
     when_i_click_on_hogwarts_change_organisation_link
     then_i_see_the_change_organisation_page
@@ -18,6 +18,8 @@ RSpec.describe "Multi org user changes organisation", type: :system do
   private
 
   def given_i_am_signed_in
+    @next_academic_year = create(:academic_year, :next)
+    @next_academic_year_name = @next_academic_year.name
     @hogwarts = build(:school, name: "Hogwarts")
     @order_of_the_phoenix = build(:provider, name: "Order of the Phoenix")
 
@@ -39,13 +41,19 @@ RSpec.describe "Multi org user changes organisation", type: :system do
     click_link "Change Hogwarts"
   end
 
-  def then_i_see_the_placement_preferences_page_for_hogwarts
-    expect(page).to have_title("Placement preferences")
-    expect(page).to have_link("Hogwarts (change)", href: "/change_organisation")
-    expect(service_navigation).to have_current_item("Placement preferences")
-    expect(page).to have_success_banner("You have changed your organisation to Hogwarts")
-    expect(page).to have_caption("Hogwarts")
-    expect(page).to have_h1("Placement preferences")
+  def then_i_see_the_placement_preferences_form_page
+    expect(page).to have_title(
+                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+                      )
+    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_element(
+                      :legend,
+                      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+                      class: "govuk-fieldset__legend",
+                      )
+    expect(page).to have_field("Yes - I can offer placements", type: :radio)
+    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
+    expect(page).to have_field("No - I can’t offer placements", type: :radio)
   end
 
   def when_i_click_on_hogwarts_change_organisation_link

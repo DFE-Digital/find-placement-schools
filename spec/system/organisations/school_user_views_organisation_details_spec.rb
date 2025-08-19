@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe "School user views organisation details", type: :system do
   scenario do
     given_i_am_signed_in
-    then_i_see_the_placement_preferences_page
+    then_i_see_the_placement_preferences_form_page
 
     when_i_navigate_to_organisation_details
     then_i_see_the_organisation_details_page
@@ -13,6 +13,9 @@ RSpec.describe "School user views organisation details", type: :system do
   private
 
   def given_i_am_signed_in
+    @next_academic_year = create(:academic_year, :next)
+    @next_academic_year_name = @next_academic_year.name
+
     @school = build(
       :school,
       name: "Hogwarts",
@@ -25,11 +28,19 @@ RSpec.describe "School user views organisation details", type: :system do
     sign_in_user(organisations: [ @school ])
   end
 
-  def then_i_see_the_placement_preferences_page
-    expect(page).to have_title("Placement preferences")
-    expect(service_navigation).to have_current_item("Placement preferences")
-    expect(page).to have_caption("Hogwarts")
-    expect(page).to have_h1("Placement preferences")
+  def then_i_see_the_placement_preferences_form_page
+    expect(page).to have_title(
+                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+                      )
+    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_element(
+                      :legend,
+                      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+                      class: "govuk-fieldset__legend",
+                      )
+    expect(page).to have_field("Yes - I can offer placements", type: :radio)
+    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
+    expect(page).to have_field("No - I can’t offer placements", type: :radio)
   end
 
   def when_i_navigate_to_organisation_details

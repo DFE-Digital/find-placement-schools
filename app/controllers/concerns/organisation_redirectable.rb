@@ -18,7 +18,13 @@ module OrganisationRedirectable
       session[:organisation_id] = organisation.id
       notice = organisation_id ? "You have changed your organisation to #{organisation.name}" : "Signed in as #{user.first_name} #{user.last_name}"
 
-      path = organisation.is_a?(School) ? placement_preferences_path : organisations_path
+      path = if organisation.is_a?(School) && organisation.placement_preferences.blank?
+               new_add_hosting_interest_placement_preferences_path(organisation)
+             elsif organisation.is_a?(School)
+               placement_preferences_path
+             else
+               organisations_path
+             end
       redirect_to path, notice:
     else
       alert = organisation_id ? "You do not have access to this organisation." : nil

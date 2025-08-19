@@ -5,7 +5,34 @@
       <span class="govuk-caption-l"><%= organisation.name %></span>
       <h1 class="govuk-heading-l">Placement preferences</h1>
 
-      <p class="govuk-body">Coming soon!</p>
+      <%= govuk_button_link_to(
+            "Add placement preferences",
+            new_add_hosting_interest_placement_preferences_path(organisation)) %>
+
+      <%= govuk_table do |table| %>
+        <% table.with_caption(size: 'm', text: "Placement preferences") %>
+        <% table.with_head do |header| %>
+          <% header.with_row do |row| %>
+            <% row.with_cell(text: "Academic year") %>
+            <% row.with_cell(text: "Status") %>
+          <% end %>
+        <% end %>
+
+        <% table.with_body do |body| %>
+          <% placement_preferences.each do |placement_preference| %>
+            <% body.with_row do |row| %>
+              <% row.with_cell do %>
+                <%= govuk_link_to(placement_preference.academic_year.name,
+                  placement_preference_path(placement_preference),
+                                  no_visited_state: true) %>
+              <% end %>
+              <% row.with_cell do %>
+                <% render InterestTagComponent.new(school: organisation, academic_year: placement_preference.academic_year) %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>
