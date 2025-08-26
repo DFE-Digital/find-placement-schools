@@ -42,3 +42,11 @@ en:
             child_subject_ids: 
               blank: Please select a subject
               inclusion: Please select a subject
+        urgent_placement_broadcast_wizard/location_search_step:
+          attributes:
+            location:
+              blank: Please enter a location
+            radius:
+              blank: Please enter a radius
+              greater_than_or_equal_to: Radius must be greater than 0
+              not_an_integer: Enter whole numbers only

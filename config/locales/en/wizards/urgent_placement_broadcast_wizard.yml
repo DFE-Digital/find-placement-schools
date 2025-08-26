@@ -1,0 +1,27 @@
+en:
+  wizards:
+    urgent_placement_broadcast_wizard:
+      location_search_step:
+        caption: Find urgent placements
+        title: Location search
+        location: Location
+        location_hint: Enter the name or postcode of the location you wish to search
+        radius: Radius
+        radius_hint: Enter the radius of the location you want to search
+        miles: miles
+        continue: Continue
+      school_results_step:
+        caption: Find urgent placements
+        title:
+          zero: No school results
+          one: "%{count} school result"
+          other: "%{count} school results"
+        schools_found_near_location:
+          zero: There are no schools within %{radius} miles of %{location}, which are open to hosting ITT placements.
+          one: There is %{count} school within %{radius} miles of %{location}, which are open to hosting ITT placements.
+          other: There are %{count} schools within %{radius} miles of %{location}, which are open to hosting ITT placements.
+        schools_will_be_notified:
+          These schools will be notified on %{date}, that you are urgently trying to find a placement for an ITT trainee.
+        notify_schools: Notify schools
+        showing_all_schools: Showing all schools
+        showing_the_first_25_schools: Showing the first 25 schools

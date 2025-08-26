@@ -35,7 +35,14 @@ Rails.application.routes.draw do
 
   get "/.well-known/appspecific/com.chrome.devtools.json", to: proc { [ 204, {}, [ "" ] ] }
 
-  resources :organisations, only: %i[show index]
+  resources :organisations, only: %i[show index] do
+    collection do
+      get "urgent_placements", to: "organisations/urgent_placements_broadcast#new", as: :new_urgent_placements
+      get "urgent_placements/:state_key/:step", to: "organisations/urgent_placements_broadcast#edit", as: :urgent_placements
+      put "urgent_placements/:state_key/:step", to: "organisations/urgent_placements_broadcast#update"
+    end
+  end
+
   resources :placement_preferences, only: %i[index show] do
     collection do
       get "new", to: "placement_preferences/add_hosting_interest#new", as: :new_add_hosting_interest

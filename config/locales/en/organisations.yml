@@ -84,3 +84,9 @@ en:
       distance: Distance
       travel_time: Travel time
       no_results: There are no schools that match your selection. Try searching again, or removing one or more filters.
+    urgent_placements_broadcast:
+      update:
+        heading: Placements requested
+        body:
+          one: On %{date} an email will be sent to the school found within %{radius} miles of %{location}
+          other: On %{date} an email will be sent to each of the %{count} schools found within %{radius} miles of %{location}

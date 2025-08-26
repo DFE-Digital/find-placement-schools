@@ -5,7 +5,8 @@ class School < Organisation
 
   validates :urn, presence: true, uniqueness: true
 
-  has_many :placement_preferences, foreign_key: :organisation_id
+  has_many :placement_preferences, foreign_key: :organisation_id, dependent: :destroy
+  has_many :placement_requests, foreign_key: :school_id, dependent: :destroy
 
   def placement_preference_for(academic_year:)
     placement_preferences

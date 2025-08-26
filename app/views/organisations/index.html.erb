@@ -36,6 +36,16 @@
           ) %>
         <% end %>
 
+        <div id="help-find-placement">
+          <%= govuk_inset_text do %>
+            <p class="govuk-body">
+              If you require urgent assistance in finding a placement school to host an ITT trainee, please click "Help find placements".
+            </p>
+
+            <%= govuk_button_link_to "Help find placements", new_urgent_placements_organisations_path %>
+          <% end %>
+        </div>
+
         <ul class="app-search-results">
           <% schools.each do |school| %>
             <li class="app-search-results__item">
