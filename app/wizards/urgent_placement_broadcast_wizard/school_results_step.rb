@@ -4,7 +4,7 @@ class UrgentPlacementBroadcastWizard::SchoolResultsStep < BaseStep
   def schools
     @schools ||= SchoolsQuery.call(params: {
       location_coordinates:,
-      radius:,
+      radius:
     })
   end
 
@@ -17,7 +17,7 @@ class UrgentPlacementBroadcastWizard::SchoolResultsStep < BaseStep
       location_coordinates
     else
       school = schools.first
-      [school.latitude, school.longitude]
+      [ school.latitude, school.longitude ]
     end
   end
 

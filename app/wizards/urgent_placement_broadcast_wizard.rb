@@ -1,5 +1,4 @@
 class UrgentPlacementBroadcastWizard < BaseWizard
-
   attr_reader :provider, :current_user
   def initialize(current_user:, provider:, params:, state:, current_step: nil)
     @provider = provider
@@ -19,7 +18,15 @@ class UrgentPlacementBroadcastWizard < BaseWizard
     ApplicationRecord.transaction do
       schools = steps.fetch(:school_results).schools
       schools.each do |school|
-        PlacementRequest.create!(school: school, provider: provider, requested_by: current_user)
+        next if PlacementRequest
+          .sent.where(school: school, provider: provider)
+          .where("sent_at > ?", Time.now - 1.week).present?
+
+        PlacementRequest.find_or_create_by!(
+          school: school, provider: provider, sent_at: nil
+        ) do |request|
+          request.requested_by = current_user
+        end
       end
     end
   end

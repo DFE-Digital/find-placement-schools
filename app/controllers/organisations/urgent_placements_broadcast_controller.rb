@@ -23,7 +23,7 @@ class Organisations::UrgentPlacementsBroadcastController < ApplicationController
             Date.current.beginning_of_week(:friday) + 1.week,
             format: :long_with_day,
           ),
-        ),
+        )
       }
       @wizard.reset_state
 
