@@ -39,10 +39,10 @@
         <div id="help-find-placement">
           <%= govuk_inset_text do %>
             <p class="govuk-body">
-              If you require urgent assistance in finding a placement school to host an ITT trainee, please click "Help find placements".
+              <%= t(".if_your_require_urgent_assistance") %>
             </p>
 
-            <%= govuk_button_link_to "Help find placements", new_urgent_placements_organisations_path %>
+            <%= govuk_button_link_to t(".help_find_placements"), new_urgent_placements_organisations_path %>
           <% end %>
         </div>
 

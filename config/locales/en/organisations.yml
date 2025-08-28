@@ -84,6 +84,9 @@ en:
       distance: Distance
       travel_time: Travel time
       no_results: There are no schools that match your selection. Try searching again, or removing one or more filters.
+      if_your_require_urgent_assistance:
+        If you require urgent assistance in finding a placement school to host an ITT trainee, please click "Help find placements".
+      help_find_placements: Help find placements
     urgent_placements_broadcast:
       update:
         heading: Placements requested
