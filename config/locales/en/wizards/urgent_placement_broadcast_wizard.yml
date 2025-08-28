@@ -2,7 +2,8 @@ en:
   wizards:
     urgent_placement_broadcast_wizard:
       location_search_step:
-        caption: Find urgent placements
+        page_title: Location search - Help find placements
+        caption: Help find placements
         title: Location search
         location: Location
         location_hint: Enter the name or postcode of the location you wish to search
@@ -11,7 +12,11 @@ en:
         miles: miles
         continue: Continue
       school_results_step:
-        caption: Find urgent placements
+        page_title:
+          zero: No school results - Help find placements
+          one: "%{count} school result - Help find placements"
+          other: "%{count} school results - Help find placements"
+        caption: Help find placements
         title:
           zero: No school results
           one: "%{count} school result"

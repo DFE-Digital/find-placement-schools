@@ -1,5 +1,5 @@
 <% content_for :page_title, title_with_error_prefix(
-  t(".title"),
+  t(".page_title"),
   error: current_step.errors.any?,
 ) %>
 
@@ -8,7 +8,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-
+      <span class="govuk-caption-l"><%= t(".caption") %></span>
       <h1 class="govuk-heading-l"><%= t(".title") %></h1>
 
       <%= f.govuk_text_field :location,

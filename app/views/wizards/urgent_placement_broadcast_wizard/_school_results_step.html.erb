@@ -1,5 +1,5 @@
 <% content_for :page_title, title_with_error_prefix(
-  t(".title", count: current_step.schools.size),
+  t(".page_title", count: current_step.schools.size),
   error: current_step.errors.any?,
   ) %>
 
@@ -9,6 +9,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
+      <span class="govuk-caption-l"><%= t(".caption") %></span>
       <h1 class="govuk-heading-l"><%= t(".title", count: current_step.schools.size) %></h1>
 
       <p class="govuk-body">
