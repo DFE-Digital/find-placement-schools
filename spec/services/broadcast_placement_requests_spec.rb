@@ -36,11 +36,10 @@ describe BroadcastPlacementRequests do
       allow(SchoolMailer).to receive(:placement_request_notification)
         .with(school)
         .and_return(instance_double(ActionMailer::MessageDelivery, deliver_later: true))
-
-      described_class.call
     end
 
     it "sends email notifications to each school with not sent placement requests" do
+      expect { described_class.call }.to change(PlacementRequest.sent, :count).from(0).to(5)
       expect(SchoolMailer).to have_received(:placement_request_notification).with(school).once
     end
   end

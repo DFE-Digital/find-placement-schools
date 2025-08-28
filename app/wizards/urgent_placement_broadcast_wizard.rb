@@ -20,7 +20,7 @@ class UrgentPlacementBroadcastWizard < BaseWizard
       schools.each do |school|
         next if PlacementRequest
           .sent.where(school: school, provider: provider)
-          .where("sent_at > ?", Time.now - 1.week).present?
+          .where("sent_at > ?", 1.week.ago).present?
 
         PlacementRequest.find_or_create_by!(
           school: school, provider: provider, sent_at: nil

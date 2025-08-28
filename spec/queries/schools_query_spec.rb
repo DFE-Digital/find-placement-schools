@@ -95,6 +95,17 @@ describe SchoolsQuery do
         expect(query.call).to eq([ query_school, close_query_school, far_query_school ])
         expect(query.call).not_to include(non_query_school)
       end
+
+      context "when filtering by radius" do
+        let(:params) do
+          { location_coordinates:, radius: 1, filters: { schools_to_show: "all" } }
+        end
+
+        it "returns the filtered schools within a 10-mile radius in order of distance" do
+          expect(query.call).to eq([ query_school, close_query_school ])
+          expect(query.call).not_to include(far_query_school, non_query_school)
+        end
+      end
     end
 
     context "when filtering schools by placement preferences" do
