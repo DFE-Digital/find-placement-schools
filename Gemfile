@@ -99,7 +99,7 @@ group :test do
   gem "shoulda-matchers"
   gem "webmock", "~> 3.25"
   gem "timecop", "~> 0.9.10"
-  gem "undercover"
+  gem "undercover", "~> 0.7.4"
   gem "simplecov", require: false
   gem "simplecov-lcov", require: false
 end
