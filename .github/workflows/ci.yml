@@ -94,7 +94,7 @@ jobs:
           path: coverage/
 
       - name: Detect missing code coverage
-        run: bundle exec undercover
+        run: bundle exec undercover --compare origin/main
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
