@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "Provider user does not enter a whole number radius", type: :system do
+  before { Flipper.enable(:provider_help_find_placements_broadcast) }
+
+  after { Flipper.disable(:provider_help_find_placements_broadcast) }
+
   scenario do
     given_schools_exist_with_placement_preferences
     when_i_am_signed_in

@@ -2,6 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Provider user sends out placement requests", type: :system do
   before do
+    Flipper.enable(:provider_help_find_placements_broadcast)
+
     stub_maps_request
     allow(Geocoder::Search).to receive(:call).and_return(
       OpenStruct.new(coordinates: [ 14.350231, 51.648438 ])
@@ -9,7 +11,11 @@ RSpec.describe "Provider user sends out placement requests", type: :system do
     Timecop.travel(Date.parse("1 September 2025"))
   end
 
-  after { Timecop.return }
+  after do
+    Flipper.disable(:provider_help_find_placements_broadcast)
+
+    Timecop.return
+  end
 
   scenario do
     given_schools_exist_with_placement_preferences
