@@ -94,11 +94,7 @@ jobs:
           path: coverage/
 
       - name: Detect missing code coverage
-        run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-          bundle exec rake test
-          bundle exec undercover --compare origin/main
+        run: bundle exec undercover --compare origin/main
 
       - name: Keep screenshots from failed system tests
         uses: actions/upload-artifact@v4
