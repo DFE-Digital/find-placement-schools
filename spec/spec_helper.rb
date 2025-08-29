@@ -14,6 +14,32 @@
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require "pundit/rspec"
+require "simplecov"
+require "simplecov-html"
+require "simplecov-lcov"
+
+SimpleCov::Formatter::LcovFormatter.config.report_with_single_file = true
+
+SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::LcovFormatter,
+])
+
+SimpleCov.start "rails" do
+  enable_coverage :branch
+
+  # Ignore test coverage for these files
+  add_filter "lib/tasks/auto_annotate_models.rake"
+
+  add_group "Components", "app/components"
+  add_group "Decorators", "app/decorators"
+  add_group "Forms", "app/forms"
+  add_group "Policies", "app/policies"
+  add_group "Queries", "app/queries"
+  add_group "Services", "app/services"
+  add_group "Validators", "app/validators"
+  add_group "Wizards", "app/wizards"
+end
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
