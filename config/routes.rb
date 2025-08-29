@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  mount MissionControl::Jobs::Engine, at: "/jobs"
+  mount MissionControl::Jobs::Engine, at: "/jobs", constraints: SupportUserConstraint.new
+  mount Flipper::UI.app(Flipper) => "/flipper", constraints: SupportUserConstraint.new
 
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
