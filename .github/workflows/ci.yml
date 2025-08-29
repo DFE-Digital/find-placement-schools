@@ -95,7 +95,7 @@ jobs:
 
       - name: Detect missing code coverage
         run: |
-          gem list -i "undercover"
+          bundle install
           bundle exec undercover --compare origin/main
 
       - name: Keep screenshots from failed system tests
