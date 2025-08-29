@@ -2,6 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Sessions", type: :request do
   describe "GET /auth/dfe/callback" do
+    after { OmniAuth.config.mock_auth[:dfe] = nil }
+
     it "signs the user in and redirects to root" do
       user = create(:user, dfe_sign_in_uid: "123", email_address: "user@example.com")
 
@@ -19,7 +21,6 @@ RSpec.describe "Sessions", type: :request do
         }
       }
 
-      OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:dfe] = OmniAuth::AuthHash.new(omniauth_hash)
 
       get "/auth/dfe/callback"
@@ -32,7 +33,6 @@ RSpec.describe "Sessions", type: :request do
       expect(user.reload.last_signed_in_at).not_to be_nil
     ensure
       OmniAuth.config.mock_auth[:dfe] = nil
-      OmniAuth.config.test_mode = false
     end
   end
 
