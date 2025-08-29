@@ -98,6 +98,9 @@ jobs:
           name: code-coverage
           path: coverage/
 
+      - name: Run bundle install
+        run: bundle install
+
       - name: Detect missing code coverage
         run: bundle exec undercover --compare origin/main
 
