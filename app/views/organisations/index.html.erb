@@ -36,6 +36,18 @@
           ) %>
         <% end %>
 
+        <% if Flipper.enabled?(:provider_help_find_placements_broadcast) %>
+          <div id="help-find-placement">
+            <%= govuk_inset_text do %>
+              <p class="govuk-body">
+                <%= t(".if_your_require_urgent_assistance") %>
+              </p>
+
+              <%= govuk_button_link_to t(".help_find_placements"), new_urgent_placements_organisations_path %>
+            <% end %>
+          </div>
+        <% end %>
+
         <ul class="app-search-results">
           <% schools.each do |school| %>
             <li class="app-search-results__item">

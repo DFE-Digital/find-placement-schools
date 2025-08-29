@@ -1,0 +1,27 @@
+<% content_for :page_title, title_with_error_prefix(
+  t(".page_title"),
+  error: current_step.errors.any?,
+) %>
+
+<%= form_for(current_step, url: current_step_path, method: :put) do |f| %>
+  <%= f.govuk_error_summary %>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l"><%= t(".caption") %></span>
+      <h1 class="govuk-heading-l"><%= t(".title") %></h1>
+
+      <%= f.govuk_text_field :location,
+        label: { text: t(".location"), size: "s" },
+        hint: { text: t(".location_hint") } %>
+
+      <%= f.govuk_number_field :radius,
+        label: { text: t(".radius"), size: "s" },
+        hint: { text: t(".radius_hint") },
+        width: 4,
+        suffix_text: t(".miles") %>
+
+      <%= f.govuk_submit t(".continue") %>
+    </div>
+  </div>
+<% end %>

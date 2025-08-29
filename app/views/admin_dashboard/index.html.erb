@@ -3,8 +3,10 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">Admin dashboard</h1>
-
-      <%= govuk_link_to("Mission control job dashboard", mission_control_jobs_path) %>
+      <%= govuk_list do %>
+        <li><%= govuk_link_to("Mission control job dashboard", mission_control_jobs_path) %></li>
+        <li><%= govuk_link_to("Feature flag dashboard", "/flipper") %></li>
+      <% end %>
     </div>
   </div>
 </div>

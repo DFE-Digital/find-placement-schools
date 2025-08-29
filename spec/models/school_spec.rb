@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe School, type: :model do
   describe "associations" do
-    it { is_expected.to have_many(:placement_preferences) }
+    it { is_expected.to have_many(:placement_preferences).dependent(:destroy) }
+    it { is_expected.to have_many(:placement_requests).dependent(:destroy) }
   end
 
   describe "validations" do

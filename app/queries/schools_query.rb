@@ -38,9 +38,11 @@ class SchoolsQuery < ApplicationQuery
   end
 
   def organisation_ids_near_location(location_coordinates)
+    distance = params[:radius] || MAX_LOCATION_DISTANCE
+
     Organisation.near(
       location_coordinates,
-      MAX_LOCATION_DISTANCE,
+      distance,
       order: :distance,
     ).map(&:id)
   end

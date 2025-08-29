@@ -1,0 +1,8 @@
+Hello <%= "#{@placement_details.dig("school_contact", "first_name")} #{@placement_details.dig("school_contact", "last_name")}" %>
+
+The following providers require urgent assistance finding placements to host ITT trainees.
+If you are able to host a placement please contact the provider as soon as possible.
+
+<% @placements_requests.each do |request| %>
+  - <%= request.provider.name %> (<%= request.requested_by.email_address %>)
+<% end %>

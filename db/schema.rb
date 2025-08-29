@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_19_100407) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_29_103656) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -27,6 +27,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_19_100407) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_academic_years_on_name", unique: true
+  end
+
+  create_table "flipper_features", force: :cascade do |t|
+    t.string "key", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_flipper_features_on_key", unique: true
+  end
+
+  create_table "flipper_gates", force: :cascade do |t|
+    t.string "feature_key", null: false
+    t.string "key", null: false
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
   end
 
   create_table "organisation_addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -109,6 +125,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_19_100407) do
     t.index ["organisation_id"], name: "index_placement_preferences_on_organisation_id"
   end
 
+  create_table "placement_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "school_id", null: false
+    t.uuid "provider_id", null: false
+    t.uuid "requested_by_id", null: false
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider_id"], name: "index_placement_requests_on_provider_id"
+    t.index ["requested_by_id"], name: "index_placement_requests_on_requested_by_id"
+    t.index ["school_id"], name: "index_placement_requests_on_school_id"
+  end
+
   create_table "placement_subjects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "code"
@@ -156,6 +184,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_19_100407) do
   add_foreign_key "organisation_contacts", "organisations"
   add_foreign_key "placement_preferences", "academic_years"
   add_foreign_key "placement_preferences", "organisations"
+  add_foreign_key "placement_requests", "organisations", column: "provider_id"
+  add_foreign_key "placement_requests", "organisations", column: "school_id"
+  add_foreign_key "placement_requests", "users", column: "requested_by_id"
   add_foreign_key "user_memberships", "organisations"
   add_foreign_key "user_memberships", "users"
 end

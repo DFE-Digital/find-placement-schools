@@ -1,0 +1,48 @@
+<% content_for :page_title, title_with_error_prefix(
+  t(".page_title", count: current_step.schools.size),
+  error: current_step.errors.any?,
+  ) %>
+
+<%= form_for(current_step, url: current_step_path, method: :put) do |f| %>
+  <%= f.govuk_error_summary %>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <span class="govuk-caption-l"><%= t(".caption") %></span>
+      <h1 class="govuk-heading-l"><%= t(".title", count: current_step.schools.size) %></h1>
+
+      <p class="govuk-body">
+        <%= t(".schools_found_near_location",
+          count: current_step.schools.size,
+          radius: current_step.radius,
+          location: current_step.location) %>
+      </p>
+
+      <% if current_step.schools.present? %>
+        <% if current_step.schools.size > 25 %>
+          <h3 class="govuk-heading-s"><%= t(".showing_the_first_25_schools") %></h3>
+        <% else %>
+          <h3 class="govuk-heading-s"><%= t(".showing_all_schools") %></h3>
+        <% end %>
+
+        <%= govuk_list(spaced: true, type: :bullet) do %>
+          <% current_step.first_25_schools.each do |school| %>
+            <li><%= school.name %> (<%= "#{school.distance_to(current_step.map_coordinates).round(1)} miles" %>)</li>
+          <% end %>
+        <% end %>
+
+        <%= render MapComponent.new(
+          organisations: current_step.first_25_schools,
+          base_longitude: current_step.map_coordinates.last,
+          base_latitude:current_step.map_coordinates.first) %>
+
+        <p class="govuk-body govuk-!-margin-top-4">
+          <%= t(".schools_will_be_notified", date: l(current_step.next_email_date, format: :long_with_day)) %>
+        </p>
+
+        <%= f.govuk_submit t(".notify_schools") %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
