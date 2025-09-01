@@ -1,0 +1,13 @@
+en:
+  user_mailer:
+    placement_preferences_notification:
+      subject: "Please update your schools placement preferences"
+      body: |-
+        %{user_name},
+
+        The following schools:
+        %{school_names}
+
+        Have no placement preferences. Please update their placement preferences.
+
+        This notification will be sent once a month.

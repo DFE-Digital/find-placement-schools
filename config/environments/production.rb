@@ -17,6 +17,9 @@ Rails.application.configure do  # Semantic logging for integration with Kibana
   # Full error reports are disabled.
   config.consider_all_requests_local = false
 
+  config.action_mailer.delivery_method = :notify
+  config.action_mailer.notify_settings = { api_key: ENV["NOTIFY_API_KEY"] }
+
   # Turn on fragment caching in view templates.
   config.action_controller.perform_caching = true
 
