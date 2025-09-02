@@ -53,6 +53,10 @@ gem "stimulus-rails", "~> 1.3"
 
 gem "ostruct", "~> 0.6.1"
 
+# Markdown
+gem "govuk_markdown"
+gem "redcarpet", "~> 3.6"
+
 # DfE Sign-in
 gem "omniauth"
 gem "omniauth_openid_connect"

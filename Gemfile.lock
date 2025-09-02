@@ -197,6 +197,9 @@ GEM
       activemodel (>= 6.1)
       activesupport (>= 6.1)
       html-attributes-utils (~> 1)
+    govuk_markdown (2.0.3)
+      activesupport
+      redcarpet
     hashdiff (1.2.0)
     hashie (5.0.0)
     html-attributes-utils (1.0.2)
@@ -428,6 +431,7 @@ GEM
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
+    redcarpet (3.6.1)
     regexp_parser (2.10.0)
     reline (0.6.2)
       io-console (~> 0.5)
@@ -649,6 +653,7 @@ DEPENDENCIES
   geocoder (~> 1.8)
   govuk-components
   govuk_design_system_formbuilder
+  govuk_markdown
   httparty (~> 0.23.1)
   jsbundling-rails
   kamal
@@ -665,6 +670,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   rails-controller-testing
   rails_semantic_logger
+  redcarpet (~> 3.6)
   rladr
   rspec
   rspec-rails
