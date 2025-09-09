@@ -124,6 +124,7 @@ en:
         your_contact_details: No information will be shared with providers.
         we_will_ask_you_again:
           Providers in England can see that your school is unable to offer placements for trainee teachers in %{academic_year_name}. They will not be able to see the reasons why or the placement contact.
+        academic_year: Academic year
         your_reason:
           Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.
         reason_for_not_offering: Reason for not offering
