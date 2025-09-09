@@ -206,6 +206,8 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_paragraph(
       "Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.",
     )
+
+    expect(page).to have_summary_list_row("Academic year", @next_academic_year_name)
   end
 
   def and_i_see_the_reason_not_hosting_i_entered

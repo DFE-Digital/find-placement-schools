@@ -13,6 +13,7 @@ en:
           send_placements: Placements in a SEND setting
           send: Potential placements in a SEND setting
           education_phase_list:
+            academic_year: Academic year
             phase: Phase
             unknown: I don't know
           primary_placements_list:
