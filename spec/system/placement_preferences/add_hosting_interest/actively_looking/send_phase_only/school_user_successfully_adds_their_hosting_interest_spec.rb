@@ -207,6 +207,8 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_h1("Check your answers")
 
     expect(page).to have_h2("Education phase")
+    expect(page).to have_summary_list_row("Academic year", @next_academic_year_name)
+
     expect(page).to have_summary_list_row("Phase", "Primary Secondary Send")
 
     expect(page).to have_h2("SEND placements")

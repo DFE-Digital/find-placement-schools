@@ -12,6 +12,7 @@ en:
           send_placements: SEND placements
           potential_send_placements: Potential SEND placements
           education_phase_list:
+            academic_year: Academic year
             phase: Phase
           primary_placements_list:
             year_group: Year group

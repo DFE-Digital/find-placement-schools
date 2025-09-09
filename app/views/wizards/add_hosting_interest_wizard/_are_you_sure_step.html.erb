@@ -19,6 +19,11 @@
 
       <%= govuk_summary_list(html_attributes: { id: "reason_for_not_offering" }) do |summary_list| %>
         <% summary_list.with_row do |row| %>
+          <% row.with_key(text: t(".academic_year")) %>
+          <% row.with_value(text: current_step.academic_year.name) %>
+        <% end %>
+
+        <% summary_list.with_row do |row| %>
           <% row.with_key(text: t(".reason_for_not_offering")) %>
           <% row.with_value do %>
             <%= govuk_list do %>
