@@ -5,9 +5,12 @@
       <span class="govuk-caption-l"><%= organisation.name %></span>
       <h1 class="govuk-heading-l">Placement preferences</h1>
 
-      <%= govuk_button_link_to(
-            "Add placement preferences",
-            new_add_hosting_interest_placement_preferences_path(organisation)) %>
+      <% unless organisation.placement_preference_for(academic_year: AcademicYear.current).present? &&
+                organisation.placement_preference_for(academic_year: AcademicYear.next).present? %>
+        <%= govuk_button_link_to(
+              "Add placement preferences",
+              new_add_hosting_interest_placement_preferences_path(organisation)) %>
+      <% end %>
 
       <%= govuk_table do |table| %>
         <% table.with_caption(size: 'm', text: "Placement preferences") %>

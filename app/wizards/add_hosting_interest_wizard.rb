@@ -15,6 +15,7 @@ class AddHostingInterestWizard < BaseWizard
 
   def define_steps
     # Define the wizard steps here
+    add_step(AcademicYearStep) unless placement_preference_for_current_academic_year?
     add_step(AppetiteStep)
     case appetite
     when "actively_looking"
@@ -45,7 +46,13 @@ class AddHostingInterestWizard < BaseWizard
   end
 
   def academic_year
-    @academic_year ||= AcademicYear.next
+    @academic_year ||= if placement_preference_for_current_academic_year?
+                         AcademicYear.next
+    elsif steps.fetch(:academic_year).academic_year_id.present?
+                         AcademicYear.find(steps.fetch(:academic_year).academic_year_id)
+    else
+                         AcademicYear.next
+    end
   end
 
   private
@@ -127,7 +134,7 @@ class AddHostingInterestWizard < BaseWizard
   def placement_preference
     @placement_preference ||= begin
       upcoming_interest = school.placement_preferences.for_academic_year(academic_year).last
-      upcoming_interest.presence || school.placement_preferences.build(academic_year: academic_year, created_by: current_user)
+      upcoming_interest.presence || school.placement_preferences.build(academic_year:, created_by: current_user)
     end
   end
 
@@ -153,5 +160,9 @@ class AddHostingInterestWizard < BaseWizard
 
   def appetite_interested?
     @appetite_interested ||= appetite == "interested"
+  end
+
+  def placement_preference_for_current_academic_year?
+    school.placement_preferences.for_academic_year(AcademicYear.current).exists?
   end
 end
