@@ -2,6 +2,10 @@ en:
   wizards:
     add_hosting_interest_wizard:
       unknown: I don’t know
+      academic_year_step:
+        caption: Placement preferences
+        title: For which academic year are you providing information about placements for trainee teachers?
+        continue: Continue
       appetite_step:
         caption: Placement information
         title:
