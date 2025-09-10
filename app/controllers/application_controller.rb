@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include DfE::Analytics::Requests
   include Pagy::Backend
   include Pundit::Authorization
 
