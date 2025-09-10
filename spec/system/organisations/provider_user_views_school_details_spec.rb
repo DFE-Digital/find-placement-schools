@@ -152,9 +152,9 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
     end
 
     def and_i_see_the_placement_preference_details_for_hogwarts
-      within("#placement-preferences") do
+      within("#placement-information") do
         expect(page).to have_caption("Hogwarts")
-        expect(page).to have_h1("Placement preferences")
+        expect(page).to have_h1("Placement information")
 
         expect(page).to have_h2("Primary placements")
         expect(page).to have_summary_list_row("Year group", "Reception Year 2")

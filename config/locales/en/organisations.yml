@@ -18,7 +18,7 @@ en:
       title: Organisation details - %{organisation_name}
       organisation_details: Organisation details
       location: Location
-      placement_preferences: Placement preferences
+      placement_preferences: Placement information
     provider_details:
       organisation_name: Organisation name
       urn: Unique reference number (URN)
@@ -61,6 +61,7 @@ en:
     location_details:
       address: Address
     placement_preferences:
+      title: Placement information
       primary_placements: Primary placements
       secondary_placements: Secondary placements
       send_placements: SEND placements

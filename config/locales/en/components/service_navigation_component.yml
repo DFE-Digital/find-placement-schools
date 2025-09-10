@@ -1,0 +1,6 @@
+en:
+  components:
+    service_navigation_component:
+      placement_information: Placement information
+      organisation_details: Organisation details
+      find_placements: Find placements

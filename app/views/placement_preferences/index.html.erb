@@ -1,20 +1,20 @@
-<%= content_for :page_title, "Placement preferences" %>
+<%= content_for :page_title, t(".title") %>
 <div class="govuk-width-container">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-l"><%= organisation.name %></span>
-      <h1 class="govuk-heading-l">Placement preferences</h1>
+      <h1 class="govuk-heading-l"><%= t(".title") %></h1>
 
       <%= govuk_button_link_to(
-            "Add placement preferences",
+            t(".add_placement_information"),
             new_add_hosting_interest_placement_preferences_path(organisation)) %>
 
       <%= govuk_table do |table| %>
-        <% table.with_caption(size: 'm', text: "Placement preferences") %>
+        <% table.with_caption(size: 'm', text: t(".placement_information")) %>
         <% table.with_head do |header| %>
           <% header.with_row do |row| %>
-            <% row.with_cell(text: "Academic year") %>
-            <% row.with_cell(text: "Status") %>
+            <% row.with_cell(text: t(".academic_year")) %>
+            <% row.with_cell(text: t(".status")) %>
           <% end %>
         <% end %>
 
