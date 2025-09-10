@@ -10,13 +10,13 @@ class ServiceNavigationComponent < ApplicationComponent
       when School
         [
           {
-            text: "Placement preferences",
+            text: t("components.service_navigation_component.placement_information"),
             href: helpers.placement_preferences_path,
             active: helpers.current_page?(helpers.placement_preferences_path),
             current: helpers.current_page?(helpers.placement_preferences_path)
           },
           {
-            text: "Organisation details",
+            text: t("components.service_navigation_component.organisation_details"),
             href: helpers.organisation_path(current_organisation.id),
             active: helpers.current_page?(helpers.organisation_path(current_organisation.id)),
             current: helpers.current_page?(helpers.organisation_path(current_organisation.id))
@@ -25,13 +25,13 @@ class ServiceNavigationComponent < ApplicationComponent
       when Provider
         [
           {
-            text: "Find placements",
+            text: t("components.service_navigation_component.find_placements"),
             href: helpers.organisations_path,
             active: helpers.current_page?(helpers.organisations_path),
             current: helpers.current_page?(helpers.organisations_path)
           },
           {
-            text: "Organisation details",
+            text: t("components.service_navigation_component.organisation_details"),
             href: helpers.organisation_path(current_organisation.id),
             active: helpers.current_page?(helpers.organisation_path(current_organisation.id)),
             current: helpers.current_page?(helpers.organisation_path(current_organisation.id))
