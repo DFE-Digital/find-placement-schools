@@ -1,0 +1,110 @@
+---
+shared:
+  :sessions:
+    - id
+    - session_id
+    - data
+    - created_at
+    - updated_at
+  :user_memberships:
+    - id
+    - organisation_id
+    - user_id
+    - created_at
+    - updated_at
+  :users:
+    - id
+    - first_name
+    - last_name
+    - email_address
+    - admin
+    - dfe_sign_in_uid
+    - last_signed_in_at
+    - created_at
+    - updated_at
+    - selected_organisation_id
+  :placement_subjects:
+    - id
+    - name
+    - code
+    - phase
+    - parent_subject_id
+    - created_at
+    - updated_at
+  :organisation_contacts:
+    - id
+    - organisation_id
+    - first_name
+    - last_name
+    - email_address
+    - created_at
+    - updated_at
+    - role
+    - telephone
+  :organisation_addresses:
+    - id
+    - organisation_id
+    - address_1
+    - address_2
+    - address_3
+    - town
+    - city
+    - county
+    - postcode
+    - created_at
+    - updated_at
+  :academic_years:
+    - id
+    - name
+    - starts_on
+    - ends_on
+    - created_at
+    - updated_at
+  :organisations:
+    - id
+    - name
+    - urn
+    - ukprn
+    - code
+    - longitude
+    - latitude
+    - email_address
+    - type
+    - created_at
+    - updated_at
+    - admissions_policy
+    - district_admin_code
+    - district_admin_name
+    - gender
+    - group
+    - last_inspection_date
+    - local_authority_code
+    - local_authority_name
+    - maximum_age
+    - minimum_age
+    - percentage_free_school_meals
+    - phase
+    - rating
+    - religious_character
+    - school_capacity
+    - send_provision
+    - special_classes
+    - telephone
+    - total_boys
+    - total_girls
+    - total_pupils
+    - type_of_establishment
+    - urban_or_rural
+    - website
+    - transit_travel_duration
+    - walk_travel_duration
+    - drive_travel_duration
+  :placement_preferences:
+    - id
+    - academic_year_id
+    - organisation_id
+    - created_by_id
+    - appetite
+    - placement_details
+    - created_at
+    - updated_at
