@@ -18,10 +18,10 @@ RSpec.describe "User views terms_and_conditions page", type: :system do
   end
 
   def then_i_see_the_terms_and_conditions_page
-    expect(page).to have_title("Terms and conditions for Find ITT placements - Find ITT placements")
+    expect(page).to have_title("Terms and conditions for Find placement schools - Find placement schools")
     expect(page).to have_h2("Using our website")
     expect(page).to have_h2("Information about us")
     expect(page).to have_h2("Access to the Service")
-    expect(page).to have_h2("Hyperlinking to the Find ITT placements website")
+    expect(page).to have_h2("Hyperlinking to the Find placement schools website")
   end
 end

@@ -1,4 +1,4 @@
-# Find ITT placements privacy notice
+# Find placement schools privacy notice
 
 Read the [Privacy information: education providers’ workforce, including teachers](https://www.gov.uk/government/publications/privacy-information-education-providers-workforce-including-teachers/privacy-information-education-providers-workforce-including-teachers).
 

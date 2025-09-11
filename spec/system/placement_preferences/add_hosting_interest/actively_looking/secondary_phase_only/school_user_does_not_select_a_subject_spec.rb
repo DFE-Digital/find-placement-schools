@@ -39,7 +39,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
     )
     expect(page).to have_caption("Placement preferences")
     expect(page).to have_element(
@@ -64,7 +64,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_education_phase_form_page
     expect(page).to have_title(
-      "What education phase can your placements be? - Find ITT placements",
+      "What education phase can your placements be? - Find placement schools",
     )
     expect(page).to have_caption("Placement details")
     expect(page).to have_element(
@@ -87,7 +87,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_secondary_subject_selection_form_page
     expect(page).to have_title(
-      "What secondary school subjects can you offer placements in? - Find ITT placements",
+      "What secondary school subjects can you offer placements in? - Find placement schools",
     )
     expect(page).to have_element(
       :legend,

@@ -1,6 +1,6 @@
-# Accessibility statement for Find ITT placements
+# Accessibility statement for Find placement schools
 
-This accessibility statement applies to the Find ITT placements website.
+This accessibility statement applies to the Find placement schools website.
 
 This website is run by the Department for Education. We want as many people as possible to be able to use this website. For example, that means you should be able to:
 

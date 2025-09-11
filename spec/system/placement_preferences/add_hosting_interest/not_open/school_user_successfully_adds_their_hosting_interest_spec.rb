@@ -89,7 +89,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
     )
     expect(page).to have_caption("Placement preferences")
     expect(page).to have_element(
@@ -114,7 +114,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_reason_for_not_hosting_form_page
     expect(page).to have_title(
-      "Tell us why you are not able to offer placements for trainee teachers - Find ITT placements",
+      "Tell us why you are not able to offer placements for trainee teachers - Find placement schools",
     )
     expect(page).to have_caption("Not offering placements this year")
     expect(page).to have_element(
@@ -145,7 +145,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_school_contact_form_page
     expect(page).to have_title(
-      "Who is the preferred contact for next year? - Find ITT placements",
+      "Who is the preferred contact for next year? - Find placement schools",
     )
     expect(page).to have_caption("Not offering placements this year")
     expect(page).to have_h1("Who is the preferred contact for next year?")
@@ -169,7 +169,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_are_you_sure_page
     expect(page).to have_title(
-      "Confirm and let providers know you are not offering placements - Find ITT placements",
+      "Confirm and let providers know you are not offering placements - Find placement schools",
     )
     expect(page).to have_caption("Not offering placements this year")
     expect(page).to have_h1(
@@ -230,7 +230,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_my_placement_preferences
     expect(page).to have_title(
-      "What happens next? - Find ITT placements",
+      "What happens next? - Find placement schools",
     )
     expect(page).to have_h1("What happens next?")
     expect(page).to have_paragraph(
