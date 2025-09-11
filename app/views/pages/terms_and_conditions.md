@@ -1,7 +1,7 @@
 # Terms and conditions
 ## Using our website
 
-Please read these Terms of Use (“General Terms”) carefully before using this Find ITT placements service (the “Service”).
+Please read these Terms of Use (“General Terms”) carefully before using this Find placement schools service (the “Service”).
 
 This service is maintained to enable:
 
@@ -27,8 +27,8 @@ We reserve the right to restrict or deny you access to all or some part of the S
 
 The Department for Education withholds the right to withdraw the access of users who breach them.
 
-## Hyperlinking to the Find ITT placements website
-We do not object to you linking directly to pages on this site and you do not need to ask permission to do so. However, we do not permit our pages to be loaded into frames on your site. The ‘Find ITT placements’ pages must be displayed in the user’s entire browser window.
+## Hyperlinking to the Find placement schools website
+We do not object to you linking directly to pages on this site and you do not need to ask permission to do so. However, we do not permit our pages to be loaded into frames on your site. The ‘Find placement schools’ pages must be displayed in the user’s entire browser window.
 
 You may not charge your website’s users to click on a link to any page on the Service.
 

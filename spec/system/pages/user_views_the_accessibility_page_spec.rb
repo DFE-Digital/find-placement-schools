@@ -18,8 +18,8 @@ RSpec.describe "User views accessibility page", type: :system do
   end
 
   def then_i_see_the_accessibility_page
-    expect(page).to have_title("Accessibility statement for Find ITT placements - Find ITT placements")
-    expect(page).to have_h1("Accessibility statement for Find ITT placements")
+    expect(page).to have_title("Accessibility statement for Find placement schools - Find placement schools")
+    expect(page).to have_h1("Accessibility statement for Find placement schools")
     expect(page).to have_h2("How accessible this website is")
     expect(page).to have_h2("Feedback and contact information")
   end

@@ -47,7 +47,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
   end
 
   def then_i_see_the_find_placements_page
-    expect(page).to have_title("Find placements - Find ITT placements")
+    expect(page).to have_title("Find placements - Find placement schools")
     expect(service_navigation).to have_current_item("Find placements")
     expect(page).to have_h1("Find placements")
     expect(page).to have_h2("Filter")

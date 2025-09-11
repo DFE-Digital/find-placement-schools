@@ -1,12 +1,12 @@
-# Cookies on Find ITT placements
+# Cookies on Find placement schools
 
 Cookies are small files saved on your phone, tablet or computer when you visit a website.
 
-We use cookies to make Find ITT placements work.
+We use cookies to make Find placement schools work.
 
 ## Essential cookies
 
-Essential cookies keep your information secure while you use Find ITT placements work. We do not need to ask permission to use them.
+Essential cookies keep your information secure while you use Find placement schools work. We do not need to ask permission to use them.
 
 | Name | Purpose | Expires |
 | -------- | -------- | -------- |

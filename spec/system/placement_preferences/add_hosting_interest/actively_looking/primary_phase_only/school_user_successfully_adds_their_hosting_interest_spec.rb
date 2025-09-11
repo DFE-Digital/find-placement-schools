@@ -76,7 +76,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
     )
     expect(page).to have_caption("Placement preferences")
     expect(page).to have_element(
@@ -101,7 +101,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_education_phase_form_page
     expect(page).to have_title(
-      "What education phase can your placements be? - Find ITT placements",
+      "What education phase can your placements be? - Find placement schools",
     )
     expect(page).to have_caption("Placement details")
     expect(page).to have_element(
@@ -124,7 +124,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_year_group_selection_form_page
     expect(page).to have_title(
-      "What primary school year groups can you offer placements in? - Find ITT placements",
+      "What primary school year groups can you offer placements in? - Find placement schools",
     )
     expect(page).to have_element(
       :legend,
@@ -153,7 +153,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_school_contact_form_page
     expect(page).to have_title(
-      "Who should providers contact? - Find ITT placements",
+      "Who should providers contact? - Find placement schools",
     )
     expect(page).to have_caption("Contact details")
     expect(page).to have_h1("Who should providers contact?")
@@ -173,7 +173,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_check_your_answers_page
     expect(page).to have_title(
-      "Check your answers - Find ITT placements",
+      "Check your answers - Find placement schools",
     )
     expect(page).to have_h1("Check your answers")
 
@@ -225,7 +225,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_my_placement_preferences
     expect(page).to have_title(
-      "What happens next? - Find ITT placements",
+      "What happens next? - Find placement schools",
     )
     expect(page).to have_h1("What happens next?")
     expect(page).to have_paragraph(

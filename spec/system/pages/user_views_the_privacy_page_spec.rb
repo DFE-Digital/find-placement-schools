@@ -18,8 +18,8 @@ RSpec.describe "User views privacy page", type: :system do
   end
 
   def then_i_see_the_privacy_page
-    expect(page).to have_title("Privacy notice for Find ITT placements - Find ITT placements")
-    expect(page).to have_h1("Find ITT placements privacy notice")
+    expect(page).to have_title("Privacy notice for Find placement schools - Find placement schools")
+    expect(page).to have_h1("Find placement schools privacy notice")
     expect(page).to have_paragraph("Read the Privacy information: education providers’ workforce, including teachers.")
   end
 end

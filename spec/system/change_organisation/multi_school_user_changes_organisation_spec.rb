@@ -42,7 +42,7 @@ RSpec.describe "Multi school user changes organisation", type: :system do
 
   def then_i_see_the_placement_preferences_form_page_for_hogwarts_school
     expect(page).to have_title(
-                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
                       )
     expect(page).to have_link("Hogwarts (change)", href: "/change_organisation")
     expect(page).to have_caption("Placement preferences")
@@ -67,7 +67,7 @@ RSpec.describe "Multi school user changes organisation", type: :system do
   def then_i_see_the_placement_preferences_form_page_for_springfield_school
     expect(page).to have_link("Springfield (change)", href: "/change_organisation")
     expect(page).to have_title(
-                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
                       )
     expect(page).to have_caption("Placement preferences")
     expect(page).to have_element(

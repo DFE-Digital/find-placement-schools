@@ -13,8 +13,8 @@ RSpec.describe "User views home page", type: :system do
   end
 
   def then_i_see_the_home_page
-    expect(page).to have_title("Find ITT placements")
-    expect(page).to have_h1("Find initial teacher training (ITT) placements")
+    expect(page).to have_title("Find placement schools")
+    expect(page).to have_h1("Find placement schools")
     expect(page).to have_link("Start now", href: "/sign-in")
     expect(page).to have_paragraph("We can add some content here!")
     expect(page).to have_h3("Related content")

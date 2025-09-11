@@ -18,8 +18,8 @@ RSpec.describe "User views cookies page", type: :system do
   end
 
   def then_i_see_the_cookies_page
-    expect(page).to have_title("Cookies on Find ITT placements - Find ITT placements")
-    expect(page).to have_h1("Cookies on Find ITT placements")
+    expect(page).to have_title("Cookies on Find placement schools - Find placement schools")
+    expect(page).to have_h1("Cookies on Find placement schools")
     expect(page).to have_h2("Essential cookies")
   end
 end
