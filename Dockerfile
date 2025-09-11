@@ -3,7 +3,7 @@
 # production: runs the actual app
 
 # Build builder image
-FROM ruby:3.2.2-alpine as builder
+FROM ruby:3.4.1-alpine as builder
 
 # RUN apk -U upgrade && \
 #     apk add --update --no-cache gcc git libc6-compat libc-dev make nodejs \
@@ -19,7 +19,7 @@ RUN apk add --update --no-cache tzdata && \
 # build-base: dependencies for bundle
 # yarn: node package manager
 # postgresql-dev: postgres driver and libraries
-RUN apk add --no-cache build-base yarn postgresql13-dev
+RUN apk add --no-cache build-base yarn postgresql17-dev
 
 # Install gems defined in Gemfile
 COPY .ruby-version Gemfile Gemfile.lock ./
@@ -41,6 +41,7 @@ COPY . .
 
 # Precompile assets
 RUN RAILS_ENV=production SECRET_KEY_BASE=required-to-run-but-not-used \
+    GOVUK_NOTIFY_API_KEY=TestKey \
     bundle exec rails assets:precompile
 
 # Cleanup to save space in the production image
@@ -53,7 +54,10 @@ RUN rm -rf node_modules log/* tmp/* /tmp && \
     find /usr/local/bundle/gems -name "*.html" -delete
 
 # Build runtime image
-FROM ruby:3.2.2-alpine as production
+FROM ruby:3.4.1-alpine as production
+
+# Use rails production environment when deployed using docker
+ENV RAILS_ENV=production
 
 # The application runs from /app
 WORKDIR /app
@@ -63,12 +67,27 @@ RUN apk add --update --no-cache tzdata && \
     cp /usr/share/zoneinfo/Europe/London /etc/localtime && \
     echo "Europe/London" > /etc/timezone
 
+# Create non-root user and group
+RUN addgroup -S appgroup -g 20001 && adduser -S appuser -G appgroup -u 10001
+
+# Change ownership only for directories that need write access
+RUN chown -R appuser:appgroup /app/tmp /app/log
+
 # libpq: required to run postgres
 RUN apk add --no-cache libpq
+
+# proj-util: provides cs2cs, required by Gias::CSVTransformer::CoordinateTransformer
+RUN apk add --no-cache proj-util
 
 # Copy files generated in the builder image
 COPY --from=builder /app /app
 COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
 
-CMD bundle exec rails db:migrate && \
-    bundle exec rails server -b 0.0.0.0
+# Set the SHA environment variable for the healthcheck
+ARG COMMIT_SHA
+ENV SHA=${COMMIT_SHA}
+
+# Use non-root user
+USER 10001
+
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
