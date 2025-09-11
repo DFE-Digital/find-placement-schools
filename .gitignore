@@ -34,3 +34,5 @@ tmp/pids/*
 !tmp/pids/.keep
 
 coverage/
+
+/config/master.key
