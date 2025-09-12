@@ -186,6 +186,10 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def and_i_see_the_reason_not_hosting_i_entered
     expect(page).to have_summary_list_row(
+      "Can your school offer placements for trainee teachers?",
+      "No",
+    )
+    expect(page).to have_summary_list_row(
       "Reason for not offering",
       "Other - Some other reason",
     )
