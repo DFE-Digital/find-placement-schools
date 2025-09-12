@@ -104,6 +104,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       "Special educational needs and disabilities (SEND) specific",
       type: :checkbox,
     )
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def when_i_select_secondary
@@ -125,6 +126,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_field("English", type: :checkbox)
     expect(page).to have_field("Mathematics", type: :checkbox)
     expect(page).to have_field("Science", type: :checkbox)
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def then_i_see_a_validation_error_for_selecting_a_subject

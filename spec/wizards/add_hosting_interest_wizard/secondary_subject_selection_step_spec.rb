@@ -71,4 +71,17 @@ RSpec.describe AddHostingInterestWizard::SecondarySubjectSelectionStep, type: :m
       end
     end
   end
+
+  describe "#unknown_option" do
+    subject(:unknown_option) { step.unknown_option }
+
+    it "returns the unknown option" do
+      expect(unknown_option).to eq(
+        OpenStruct.new(
+          value: "unknown",
+          name: "I don’t know",
+        ),
+      )
+    end
+  end
 end
