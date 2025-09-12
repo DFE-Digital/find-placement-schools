@@ -11,17 +11,21 @@
       <span class="govuk-caption-l">
         <%= t(".caption", academic_year_name: wizard.academic_year.short_name) %>
       </span>
-     <%= f.govuk_check_boxes_fieldset(
+      <%= f.govuk_check_boxes_fieldset(
         :year_groups,
         legend: { size: "l", text: t(".title"), tag: "h1" },
         hint: { text: t(".hint") },
-      ) do %>
+        ) do %>
         <% current_step.year_groups_for_selection.each_with_index do |year_group, i| %>
           <%= f.govuk_check_box :year_groups, year_group.value,
-            label: { text: year_group.name },
-            hint: { text: year_group.description },
-            link_errors: i.zero? %>
+                                label: { text: year_group.name },
+                                hint: { text: year_group.description },
+                                link_errors: i.zero? %>
         <% end %>
+        <%= f.govuk_check_box_divider %>
+        <%= f.govuk_check_box :year_groups, current_step.unknown_option.value,
+                              label: { text: current_step.unknown_option.name },
+                              exclusive: true %>
       <% end %>
 
       <%= f.govuk_submit t(".continue") %>

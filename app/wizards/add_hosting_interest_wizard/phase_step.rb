@@ -1,4 +1,6 @@
 class AddHostingInterestWizard::PhaseStep < BaseStep
+  include UnknownOptionable
+
   attribute :phases, default: []
 
   validates :phases, presence: true

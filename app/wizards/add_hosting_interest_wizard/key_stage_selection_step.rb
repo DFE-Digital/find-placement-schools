@@ -1,4 +1,6 @@
 class AddHostingInterestWizard::KeyStageSelectionStep < BaseStep
+  include UnknownOptionable
+
   attribute :key_stages, default: []
 
   validates :key_stages, presence: true

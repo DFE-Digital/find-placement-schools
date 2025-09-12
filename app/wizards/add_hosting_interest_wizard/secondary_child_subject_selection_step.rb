@@ -1,4 +1,6 @@
 class AddHostingInterestWizard::SecondaryChildSubjectSelectionStep < BaseStep
+  include UnknownOptionable
+
   attribute :parent_subject_id
   attribute :selection_id
   attribute :selection_number
