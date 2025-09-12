@@ -11,6 +11,9 @@ class AddHostingInterestWizard < BaseWizard
     @school = school
     @current_user = current_user
     super(state:, params:, current_step:)
+    return unless steps[:school_contact].present?
+
+    save_placement_details if steps.fetch(:school_contact).email_address.present?
   end
 
   def define_steps
@@ -29,12 +32,7 @@ class AddHostingInterestWizard < BaseWizard
   def add_placement_preference
     raise "Invalid wizard state" unless valid?
 
-    ApplicationRecord.transaction do
-      placement_preference.appetite = appetite
-      placement_preference.placement_details = state
-
-      placement_preference.save!
-    end
+    save_placement_details
     placement_preference
   end
 
@@ -50,13 +48,23 @@ class AddHostingInterestWizard < BaseWizard
 
   private
 
+  def save_placement_details
+    ApplicationRecord.transaction do
+      placement_preference.appetite = appetite
+      placement_preference.placement_details = state
+
+      placement_preference.save!
+    end
+  end
+
   def actively_looking_steps
-    add_placement_creation_steps(with_check_your_answers: false)
     add_step(SchoolContactStep)
+    add_placement_creation_steps(with_check_your_answers: false)
     add_step(CheckYourAnswersStep)
   end
 
   def interested_steps
+    add_step(SchoolContactStep)
     add_step(Interested::PhaseStep)
     if primary_phase?
       year_group_steps
@@ -71,13 +79,12 @@ class AddHostingInterestWizard < BaseWizard
     end
 
     add_step(NoteToProvidersStep)
-    add_step(SchoolContactStep)
     add_step(ConfirmStep)
   end
 
   def not_open_steps
-    add_step(ReasonNotHostingStep)
     add_step(NotOpen::SchoolContactStep)
+    add_step(ReasonNotHostingStep)
     add_step(AreYouSureStep)
   end
 

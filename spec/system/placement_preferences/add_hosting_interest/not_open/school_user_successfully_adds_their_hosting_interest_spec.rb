@@ -8,41 +8,41 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
     when_i_select_no
     and_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+
+    when_i_fill_in_the_school_contact_details
+    and_i_click_on_continue
     then_i_see_the_reason_for_not_hosting_form_page
 
     when_i_select_no_mentors_available_due_to_capacity
     and_i_select_other
     and_i_enter_another_reason
     and_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-
-    when_i_fill_in_the_school_contact_details
-    and_i_click_on_continue
     then_i_see_the_are_you_sure_page
     and_i_see_the_reason_not_hosting_i_entered
     and_i_see_the_entered_school_contact_details
 
     when_i_click_on_back
-    then_i_see_the_school_contact_form_page
-    and_i_see_the_school_contact_inputs_prefilled
-
-    when_i_click_on_back
     then_i_see_the_reason_for_not_hosting_form_page
     and_i_see_no_mentors_available_due_to_capacity_selected
     and_i_see_other_selected
+
+    when_i_click_on_back
+    then_i_see_the_school_contact_form_page
+    and_i_see_the_school_contact_inputs_prefilled
 
     when_i_click_on_back
     then_i_see_the_appetite_form_page
     and_i_see_no_selected
 
     when_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+    and_i_see_the_school_contact_inputs_prefilled
+
+    when_i_click_on_continue
     then_i_see_the_reason_for_not_hosting_form_page
     and_i_see_no_mentors_available_due_to_capacity_selected
     and_i_see_other_selected
-
-    when_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-    and_i_see_the_school_contact_inputs_prefilled
 
     when_i_click_on_continue
     then_i_see_the_are_you_sure_page
@@ -54,6 +54,11 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     and_i_see_the_school_contact_inputs_prefilled
 
     when_i_click_on_continue
+    then_i_see_the_reason_for_not_hosting_form_page
+    and_i_see_no_mentors_available_due_to_capacity_selected
+    and_i_see_other_selected
+
+    when_i_click_on_continue
     then_i_see_the_are_you_sure_page
     and_i_see_the_entered_school_contact_details
 
@@ -61,10 +66,6 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     then_i_see_the_reason_for_not_hosting_form_page
     and_i_see_no_mentors_available_due_to_capacity_selected
     and_i_see_other_selected
-
-    when_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-    and_i_see_the_school_contact_inputs_prefilled
 
     when_i_click_on_continue
     then_i_see_the_are_you_sure_page

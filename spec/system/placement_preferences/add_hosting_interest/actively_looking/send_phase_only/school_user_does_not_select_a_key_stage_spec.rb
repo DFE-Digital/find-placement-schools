@@ -8,6 +8,10 @@ RSpec.describe "School user does not select a key stage", type: :system do
 
     when_i_select_yes
     and_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+
+    when_i_fill_in_the_school_contact_details
+    and_i_click_on_continue
     then_i_see_the_education_phase_form_page
 
     when_i_select_send
@@ -55,6 +59,26 @@ RSpec.describe "School user does not select a key stage", type: :system do
   end
   alias_method :and_i_click_on_continue,
                :when_i_click_on_continue
+
+  def then_i_see_the_school_contact_form_page
+    expect(page).to have_title(
+      "Who should providers contact? - Find placement schools",
+    )
+    expect(page).to have_caption("Placement contact")
+    expect(page).to have_h1("Who should providers contact?")
+    expect(page).to have_paragraph(
+      "Choose the person best placed to organise placements for trainee teachers at your school",
+    )
+    expect(page).to have_field("First name")
+    expect(page).to have_field("Last name")
+    expect(page).to have_field("Email address")
+  end
+
+  def when_i_fill_in_the_school_contact_details
+    fill_in "First name", with: "Joe"
+    fill_in "Last name", with: "Bloggs"
+    fill_in "Email address", with: "joe_bloggs@example.com"
+  end
 
   def then_i_see_the_education_phase_form_page
     expect(page).to have_title(
