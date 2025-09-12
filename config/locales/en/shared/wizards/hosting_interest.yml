@@ -14,9 +14,13 @@ en:
           send: SEND
           education_phase_list:
             phase: Phase
+            unknown: I don't know
           primary_placements_list:
             year_group: Year group
+            unknown: I don't know
           secondary_placements_list:
             subject: Subject
+            unknown: I don't know
           send_placements_list:
             key_stage: Key stage
+            unknown: I don't know

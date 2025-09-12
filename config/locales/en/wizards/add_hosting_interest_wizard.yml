@@ -1,6 +1,7 @@
 en:
   wizards:
     add_hosting_interest_wizard:
+      unknown: I don't know
       appetite_step:
         caption: Placement information
         title:
@@ -40,6 +41,7 @@ en:
           secondary_description: 11 to 19 years
           send: Special educational needs and disabilities (SEND) specific
           send_description: You will be able to select key stages
+          unknown: I don’t know
         continue: Continue
       year_group_selection_step:
         title: Which primary year groups can your school offer placements in?
@@ -65,6 +67,8 @@ en:
           year_6_description: 10 to 11 years
           mixed_year_groups: Mixed year groups
           mixed_year_groups_description: ""
+        options:
+          unknown: I don’t know
       secondary_subject_selection_step:
         title: Which secondary subjects can your school offer placements in?
         caption: Secondary placement information %{academic_year_name}
@@ -74,10 +78,14 @@ en:
         art_humanities_social_subjects: Arts, humanities and social sciences
         health_physical_education_subjects: Health and physical education
         continue: Continue
+        options:
+          unknown: I don’t know
       secondary_child_subject_selection_step:
         title: What languages are taught on your schoolʼs %{subject_name} placements?
         caption: Secondary placement information %{academic_year_name}
         continue: Continue
+        options:
+          unknown: I don’t know
       key_stage_selection_step:
         title: Which key stages can you offer SEND placements in?
         caption: SEND placement information %{academic_year_name}
@@ -93,7 +101,6 @@ en:
           mixed_key_stages: Mixed key stages
         options:
           unknown: I don’t know
-          unknown_description: You can discuss key stages with providers later
       school_contact_step:
         caption: Placement contact
         title: Who should providers contact?
@@ -144,15 +151,11 @@ en:
           hint: Select all that apply. Sharing information on what you may be able to offer helps providers know whether to contact you.
           caption: Potential placement information %{academic_year_name}
           continue: Continue
-          options:
-            unknown: I don’t know
         year_group_selection_step:
           title: Which primary year groups could your school offer placements in?
           hint: Sharing information on what you may be able to offer helps providers know whether to contact you.
           caption: Potential primary placement information %{academic_year_name}
           continue: Continue
-          options:
-            unknown: I don’t know
         secondary_subject_selection_step:
           title: Which secondary subjects could your school offer placements in?
           caption: Potential secondary placement information %{academic_year_name}

@@ -15,6 +15,8 @@ class PlacementPreferenceDecorator < ApplicationDecorator
       .where(id: child_subject_ids)
       .order_by_name
 
+    return subject.name if child_subjects.blank?
+
     "#{subject.name} - #{child_subjects.pluck(:name).to_sentence}"
   end
 end
