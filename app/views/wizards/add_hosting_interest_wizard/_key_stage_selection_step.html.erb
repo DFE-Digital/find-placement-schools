@@ -8,7 +8,9 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <span class="govuk-caption-l"><%= t(".caption") %></span>
+      <span class="govuk-caption-l">
+        <%= t(".caption", academic_year_name: wizard.academic_year.short_name) %>
+      </span>
      <%= f.govuk_check_boxes_fieldset(
         :key_stages,
         legend: { size: "l", text: t(".title"), tag: "h1" },

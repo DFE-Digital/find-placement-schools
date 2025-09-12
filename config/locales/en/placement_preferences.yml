@@ -6,14 +6,15 @@ en:
       edit:
         cancel: Cancel
     not_open_preferences:
-      panel_title: You are not offering placements this year
-      panel_text: Your contact details will not be shown to providers
+      panel_title: Information added
+      panel_text:
+        Providers can see that your school is not offering placements for trainee teachers in the academic year %{academic_year_name}
       what_happens_next: What happens next?
-      we_will_ask_you_again:
-        We will ask in the next academic year whether you are able to offer placements for trainee teachers.
+      we_will_email_you:
+        "We will email the placement contact to ask if your school can offer placements for trainee teachers in future academic years: %{mailto}."
       if_you_would_like_to_host_placements:
-        If you would like to host placements this year, %{link} to let providers know you’re interested.
-      update_your_placement_preferences: update your placement preferences
+        If you would like to host placements this year, %{link} for your school.
+      update_your_placement_preferences: edit placement information
       placement_contact: Placement contact
     placement_details:
       primary_placements_list:
@@ -39,41 +40,37 @@ en:
         last_name: Last name
         email_address: Email address
     actively_looking_preferences:
-      panel_title: Placement information added
-      panel_text: Providers can see that you have placements available
+      panel_title: Information added
+      panel_text:
+        Providers can see that your school is offering placements for trainee teachers in the academic year %{academic_year_name}
       what_happens_next: What happens next?
       providers_can_contact_you:
-        Providers will be able to contact you on %{mailto} about your placement offers.
+        "Providers in England can see the information you have recorded. They can email the placement contact at your school if they are interested in working together: %{mailto}."
       you_do_not_need_to_take_any_further_action:
-        You do not need to take any further action until providers contact you. After discussions with one or more providers, you can then decide whether to assign providers to your placements.
-      your_placements_offers: Your placements offers
+        You do not need to take any further action if your information is up to date.
+      your_placements_offers: Placement information or your school
       primary_placements: Primary placements
       secondary_placements: Secondary placements
       send_placements: SEND placements
       placement_contact: Placement contact
-      manage_your_placements: Manage your placements
-      you_can_edit_placements: "%{link} to change or remove information."
-      edit_your_placements: Edit your placements
-      editing_them: "For each individual placement, you can:"
-      editing_options:
-        - add an expected date
-        - assign a provider
-        - assign a mentor - only your school will be able to see mentor information
-      assigning_a_provider_is_not_contractual:
-        Assigning a provider to a placement in this service is not a contractual agreement for a trainee to be placed in your school.
-        An agreement must be made between you and the provider outside this service. 
+      you_can_edit_placements: "You can %{link} at any time."
+      edit_your_placements: edit your schoolʼs placement information
     interested_preferences:
       panel_title: Information added
-      panel_text: Providers can see that you may offer placements
+      panel_text:
+        Providers can see that your school might be offering placements for trainee teachers in the academic year %{academic_year_name}
       what_happens_next: What happens next?
       providers_can_contact_you:
-        Providers who are looking for schools to work with can contact you on %{mailto}.
-      you_do_not_need_to_take_any_further_action: You do not need to take any further action until providers contact you.
+        "Providers in England can see the information you have recorded. They can email the placement contact at your school if they are interested in working together: %{mailto}."
+      you_do_not_need_to_take_any_further_action: You do not need to take any further action if your information is up to date.
       once_you_know_which_placements:
         Once you are sure which placements your school can offer, %{link}. Doing so will mean you will be able to assign providers to them.
       add_placements: add your placements
       potential_placement_information: Your potential placements
-      potential_primary_placements: Potential primary school placements
-      potential_secondary_placements: Potential secondary school placements
-      potential_send_placements: Potential SEND placements
+      primary: Primary
+      secondary: Secondary
+      send: SEND
       placement_contact: Placement contact
+      your_placements_offers: Placement information or your school
+      you_can_edit_placements: "You can %{link} at any time."
+      edit_your_placements: edit your schoolʼs placement information

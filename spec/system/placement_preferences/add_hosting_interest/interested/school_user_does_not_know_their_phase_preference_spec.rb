@@ -43,7 +43,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     when_i_click_on_continue
     then_i_see_the_confirmation_page
 
-    when_i_click_on_confirm
+    when_i_click_on_publish_potential_placement_information
     then_i_see_the_my_placement_preferences
   end
 
@@ -57,6 +57,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
   def given_academic_years_exist
     @next_academic_year = create(:academic_year, :next)
     @next_academic_year_name = @next_academic_year.name
+    @next_academic_year_short_name = "#{@next_academic_year.starts_on.year}/#{@next_academic_year.ends_on.strftime("%y")}"
   end
 
   def and_secondary_subjects_exist
@@ -67,21 +68,21 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
+      "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools",
     )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
       :legend,
-      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+      text: "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_field("Yes - I can offer placements", type: :radio)
-    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
-    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_select_maybe
-    choose "Maybe - I’m not sure yet"
+    choose "Maybe"
   end
 
   def when_i_click_on_continue
@@ -92,12 +93,12 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_education_phase_form_page
     expect(page).to have_title(
-      "What education phase could you offer placements in? - Find placement schools",
+      "Which education phase or specialism could your school offer placements in? - Find placement schools",
     )
-    expect(page).to have_caption("Potential placement offer details")
+    expect(page).to have_caption("Potential placement information #{@next_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
-      text: "What education phase could you offer placements in?",
+      text: "Which education phase or specialism could your school offer placements in?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_hint("Select all that apply")
@@ -118,19 +119,26 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_title(
       "Is there anything about your school you would like providers to know? (optional) - Find placement schools",
     )
-    expect(page).to have_caption("Potential placement details")
+    expect(page).to have_caption(
+      "Potential placement information #{@next_academic_year_short_name}",
+    )
     expect(page).to have_element(
       :label,
       text: "Is there anything about your school you would like providers to know? (optional)",
     )
-    expect(page).to have_field("Is there anything about your school you would like providers to know? (optional)")
+    expect(page).to have_hint(
+      "Include any reasonable adjustments your school can offer trainee teachers with disabilities or other needs, for example wheelchair access.",
+    )
+    expect(page).to have_field(
+      "Is there anything about your school you would like providers to know? (optional)",
+    )
   end
 
   def then_i_see_the_school_contact_form_page
     expect(page).to have_title(
       "Who should providers contact? - Find placement schools",
     )
-    expect(page).to have_caption("Contact details")
+    expect(page).to have_caption("Placement contact")
     expect(page).to have_h1("Who should providers contact?")
     expect(page).to have_paragraph(
       "Choose the person best placed to organise placements for trainee teachers at your school",
@@ -148,16 +156,14 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_confirmation_page
     expect(page).to have_title(
-      "Confirm and share what you may be able to offer - Find placement schools",
+      "Check your answers - Find placement schools",
     )
-    expect(page).to have_h1("Confirm and share what you may be able to offer")
+    expect(page).to have_caption(
+      "Potential placement information #{@next_academic_year_short_name}",
+    )
+    expect(page).to have_h1("Check your answers")
 
-    expect(page).to have_h2("Your information")
-    expect(page).to have_summary_list_row("First name", "Joe")
-    expect(page).to have_summary_list_row("Last name", "Bloggs")
-    expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
-
-    expect(page).to have_h2("Potential education phase")
+    expect(page).to have_h2("Education phase and specialism")
     expect(page).to have_summary_list_row("Phase", "Unknown")
 
     expect(page).to have_h2("Additional information")
@@ -165,6 +171,10 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       "Message to providers",
       "",
     )
+
+    expect(page).to have_summary_list_row("First name", "Joe")
+    expect(page).to have_summary_list_row("Last name", "Bloggs")
+    expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
   end
 
   def when_i_click_on_back
@@ -181,20 +191,37 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_checked_field("I don’t know", type: :checkbox)
   end
 
-  def when_i_click_on_confirm
-    click_on "Confirm"
+  def when_i_click_on_publish_potential_placement_information
+    click_on "Publish potential placement information"
   end
 
   def then_i_see_the_my_placement_preferences
     expect(page).to have_title(
       "What happens next? - Find placement schools",
     )
+    expect(page).to have_panel(
+      "Information added",
+      "Providers can see that your school might be offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}"
+    )
+
     expect(page).to have_h1("What happens next?")
     expect(page).to have_paragraph(
-      "Providers who are looking for schools to work with can contact you on joe_bloggs@example.com.",
+      "Providers in England can see the information you have recorded. They can email the placement contact at your school if they are interested in working together: joe_bloggs@example.com.",
     )
     expect(page).to have_paragraph(
-      "You do not need to take any further action until providers contact you.",
+      "You do not need to take any further action if your information is up to date.",
     )
+
+    expect(page).to have_paragraph(
+      "You can edit your schoolʼs placement information at any time.",
+    )
+    expect(page).to have_link("edit your schoolʼs placement information", href: "")
+
+    expect(page).to have_h2("Placement information or your school")
+
+    expect(page).to have_h3("Placement contact")
+    expect(page).to have_summary_list_row("First name", "Joe")
+    expect(page).to have_summary_list_row("Last name", "Bloggs")
+    expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
   end
 end

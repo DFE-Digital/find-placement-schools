@@ -42,18 +42,18 @@ RSpec.describe "Multi school user changes organisation", type: :system do
 
   def then_i_see_the_placement_preferences_form_page_for_hogwarts_school
     expect(page).to have_title(
-                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
-                      )
+      "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools"
+    )
     expect(page).to have_link("Hogwarts (change)", href: "/change_organisation")
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
-                      :legend,
-                      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
-                      class: "govuk-fieldset__legend",
-                      )
-    expect(page).to have_field("Yes - I can offer placements", type: :radio)
-    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
-    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+      :legend,
+      text: "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year?",
+      class: "govuk-fieldset__legend",
+    )
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_click_on_hogwarts_change_organisation_link
@@ -65,18 +65,18 @@ RSpec.describe "Multi school user changes organisation", type: :system do
   end
 
   def then_i_see_the_placement_preferences_form_page_for_springfield_school
-    expect(page).to have_link("Springfield (change)", href: "/change_organisation")
     expect(page).to have_title(
-                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
-                      )
-    expect(page).to have_caption("Placement preferences")
+      "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools"
+    )
+    expect(page).to have_link("Springfield (change)", href: "/change_organisation")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
                       :legend,
-                      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+                      text: "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year?",
                       class: "govuk-fieldset__legend",
                       )
-    expect(page).to have_field("Yes - I can offer placements", type: :radio)
-    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
-    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 end

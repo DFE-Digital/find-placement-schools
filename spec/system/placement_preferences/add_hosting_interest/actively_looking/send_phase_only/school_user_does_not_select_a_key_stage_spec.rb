@@ -3,7 +3,6 @@ require "rails_helper"
 RSpec.describe "School user does not select a key stage", type: :system do
   scenario do
     given_academic_years_exist
-    and_secondary_subjects_exist
     when_i_am_signed_in
     then_i_see_the_appetite_form_page
 
@@ -29,31 +28,26 @@ RSpec.describe "School user does not select a key stage", type: :system do
   def given_academic_years_exist
     @next_academic_year = create(:academic_year, :next)
     @next_academic_year_name = @next_academic_year.name
-  end
-
-  def and_secondary_subjects_exist
-    @english = create(:placement_subject, :secondary, name: "English")
-    @science = create(:placement_subject, :secondary, name: "Science")
-    @mathematics = create(:placement_subject, :secondary, name: "Mathematics")
+    @next_academic_year_short_name = "#{@next_academic_year.starts_on.year}/#{@next_academic_year.ends_on.strftime("%y")}"
   end
 
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
+      "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools",
     )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
       :legend,
-      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+      text: "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_field("Yes - I can offer placements", type: :radio)
-    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
-    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_select_yes
-    choose "Yes - I can offer placements"
+    choose "Yes"
   end
 
   def when_i_click_on_continue
@@ -64,12 +58,12 @@ RSpec.describe "School user does not select a key stage", type: :system do
 
   def then_i_see_the_education_phase_form_page
     expect(page).to have_title(
-      "What education phase can your placements be? - Find placement schools",
+      "What education phase or specialism can your school offer placements in? - Find placement schools",
     )
-    expect(page).to have_caption("Placement details")
+    expect(page).to have_caption("Placement information #{@next_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
-      text: "What education phase can your placements be?",
+      text: "What education phase or specialism can your school offer placements in?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_hint("Select all that apply")
@@ -86,13 +80,13 @@ RSpec.describe "School user does not select a key stage", type: :system do
   end
 
   def then_i_see_the_key_stage_selection_form_page
-     expect(page).to have_title(
-      "What key stages can you offer SEND placements in? - Find placement schools",
+    expect(page).to have_title(
+      "Which key stages can you offer SEND placements in? - Find placement schools",
     )
-    expect(page).to have_caption("SEND placement details")
+    expect(page).to have_caption("SEND placement information #{@next_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
-      text: "What key stages can you offer SEND placements in?",
+      text: "Which key stages can you offer SEND placements in?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_field("Early year", type: :checkbox)

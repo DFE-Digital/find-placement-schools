@@ -24,17 +24,17 @@ RSpec.describe "School user does not select an appetite", type: :system do
 
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
+      "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools",
     )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
       :legend,
-      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+      text: "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_field("Yes - I can offer placements", type: :radio)
-    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
-    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_click_on_continue

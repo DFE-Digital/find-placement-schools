@@ -1,6 +1,6 @@
 <%= govuk_panel(
   title_text: t(".panel_title"),
-  text: t(".panel_text"),
+  text: t(".panel_text", academic_year_name: @placement_preference.academic_year.short_name),
 ) %>
 
 <h1 class="govuk-heading-l govuk-!-margin-top-6"><%= t(".what_happens_next") %></h1>
@@ -9,7 +9,7 @@
   <%= embedded_link_text(
     t(".providers_can_contact_you",
       mailto: mail_to(
-        placement_details.dig("school_contact", "email"),
+        placement_details.dig("school_contact", "email_address"),
       )),
   ) %>
 </p>
@@ -17,14 +17,6 @@
 <p class="govuk-body">
   <%= t(".you_do_not_need_to_take_any_further_action") %>
 </p>
-
-<p class="govuk-body">
-  <%= t(".assigning_a_provider_is_not_contractual") %>
-</p>
-
-<h2 class="govuk-heading-m">
-  <%= t(".manage_your_placements") %>
-</h2>
 
 <p class="govuk-body">
   <%= embedded_link_text(

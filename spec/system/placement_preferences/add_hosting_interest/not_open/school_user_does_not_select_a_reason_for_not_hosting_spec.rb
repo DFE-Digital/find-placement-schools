@@ -24,25 +24,26 @@ RSpec.describe "School user does not select a reason for not hosting", type: :sy
   def given_academic_years_exist
     @next_academic_year = create(:academic_year, :next)
     @next_academic_year_name = @next_academic_year.name
+    @next_academic_year_short_name = "#{@next_academic_year.starts_on.year}/#{@next_academic_year.ends_on.strftime("%y")}"
   end
 
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
+      "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools",
     )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
       :legend,
-      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+      text: "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_field("Yes - I can offer placements", type: :radio)
-    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
-    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_select_no
-    choose "No - I can’t offer placements"
+    choose "No"
   end
 
   def when_i_click_on_continue
@@ -53,12 +54,12 @@ RSpec.describe "School user does not select a reason for not hosting", type: :sy
 
   def then_i_see_the_reason_for_not_hosting_form_page
     expect(page).to have_title(
-      "Tell us why you are not able to offer placements for trainee teachers - Find placement schools",
+      "Tell us why your school cannot offer placements for trainee teachers - Find placement schools",
     )
-    expect(page).to have_caption("Not offering placements this year")
+    expect(page).to have_caption("Not offering placements #{@next_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
-      text: "Tell us why you are not able to offer placements for trainee teachers",
+      text: "Tell us why your school cannot offer placements for trainee teachers",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_field("Trainees we were offered did not meet our expectations", type: :checkbox)

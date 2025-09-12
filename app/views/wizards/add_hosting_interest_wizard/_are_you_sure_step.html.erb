@@ -8,10 +8,12 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <span class="govuk-caption-l"><%= t(".caption") %></span>
+      <span class="govuk-caption-l">
+        <%= t(".caption", academic_year_name: wizard.academic_year.short_name) %>
+      </span>
       <h1 class="govuk-heading-l"><%= t(".title") %></h1>
 
-      <p class="govuk-body"><%= t(".we_will_ask_you_again") %></p>
+      <p class="govuk-body"><%= t(".we_will_ask_you_again", academic_year_name: wizard.academic_year.short_name) %></p>
       <p class="govuk-body"><%= t(".your_contact_details") %></p>
       <p class="govuk-body"><%= t(".your_reason") %></p>
 

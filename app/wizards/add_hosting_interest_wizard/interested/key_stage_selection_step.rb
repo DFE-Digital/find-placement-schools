@@ -6,9 +6,6 @@ class AddHostingInterestWizard::Interested::KeyStageSelectionStep < AddHostingIn
         name: I18n.t(
           "#{unknown_option_locale_path}.unknown",
         ),
-        description: I18n.t(
-          "#{unknown_option_locale_path}.unknown_description",
-        ),
       )
   end
 
