@@ -202,6 +202,12 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     expect(page).to have_caption("Placement information #{@next_academic_year_short_name}")
     expect(page).to have_h1("Check your answers")
 
+    expect(page).to have_h2("Offering placements")
+    expect(page).to have_summary_list_row(
+      "Can your school offer placements for trainee teachers?",
+      "Yes",
+    )
+
     expect(page).to have_h2("Education phase and specialism")
     expect(page).to have_summary_list_row("Phase", "Primary Secondary Send")
 
