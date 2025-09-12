@@ -9,6 +9,10 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
     when_i_select_maybe
     and_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+
+    when_i_fill_in_the_school_contact_details
+    and_i_click_on_continue
     then_i_see_the_education_phase_form_page
 
     when_i_select_i_do_not_know
@@ -16,15 +20,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     then_i_see_the_note_to_providers_form_page
 
     when_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-
-    when_i_fill_in_the_school_contact_details
-    and_i_click_on_continue
     then_i_see_the_confirmation_page
-
-    when_i_click_on_back
-    then_i_see_the_school_contact_form_page
-    and_i_see_the_school_contact_inputs_prefilled
 
     when_i_click_on_back
     then_i_see_the_note_to_providers_form_page
@@ -33,12 +29,16 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     then_i_see_the_education_phase_form_page
     and_i_see_i_do_not_know_selected
 
-    when_i_click_on_continue
-    then_i_see_the_note_to_providers_form_page
-
-    when_i_click_on_continue
+    when_i_click_on_back
     then_i_see_the_school_contact_form_page
     and_i_see_the_school_contact_inputs_prefilled
+
+    when_i_click_on_continue
+    then_i_see_the_education_phase_form_page
+    and_i_see_i_do_not_know_selected
+
+    when_i_click_on_continue
+    then_i_see_the_note_to_providers_form_page
 
     when_i_click_on_continue
     then_i_see_the_confirmation_page

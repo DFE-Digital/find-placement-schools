@@ -22,7 +22,7 @@ RSpec.describe AddHostingInterestWizard do
         }
       end
 
-      it { is_expected.to eq %i[appetite phase school_contact check_your_answers] }
+      it { is_expected.to eq %i[appetite school_contact phase check_your_answers] }
 
       context "when the phase is set to 'Primary' during the phase step" do
         let(:state) do
@@ -35,9 +35,9 @@ RSpec.describe AddHostingInterestWizard do
         it {
           expect(steps).to eq(
             %i[appetite
+               school_contact
                phase
                year_group_selection
-               school_contact
                check_your_answers],
           )
         }
@@ -54,9 +54,9 @@ RSpec.describe AddHostingInterestWizard do
         it {
           expect(steps).to eq(
             %i[appetite
+               school_contact
                phase
                secondary_subject_selection
-               school_contact
                check_your_answers],
           )
         }
@@ -78,10 +78,10 @@ RSpec.describe AddHostingInterestWizard do
             expect(steps).to eq(
               [
                 :appetite,
+                :school_contact,
                 :phase,
                 :secondary_subject_selection,
                 "secondary_child_subject_selection_#{modern_languages.id}".to_sym,
-                :school_contact,
                 :check_your_answers
               ]
             )
@@ -100,10 +100,10 @@ RSpec.describe AddHostingInterestWizard do
         it {
           expect(steps).to eq(
             %i[appetite
+               school_contact
                phase
                year_group_selection
                secondary_subject_selection
-               school_contact
                check_your_answers],
           )
         }
@@ -117,7 +117,7 @@ RSpec.describe AddHostingInterestWizard do
         }
       end
 
-      it { is_expected.to eq %i[appetite reason_not_hosting school_contact are_you_sure] }
+      it { is_expected.to eq %i[appetite school_contact reason_not_hosting are_you_sure] }
     end
 
     context "when an appetite is set to 'interested' during the appetite step" do
@@ -127,7 +127,7 @@ RSpec.describe AddHostingInterestWizard do
         }
       end
 
-      it { is_expected.to eq %i[appetite phase note_to_providers school_contact confirm] }
+      it { is_expected.to eq %i[appetite school_contact phase note_to_providers confirm] }
     end
   end
 
@@ -305,13 +305,9 @@ RSpec.describe AddHostingInterestWizard do
       context "when a step is invalid" do
         let(:state) do
           {
-            "appetite" => { "appetite" => "blah" },
+            "appetite" => { "appetite" => "actively_looking" },
             "reason_not_hosting" => {
-              "reasons_not_hosting" => [
-                "Not enough trained mentors",
-                "Number of pupils with SEND needs",
-                "Working to improve our OFSTED rating"
-              ]
+              "reasons_not_hosting" => []
             },
             "school_contact" => {
               "first_name" => "Joe",

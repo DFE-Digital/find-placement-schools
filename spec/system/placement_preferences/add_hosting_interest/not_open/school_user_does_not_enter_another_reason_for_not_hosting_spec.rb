@@ -8,6 +8,10 @@ RSpec.describe "School user does not enter another reason for not hosting", type
 
     when_i_select_no
     and_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+
+    when_i_fill_in_the_school_contact_details
+    and_i_click_on_continue
     then_i_see_the_reason_for_not_hosting_form_page
 
     when_i_select_other
@@ -52,6 +56,30 @@ RSpec.describe "School user does not enter another reason for not hosting", type
   end
   alias_method :and_i_click_on_continue,
                :when_i_click_on_continue
+
+  def then_i_see_the_school_contact_form_page
+    expect(page).to have_title(
+      "Who can we contact in your school? - Find placement schools",
+    )
+    expect(page).to have_caption("Placement contact")
+    expect(page).to have_h1("Who can we contact in your school?")
+    expect(page).to have_paragraph(
+      "We will email to ask if your school can offer placements for trainee teachers in future academic years.",
+    )
+    expect(page).to have_paragraph(
+      "Choose the person best placed to organise placements for trainee teachers at your school.",
+    )
+
+    expect(page).to have_field("First name")
+    expect(page).to have_field("Last name")
+    expect(page).to have_field("Email address")
+  end
+
+  def when_i_fill_in_the_school_contact_details
+    fill_in "First name", with: "Joe"
+    fill_in "Last name", with: "Bloggs"
+    fill_in "Email address", with: "joe_bloggs@example.com"
+  end
 
   def then_i_see_the_reason_for_not_hosting_form_page
     expect(page).to have_title(

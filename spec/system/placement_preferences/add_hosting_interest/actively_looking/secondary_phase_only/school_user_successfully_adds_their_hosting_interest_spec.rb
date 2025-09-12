@@ -9,6 +9,10 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
     when_i_select_yes
     and_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+
+    when_i_fill_in_the_school_contact_details
+    and_i_click_on_continue
     then_i_see_the_education_phase_form_page
 
     when_i_select_secondary
@@ -18,15 +22,20 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     when_i_select_english
     and_i_select_science
     and_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-
-    when_i_fill_in_the_school_contact_details
-    and_i_click_on_continue
     then_i_see_the_check_your_answers_page
 
     when_i_click_on_change_email_address
     then_i_see_the_school_contact_form_page
     and_i_see_the_school_contact_inputs_prefilled
+
+    when_i_click_on_continue
+    then_i_see_the_education_phase_form_page
+    and_i_see_secondary_selected
+
+    when_i_click_on_continue
+    then_i_see_the_secondary_subject_selection_form_page
+    and_i_see_english_selected
+    and_i_see_science_selected
 
     when_i_click_on_continue
     then_i_see_the_check_your_answers_page
@@ -35,10 +44,6 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     then_i_see_the_secondary_subject_selection_form_page
     and_i_see_english_selected
     and_i_see_science_selected
-
-    when_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-    and_i_see_the_school_contact_inputs_prefilled
 
     when_i_click_on_continue
     then_i_see_the_check_your_answers_page
@@ -51,10 +56,6 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     then_i_see_the_secondary_subject_selection_form_page
     and_i_see_english_selected
     and_i_see_science_selected
-
-    when_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-    and_i_see_the_school_contact_inputs_prefilled
 
     when_i_click_on_continue
     then_i_see_the_check_your_answers_page

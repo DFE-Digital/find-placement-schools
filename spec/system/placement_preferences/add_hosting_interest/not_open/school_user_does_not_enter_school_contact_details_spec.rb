@@ -6,10 +6,6 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
     when_i_select_no
     and_i_click_on_continue
-    then_i_see_the_reason_for_not_hosting_form_page
-
-    when_i_select_no_mentors_available_due_to_capacity
-    and_i_click_on_continue
     then_i_see_the_school_contact_form_page
 
     when_i_click_on_continue

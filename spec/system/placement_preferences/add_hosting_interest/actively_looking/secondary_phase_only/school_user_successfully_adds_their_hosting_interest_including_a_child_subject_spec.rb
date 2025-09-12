@@ -9,6 +9,10 @@ RSpec.describe "School user successfully adds their hosting interest, including 
 
     when_i_select_yes
     and_i_click_on_continue
+    then_i_see_the_school_contact_form_page
+
+    when_i_fill_in_the_school_contact_details
+    and_i_click_on_continue
     then_i_see_the_education_phase_form_page
 
     when_i_select_secondary
@@ -22,10 +26,6 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     when_i_select_french
     and_i_select_spanish
     and_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-
-    when_i_fill_in_the_school_contact_details
-    and_i_click_on_continue
     then_i_see_the_check_your_answers_page
 
     when_i_click_on_change_subject
@@ -36,10 +36,6 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     then_i_see_the_secondary_child_subject_selection_form_page
     and_i_see_french_selected
     and_i_see_spanish_selected
-
-    when_i_click_on_continue
-    then_i_see_the_school_contact_form_page
-    and_i_see_the_school_contact_inputs_prefilled
 
     when_i_click_on_continue
     then_i_see_the_check_your_answers_page
