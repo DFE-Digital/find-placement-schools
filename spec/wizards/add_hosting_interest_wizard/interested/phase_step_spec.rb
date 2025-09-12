@@ -17,7 +17,6 @@ RSpec.describe AddHostingInterestWizard::Interested::PhaseStep, type: :model do
         OpenStruct.new(
           value: "unknown",
           name: "I don’t know",
-          description: "A phase of education will not be recorded",
         ),
       )
     end

@@ -12,7 +12,7 @@
       <%= f.govuk_collection_radio_buttons(
         :appetite,
         current_step.appetite_options,
-        :value, :name, :description,
+        :value, :name,
         legend: { size: "l", text: t(".title", academic_year_name: @wizard.academic_year.name), tag: "h1" },
         hint: { text: t(".hint") }
       ) %>

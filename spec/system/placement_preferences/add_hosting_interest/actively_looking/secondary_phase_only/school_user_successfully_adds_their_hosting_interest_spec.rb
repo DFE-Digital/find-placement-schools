@@ -73,6 +73,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
   def given_academic_years_exist
     @next_academic_year = create(:academic_year, :next)
     @next_academic_year_name = @next_academic_year.name
+    @next_academic_year_short_name = "#{@next_academic_year.starts_on.year}/#{@next_academic_year.ends_on.strftime("%y")}"
   end
 
   def and_secondary_subjects_exist
@@ -83,21 +84,21 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
+      "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools",
     )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
       :legend,
-      text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
+      text: "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_field("Yes - I can offer placements", type: :radio)
-    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
-    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_select_yes
-    choose "Yes - I can offer placements"
+    choose "Yes"
   end
 
   def when_i_click_on_continue
@@ -108,12 +109,12 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_education_phase_form_page
     expect(page).to have_title(
-      "What education phase can your placements be? - Find placement schools",
+      "What education phase or specialism can your school offer placements in? - Find placement schools",
     )
-    expect(page).to have_caption("Placement details")
+    expect(page).to have_caption("Placement information #{@next_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
-      text: "What education phase can your placements be?",
+      text: "What education phase or specialism can your school offer placements in?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_hint("Select all that apply")
@@ -131,14 +132,16 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_secondary_subject_selection_form_page
     expect(page).to have_title(
-      "What secondary school subjects can you offer placements in? - Find placement schools",
+      "Which secondary subjects can your school offer placements in? - Find placement schools",
     )
     expect(page).to have_element(
       :legend,
-      text: "What secondary school subjects can you offer placements in?",
+      text: "Which secondary subjects can your school offer placements in?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_caption("Secondary placement details")
+    expect(page).to have_caption(
+      "Secondary placement information #{@next_academic_year_short_name}",
+    )
     expect(page).to have_field("English", type: :checkbox)
     expect(page).to have_field("Mathematics", type: :checkbox)
     expect(page).to have_field("Science", type: :checkbox)
@@ -156,7 +159,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_title(
       "Who should providers contact? - Find placement schools",
     )
-    expect(page).to have_caption("Contact details")
+    expect(page).to have_caption("Placement contact")
     expect(page).to have_h1("Who should providers contact?")
     expect(page).to have_paragraph(
       "Choose the person best placed to organise placements for trainee teachers at your school",
@@ -176,9 +179,10 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_title(
       "Check your answers - Find placement schools",
     )
+    expect(page).to have_caption("Placement information #{@next_academic_year_short_name}")
     expect(page).to have_h1("Check your answers")
 
-    expect(page).to have_h2("Education phase")
+    expect(page).to have_h2("Education phase and specialism")
     expect(page).to have_summary_list_row("Phase", "Primary Secondary Send")
 
 
@@ -222,31 +226,31 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
   end
 
   def when_i_click_on_publish_placements
-    click_on "Publish placements"
+    click_on "Publish placement information"
   end
 
   def then_i_see_the_my_placement_preferences
     expect(page).to have_title(
       "What happens next? - Find placement schools",
     )
+    expect(page).to have_panel(
+      "Information added",
+      "Providers can see that your school is offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
+    )
     expect(page).to have_h1("What happens next?")
     expect(page).to have_paragraph(
-      "Providers will be able to contact you on about your placement offers.",
+      "Providers in England can see the information you have recorded. They can email the placement contact at your school if they are interested in working together: joe_bloggs@example.com.",
     )
     expect(page).to have_paragraph(
-      "You do not need to take any further action until providers contact you. After discussions with one or more providers, you can then decide whether to assign providers to your placements.",
-    )
-    expect(page).to have_paragraph(
-      "Assigning a provider to a placement in this service is not a contractual agreement for a trainee to be placed in your school. An agreement must be made between you and the provider outside this service.",
+      "You do not need to take any further action if your information is up to date.",
     )
 
-    expect(page).to have_h2("Manage your placements")
-    expect(page).to have_link("Edit your placements", href: "")
     expect(page).to have_paragraph(
-      "Edit your placements to change or remove information.",
+      "You can edit your schoolʼs placement information at any time.",
     )
+    expect(page).to have_link("edit your schoolʼs placement information", href: "")
 
-    expect(page).to have_h2("Your placements offers")
+    expect(page).to have_h2("Placement information or your school")
 
     expect(page).to have_h3("Secondary placements")
     expect(page).to have_summary_list_row("Subject", "English Science")

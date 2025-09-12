@@ -2,29 +2,23 @@ en:
   wizards:
     add_hosting_interest_wizard:
       appetite_step:
-        caption: Placement preferences
-        title: 
-          Can your school offer placements for trainee teachers in the academic year %{academic_year_name}?
+        caption: Placement information
+        title:
+          Can your school offer placements for trainee teachers in the %{academic_year_name} academic year?
         continue: Continue
         hint: You can change your answers any time after completing the questions.
         options:
           actively_looking:
-            name: Yes - I can offer placements
-            description: Share the placements you can offer
+            name: "Yes"
           interested:
-            name: Maybe - I’m not sure yet
-            description: Share what you can potentially offer
+            name: Maybe
           not_open: 
-            name: No - I can’t offer placements
-            description: Tell us why you cannot offer placements
-          already_organised:
-            name: Placements already organised with providers
-            description: We'll show any providers who search for you that you're at capacity
+            name: "No"
       reason_not_hosting_step:
-        caption: Not offering placements this year
-        title: Tell us why you are not able to offer placements for trainee teachers
+        caption: Not offering placements %{academic_year_name}
+        title: Tell us why your school cannot offer placements for trainee teachers
         hint:
-          Your answers will be shared with Department for Education to help understand teacher training and recruitment.
+          Your answers will help the Department for Education understand school capacity to support teacher training.
         continue: Continue
         options:
           concerns_about_trainee_quality: Trainees we were offered did not meet our expectations
@@ -36,8 +30,8 @@ en:
           other: Other
         tell_us: Tell us your reason
       phase_step:
-        caption: Placement details
-        title: What education phase can your placements be?
+        caption: Placement information %{academic_year_name}
+        title: What education phase or specialism can your school offer placements in?
         hint: Select all that apply
         options:
           primary: Primary
@@ -48,8 +42,8 @@ en:
           send_description: You will be able to select key stages
         continue: Continue
       year_group_selection_step:
-        title: What primary school year groups can you offer placements in?
-        caption: Primary placement details
+        title: Which primary year groups can your school offer placements in?
+        caption: Primary placement information %{academic_year_name}
         hint: You will be able to enter the number of placements on the next screen
         continue: Continue
         year_groups:
@@ -72,8 +66,8 @@ en:
           mixed_year_groups: Mixed year groups
           mixed_year_groups_description: ""
       secondary_subject_selection_step:
-        title: What secondary school subjects can you offer placements in?
-        caption: Secondary placement details
+        title: Which secondary subjects can your school offer placements in?
+        caption: Secondary placement information %{academic_year_name}
         hint: Subjects are taken from the DfE database of courses. If the subject you would like to host is not here, choose the closest option
         stem_subjects: Science, technology, engineering and mathematics (STEM)
         lit_lang_subjects: Languages and literature
@@ -81,12 +75,12 @@ en:
         health_physical_education_subjects: Health and physical education
         continue: Continue
       secondary_child_subject_selection_step:
-        title: What languages are taught on your %{subject_name} placement offers?
-        caption: Secondary placement details
+        title: What languages are taught on your schoolʼs %{subject_name} placements?
+        caption: Secondary placement information %{academic_year_name}
         continue: Continue
       key_stage_selection_step:
-        title: What key stages can you offer SEND placements in?
-        caption: SEND placement details
+        title: Which key stages can you offer SEND placements in?
+        caption: SEND placement information %{academic_year_name}
         hint: Select all that apply
         continue: Continue
         key_stages:
@@ -101,69 +95,70 @@ en:
           unknown: I don’t know
           unknown_description: You can discuss key stages with providers later
       school_contact_step:
-        caption: Contact details
+        caption: Placement contact
         title: Who should providers contact?
         description: Choose the person best placed to organise placements for trainee teachers at your school
         continue: Continue
       check_your_answers_step:
-        caption: Placement details
+        caption: Placement information %{academic_year_name}
         title: Check your answers
-        continue: Publish placements
+        continue: Publish placement information
         change: Change
         placement_contact: Placement contact
       are_you_sure_step:
-        title: Confirm and let providers know you are not offering placements
-        caption: Not offering placements this year
+        title: Check your answers
+        caption: Not offering placements %{academic_year_name}
         your_contact_details: No information will be shared with providers.
-        we_will_ask_you_again: We will ask in the next academic year whether you are able to offer placements for trainee teachers.
+        we_will_ask_you_again:
+          Providers in England can see that your school is unable to offer placements for trainee teachers in %{academic_year_name}. They will not be able to see the reasons why or the placement contact.
         your_reason:
-          Your reason for not offering placements be shared with the Department for Education to help understand teacher training and recruitment.
+          Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.
         reason_for_not_offering: Reason for not offering
         details: Details
-        itt_contact: Contact details
+        itt_contact: Placement contact
         continue: Continue
         change: Change
       confirm_step:
-        title: Confirm and share what you may be able to offer
-        caption: Potential placement details
+        title: Check your answers
+        caption: Potential placement information %{academic_year_name}
         providers_see_you_can_offer_placements:
           Providers will be able to see that you may be able to offer placements for trainee teachers.
         providers_can_see_approximate_info:
           They will be able to see your potential placement details and will be able to use your email to contact you.
-        your_information: Your information
+        placement_contact: Placement contact
         additional_information: Additional information
         message_to_providers: Message to providers
-        confirm: Confirm
+        confirm: Publish potential placement information
         change: Change
       note_to_providers_step:
           title: 
             Is there anything about your school you would like providers to know? (optional)
-          caption: Potential placement details
+          caption:  Potential placement information %{academic_year_name}
+          hint:
+            Include any reasonable adjustments your school can offer trainee teachers with disabilities or other needs, for example wheelchair access.
           continue: Continue
       interested:
         phase_step:
-          title: What education phase could you offer placements in?
-          hint: Select all that apply. Sharing information on what you may be able to offer helps providers know whether to contact you. It is not a commitment to take a trainee teacher.
-          caption: Potential placement offer details
+          title: Which education phase or specialism could your school offer placements in?
+          hint: Select all that apply. Sharing information on what you may be able to offer helps providers know whether to contact you.
+          caption: Potential placement information %{academic_year_name}
           continue: Continue
           options:
             unknown: I don’t know
-            unknown_description: A phase of education will not be recorded
         year_group_selection_step:
-          title: What year groups could you offer placements in?
-          hint: Sharing information on what you may be able to offer helps providers know whether to contact you. It is not a commitment to take a trainee teacher.
-          caption: Potential primary placement details
+          title: Which primary year groups could your school offer placements in?
+          hint: Sharing information on what you may be able to offer helps providers know whether to contact you.
+          caption: Potential primary placement information %{academic_year_name}
           continue: Continue
           options:
             unknown: I don’t know
-            unknown_description: A school year will not be recorded
         secondary_subject_selection_step:
-          title: What subjects could you offer placements in?
-          caption: Potential secondary placement details
+          title: Which secondary subjects could your school offer placements in?
+          caption: Potential secondary placement information %{academic_year_name}
           hint: 
             Subjects are taken from the DfE database of courses. If the subject you would like to host is not here, choose the closest option.
           sharing_info:
-            Sharing information on what you may be able to offer helps providers know whether to contact you. It is not a commitment to take a trainee teacher.
+            Sharing information on what you may be able to offer helps providers know whether to contact you.
           stem_subjects: Science, technology, engineering and mathematics (STEM)
           lit_lang_subjects: Languages and literature
           art_humanities_social_subjects: Arts, humanities and social sciences
@@ -172,27 +167,24 @@ en:
           options:
             unknown: I don’t know
         secondary_child_subject_selection_step:
-          title: What languages are taught on your %{subject_name} placement offers?
-          caption: Potential secondary placement details
+          title: Which languages are taught on your schoolʼs %{subject_name} placements?
+          caption: Potential secondary placement information %{academic_year_name}
           continue: Continue
-          placement_number: "Placement %{placement_number} of %{step_count}"
           options:
             unknown: Not sure yet
         key_stage_selection_step:
-          title: What key stages could you offer SEND placements in?
-          caption: Potential SEND placement details
+          title: Which key stages could you offer SEND placements in?
+          caption: Potential SEND placement information %{academic_year_name}
           hint:
             Select all that apply. 
             Sharing information on what you may be able to offer helps providers know whether to contact you.
-            It is not a commitment to take a trainee teacher.
           continue: Continue
           options:
             unknown: I don’t know
-            unknown_description: A key stage will not be recorded
       not_open:
         school_contact_step:
-          caption: Not offering placements this year
-          title: Who is the preferred contact for next year?
-          we_will_ask_next_year: We will ask in the next academic year whether you are able to offer placements for trainee teachers.
+          caption: Placement contact
+          title: Who can we contact in your school?
+          we_will_ask_next_year: We will email to ask if your school can offer placements for trainee teachers in future academic years.
           choose_the_best_person: Choose the person best placed to organise placements for trainee teachers at your school.
           continue: Continue

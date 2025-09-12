@@ -45,7 +45,7 @@ class AddHostingInterestWizard < BaseWizard
   end
 
   def academic_year
-    @academic_year ||= AcademicYear.next
+    @academic_year ||= AcademicYear.next.decorate
   end
 
   private

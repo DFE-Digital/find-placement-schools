@@ -1,4 +1,6 @@
 class AddHostingInterestWizard::YearGroupSelectionStep < BaseStep
+  delegate :academic_year, to: :wizard
+
   attribute :year_groups, default: []
 
   validates :year_groups, presence: true

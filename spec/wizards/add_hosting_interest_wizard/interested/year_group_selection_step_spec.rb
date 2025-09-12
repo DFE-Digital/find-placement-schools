@@ -17,7 +17,6 @@ RSpec.describe AddHostingInterestWizard::Interested::YearGroupSelectionStep, typ
         OpenStruct.new(
           value: "unknown",
           name: "I don’t know",
-          description: "A school year will not be recorded",
         ),
       )
     end

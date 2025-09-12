@@ -1,7 +1,7 @@
 <%# locals: { current_step:, wizard:, potential: false } -%>
 
 <h2 class="govuk-heading-m">
-  <%= potential ? t(".potential_education_phase") : t(".education_phase") %>
+  <%= t(".education_phase") %>
 </h2>
 
 <%= render "shared/wizards/hosting_interest/check_your_answers/education_phase_list",
@@ -9,7 +9,7 @@
 
 <% if current_step.year_groups.present? %>
   <h2 class="govuk-heading-m">
-    <%= potential ? t(".potential_primary_placements") : t(".primary_placements") %>
+    <%= potential ? t(".primary") : t(".primary_placements") %>
   </h2>
 
   <%= render "shared/wizards/hosting_interest/check_your_answers/primary_placements_list",
@@ -18,7 +18,7 @@
 
 <% if current_step.selected_secondary_subjects.present? %>
   <h2 class="govuk-heading-m">
-    <%= potential ? t(".potential_secondary_placements") : t(".secondary_placements") %>
+    <%= potential ? t(".secondary") : t(".secondary_placements") %>
   </h2>
 
   <%= render "shared/wizards/hosting_interest/check_your_answers/secondary_placements_list",
@@ -27,7 +27,7 @@
 
 <% if current_step.key_stages.present? %>
   <h2 class="govuk-heading-m">
-    <%= potential ? t(".potential_send_placements") : t(".send_placements") %>
+    <%= potential ? t(".send") : t(".send_placements") %>
   </h2>
 
   <%= render "shared/wizards/hosting_interest/check_your_answers/send_placements_list",

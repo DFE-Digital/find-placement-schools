@@ -32,22 +32,13 @@ RSpec.describe AddHostingInterestWizard::AppetiteStep, type: :model do
       not_open = appetite_options[2]
 
       expect(actively_looking.value).to eq("actively_looking")
-      expect(actively_looking.name).to eq("Yes - I can offer placements")
-      expect(actively_looking.description).to eq(
-        "Share the placements you can offer",
-      )
+      expect(actively_looking.name).to eq("Yes")
 
       expect(interested.value).to eq("interested")
-      expect(interested.name).to eq("Maybe - I’m not sure yet")
-      expect(interested.description).to eq(
-        "Share what you can potentially offer",
-      )
+      expect(interested.name).to eq("Maybe")
 
       expect(not_open.value).to eq("not_open")
-      expect(not_open.name).to eq("No - I can’t offer placements")
-      expect(not_open.description).to eq(
-        "Tell us why you cannot offer placements",
-      )
+      expect(not_open.name).to eq("No")
     end
   end
 

@@ -1,5 +1,6 @@
 class PlacementPreferenceDecorator < ApplicationDecorator
   delegate_all
+  decorates_association :academic_year
 
   def secondary_subject_name(subject_id:)
     subject = PlacementSubject.find(subject_id)

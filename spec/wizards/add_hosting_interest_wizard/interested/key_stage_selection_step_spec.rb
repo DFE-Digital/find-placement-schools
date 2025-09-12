@@ -17,7 +17,6 @@ RSpec.describe AddHostingInterestWizard::Interested::KeyStageSelectionStep, type
         OpenStruct.new(
           value: "unknown",
           name: "I don’t know",
-          description: "A key stage will not be recorded",
         ),
       )
     end
