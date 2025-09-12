@@ -1,7 +1,7 @@
 en:
   wizards:
     add_hosting_interest_wizard:
-      unknown: I don't know
+      unknown: I don’t know
       appetite_step:
         caption: Placement information
         title:

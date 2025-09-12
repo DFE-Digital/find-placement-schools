@@ -125,6 +125,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       "Special educational needs and disabilities (SEND) specific",
       type: :checkbox,
     )
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def when_i_select_send
@@ -148,6 +149,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_field("Key stage 4", type: :checkbox)
     expect(page).to have_field("Key stage 5", type: :checkbox)
     expect(page).to have_field("Mixed key stages", type: :checkbox)
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def when_i_select_key_stage_2

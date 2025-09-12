@@ -97,6 +97,7 @@ RSpec.describe "School user does not select a key stage", type: :system do
       "Special educational needs and disabilities (SEND) specific",
       type: :checkbox,
     )
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def when_i_select_send
@@ -120,6 +121,7 @@ RSpec.describe "School user does not select a key stage", type: :system do
     expect(page).to have_field("Key stage 4", type: :checkbox)
     expect(page).to have_field("Key stage 5", type: :checkbox)
     expect(page).to have_field("Mixed key stages", type: :checkbox)
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def then_i_see_a_validation_error_for_not_selecting_a_key_stage

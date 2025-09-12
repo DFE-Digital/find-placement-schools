@@ -97,6 +97,7 @@ RSpec.describe "School user does not select a year group", type: :system do
       "Special educational needs and disabilities (SEND) specific",
       type: :checkbox,
     )
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def when_i_select_primary
@@ -124,6 +125,7 @@ RSpec.describe "School user does not select a year group", type: :system do
     expect(page).to have_field("Year 5", type: :checkbox)
     expect(page).to have_field("Year 6", type: :checkbox)
     expect(page).to have_field("Mixed year groups", type: :checkbox)
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def then_i_see_a_validation_error_for_selection_a_year_group

@@ -109,6 +109,7 @@ RSpec.describe "School user successfully adds their hosting interest, including 
       "Special educational needs and disabilities (SEND) specific",
       type: :checkbox,
     )
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def when_i_select_secondary
@@ -135,6 +136,7 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     expect(page).not_to have_field("French", type: :checkbox)
     expect(page).not_to have_field("Spanish", type: :checkbox)
     expect(page).not_to have_field("Russian", type: :checkbox)
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def when_i_select_modern_languages
@@ -161,6 +163,7 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     expect(page).to have_field("French", type: :checkbox)
     expect(page).to have_field("Spanish", type: :checkbox)
     expect(page).to have_field("Russian", type: :checkbox)
+    expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
   def when_i_select_french
