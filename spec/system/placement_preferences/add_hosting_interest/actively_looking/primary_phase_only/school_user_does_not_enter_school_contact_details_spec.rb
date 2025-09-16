@@ -51,7 +51,7 @@ RSpec.describe "School user does not enter school contact details", type: :syste
   end
   alias_method :and_i_click_on_continue,
                :when_i_click_on_continue
-  
+
   def then_i_see_the_school_contact_form_page
     expect(page).to have_title(
       "Who should providers contact? - Find placement schools",
