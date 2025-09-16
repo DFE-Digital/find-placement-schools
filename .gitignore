@@ -36,3 +36,5 @@ tmp/pids/*
 coverage/
 
 /config/master.key
+
+/config/master.key
