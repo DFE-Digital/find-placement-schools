@@ -56,6 +56,8 @@ gem "stimulus-rails", "~> 1.3"
 
 gem "ostruct", "~> 0.6.1"
 
+gem "strong_migrations"
+
 # Markdown
 gem "govuk_markdown"
 gem "redcarpet", "~> 3.6"
@@ -111,7 +113,6 @@ group :test, :development do
   gem "factory_bot_rails"
   gem "rspec"
   gem "rspec-rails"
-  gem "strong_migrations"
   gem "dotenv-rails", "~> 3.1"
   gem "capybara-screenshot", "~> 1.0"
 end
