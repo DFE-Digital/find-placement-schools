@@ -70,6 +70,8 @@ RUN apk add --update --no-cache tzdata && \
 # Create non-root user and group
 RUN addgroup -S appgroup -g 20001 && adduser -S appuser -G appgroup -u 10001
 
+RUN mkdir -p /app/tmp /app/log
+
 # Change ownership only for directories that need write access
 RUN chown -R appuser:appgroup /app/tmp /app/log
 
