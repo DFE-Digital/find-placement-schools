@@ -76,11 +76,6 @@ RUN apk add --update --no-cache tzdata && \
 # Create non-root user and group
 RUN addgroup -S appgroup -g 20001 && adduser -S appuser -G appgroup -u 10001
 
-RUN mkdir -p /app/tmp /app/log
-
-# Change ownership only for directories that need write access
-RUN chown -R appuser:appgroup /app/tmp /app/log
-
 # libpq: required to run postgres
 RUN apk add --no-cache libpq
 
@@ -90,6 +85,9 @@ RUN apk add --no-cache proj-util
 # Copy files generated in the builder image
 COPY --from=builder /app /app
 COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
+
+# Change ownership only for directories that need write access
+RUN chown -R appuser:appgroup /app/tmp /app/log
 
 # Set the SHA environment variable for the healthcheck
 ARG COMMIT_SHA
