@@ -3,7 +3,7 @@
 # production: runs the actual app
 
 # Build builder image
-FROM ruby:3.4.1-alpine as builder
+FROM ruby:3.4.1-alpine AS builder
 
 # RUN apk -U upgrade && \
 #     apk add --update --no-cache gcc git libc6-compat libc-dev make nodejs \
@@ -21,6 +21,12 @@ RUN apk add --update --no-cache tzdata && \
 # postgresql-dev: postgres driver and libraries
 RUN apk add --no-cache build-base yarn postgresql17-dev
 
+RUN apk add --no-cache nodejs npm
+
+RUN npm install -g corepack
+
+RUN corepack enable && corepack prepare yarn@4.9.2 --activate
+
 # Install gems defined in Gemfile
 COPY .ruby-version Gemfile Gemfile.lock ./
 
@@ -34,7 +40,7 @@ RUN bundler -v && \
 
 # Install node packages defined in package.json
 COPY package.json yarn.lock ./
-RUN yarn install --immutable
+RUN yarn install --frozen-lockfile
 
 # Copy all files to /app (except what is defined in .dockerignore)
 COPY . .
@@ -54,7 +60,7 @@ RUN rm -rf node_modules log/* tmp/* /tmp && \
     find /usr/local/bundle/gems -name "*.html" -delete
 
 # Build runtime image
-FROM ruby:3.4.1-alpine as production
+FROM ruby:3.4.1-alpine AS production
 
 # Use rails production environment when deployed using docker
 ENV RAILS_ENV=production
