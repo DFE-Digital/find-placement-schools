@@ -134,9 +134,6 @@ GEM
       railties (>= 6.0.0)
     csv (3.3.5)
     date (3.4.1)
-    debug (1.11.0)
-      irb (~> 1.10)
-      reline (>= 0.3.8)
     diff-lcs (1.6.2)
     docile (1.4.1)
     dotenv (3.1.8)
@@ -655,7 +652,6 @@ DEPENDENCIES
   capybara-screenshot (~> 1.0)
   cssbundling-rails
   csv (~> 3.3)
-  debug
   dotenv-rails (~> 3.1)
   down (~> 5.4)
   draper (~> 4.0)
