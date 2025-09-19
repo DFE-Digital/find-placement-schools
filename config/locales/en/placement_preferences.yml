@@ -1,5 +1,11 @@
 en:
   placement_preferences:
+    index:
+      title: Placement information
+      add_placement_information: Add placement information
+      placement_information: Placement information
+      academic_year: Academic year
+      status: Status
     show:
       what_happens_next: What happens next?
     add_hosting_interest:

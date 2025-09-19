@@ -84,7 +84,7 @@ production:
     <<: *default
     database: find_placement_schools_production
     username: find_placement_schools
-    password: <%= ENV["FIND_ITT_PLACEMENTS_DATABASE_PASSWORD"] %>
+    password: <%= ENV["FIND_PLACEMENT_SCHOOLS_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
     database: find_placement_schools_production_cache

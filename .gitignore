@@ -36,6 +36,7 @@ tmp/pids/*
 coverage/
 
 /config/master.key
+
 # Terraform
 .terraform
 terraform/application/vendor
