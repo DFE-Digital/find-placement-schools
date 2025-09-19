@@ -27,7 +27,7 @@ gem "solid_queue"
 gem "bootsnap", require: false
 
 # GOV.UK Notify
-gem "mail-notify", "~> 2.0.0"
+gem "mail-notify", "~> 2.1.0"
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
 gem "kamal", require: false
