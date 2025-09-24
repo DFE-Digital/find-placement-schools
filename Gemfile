@@ -102,6 +102,7 @@ group :test do
   gem "undercover"
   gem "simplecov", require: false
   gem "simplecov-lcov", require: false
+  gem "climate_control"
 end
 
 gem "govuk-components"
