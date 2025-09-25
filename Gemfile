@@ -75,6 +75,8 @@ gem "pundit"
 
 gem "okcomputer", "~> 1.19"
 
+gem "dotenv-rails", "~> 3.1"
+
 group :development, :test do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
@@ -113,7 +115,6 @@ group :test, :development do
   gem "factory_bot_rails"
   gem "rspec"
   gem "rspec-rails"
-  gem "dotenv-rails", "~> 3.1"
   gem "capybara-screenshot", "~> 1.0"
 end
 
