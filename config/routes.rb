@@ -55,5 +55,15 @@ Rails.application.routes.draw do
   end
   resources :admin_dashboard, only: %i[index]
 
+  namespace :admin do
+    resources :previous_placements, only: [] do
+      collection do
+        get "new", to: "previous_placements/import_register_data#new", as: :new_import_register_data
+        get "new/:state_key/:step", to: "previous_placements/import_register_data#edit", as: :import_register_data
+        put "new/:state_key/:step", to: "previous_placements/import_register_data#update"
+      end
+    end
+  end
+
   get "api/google/map-key", to: "api/google#map_key", as: :google_map_key
 end
