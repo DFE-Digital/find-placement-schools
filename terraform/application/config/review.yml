@@ -1,2 +1,2 @@
-RAILS_ENV: review
-RACK_ENV: review
+RAILS_ENV: development
+RACK_ENV: development
