@@ -17,5 +17,6 @@ RSpec.describe "Admin user views dashboard", type: :system do
     expect(page).to have_h1("Admin dashboard")
 
     expect(page).to have_link("Mission control job dashboard", href: "/jobs")
+    expect(page).to have_link("Import Register ITT Placement Data", href: "/admin/previous_placements/new")
   end
 end

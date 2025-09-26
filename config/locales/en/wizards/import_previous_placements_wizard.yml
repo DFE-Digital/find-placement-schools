@@ -1,0 +1,43 @@
+en:
+  wizards:
+    import_previous_placements_wizard:
+      upload_step:
+        page_title: Upload file - Import Register ITT Placement Data
+        caption: Import Register ITT Placement Data
+        title: Upload file
+        upload: Upload
+        upload_text: Upload the CSV file sent to you by Register trainee teachers
+        file_must_contain: The file must contain the headers %{required_headers}.
+        upload_csv_file: Upload CSV file
+      confirmation_step:
+        page_title: Confirm you want to upload previous placements - Import Register ITT Placement Data
+        title: Confirm you want to upload previous placements
+        preview_file_name: Preview of %{file_name}
+        caption: Import Register ITT Placement Data
+        confirm_upload: Confirm upload
+        only_showing_first_five_rows: Only showing the first 5 rows
+        showing_all_rows: Showing all rows
+      upload_errors_step:
+        page_title: Upload file - Import Register ITT Placement Data
+        title: Upload file
+        caption: Import Register ITT Placement Data
+        error_summary:
+          title: There is a problem
+          errors_to_fix:
+            one: You need to fix %{count} error related to a specific row
+            other: You need to fix %{count} errors related to specific rows
+        csv_table:
+          headers:
+            academic_year_start_date: academic_year_start_date
+            school_urn: school_urn
+            subject_name: subject_name
+            subject_code: subject_code
+            number_of_placements: number_of_placements
+          errors:
+            missing_academic_year: Enter an academic year start date
+            invalid_school_urn: Enter a valid school URN
+            missing_subject_name: Enter a subject name
+            invalid_subject_code: Enter a valid subject code
+            invalid_number_of_placements: Enter a whole number greater than 0
+        only_showing_rows_with_errors: Only showing rows with errors
+        upload_your_file_again: Upload your file again

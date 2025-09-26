@@ -4,5 +4,9 @@ FactoryBot.define do
     last_name { "Chicken" }
     sequence(:email_address) { |n| "judith.chicken#{n}@hogwarts.sch.uk" }
     dfe_sign_in_uid { SecureRandom.uuid }
+
+    trait :admin do
+      admin { true }
+    end
   end
 end

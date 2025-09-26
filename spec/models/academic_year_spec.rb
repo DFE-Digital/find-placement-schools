@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe AcademicYear, type: :model do
   describe "associations" do
     it { is_expected.to have_many(:placement_preferences) }
+    it { is_expected.to have_many(:previous_placements).dependent(:destroy) }
   end
 
   describe "validations" do

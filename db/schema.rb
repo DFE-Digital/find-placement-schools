@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_10_163023) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_25_093452) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql" unless extension_enabled?("plpgsql")
   enable_extension "pgcrypto" unless extension_enabled?("pgcrypto")
@@ -118,6 +118,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_10_163023) do
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_placement_subjects_on_code", unique: true
     t.index ["parent_subject_id"], name: "index_placement_subjects_on_parent_subject_id"
+  end
+
+  create_table "previous_placements", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "school_id", null: false
+    t.uuid "academic_year_id", null: false
+    t.uuid "placement_subject_id", null: false
+    t.integer "number_of_placements", default: 0, null: false
+    t.index ["academic_year_id"], name: "index_previous_placements_on_academic_year_id"
+    t.index ["placement_subject_id"], name: "index_previous_placements_on_placement_subject_id"
+    t.index ["school_id", "placement_subject_id", "academic_year_id"], name: "idx_on_school_id_placement_subject_id_academic_year_290aca342d", unique: true
+    t.index ["school_id"], name: "index_previous_placements_on_school_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -277,6 +288,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_10_163023) do
   add_foreign_key "organisation_contacts", "organisations"
   add_foreign_key "placement_preferences", "academic_years"
   add_foreign_key "placement_preferences", "organisations"
+  add_foreign_key "previous_placements", "academic_years"
+  add_foreign_key "previous_placements", "organisations", column: "school_id"
+  add_foreign_key "previous_placements", "placement_subjects"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_failed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
