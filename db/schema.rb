@@ -13,7 +13,7 @@
 ActiveRecord::Schema[8.0].define(version: 2025_09_10_163023) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql" unless extension_enabled?("plpgsql")
-  enable_extension "pgcrypto"
+  enable_extension "pgcrypto" unless extension_enabled?("pgcrypto")
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
