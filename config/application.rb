@@ -42,5 +42,9 @@ module FindIttPlacements
     config.assets.paths << Rails.root.join("node_modules/govuk-frontend/dist/govuk/assets")
 
     config.exceptions_app = routes
+
+    config.host_authorization = {
+      exclude: ->(request) { request.path.include?("healthcheck") }
+    }
   end
 end
