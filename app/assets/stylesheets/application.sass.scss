@@ -5,6 +5,7 @@ $govuk-assets-path: "/";
 @import "govuk-frontend/dist/govuk/all";
 @import "filter_form";
 @import "map";
+@import "tables";
 
 .govuk-header__link .govuk-header__logotype {
   height: 30px;

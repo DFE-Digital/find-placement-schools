@@ -8,6 +8,7 @@ class School < Organisation
   has_many :placement_preferences, foreign_key: :organisation_id
   has_many :user_memberships, foreign_key: :organisation_id
   has_many :users, through: :user_memberships
+  has_many :previous_placements, dependent: :destroy
 
   scope :without_preference_for, ->(academic_year) {
     where.not(

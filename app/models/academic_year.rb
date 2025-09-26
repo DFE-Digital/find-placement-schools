@@ -1,5 +1,6 @@
 class AcademicYear < ApplicationRecord
   has_many :placement_preferences
+  has_many :previous_placements, dependent: :destroy
 
   validates :name, presence: true
   validates :starts_on, presence: true

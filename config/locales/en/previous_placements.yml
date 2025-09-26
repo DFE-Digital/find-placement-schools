@@ -1,0 +1,10 @@
+en:
+  admin:
+    previous_placements:
+      import_register_data:
+        edit:
+          cancel: Cancel
+        update:
+          success:
+            heading: Register ITT placement data uploaded
+            body: It may take a moment for the data to import.
