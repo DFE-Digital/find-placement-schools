@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_25_093452) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_29_104848) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql" unless extension_enabled?("plpgsql")
-  enable_extension "pgcrypto" unless extension_enabled?("pgcrypto")
+  enable_extension "pg_catalog.plpgsql"
+  enable_extension "pgcrypto"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
