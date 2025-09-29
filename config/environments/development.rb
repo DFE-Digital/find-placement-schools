@@ -66,7 +66,6 @@ Rails.application.configure do  # Semantic logging for integration with Kibana
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   config.hosts = [
-    "find-placement-schools-development.test.teacherservices.cloud",
     /.*\.test\.teacherservices\.cloud/
   ]
 end
