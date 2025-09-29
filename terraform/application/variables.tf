@@ -100,3 +100,6 @@ variable "job_name" {
   default     = "migrations"
 }
 
+variable "postgres_extensions"{
+  default = ["PGCRYPTO"]
+}
