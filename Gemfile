@@ -87,7 +87,6 @@ group :development, :review, :staging, :test do
 end
 
 group :development do
-  gem "dotenv-rails", "~> 3.1"
   gem "rladr"
   gem "solargraph", require: false
   gem "solargraph-rails", require: false
@@ -112,7 +111,8 @@ end
 gem "govuk-components"
 gem "govuk_design_system_formbuilder"
 
-group :test, :development, :review do
+group :test, :development do
+  gem "dotenv-rails", "~> 3.1"
   gem "erb_lint", require: false
   gem "factory_bot_rails"
   gem "rspec"
