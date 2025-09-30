@@ -76,7 +76,6 @@ gem "pundit"
 gem "okcomputer", "~> 1.19"
 
 group :development, :staging, :test, :review do
-  gem "dotenv-rails", "~> 3.1"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
@@ -88,6 +87,7 @@ group :development, :review, :staging, :test do
 end
 
 group :development do
+  gem "dotenv-rails", "~> 3.1"
   gem "rladr"
   gem "solargraph", require: false
   gem "solargraph-rails", require: false
