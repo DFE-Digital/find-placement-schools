@@ -12,12 +12,12 @@ class School < Organisation
 
   scope :without_preference_for, ->(academic_year) {
     where.not(
-      id: PlacementPreference.where(academic_year_id: academic_year).select(:organisation_id)
+      id: PlacementPreference.where(academic_year: academic_year).select(:organisation_id)
     )
   }
   scope :open_to_hosting_for, ->(academic_year) {
     where(id:
-      PlacementPreference.where(academic_year: academic_year)
+      PlacementPreference.where(academic_year:)
          .where.not(appetite: "not_open")
          .select(:organisation_id),
     ).or(
