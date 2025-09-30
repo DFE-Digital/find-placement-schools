@@ -59,4 +59,17 @@ RSpec.describe InterestTagComponent, type: :component do
       expect(page).to have_css(".govuk-tag--grey")
     end
   end
+
+  context "when the school has previous offered placements" do
+    let(:previous_placements) { [build(:previous_placement, academic_year:)] }
+    let(:school) { create(:school, previous_placements:) }
+
+    it "renders the correct text" do
+      expect(page).to have_content "Previously offered placements"
+    end
+
+    it "renders the correct tag" do
+      expect(page).to have_css(".govuk-tag--turquoise")
+    end
+  end
 end

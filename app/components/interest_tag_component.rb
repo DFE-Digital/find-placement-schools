@@ -3,14 +3,16 @@ class InterestTagComponent < ApplicationComponent
     "actively_looking" => "green",
     "interested" => "yellow",
     "not_open" => "red",
-    "not_participating" => "grey"
+    "not_participating" => "grey",
+    "previously_offered" => "turquoise",
   }.freeze
 
   INTEREST_TEXT = {
     "actively_looking" => I18n.t("components.interest_tag_component.actively_looking"),
     "interested" => I18n.t("components.interest_tag_component.interested"),
     "not_open" => I18n.t("components.interest_tag_component.not_open"),
-    "not_participating" => I18n.t("components.interest_tag_component.not_participating")
+    "not_participating" => I18n.t("components.interest_tag_component.not_participating"),
+    "previously_offered" => I18n.t("components.interest_tag_component.previously_offered"),
   }.freeze
 
   private_constant :INTEREST_COLOURS, :INTEREST_TEXT
@@ -45,6 +47,8 @@ class InterestTagComponent < ApplicationComponent
       "interested"
     elsif not_looking?
       "not_open"
+    elsif previously_offered_placements?
+      "previously_offered"
     else
       "not_participating"
     end
@@ -60,6 +64,10 @@ class InterestTagComponent < ApplicationComponent
 
   def not_looking?
     placement_preference&.not_open?
+  end
+
+  def previously_offered_placements?
+    school.previous_placements.exists?
   end
 
   def placement_preference
