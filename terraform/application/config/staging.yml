@@ -1,2 +1,2 @@
-RAILS_ENV: production
-RACK_ENV: production
+RAILS_ENV: staging
+RACK_ENV: staging

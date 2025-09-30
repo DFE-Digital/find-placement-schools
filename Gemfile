@@ -75,17 +75,19 @@ gem "pundit"
 
 gem "okcomputer", "~> 1.19"
 
-gem "dotenv-rails", "~> 3.1"
-
-group :development, :test do
+group :development, :staging, :test do
+  gem "dotenv-rails", "~> 3.1"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
-
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
 
-group :development do
+group :development, :review, :staging, :test do
+  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
+end
+
+group :development, :review do
   gem "rladr"
   gem "solargraph", require: false
   gem "solargraph-rails", require: false
@@ -110,7 +112,7 @@ end
 gem "govuk-components"
 gem "govuk_design_system_formbuilder"
 
-group :test, :development do
+group :test, :development, :review do
   gem "erb_lint", require: false
   gem "factory_bot_rails"
   gem "rspec"
@@ -118,7 +120,7 @@ group :test, :development do
   gem "capybara-screenshot", "~> 1.0"
 end
 
-group :development, :production do
+group :development, :review, :production, :staging do
   gem "amazing_print"
   gem "rails_semantic_logger"
 end
