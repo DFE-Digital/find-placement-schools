@@ -87,7 +87,7 @@ group :development, :review, :staging, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 end
 
-group :development, :review do
+group :development do
   gem "rladr"
   gem "solargraph", require: false
   gem "solargraph-rails", require: false
