@@ -1,6 +1,7 @@
 *.log
 .DS_Store
 .bundle
+.env
 .env.local
 .envrc
 .idea
