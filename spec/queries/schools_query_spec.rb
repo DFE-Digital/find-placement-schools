@@ -40,6 +40,33 @@ describe SchoolsQuery do
       expect(query.call).not_to include(non_query_school)
     end
 
+    context "when filtering by previously hosted placements" do
+      let(:params) { { filters: { schools_to_show: "previously_hosted" } } }
+      let(:not_hosting_school) do
+        create(
+          :school,
+          name: "Brixton Primary School",
+          phase: "All-through",
+          placement_preferences: [ build(:placement_preference, appetite: "not_open", academic_year: AcademicYear.next, placement_details: {
+            "secondary_subject_selection" => {
+              "subject_ids" => [ maths.id, biology.id ]
+            }
+          }) ]
+        )
+      end
+
+      before do
+        not_hosting_school
+        create(:previous_placement, school: query_school, academic_year: AcademicYear.next)
+      end
+
+      it "returns all schools" do
+        expect(query.call).to include(query_school)
+        expect(query.call).not_to include(not_hosting_school)
+        expect(query.call).not_to include(non_query_school)
+      end
+    end
+
     context "when filtering by all schools" do
       let(:params) { { filters: { schools_to_show: "all" } } }
 
@@ -137,7 +164,7 @@ describe SchoolsQuery do
       end
 
       context "when filtering by not open schools" do
-        let(:params) { { filters: { itt_statuses: [ "not_open" ] } } }
+        let(:params) { { filters: { schools_to_show: "all", itt_statuses: [ "not_open" ] } } }
 
         it "returns schools with matching placement preferences" do
           expect(query.call).to include(not_open_school)

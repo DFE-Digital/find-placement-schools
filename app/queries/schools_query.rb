@@ -46,9 +46,13 @@ class SchoolsQuery < ApplicationQuery
   end
 
   def schools_to_show_condition(scope)
-    return scope if filter_params[:schools_to_show] == "all"
-
-    scope.where.associated(:placement_preferences)
+    if filter_params[:schools_to_show] == "all"
+      scope
+    elsif filter_params[:schools_to_show] == "previously_hosted"
+      scope.where.associated(:previous_placements)
+    else
+      scope.open_to_hosting_for(AcademicYear.next)
+    end
   end
 
   def itt_statuses_condition(scope)

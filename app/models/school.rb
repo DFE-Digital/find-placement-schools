@@ -15,6 +15,15 @@ class School < Organisation
       id: PlacementPreference.where(academic_year_id: academic_year).select(:organisation_id)
     )
   }
+  scope :open_to_hosting_for, ->(academic_year) {
+    where(id:
+      PlacementPreference.where(academic_year: academic_year)
+         .where.not(appetite: "not_open")
+         .select(:organisation_id),
+    ).or(
+      where(id: PreviousPlacement.select(:school_id))
+    )
+  }
 
   def self.users_without_preference_for(academic_year)
     User.joins(:user_memberships)

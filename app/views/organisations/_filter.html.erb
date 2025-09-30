@@ -172,7 +172,7 @@
               },
               small: true,
               ) do %>
-              <% %w[active all].each do |active_filter_option| %>
+              <% %w[active previously_hosted all].each do |active_filter_option| %>
                 <%= form.govuk_radio_button :schools_to_show,
                                             active_filter_option,
                                             label: { text: t(".schools_to_show_options.#{active_filter_option}") } %>
