@@ -11,7 +11,8 @@ en:
       apply_filters: Apply filters
       schools_to_show: Schools to show
       schools_to_show_options:
-        active: Only schools using the service
+        active: Can offer placements
+        previously_hosted: Previously hosted placements
         all: All schools
       powered_by_google: Powered by Google
     show:
