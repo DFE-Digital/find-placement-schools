@@ -61,7 +61,7 @@ RSpec.describe InterestTagComponent, type: :component do
   end
 
   context "when the school has previous offered placements" do
-    let(:previous_placements) { [build(:previous_placement, academic_year:)] }
+    let(:previous_placements) { [ build(:previous_placement, academic_year:) ] }
     let(:school) { create(:school, previous_placements:) }
 
     it "renders the correct text" do
