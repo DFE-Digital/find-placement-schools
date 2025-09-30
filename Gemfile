@@ -75,7 +75,7 @@ gem "pundit"
 
 gem "okcomputer", "~> 1.19"
 
-group :development, :staging, :test do
+group :development, :staging, :test, :review do
   gem "dotenv-rails", "~> 3.1"
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
