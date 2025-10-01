@@ -26,11 +26,11 @@
       <% table.with_head do |head| %>
         <% head.with_row do |row| %>
           <% row.with_cell text: 1 %>
-          <% row.with_cell text: t(".csv_table.headers.academic_year_start_date") %>
-          <% row.with_cell text: t(".csv_table.headers.school_urn") %>
-          <% row.with_cell text: t(".csv_table.headers.subject_name") %>
-          <% row.with_cell text: t(".csv_table.headers.subject_code") %>
-          <% row.with_cell text: t(".csv_table.headers.number_of_placements") %>
+          <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.academic_year_start_date") %>
+          <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.school_urn") %>
+          <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.subject_name") %>
+          <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.subject_code") %>
+          <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.number_of_placements") %>
         <% end %>
       <% end %>
 
@@ -43,7 +43,7 @@
             <% row.with_cell do %>
               <p>
                 <% if current_step.missing_academic_year_rows.include?(csv_row_index) %>
-                  <strong class="error-text"><%= t(".csv_table.errors.missing_academic_year") %></strong><br>
+                  <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.missing_academic_year") %></strong><br>
                 <% end %>
                 <%= csv_row["academic_year_start_date"] %>
               </p>
@@ -52,7 +52,7 @@
             <% row.with_cell do %>
               <p>
                 <% if current_step.invalid_school_urn_rows.include?(csv_row_index) %>
-                  <strong class="error-text"><%= t(".csv_table.errors.invalid_school_urn") %></strong><br>
+                  <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.invalid_school_urn") %></strong><br>
                 <% end %>
                 <%= csv_row["school_urn"] %>
               </p>
@@ -61,7 +61,7 @@
             <% row.with_cell do %>
               <p>
                 <% if current_step.missing_subject_name_rows.include?(csv_row_index) %>
-                  <strong class="error-text"><%= t(".csv_table.errors.missing_subject_name") %></strong><br>
+                  <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.missing_subject_name") %></strong><br>
                 <% end %>
                 <%= csv_row["subject_name"] %>
               </p>
@@ -70,7 +70,7 @@
             <% row.with_cell do %>
               <p>
                 <% if current_step.invalid_subject_code_rows.include?(csv_row_index) %>
-                  <strong class="error-text"><%= t(".csv_table.errors.invalid_subject_code") %></strong><br>
+                  <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.invalid_subject_code") %></strong><br>
                 <% end %>
                 <%= csv_row["subject_code"] %>
               </p>
@@ -79,7 +79,7 @@
             <% row.with_cell do %>
               <p>
                 <% if current_step.invalid_number_of_placements_rows.include?(csv_row_index) %>
-                  <strong class="error-text"><%= t(".csv_table.errors.invalid_number_of_placements") %></strong><br>
+                  <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.invalid_number_of_placements") %></strong><br>
                 <% end %>
                 <%= csv_row["number_of_placements"] %>
               </p>
