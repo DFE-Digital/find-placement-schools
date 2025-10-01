@@ -9,30 +9,32 @@
             t(".add_placement_information"),
             new_add_hosting_interest_placement_preferences_path(organisation)) %>
 
-      <%= govuk_table do |table| %>
-        <% table.with_caption(size: 'm', text: t(".placement_information")) %>
-        <% table.with_head do |header| %>
-          <% header.with_row do |row| %>
-            <% row.with_cell(text: t(".academic_year")) %>
-            <% row.with_cell(text: t(".status")) %>
+      <% if placement_preferences.exists? %>
+        <%= govuk_table do |table| %>
+          <% table.with_caption(size: 'm', text: t(".placement_information")) %>
+          <% table.with_head do |header| %>
+            <% header.with_row do |row| %>
+              <% row.with_cell(text: t(".academic_year")) %>
+              <% row.with_cell(text: t(".status")) %>
+            <% end %>
           <% end %>
-        <% end %>
 
-        <% table.with_body do |body| %>
-          <% placement_preferences.each do |placement_preference| %>
-            <% body.with_row do |row| %>
-              <% row.with_cell do %>
-                <%= govuk_link_to(placement_preference.academic_year.name,
-                  placement_preference_path(placement_preference),
-                                  no_visited_state: true) %>
-              <% end %>
-              <% row.with_cell do %>
-                <% render InterestTagComponent.new(school: organisation, academic_year: placement_preference.academic_year) %>
+          <% table.with_body do |body| %>
+            <% placement_preferences.each do |placement_preference| %>
+              <% body.with_row do |row| %>
+                <% row.with_cell do %>
+                  <%= govuk_link_to(placement_preference.academic_year.name,
+                    placement_preference_path(placement_preference),
+                                    no_visited_state: true) %>
+                <% end %>
+                <% row.with_cell do %>
+                  <% render InterestTagComponent.new(school: organisation, academic_year: placement_preference.academic_year) %>
+                <% end %>
               <% end %>
             <% end %>
           <% end %>
         <% end %>
-      <% end %>
+    <% end %>
     </div>
   </div>
 </div>

@@ -12,8 +12,8 @@ class ServiceNavigationComponent < ApplicationComponent
           {
             text: t("components.service_navigation_component.placement_information"),
             href: helpers.placement_preferences_path,
-            active: helpers.current_page?(helpers.placement_preferences_path),
-            current: helpers.current_page?(helpers.placement_preferences_path)
+            active: request.path.match?(/^\/placement_preferences/),
+            current: request.path.match?(/^\/placement_preferences/)
           },
           {
             text: t("components.service_navigation_component.organisation_details"),
