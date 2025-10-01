@@ -1,2 +1,2 @@
-RAILS_ENV: development
-RACK_ENV: development
+RAILS_ENV: az_development
+RACK_ENV: az_development
