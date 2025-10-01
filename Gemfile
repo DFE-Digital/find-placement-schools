@@ -75,14 +75,14 @@ gem "pundit"
 
 gem "okcomputer", "~> 1.19"
 
-group :development, :staging, :test, :review do
+group :development, :staging, :test, :review, :az_development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 end
 
-group :development, :review, :staging, :test do
+group :development, :review, :staging, :test, :az_development do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 end
 
@@ -120,7 +120,7 @@ group :test, :development do
   gem "capybara-screenshot", "~> 1.0"
 end
 
-group :development, :review, :production, :staging do
+group :development, :review, :production, :staging, :az_development do
   gem "amazing_print"
   gem "rails_semantic_logger"
 end
