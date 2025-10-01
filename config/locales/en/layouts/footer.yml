@@ -2,8 +2,8 @@ en:
   layouts:
     footer:
       get_help: Get help
-      support_email_html: placeholder@sample.com
-      support_email: placeholder@sample.com
+      support_email_html: find.placementschools@education.gov.uk
+      support_email: find.placementschools@education.gov.uk
       service_name: Find placement schools
 
       email:
