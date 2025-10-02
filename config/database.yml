@@ -95,11 +95,7 @@ production:
   primary: &primary_production
     <<: *default
     database: find_placement_schools_production
-    username: find_placement_schools
-    password: <%= ENV["FIND_PLACEMENT_SCHOOLS_DATABASE_PASSWORD"] %>
-    url: <%= ENV["DATABASE_URL"] %>
   cache:
     <<: *primary_production
     database: find_placement_schools_production_cache
     migrations_paths: db/cache_migrate
-    url: <%= ENV["DATABASE_URL"] %>
