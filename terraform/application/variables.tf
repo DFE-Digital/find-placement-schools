@@ -103,3 +103,20 @@ variable "job_name" {
 variable "postgres_extensions"{
   default = ["PGCRYPTO"]
 }
+
+variable "replicas" {
+  default = 1
+  type = number
+}
+
+variable "azure_maintenance_window" {
+  default = null
+}
+
+variable "postgres_enable_high_availability" {
+  default = false
+}
+
+variable "postgres_flexible_server_sku" {
+  default = "B_Standard_B1ms"
+}
