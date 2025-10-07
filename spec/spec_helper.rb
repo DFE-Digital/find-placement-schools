@@ -41,6 +41,14 @@ SimpleCov.start "rails" do
   add_group "Wizards", "app/wizards"
 end
 
+# `expect(...).not_to matcher.and matcher` is not supported, since it creates a bit of an ambiguity.
+# Instead, define negated versions of whatever matchers you wish to negate with
+# `RSpec::Matchers.define_negated_matcher` and use `expect(...).to matcher.and matcher`.
+RSpec::Matchers.define_negated_matcher :not_change, :change
+RSpec::Matchers.define_negated_matcher :not_enqueue_mail, :enqueue_mail
+RSpec::Matchers.define_negated_matcher :not_have_enqueued_mail, :have_enqueued_mail
+RSpec::Matchers.define_negated_matcher :not_have_enqueued_job, :have_enqueued_job
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
