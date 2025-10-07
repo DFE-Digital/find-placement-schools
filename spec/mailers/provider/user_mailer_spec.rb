@@ -9,7 +9,7 @@ RSpec.describe Provider::UserMailer, type: :mailer do
 
     it "sends invitation email" do
       expect(invite_email.to).to contain_exactly(user.email_address)
-      expect(invite_email.subject).to eq("[DEVELOPMENT] Invitation to join Find placement schools")
+      expect(invite_email.subject).to eq("Invitation to join Find placement schools")
       expect(invite_email.body.to_s.squish).to eq(<<~EMAIL.squish)
         Dear #{user.first_name},
 
@@ -60,7 +60,7 @@ RSpec.describe Provider::UserMailer, type: :mailer do
 
     it "sends expected message to user" do
       expect(removal_email.to).to contain_exactly user.email_address
-      expect(removal_email.subject).to eq "[DEVELOPMENT] You have been removed from Find placement schools"
+      expect(removal_email.subject).to eq "You have been removed from Find placement schools"
       expect(removal_email.body.to_s.squish).to eq(<<~EMAIL.squish)
         Dear #{user.first_name},
 

@@ -1,0 +1,49 @@
+<% content_for :page_title, t(".title") %>
+
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= form_for(current_step, url: current_step_path, method: :put) do |f| %>
+        <%= f.govuk_error_summary %>
+
+        <span class="govuk-caption-l"><%= t(".caption") %></span>
+        <h1 class="govuk-heading-l"><%= t(".title") %></h1>
+
+        <h2 class="govuk-heading-m"><%= t(".details") %></h2>
+        <%= govuk_summary_list(actions: true) do |summary_list| %>
+          <% summary_list.with_row do |row| %>
+            <% row.with_key(text: User.human_attribute_name(:first_name)) %>
+            <% row.with_value(text: wizard.steps[:user].first_name) %>
+            <% row.with_action(text: t(".change"),
+                               href: step_path(:user),
+                               visually_hidden_text: User.human_attribute_name(:first_name),
+                               classes: ["govuk-link--no-visited-state"]) %>
+          <% end %>
+          <% summary_list.with_row do |row| %>
+            <% row.with_key(text: User.human_attribute_name(:last_name)) %>
+            <% row.with_value(text: wizard.steps[:user].last_name) %>
+            <% row.with_action(text: t(".change"),
+                               href: step_path(:user),
+                               visually_hidden_text: User.human_attribute_name(:last_name),
+                               classes: ["govuk-link--no-visited-state"]) %>
+          <% end %>
+          <% summary_list.with_row do |row| %>
+            <% row.with_key(text: User.human_attribute_name(:email_address)) %>
+            <% row.with_value(text: wizard.steps[:user].email_address) %>
+            <% row.with_action(text: t(".change"),
+                               href: step_path(:user),
+                               visually_hidden_text: User.human_attribute_name(:email_address),
+                               classes: ["govuk-link--no-visited-state"]) %>
+          <% end %>
+        <% end %>
+
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text"><%= t(".warning", user_name: wizard.steps[:user].user.full_name, school_name: current_organisation.name) %></strong>
+        </div>
+
+        <%= f.govuk_submit t(".submit") %>
+      <% end %>
+    </div>
+  </div>
+</div>
