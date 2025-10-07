@@ -16,6 +16,12 @@ class ServiceNavigationComponent < ApplicationComponent
             current: request.path.match?(/^\/placement_preferences/)
           },
           {
+            text: t("components.service_navigation_component.users"),
+            href: helpers.users_path,
+            active: request.path.match?(/^\/users/),
+            current: request.path.match?(/^\/users/)
+          },
+          {
             text: t("components.service_navigation_component.organisation_details"),
             href: helpers.organisation_path(current_organisation.id),
             active: helpers.current_page?(helpers.organisation_path(current_organisation.id)),
@@ -29,6 +35,12 @@ class ServiceNavigationComponent < ApplicationComponent
             href: helpers.organisations_path,
             active: helpers.current_page?(helpers.organisations_path),
             current: helpers.current_page?(helpers.organisations_path)
+          },
+          {
+            text: t("components.service_navigation_component.users"),
+            href: helpers.users_path,
+            active: request.path.match?(/^\/users/),
+            current: request.path.match?(/^\/users/)
           },
           {
             text: t("components.service_navigation_component.organisation_details"),
