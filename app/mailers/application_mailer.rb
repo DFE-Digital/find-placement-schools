@@ -5,13 +5,19 @@ class ApplicationMailer < Mail::Notify::Mailer
 
   def notify_email(subject:, **headers)
     headers.merge!(rails_mailer: mailer_name, rails_mail_template: action_name)
-    view_mail(GENERIC_NOTIFY_TEMPLATE, subject: subject, **headers)
+    view_mail(GENERIC_NOTIFY_TEMPLATE, subject: environment_prefix + subject, **headers)
+  end
+
+  def environment_prefix
+    return "" if HostingEnvironment.env.in? %w[production test]
+
+    "[#{HostingEnvironment.env.upcase}] "
   end
 
   private
 
   def default_url_options
-    { host:, port: ENV["PORT"], protocol: }
+    { host: "localhost", port: ENV["PORT"], protocol: }
   end
 
   def protocol
