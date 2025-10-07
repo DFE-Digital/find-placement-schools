@@ -1,0 +1,15 @@
+en:
+  users:
+    destroy:
+      success: User account deleted
+    index:
+      heading: Users
+      add_user: Add a user
+      no_users: No users have been added
+    show:
+      details: Details
+      remove_user: Remove user
+    add_user:
+      update:
+        success: User added
+        success_body: "%{user_name} is now able to view and create placement information on behalf of %{school_name}"

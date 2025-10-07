@@ -9,7 +9,7 @@ RSpec.describe PlacementPreferencesReminderJob, type: :job do
 
     before do
       allow(AcademicYear).to receive(:current).and_return(current_year)
-      allow(UserMailer).to receive(:placement_preferences_notification).and_return(mailer_double)
+      allow(School::UserMailer).to receive(:placement_preferences_notification).and_return(mailer_double)
     end
 
     context "when there are no eligible users" do
@@ -20,7 +20,7 @@ RSpec.describe PlacementPreferencesReminderJob, type: :job do
 
       it "does not call the mailer" do
         described_class.perform_now
-        expect(UserMailer).not_to have_received(:placement_preferences_notification)
+        expect(School::UserMailer).not_to have_received(:placement_preferences_notification)
       end
     end
 
@@ -40,11 +40,11 @@ RSpec.describe PlacementPreferencesReminderJob, type: :job do
       it "calls the mailer once for each eligible user id" do
         described_class.perform_now
 
-        expect(UserMailer).to have_received(:placement_preferences_notification)
+        expect(School::UserMailer).to have_received(:placement_preferences_notification)
           .with(eligible_user_1.id).once
-        expect(UserMailer).to have_received(:placement_preferences_notification)
+        expect(School::UserMailer).to have_received(:placement_preferences_notification)
           .with(eligible_user_2.id).once
-        expect(UserMailer).not_to have_received(:placement_preferences_notification)
+        expect(School::UserMailer).not_to have_received(:placement_preferences_notification)
           .with(ineligible_user.id)
       end
     end
