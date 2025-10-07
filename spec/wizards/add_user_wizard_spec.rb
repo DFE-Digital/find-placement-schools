@@ -19,14 +19,14 @@ RSpec.describe AddUserWizard do
 
     let(:first_name) { "John" }
     let(:last_name) { "Doe" }
-    let(:email_address) { "joe_doe@example.com" }
+    let(:email_address) { "john_doe@example.com" }
     let(:state) do
       {
         "user" => {
           "first_name" => first_name,
           "last_name" => last_name,
-          "email_address" => email_address,
-        },
+          "email_address" => email_address
+        }
       }
     end
 

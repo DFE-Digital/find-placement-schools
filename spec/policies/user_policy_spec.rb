@@ -41,7 +41,7 @@ RSpec.describe UserPolicy do
     end
   end
 
-  permissions :index?, :new? do
+  permissions :index?, :new?, :edit?, :update? do
     let(:user) { create(:user) }
     let(:other_user) { create(:user) }
 
@@ -50,7 +50,7 @@ RSpec.describe UserPolicy do
     end
   end
 
-  permissions :show?, :edit?, :update?, :destroy? do
+  permissions :show?, :destroy? do
     context "when the user is a member of an organisation" do
       let(:school) { build(:school) }
       let(:user) { create(:user, organisations: [ school ], selected_organisation: school) }

@@ -14,8 +14,9 @@ class Users::AddUserController < ApplicationController
       Users::Invite.call(user:, organisation: current_organisation)
       @wizard.reset_state
       redirect_to index_path, flash: {
+        success: true,
         heading: t(".success"),
-        body: t(".success_body", user_name: user.first_name, school_name: current_organisation.name),
+        body: t(".success_body", user_name: user.first_name, school_name: current_organisation.name)
       }
     end
   end
