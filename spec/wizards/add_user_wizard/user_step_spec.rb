@@ -26,7 +26,7 @@ RSpec.describe AddUserWizard::UserStep, type: :model do
     describe "#new_membership" do
       let(:first_name) { "John" }
       let(:last_name) { "Doe" }
-      let(:email_address) { "joe_doe@example.com" }
+      let(:email_address) { "john_doe@example.com" }
       let(:attributes) { { first_name:, last_name:, email_address: } }
 
       context "when the user is not already associated with the organisation" do
@@ -52,7 +52,7 @@ RSpec.describe AddUserWizard::UserStep, type: :model do
     describe "#user" do
       let(:first_name) { "John" }
       let(:last_name) { "Doe" }
-      let(:email_address) { "joe_doe@example.com" }
+      let(:email_address) { "john_doe@example.com" }
       let(:attributes) { { first_name:, last_name:, email_address: } }
 
       context "when the user does not already exist" do
@@ -94,7 +94,7 @@ RSpec.describe AddUserWizard::UserStep, type: :model do
     describe "#membership" do
       let(:first_name) { "John" }
       let(:last_name) { "Doe" }
-      let(:email_address) { "joe_doe@example.com" }
+      let(:email_address) { "john_doe@example.com" }
       let(:attributes) { { first_name:, last_name:, email_address: } }
       let!(:user) { create(:user, first_name:, last_name:, email_address:) }
 

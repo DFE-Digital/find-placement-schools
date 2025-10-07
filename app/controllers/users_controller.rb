@@ -11,10 +11,11 @@ class UsersController < ApplicationController
   def remove; end
 
   def destroy
-    User::Remove.call(user:, organisation: current_organisation)
+    Users::Remove.call(user:, organisation: current_organisation)
 
     redirect_to users_path(current_organisation), flash: {
-      heading: t(".success"),
+      success: true,
+      heading: t(".success")
     }
   end
 

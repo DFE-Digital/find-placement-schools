@@ -12,7 +12,7 @@ RSpec.describe Users::Invite do
       let(:user) { create(:user) }
       let(:organisation) { create(:school) }
 
-      it "calls mailer with correct prams" do
+      it "calls mailer with correct params" do
         expect { user_invite_service }.to have_enqueued_mail(School::UserMailer, :user_membership_created_notification).with(user, organisation)
       end
     end
@@ -21,7 +21,7 @@ RSpec.describe Users::Invite do
       let(:user) { create(:user) }
       let(:organisation) { create(:provider) }
 
-      it "calls mailer with correct prams" do
+      it "calls mailer with correct params" do
         expect { user_invite_service }.to have_enqueued_mail(Provider::UserMailer, :user_membership_created_notification).with(user, organisation)
       end
     end

@@ -1,15 +1,23 @@
 en:
   users:
     destroy:
-      success: User account deleted
+      success: User account removed
     index:
       heading: Users
       add_user: Add a user
       no_users: No users have been added
     show:
+      heading: "%{user_name}"
+      caption: User details
       details: Details
       remove_user: Remove user
     add_user:
       update:
         success: User added
-        success_body: "%{user_name} is now able to view and create placement information on behalf of %{school_name}"
+        success_body: "%{user_name} is now able to use this service on behalf of %{school_name}"
+    remove:
+      caption: Remove user
+      heading: Are you sure you want to remove %{user_name}?
+      warning: "%{user_name} will be sent an email to tell them you removed them from %{school_name}."
+      remove_user: Remove user
+      cancel: Cancel

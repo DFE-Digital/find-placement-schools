@@ -12,11 +12,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def edit?
-    user.selected_organisation.users.include?(record)
+    true
   end
 
   def update?
-    user.selected_organisation.users.include?(record)
+    true
+  end
+
+  def remove?
+    record != user && user.selected_organisation.users.include?(record)
   end
 
   def destroy?
