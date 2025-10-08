@@ -13,7 +13,7 @@
         <%= govuk_summary_list(actions: true) do |summary_list| %>
           <% summary_list.with_row do |row| %>
             <% row.with_key(text: User.human_attribute_name(:first_name)) %>
-            <% row.with_value(text: wizard.steps[:user].first_name) %>
+            <% row.with_value(text: wizard.user_first_name) %>
             <% row.with_action(text: t(".change"),
                                href: step_path(:user),
                                visually_hidden_text: User.human_attribute_name(:first_name),
@@ -21,7 +21,7 @@
           <% end %>
           <% summary_list.with_row do |row| %>
             <% row.with_key(text: User.human_attribute_name(:last_name)) %>
-            <% row.with_value(text: wizard.steps[:user].last_name) %>
+            <% row.with_value(text: wizard.user_last_name) %>
             <% row.with_action(text: t(".change"),
                                href: step_path(:user),
                                visually_hidden_text: User.human_attribute_name(:last_name),
@@ -29,7 +29,7 @@
           <% end %>
           <% summary_list.with_row do |row| %>
             <% row.with_key(text: User.human_attribute_name(:email_address)) %>
-            <% row.with_value(text: wizard.steps[:user].email_address) %>
+            <% row.with_value(text: wizard.user_email_address) %>
             <% row.with_action(text: t(".change"),
                                href: step_path(:user),
                                visually_hidden_text: User.human_attribute_name(:email_address),

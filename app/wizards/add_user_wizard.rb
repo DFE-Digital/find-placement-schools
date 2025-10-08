@@ -1,6 +1,8 @@
   class AddUserWizard < BaseWizard
     attr_reader :organisation
 
+    delegate :first_name, :last_name, :email_address, to: :user, allow_nil: true, prefix: true
+
     def initialize(organisation:, params:, state:, current_step: nil)
       @organisation = organisation
       super(state:, params:, current_step:)

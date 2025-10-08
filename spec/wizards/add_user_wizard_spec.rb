@@ -8,6 +8,12 @@ RSpec.describe AddUserWizard do
   let(:params) { ActionController::Parameters.new(params_data) }
   let(:school) { create(:school) }
 
+  describe "delegations" do
+    it { is_expected.to delegate_method(:first_name).to(:user).with_prefix.allow_nil }
+    it { is_expected.to delegate_method(:last_name).to(:user).with_prefix.allow_nil }
+    it { is_expected.to delegate_method(:email_address).to(:user).with_prefix.allow_nil }
+  end
+
   describe "#steps" do
     subject { wizard.steps.keys }
 
