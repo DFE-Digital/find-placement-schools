@@ -7,6 +7,7 @@ RSpec.describe ServiceNavigationComponent, type: :component do
 
       expect(page).not_to have_content("Placement information")
       expect(page).not_to have_content("Organisation details")
+      expect(page).not_to have_content("Users")
     end
   end
 
@@ -18,6 +19,7 @@ RSpec.describe ServiceNavigationComponent, type: :component do
 
       expect(page).not_to have_content("Placement information")
       expect(page).not_to have_content("Organisation details")
+      expect(page).not_to have_content("Users")
     end
   end
 
@@ -32,6 +34,8 @@ RSpec.describe ServiceNavigationComponent, type: :component do
       expect(page).to have_link("Find placements", href: "/organisations")
       expect(page).to have_content("Organisation details")
       expect(page).to have_link("Organisation details", href: "/organisations/#{current_organisation.id}")
+      expect(page).to have_content("Users")
+      expect(page).to have_link("Users", href: "/users")
     end
   end
 
@@ -46,6 +50,8 @@ RSpec.describe ServiceNavigationComponent, type: :component do
       expect(page).to have_link("Placement information", href: "/placement_preferences")
       expect(page).to have_content("Organisation details")
       expect(page).to have_link("Organisation details", href: "/organisations/#{current_organisation.id}")
+      expect(page).to have_content("Users")
+      expect(page).to have_link("Users", href: "/users")
     end
   end
 end

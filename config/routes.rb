@@ -43,6 +43,17 @@ Rails.application.routes.draw do
   get "/.well-known/appspecific/com.chrome.devtools.json", to: proc { [ 204, {}, [ "" ] ] }
 
   resources :organisations, only: %i[show index]
+
+  resources :users, only: %i[index show destroy] do
+    get :remove, on: :member
+
+    collection do
+      get "new", to: "users/add_user#new", as: :new_add_user
+      get "new/:state_key/:step", to: "users/add_user#edit", as: :add_user
+      put "new/:state_key/:step", to: "users/add_user#update"
+    end
+  end
+
   resources :placement_preferences, only: %i[index show] do
     collection do
       get "new", to: "placement_preferences/add_hosting_interest#new", as: :new_add_hosting_interest

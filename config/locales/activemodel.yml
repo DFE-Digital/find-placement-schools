@@ -42,6 +42,16 @@ en:
             child_subject_ids: 
               blank: Please select a subject
               inclusion: Please select a subject
+        add_user_wizard/user_step:
+          attributes:
+            email_address:
+              blank: Enter an email address
+              invalid: Enter a valid email address
+              taken: This email address has already been invited to join this organisation.
+            first_name:
+              blank: Enter a first name
+            last_name:
+              blank: Enter a last name
         import_previous_placements_wizard/upload_step:
           attributes:
             csv_upload:

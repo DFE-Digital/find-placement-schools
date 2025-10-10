@@ -1,0 +1,14 @@
+en:
+  wizards:
+    add_user_wizard:
+      user_step:
+        title: User details
+        caption: Add user
+        continue: Continue
+      check_your_answers_step:
+        title: Confirm user details
+        caption: Add user
+        submit: Confirm and add user
+        warning: "%{user_name} will be sent an email to tell them you’ve added them to %{school_name}."
+        change: Change
+        details: Details
