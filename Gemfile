@@ -50,7 +50,7 @@ gem "draper", "~> 4.0"
 
 gem "pagy", "~> 9.4"
 
-gem "httparty", "~> 0.23.1"
+gem "httparty", "~> 0.23.2"
 
 gem "stimulus-rails", "~> 1.3"
 
