@@ -62,6 +62,17 @@ jobs:
         reuse-cache: true
         snyk-token: ${{ secrets.SNYK_TOKEN }}
 
+    - name: Run Smoke Tests
+      shell: bash
+      run: |
+        EXTERNAL_HOST=$(echo $HOSTNAMES | jq -r '.[0]')
+        
+        export EXTERNAL_HOST=$EXTERNAL_HOST
+        
+        bin/rspec spec/smoke_tests --tag smoke_test -b
+      env:
+        HOSTNAMES: ${{ env.HOSTNAMES }}
+
   test:
     name: Run tests
     if: ${{ github.event_name != 'workflow_dispatch' }}
