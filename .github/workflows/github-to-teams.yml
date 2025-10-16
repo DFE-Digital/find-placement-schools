@@ -11,56 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Send Issue notification to Power Automate
-      if: github.event_name == 'issues'
-      run: |
-        curl -sS -X POST -H "Content-Type: application/json" -d @- "${{ secrets.POWER_AUTOMATE_URL }}" <<'JSON'
-        {
-          "type": "message",
-          "attachments": [
-            {
-              "contentType": "application/vnd.microsoft.card.adaptive",
-              "content": {
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                "msteams": { "width": "full" },
-                "type": "AdaptiveCard",
-                "version": "1.2",
-                "body": [
-                  { "type": "Container", "style": "good", "bleed": true, "spacing": "none", "items": [ { "type": "TextBlock", "text": "GitHub Notification" } ] },
-                  { "type": "TextBlock", "text": "Repository: ${{ github.repository }}" },
-                  { "type": "TextBlock", "text": "Event: ${{ github.event_name }} (${{ github.event.action }})" },
-                  { "type": "TextBlock", "text": "Title: ${{ github.event.issue.title }}" },
-                  { "type": "TextBlock", "text": "URL: ${{ github.event.issue.html_url }}" }
-                ]
-              }
-            }
-          ]
-        }
-        JSON
-
-    - name: Send Pull Request notification to Power Automate
-      if: github.event_name == 'pull_request'
-      run: |
-        curl -sS -X POST -H "Content-Type: application/json" -d @- "${{ secrets.POWER_AUTOMATE_URL }}" <<'JSON'
-        {
-          "type": "message",
-          "attachments": [
-            {
-              "contentType": "application/vnd.microsoft.card.adaptive",
-              "content": {
-                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                "msteams": { "width": "full" },
-                "type": "AdaptiveCard",
-                "version": "1.2",
-                "body": [
-                  { "type": "Container", "style": "good", "bleed": true, "spacing": "none", "items": [ { "type": "TextBlock", "text": "GitHub Notification" } ] },
-                  { "type": "TextBlock", "text": "Repository: ${{ github.repository }}" },
-                  { "type": "TextBlock", "text": "Event: ${{ github.event_name }} (${{ github.event.action }})" },
-                  { "type": "TextBlock", "text": "Title: ${{ github.event.pull_request.title }}" },
-                  { "type": "TextBlock", "text": "URL: ${{ github.event.pull_request.html_url }}" }
-                ]
-              }
-            }
-          ]
-        }
-        JSON
+    - name: Send GitHub notification to Teams
+      uses: DFE-Digital/github-actions/SendToTeams@2501-spike-github-workflow-alerting-to-teams
+      with:
+        POWER-AUTOMATE-WEBHOOK-URL: ${{ secrets.POWER_AUTOMATE_URL }}
