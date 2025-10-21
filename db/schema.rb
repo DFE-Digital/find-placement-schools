@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_25_093452) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_21_133055) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "appetite", ["actively_looking", "interested", "not_open"]
@@ -88,6 +91,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_25_093452) do
     t.string "urban_or_rural"
     t.string "website"
     t.index ["code"], name: "index_organisations_on_code"
+    t.index ["type", "code"], name: "index_organisations_on_type_and_code", unique: true, where: "((type)::text = 'Provider'::text)"
     t.index ["ukprn"], name: "index_organisations_on_ukprn"
     t.index ["urn"], name: "index_organisations_on_urn", unique: true, where: "((type)::text = 'School'::text)"
   end

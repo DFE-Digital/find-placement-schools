@@ -21,7 +21,7 @@
             <%= render "/organisations/location", organisation: %>
           <% end %>
 
-          <% if placement_details.present? %>
+          <% if placement_details.present? && !organisation.placement_preference_for(academic_year: AcademicYear.next).not_open? %>
             <%= tabs.with_tab(label: t(".placement_preferences")) do %>
               <span class="govuk-caption-l"><%= organisation.name %></span>
               <%= render "/organisations/placement_preferences", placement_details: %>

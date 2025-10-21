@@ -24,8 +24,8 @@ class ServiceNavigationComponent < ApplicationComponent
           {
             text: t("components.service_navigation_component.organisation_details"),
             href: helpers.organisation_path(current_organisation.id),
-            active: helpers.current_page?(helpers.organisation_path(current_organisation.id)),
-            current: helpers.current_page?(helpers.organisation_path(current_organisation.id))
+            active: request.path.match?(/^\/organisations\//),
+            current: request.path.match?(/^\/organisations\//)
           }
         ]
       when Provider
@@ -33,8 +33,8 @@ class ServiceNavigationComponent < ApplicationComponent
           {
             text: t("components.service_navigation_component.find_placements"),
             href: helpers.organisations_path,
-            active: helpers.current_page?(helpers.organisations_path),
-            current: helpers.current_page?(helpers.organisations_path)
+            active: request.path.match?(/^\/organisations(\/|$)/) && !request.path.match?(/^\/organisations\/#{current_organisation.id}(\b|\/|$)/),
+            current: request.path.match?(/^\/organisations(\/|$)/) && !request.path.match?(/^\/organisations\/#{current_organisation.id}(\b|\/|$)/)
           },
           {
             text: t("components.service_navigation_component.users"),
