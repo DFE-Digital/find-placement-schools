@@ -62,24 +62,6 @@ jobs:
         reuse-cache: true
         snyk-token: ${{ secrets.SNYK_TOKEN }}
 
-  test:
-    name: Run tests
-    if: ${{ github.event_name != 'workflow_dispatch' }}
-    runs-on: ubuntu-latest
-
-    # This is a skeleton test job
-    # It will need to be updated to set the environment and run required tests
-    # The steps can be moved to a separate action if preferred
-
-    steps:
-    - name: Check out repository
-      uses: actions/checkout@v5
-
-    # - name: Run tests
-    #   shell: bash
-    #   run: |
-    #     run some tests
-
   deploy-review-app:
     name: Deployment To Review
     concurrency: deploy_review_${{ github.event.pull_request.number }}
@@ -117,7 +99,7 @@ jobs:
     environment:
       name: ${{ matrix.environment }}
       url: ${{ steps.deploy_app.outputs.environment_url }}
-    needs: [build, test]
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
