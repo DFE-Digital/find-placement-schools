@@ -99,6 +99,7 @@ en:
       message_to_providers: Message to providers
       no_information_added: No information added
       placement_contact: Placement contact
+      additional_details: Additional details
       your_placements_offers: Placement information for your school
       you_can_edit_placements: "You can %{link} at any time."
       information_displayed: Your placement information will be displayed to providers as shown below.
