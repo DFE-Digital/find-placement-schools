@@ -5,7 +5,11 @@ RSpec.describe User, type: :model do
     it { is_expected.to belong_to(:selected_organisation).optional }
 
     it { is_expected.to have_many(:user_memberships) }
+
     it { is_expected.to have_many(:organisations).through(:user_memberships) }
+    it { is_expected.to have_many(:schools).class_name("Organisation").through(:user_memberships).source(:organisation) }
+    it { is_expected.to have_many(:providers).class_name("Organisation").through(:user_memberships).source(:organisation) }
+
     it { is_expected.to have_many(:placement_preferences).class_name("PlacementPreference") }
   end
 
