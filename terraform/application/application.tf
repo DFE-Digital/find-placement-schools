@@ -15,9 +15,13 @@ module "application_configuration" {
   config_variables = {
     ENVIRONMENT_NAME = var.environment
     PGSSLMODE        = local.postgres_ssl_mode
+    BIGQUERY_PROJECT_ID = module.dfe_analytics[0].bigquery_project_id
+    BIGQUERY_TABLE_NAME = module.dfe_analytics[0].bigquery_table_name
+    BIGQUERY_DATASET    = module.dfe_analytics[0].bigquery_dataset
   }
   secret_variables = {
     DATABASE_URL = module.postgres.url
+    GOOGLE_CLOUD_CREDENTIALS = module.dfe_analytics[0].google_cloud_credentials
   }
 }
 
@@ -40,4 +44,5 @@ module "web_application" {
   enable_logit = true
 
   send_traffic_to_maintenance_page = var.send_traffic_to_maintenance_page
+  enable_gcp_wif               = true
 }

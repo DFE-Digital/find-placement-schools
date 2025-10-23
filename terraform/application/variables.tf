@@ -120,3 +120,8 @@ variable "postgres_enable_high_availability" {
 variable "postgres_flexible_server_sku" {
   default = "B_Standard_B1ms"
 }
+
+variable "enable_dfe_analytics_federated_auth" {
+  description = "Create the resources in Google cloud for federated authentication and enable in application"
+  default     = false
+}
