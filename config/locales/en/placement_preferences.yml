@@ -45,6 +45,8 @@ en:
         first_name: First name
         last_name: Last name
         email_address: Email address
+      note_to_providers:
+        message_to_providers: Message to providers
     actively_looking_preferences:
       panel_title: Information added
       panel_text:
@@ -61,6 +63,7 @@ en:
       placement_contact: Placement contact
       you_can_edit_placements: "You can %{link} at any time."
       edit_your_placements: edit your schoolʼs placement information
+      additional_information: Additional information
     interested_preferences:
       panel_title: Information added
       panel_text:
@@ -80,3 +83,4 @@ en:
       your_placements_offers: Placement information or your school
       you_can_edit_placements: "You can %{link} at any time."
       edit_your_placements: edit your schoolʼs placement information
+      additional_information: Additional information

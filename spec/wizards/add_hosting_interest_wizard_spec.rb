@@ -22,7 +22,7 @@ RSpec.describe AddHostingInterestWizard do
         }
       end
 
-      it { is_expected.to eq %i[appetite school_contact phase check_your_answers] }
+      it { is_expected.to eq %i[appetite school_contact phase note_to_providers check_your_answers] }
 
       context "when the phase is set to 'Primary' during the phase step" do
         let(:state) do
@@ -38,6 +38,7 @@ RSpec.describe AddHostingInterestWizard do
                school_contact
                phase
                year_group_selection
+               note_to_providers
                check_your_answers],
           )
         }
@@ -57,6 +58,7 @@ RSpec.describe AddHostingInterestWizard do
                school_contact
                phase
                secondary_subject_selection
+               note_to_providers
                check_your_answers],
           )
         }
@@ -82,6 +84,7 @@ RSpec.describe AddHostingInterestWizard do
                 :phase,
                 :secondary_subject_selection,
                 "secondary_child_subject_selection_#{modern_languages.id}".to_sym,
+                :note_to_providers,
                 :check_your_answers
               ]
             )
@@ -104,6 +107,7 @@ RSpec.describe AddHostingInterestWizard do
                phase
                year_group_selection
                secondary_subject_selection
+               note_to_providers
                check_your_answers],
           )
         }

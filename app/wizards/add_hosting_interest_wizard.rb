@@ -60,6 +60,7 @@ class AddHostingInterestWizard < BaseWizard
   def actively_looking_steps
     add_step(SchoolContactStep)
     add_placement_creation_steps(with_check_your_answers: false)
+    add_step(NoteToProvidersStep)
     add_step(CheckYourAnswersStep)
   end
 
@@ -78,7 +79,7 @@ class AddHostingInterestWizard < BaseWizard
       send_steps
     end
 
-    add_step(NoteToProvidersStep)
+    add_step(Interested::NoteToProvidersStep)
     add_step(ConfirmStep)
   end
 

@@ -111,6 +111,8 @@ en:
         title: Check your answers
         continue: Publish placement information
         change: Change
+        additional_information: Additional information
+        message_to_providers: Message to providers
         placement_contact: Placement contact
       are_you_sure_step:
         title: Check your answers
@@ -141,7 +143,7 @@ en:
       note_to_providers_step:
           title: 
             Is there anything about your school you would like providers to know? (optional)
-          caption:  Potential placement information %{academic_year_name}
+          caption: Placement information %{academic_year_name}
           hint:
             Include any reasonable adjustments your school can offer trainee teachers with disabilities or other needs, for example wheelchair access.
           continue: Continue
@@ -185,6 +187,13 @@ en:
           continue: Continue
           options:
             unknown: I don’t know
+        note_to_providers_step:
+          title:
+            Is there anything about your school you would like providers to know? (optional)
+          caption: Potential placement information %{academic_year_name}
+          hint:
+            Include any reasonable adjustments your school can offer trainee teachers with disabilities or other needs, for example wheelchair access.
+          continue: Continue
       not_open:
         school_contact_step:
           caption: Placement contact
