@@ -26,6 +26,10 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     when_i_select_french
     and_i_select_spanish
     and_i_click_on_continue
+    then_i_see_the_note_to_providers_form_page
+
+    when_i_enter_a_note_to_providers
+    and_i_click_on_continue
     then_i_see_the_check_your_answers_page
 
     when_i_click_on_change_subject
@@ -36,6 +40,10 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     then_i_see_the_secondary_child_subject_selection_form_page
     and_i_see_french_selected
     and_i_see_spanish_selected
+
+    when_i_click_on_continue
+    then_i_see_the_note_to_providers_form_page
+    and_i_see_the_note_i_entered_prefilled
 
     when_i_click_on_continue
     then_i_see_the_check_your_answers_page
@@ -214,6 +222,12 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     expect(page).to have_h2("Secondary placements")
     expect(page).to have_summary_list_row("Subject", "Modern Languages - French and Spanish")
 
+    expect(page).to have_h2("Additional information")
+    expect(page).to have_summary_list_row(
+      "Message to providers",
+      "We are open to hosting additional placements at the provider's request.",
+    )
+
     expect(page).to have_h2("Placement contact")
     expect(page).to have_summary_list_row("First name", "Joe")
     expect(page).to have_summary_list_row("Last name", "Bloggs")
@@ -276,5 +290,40 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     expect(page).to have_summary_list_row("First name", "Joe")
     expect(page).to have_summary_list_row("Last name", "Bloggs")
     expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
+
+    expect(page).to have_h3("Additional information")
+    expect(page).to have_summary_list_row(
+      "Message to providers",
+      "We are open to hosting additional placements at the provider's request.",
+    )
+  end
+
+  def then_i_see_the_note_to_providers_form_page
+    expect(page).to have_title(
+      "Is there anything about your school you would like providers to know? (optional) - Find placement schools",
+    )
+    expect(page).to have_caption(
+      "Placement information #{@next_academic_year_short_name}",
+    )
+    expect(page).to have_element(
+      :label,
+      text: "Is there anything about your school you would like providers to know? (optional)",
+    )
+    expect(page).to have_hint(
+      "Include any reasonable adjustments your school can offer trainee teachers with disabilities or other needs, for example wheelchair access.",
+    )
+    expect(page).to have_field("Is there anything about your school you would like providers to know? (optional)")
+  end
+
+  def when_i_enter_a_note_to_providers
+    fill_in "Is there anything about your school you would like providers to know? (optional)", with:
+      "We are open to hosting additional placements at the provider's request."
+  end
+
+  def and_i_see_the_note_i_entered_prefilled
+    expect(page).to have_field(
+      "Is there anything about your school you would like providers to know? (optional)",
+      with: "We are open to hosting additional placements at the provider's request.",
+    )
   end
 end

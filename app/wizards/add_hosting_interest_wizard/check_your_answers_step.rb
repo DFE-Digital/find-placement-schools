@@ -3,6 +3,7 @@ class AddHostingInterestWizard::CheckYourAnswersStep < BaseStep
   delegate :appetite, to: :appetite_step
   delegate :year_groups, :selected_secondary_subjects, :key_stages, :step_name_for_child_subjects, to: :wizard
   delegate :first_name, :last_name, :email_address, to: :school_contact_step, prefix: :school_contact
+  delegate :note, to: :note_to_providers_step
 
   def child_subject_names(subject:)
     return [] unless subject.has_child_subjects? && wizard.steps[step_name_for_child_subjects(subject:)].present?
@@ -22,5 +23,9 @@ class AddHostingInterestWizard::CheckYourAnswersStep < BaseStep
 
   def appetite_step
     wizard.steps.fetch(:appetite)
+  end
+
+  def note_to_providers_step
+    wizard.steps.fetch(:note_to_providers)
   end
 end

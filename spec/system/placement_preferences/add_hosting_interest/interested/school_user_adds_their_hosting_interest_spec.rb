@@ -404,5 +404,11 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_summary_list_row("First name", "Joe")
     expect(page).to have_summary_list_row("Last name", "Bloggs")
     expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
+
+    expect(page).to have_h3("Additional information")
+    expect(page).to have_summary_list_row(
+      "Message to providers",
+      "We are open to hosting additional placements at the provider's request.",
+    )
   end
 end
