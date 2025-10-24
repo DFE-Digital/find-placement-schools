@@ -298,14 +298,14 @@ RSpec.describe "School user updates the placement preference to interest", type:
 
   def then_i_see_the_key_stage_selection_form_page
     expect(page).to have_title(
-      "Which key stages could you offer SEND placements in? - Find placement schools",
+      "Which key stages could you offer placements in a SEND setting? - Find placement schools",
     )
     expect(page).to have_caption(
-      "Potential SEND placement information #{@next_academic_year_short_name}",
+      "Potential placements in a SEND setting information #{@next_academic_year_short_name}",
     )
     expect(page).to have_element(
       :legend,
-      text: "Which key stages could you offer SEND placements in?",
+      text: "Which key stages could you offer placements in a SEND setting?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_field("Early year", type: :checkbox)
@@ -378,13 +378,13 @@ RSpec.describe "School user updates the placement preference to interest", type:
     expect(page).to have_h2("Education phase and specialism")
     expect(page).to have_summary_list_row("Phase", "Primary Secondary Send")
 
-    expect(page).to have_h2("Primary")
+    expect(page).to have_h2("Potential primary placements")
     expect(page).to have_summary_list_row("Year group", "I don’t know")
 
-    expect(page).to have_h2("Secondary")
+    expect(page).to have_h2("Potential secondary placements")
     expect(page).to have_summary_list_row("Subject", "I don’t know")
 
-    expect(page).to have_h2("SEND")
+    expect(page).to have_h2("Potential placements in a SEND setting")
     expect(page).to have_summary_list_row("Key stage", "I don’t know")
 
     expect(page).to have_h2("Additional information")
@@ -469,13 +469,13 @@ RSpec.describe "School user updates the placement preference to interest", type:
     )
 
     expect(page).to have_h2("Placement information or your school")
-    expect(page).to have_h3("Primary")
+    expect(page).to have_h3("Potential primary placements")
     expect(page).to have_summary_list_row("Year group", "Year 1")
 
-    expect(page).to have_h3("Secondary")
+    expect(page).to have_h3("Potential secondary placements")
     expect(page).to have_summary_list_row("Subject", "English")
 
-    expect(page).to have_h3("SEND")
+    expect(page).to have_h3("Potential placements in a SEND setting")
     expect(page).to have_summary_list_row("Key stage", "Key stage 2")
 
     expect(page).to have_h3("Placement contact")

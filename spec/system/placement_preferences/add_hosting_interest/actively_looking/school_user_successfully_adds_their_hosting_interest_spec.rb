@@ -226,12 +226,12 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_key_stage_selection_form_page
      expect(page).to have_title(
-      "Which key stages can you offer SEND placements in? - Find placement schools",
+      "Which key stages can you offer placements in a SEND setting? - Find placement schools",
     )
-    expect(page).to have_caption("SEND placement information #{@next_academic_year_short_name}")
+    expect(page).to have_caption("Placements in a SEND setting information #{@next_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
-      text: "Which key stages can you offer SEND placements in?",
+      text: "Which key stages can you offer placements in a SEND setting?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_field("Early year", type: :checkbox)
@@ -290,7 +290,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_h2("Secondary placements")
     expect(page).to have_summary_list_row("Subject", "English")
 
-    expect(page).to have_h2("SEND placements")
+    expect(page).to have_h2("Placements in a SEND setting")
     expect(page).to have_summary_list_row("Key stage", "Key stage 2")
 
     expect(page).to have_h2("Additional information")
@@ -381,7 +381,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_h3("Secondary placements")
     expect(page).to have_summary_list_row("Subject", "English")
 
-    expect(page).to have_h3("SEND placements")
+    expect(page).to have_h3("Placements in a SEND setting")
     expect(page).to have_summary_list_row("Key stage", "Key stage 2")
 
     expect(page).to have_h3("Placement contact")

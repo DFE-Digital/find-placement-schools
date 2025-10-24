@@ -62,7 +62,7 @@ en:
       your_placements_offers: Placement information or your school
       primary_placements: Primary placements
       secondary_placements: Secondary placements
-      send_placements: SEND placements
+      send_placements: Placements in a SEND setting
       placement_contact: Placement contact
       you_can_edit_placements: "You can %{link} at any time."
       edit_your_placements: edit your schoolʼs placement information
@@ -79,9 +79,9 @@ en:
         Once you are sure which placements your school can offer, %{link}. Doing so will mean you will be able to assign providers to them.
       add_placements: add your placements
       potential_placement_information: Your potential placements
-      primary: Primary
-      secondary: Secondary
-      send: SEND
+      primary: Potential primary placements
+      secondary: Potential secondary placements
+      send: Potential placements in a SEND setting
       placement_contact: Placement contact
       your_placements_offers: Placement information or your school
       you_can_edit_placements: "You can %{link} at any time."
