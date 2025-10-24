@@ -8,3 +8,11 @@ en:
           success:
             heading: Register ITT placement data uploaded
             body: It may take a moment for the data to import.
+    users:
+      onboard_users:
+        edit:
+          cancel: Cancel
+        update:
+          success:
+            heading: Users uploaded
+            body: It may take a moment for the users to appear in the service.
