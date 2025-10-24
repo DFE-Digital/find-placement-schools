@@ -3,7 +3,7 @@ class ImportPreviousPlacementsWizard::UploadStep < BaseStep
   attribute :csv_content
   attribute :file_name
   attribute :missing_academic_year_rows, default: []
-  attribute :invalid_school_urn_rows, default: []
+  attribute :invalid_identifier_rows, default: []
   attribute :missing_subject_name_rows, default: []
   attribute :invalid_subject_code_rows, default: []
   attribute :invalid_number_of_placements_rows, default: []
@@ -71,7 +71,7 @@ class ImportPreviousPlacementsWizard::UploadStep < BaseStep
     end
 
     missing_academic_year_rows.blank? &&
-      invalid_school_urn_rows.blank? &&
+      invalid_identifier_rows.blank? &&
       missing_subject_name_rows.blank? &&
       invalid_subject_code_rows.blank? &&
       invalid_number_of_placements_rows.blank?
@@ -97,7 +97,7 @@ class ImportPreviousPlacementsWizard::UploadStep < BaseStep
 
   def reset_input_attributes
     self.missing_academic_year_rows = []
-    self.invalid_school_urn_rows = []
+    self.invalid_identifier_rows = []
     self.missing_subject_name_rows = []
     self.invalid_subject_code_rows = []
     self.invalid_number_of_placements_rows = []
@@ -112,7 +112,7 @@ class ImportPreviousPlacementsWizard::UploadStep < BaseStep
   def validate_school(row, row_number)
     return unless row["school_urn"].blank? || School.find_by(urn: row["school_urn"].strip).blank?
 
-    invalid_school_urn_rows << row_number
+    invalid_identifier_rows << row_number
   end
 
   def validate_subject_name(row, row_number)

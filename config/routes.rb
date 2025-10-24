@@ -80,6 +80,14 @@ Rails.application.routes.draw do
         put "new/:state_key/:step", to: "previous_placements/import_register_data#update"
       end
     end
+
+    resources :users, only: [] do
+      collection do
+        get "onboard_users", to: "users/onboard_users#new", as: :new_onboard_users
+        get "onboard_users/:state_key/:step", to: "users/onboard_users#edit", as: :onboard_users
+        put "onboard_users/:state_key/:step", to: "users/onboard_users#update"
+      end
+    end
   end
 
   get "api/google/map-key", to: "api/google#map_key", as: :google_map_key

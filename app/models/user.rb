@@ -3,6 +3,8 @@ class User < ApplicationRecord
 
   has_many :user_memberships
   has_many :organisations, through: :user_memberships
+  has_many :schools, -> { where(type: "School") }, through: :user_memberships, source: :organisation
+  has_many :providers, -> { where(type: "Provider") }, through: :user_memberships, source: :organisation
   has_many :placement_preferences, class_name: "PlacementPreference", foreign_key: :created_by_id
 
   validates :first_name, :last_name, presence: true

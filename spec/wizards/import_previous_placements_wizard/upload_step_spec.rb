@@ -14,7 +14,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
                                       csv_content: nil,
                                       file_name: nil,
                                       missing_academic_year_rows: [],
-                                      invalid_school_urn_rows: [],
+                                      invalid_identifier_rows: [],
                                       missing_subject_name_rows: [],
                                       invalid_subject_code_rows: [],
                                       invalid_number_of_placements_rows: [])
@@ -123,9 +123,9 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
         end
         let(:attributes) { { csv_content: } }
 
-        it "returns false and assigns the csv row to the 'invalid_school_urn_rows' attribute" do
+        it "returns false and assigns the csv row to the 'invalid_identifier_rows' attribute" do
           expect(csv_inputs_valid).to be(false)
-          expect(step.invalid_school_urn_rows).to contain_exactly(0)
+          expect(step.invalid_identifier_rows).to contain_exactly(0)
         end
       end
 
