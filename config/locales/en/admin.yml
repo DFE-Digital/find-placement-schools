@@ -1,0 +1,6 @@
+en:
+  admin:
+    users:
+      onboard_users:
+        update:
+          success: Users have been onboarded successfully

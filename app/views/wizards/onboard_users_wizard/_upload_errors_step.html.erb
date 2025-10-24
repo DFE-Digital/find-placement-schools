@@ -26,9 +26,9 @@
       <% table.with_head do |head| %>
         <% head.with_row do |row| %>
           <% row.with_cell text: 1 %>
+          <% row.with_cell text: t(".csv_table.headers.identifier") %>
           <% row.with_cell text: t(".csv_table.headers.first_name") %>
           <% row.with_cell text: t(".csv_table.headers.last_name") %>
-          <% row.with_cell text: t(".csv_table.headers.school_urn") %>
           <% row.with_cell text: t(".csv_table.headers.email") %>
         <% end %>
       <% end %>
@@ -38,6 +38,14 @@
         <% csv_row = current_step.csv[csv_row_index] %>
         <% body.with_row do |row| %>
           <% row.with_cell(text: csv_row_index + 2) %>
+            <% row.with_cell do %>
+              <p>
+                <% if current_step.invalid_identifier_rows.include?(csv_row_index) %>
+                  <strong class="error-text"><%= t(".csv_table.errors.invalid_identifier") %></strong><br>
+                <% end %>
+                <%= csv_row["urn"] || csv_row["ukprn"] %>
+              </p>
+            <% end %>
           <% row.with_cell do %>
             <p>
               <% if current_step.missing_first_name_rows.include?(csv_row_index) %>
@@ -56,18 +64,10 @@
           <% end %>
           <% row.with_cell do %>
             <p>
-              <% if current_step.invalid_school_urn_rows.include?(csv_row_index) %>
-                <strong class="error-text"><%= t(".csv_table.errors.invalid_school") %></strong><br>
-              <% end %>
-              <%= csv_row["school_urn"] %>
-            </p>
-          <% end %>
-          <% row.with_cell do %>
-            <p>
-              <% if current_step.invalid_email_rows.include?(csv_row_index) %>
+              <% if current_step.invalid_email_address_rows.include?(csv_row_index) %>
                 <strong class="error-text"><%= t(".csv_table.errors.invalid_email") %></strong><br>
               <% end %>
-              <%= csv_row["email"] %>
+              <%= csv_row["email_address"] %>
             </p>
           <% end %>
         <% end %>

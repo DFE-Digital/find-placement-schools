@@ -14,10 +14,7 @@ class Admin::Users::OnboardUsersController < ApplicationController
     else
       @wizard.upload_users
       @wizard.reset_state
-      redirect_to index_path, flash: {
-        heading: t(".success"),
-        body: t(".body")
-      }
+      redirect_to index_path, flash: t(".success")
     end
   end
 
@@ -34,7 +31,7 @@ class Admin::Users::OnboardUsersController < ApplicationController
   end
 
   def index_path
-    admin_users_path
+    admin_dashboard_index_path
   end
 
   def step_path(step)
