@@ -52,9 +52,8 @@ class OnboardUsersWizard::SchoolUploadStep < BaseStep
       validate_email_address(row, i)
       validate_school_urn(row, i)
     end
-
-    invalid_email_address_rows.blank? &&
-      invalid_identifier_rows.blank? &&
+    invalid_identifier_rows.blank? &&
+      invalid_email_address_rows.blank? &&
       missing_first_name_rows.blank? &&
       missing_last_name_rows.blank?
   end

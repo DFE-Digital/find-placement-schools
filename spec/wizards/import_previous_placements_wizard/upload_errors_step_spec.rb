@@ -12,7 +12,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
     instance_double(ImportPreviousPlacementsWizard::UploadStep).tap do |mock_upload_step|
       allow(mock_upload_step).to receive_messages(
         missing_academic_year_rows:,
-        invalid_school_urn_rows:,
+        invalid_identifier_rows:,
         missing_subject_name_rows:,
         invalid_subject_code_rows:,
         file_name:,
@@ -28,13 +28,13 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
       "2025-09-01,123456,Computing,11"
   end
   let(:missing_academic_year_rows) { nil }
-  let(:invalid_school_urn_rows) { nil }
+  let(:invalid_identifier_rows) { nil }
   let(:missing_subject_name_rows) { nil }
   let(:invalid_subject_code_rows) { nil }
 
   describe "delegations" do
     it { is_expected.to delegate_method(:missing_academic_year_rows).to(:upload_step) }
-    it { is_expected.to delegate_method(:invalid_school_urn_rows).to(:upload_step) }
+    it { is_expected.to delegate_method(:invalid_identifier_rows).to(:upload_step) }
     it { is_expected.to delegate_method(:missing_subject_name_rows).to(:upload_step) }
     it { is_expected.to delegate_method(:invalid_subject_code_rows).to(:upload_step) }
     it { is_expected.to delegate_method(:csv).to(:upload_step) }
@@ -45,7 +45,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
     subject(:row_indexes_with_errors) { step.row_indexes_with_errors }
 
     let(:missing_academic_year_rows) { [ 1 ] }
-    let(:invalid_school_urn_rows) { [ 2 ] }
+    let(:invalid_identifier_rows) { [ 2 ] }
     let(:missing_subject_name_rows) { [ 3 ] }
     let(:invalid_subject_code_rows) { [ 4 ] }
 
@@ -58,7 +58,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
     subject(:error_count) { step.error_count }
 
     let(:missing_academic_year_rows) { [ 1 ] }
-    let(:invalid_school_urn_rows) { [ 2 ] }
+    let(:invalid_identifier_rows) { [ 2 ] }
     let(:missing_subject_name_rows) { [ 3 ] }
     let(:invalid_subject_code_rows) { [ 4 ] }
 
