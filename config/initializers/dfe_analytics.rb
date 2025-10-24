@@ -44,7 +44,7 @@ DfE::Analytics.configure do |config|
   # enable analytics. You might want to hook this up to a feature flag or
   # environment variable.
   #
-  config.enable_analytics = proc { ALLOWED_ENVS.include?(ENV.fetch("HOSTING_ENV")) }
+  config.enable_analytics = proc { ALLOWED_ENVS.include?(ENV.fetch("HOSTING_ENV", "development")) }
 
   # The environment we’re running in. This value will be attached
   # to all events we send to BigQuery.
