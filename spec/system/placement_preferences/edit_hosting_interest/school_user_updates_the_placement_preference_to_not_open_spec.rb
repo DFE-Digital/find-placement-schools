@@ -140,23 +140,23 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_school_is_offering_placements
     expect(page).to have_title(
-                      "What happens next? - Find placement schools",
-                      )
+      "What happens next? - Find placement schools",
+    )
     expect(page).to have_panel(
-                      "Information added",
-                      "Providers can see that your school is offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
-                      )
+      "Information added",
+      "Providers can see that your school is offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
+    )
     expect(page).to have_h1("What happens next?")
     expect(page).to have_paragraph(
-                      "Providers in England can see the information you have recorded. They can email the placement contact at your school if they are interested in working together: joe_bloggs@example.com.",
-                      )
+      "Providers in England can see the information you have recorded. They can email the placement contact at your school if they are interested in working together: joe_bloggs@example.com.",
+    )
     expect(page).to have_paragraph(
-                      "You do not need to take any further action if your information is up to date.",
-                      )
+      "You do not need to take any further action if your information is up to date.",
+    )
 
     expect(page).to have_paragraph(
-                      "You can edit your schoolʼs placement information at any time.",
-                      )
+      "You can edit your schoolʼs placement information at any time.",
+    )
     expect(page).to have_link(
       "edit your schoolʼs placement information",
       href: new_edit_hosting_interest_placement_preference_path(PlacementPreference.last),
@@ -169,7 +169,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_h3("Secondary placements")
     expect(page).to have_summary_list_row("Subject", "English")
 
-    expect(page).to have_h3("SEND placements")
+    expect(page).to have_h3("Placements in a SEND setting")
     expect(page).to have_summary_list_row("Key stage", "Key stage 2")
 
     expect(page).to have_h3("Placement contact")
@@ -215,14 +215,14 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_reason_for_not_hosting_form_page
     expect(page).to have_title(
-                      "Tell us why your school cannot offer placements for trainee teachers - Find placement schools",
-                      )
+      "Tell us why your school cannot offer placements for trainee teachers - Find placement schools",
+    )
     expect(page).to have_caption("Not offering placements #{@next_academic_year_short_name}")
     expect(page).to have_element(
-                      :legend,
-                      text: "Tell us why your school cannot offer placements for trainee teachers",
-                      class: "govuk-fieldset__legend",
-                      )
+      :legend,
+      text: "Tell us why your school cannot offer placements for trainee teachers",
+      class: "govuk-fieldset__legend",
+    )
     expect(page).to have_field("Trainees we were offered did not meet our expectations", type: :checkbox)
     expect(page).to have_field("High number of pupils with SEND needs", type: :checkbox)
     expect(page).to have_field("Low capacity to support trainees due to staff changes", type: :checkbox)
@@ -246,16 +246,16 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_school_contact_form_page
     expect(page).to have_title(
-                      "Who can we contact in your school? - Find placement schools",
-                      )
+      "Who can we contact in your school? - Find placement schools",
+    )
     expect(page).to have_caption("Placement contact")
     expect(page).to have_h1("Who can we contact in your school?")
     expect(page).to have_paragraph(
-                      "We will email to ask if your school can offer placements for trainee teachers in future academic years.",
-                      )
+      "We will email to ask if your school can offer placements for trainee teachers in future academic years.",
+    )
     expect(page).to have_paragraph(
-                      "Choose the person best placed to organise placements for trainee teachers at your school.",
-                      )
+      "Choose the person best placed to organise placements for trainee teachers at your school.",
+    )
 
     expect(page).to have_field("First name")
     expect(page).to have_field("Last name")
@@ -270,28 +270,28 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_are_you_sure_page
     expect(page).to have_title(
-                      "Check your answers - Find placement schools",
-                      )
+      "Check your answers - Find placement schools",
+    )
     expect(page).to have_caption("Not offering placements #{@next_academic_year_short_name}")
     expect(page).to have_h1("Check your answers")
     expect(page).to have_paragraph(
-                      "Providers in England can see that your school is unable to offer placements for trainee teachers in #{@next_academic_year_short_name}. They will not be able to see the reasons why or the placement contact.",
-                      )
+      "Providers in England can see that your school is unable to offer placements for trainee teachers in #{@next_academic_year_short_name}. They will not be able to see the reasons why or the placement contact.",
+    )
     expect(page).to have_paragraph("No information will be shared with providers.")
     expect(page).to have_paragraph(
-                      "Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.",
-                      )
+      "Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.",
+    )
   end
 
   def and_i_see_the_reason_not_hosting_i_entered
     expect(page).to have_summary_list_row(
-                      "Can your school offer placements for trainee teachers?",
-                      "No",
-                      )
+      "Can your school offer placements for trainee teachers?",
+      "No",
+    )
     expect(page).to have_summary_list_row(
-                      "Reason for not offering",
-                      "Other - Some other reason",
-                      )
+      "Reason for not offering",
+      "Other - Some other reason",
+    )
   end
 
   def and_i_see_the_entered_school_contact_details
@@ -333,23 +333,23 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
   def then_i_see_the_my_placement_preferences
     expect(page).to have_title(
-                      "What happens next? - Find placement schools",
-                      )
+      "What happens next? - Find placement schools",
+    )
     expect(page).to have_panel(
-                      "Information added",
-                      "Providers can see that your school is not offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
-                      )
+      "Information added",
+      "Providers can see that your school is not offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
+    )
     expect(page).to have_h1("What happens next?")
     expect(page).to have_paragraph(
-                      "We will email the placement contact to ask if your school can offer placements for trainee teachers in future academic years: joe_bloggs@example.com",
-                      )
+      "We will email the placement contact to ask if your school can offer placements for trainee teachers in future academic years: joe_bloggs@example.com",
+    )
     expect(page).to have_paragraph(
-                      "If you would like to host placements this year, edit placement information for your school.",
-                      )
+      "If you would like to host placements this year, edit placement information for your school.",
+    )
     expect(page).to have_link(
-                      "edit placement information",
-                      href: new_edit_hosting_interest_placement_preference_path(PlacementPreference.last),
-                      )
+      "edit placement information",
+      href: new_edit_hosting_interest_placement_preference_path(PlacementPreference.last),
+    )
 
     expect(page).to have_h3("Placement contact")
     expect(page).to have_summary_list_row("First name", "Joe")

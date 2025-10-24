@@ -7,11 +7,11 @@ en:
           can_your_school_offer_placements: Can your school offer placements for trainee teachers?
           education_phase: Education phase and specialism
           primary_placements: Primary placements
-          primary: Primary
+          primary: Potential primary placements
           secondary_placements: Secondary placements
-          secondary: Secondary
-          send_placements: SEND placements
-          send: SEND
+          secondary: Potential secondary placements
+          send_placements: Placements in a SEND setting
+          send: Potential placements in a SEND setting
           education_phase_list:
             phase: Phase
             unknown: I don't know

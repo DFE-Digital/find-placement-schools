@@ -87,8 +87,8 @@ en:
         options:
           unknown: I don’t know
       key_stage_selection_step:
-        title: Which key stages can you offer SEND placements in?
-        caption: SEND placement information %{academic_year_name}
+        title: Which key stages can you offer placements in a SEND setting?
+        caption: Placements in a SEND setting information %{academic_year_name}
         hint: Select all that apply
         continue: Continue
         key_stages:
@@ -179,8 +179,8 @@ en:
           options:
             unknown: Not sure yet
         key_stage_selection_step:
-          title: Which key stages could you offer SEND placements in?
-          caption: Potential SEND placement information %{academic_year_name}
+          title: Which key stages could you offer placements in a SEND setting?
+          caption: Potential placements in a SEND setting information %{academic_year_name}
           hint:
             Select all that apply. 
             Sharing information on what you may be able to offer helps providers know whether to contact you.
