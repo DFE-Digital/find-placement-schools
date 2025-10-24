@@ -52,7 +52,7 @@ class AddHostingInterestWizard < BaseWizard
     details_changed = false
 
     ApplicationRecord.transaction do
-      if placement_preference.appetite != appetite
+      if placement_preference.new_record?
         placement_preference.appetite = appetite
         details_changed = true
       end
