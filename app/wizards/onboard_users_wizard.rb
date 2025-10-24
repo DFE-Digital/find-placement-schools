@@ -1,0 +1,72 @@
+class OnboardUsersWizard < BaseWizard
+  def define_steps
+    add_step(UserTypeStep)
+
+    if steps.fetch(:user_type).user_type == "provider"
+      add_step(ProviderUploadStep)
+    else
+      add_step(SchoolUploadStep)
+    end
+
+    if csv_inputs_valid?
+      add_step(ConfirmationStep)
+    else
+      add_step(UploadErrorsStep)
+    end
+  end
+
+  def upload_users
+    raise "Invalid wizard state" unless valid? && csv_inputs_valid?
+
+    return if user_details.blank?
+
+    Users::CreateCollectionJob.perform_later(user_details:)
+  end
+
+
+  def upload_step
+    @upload_step ||= steps[steps.fetch(:user_type).user_type == "provider" ? :provider_upload : :school_upload]
+  end
+
+  private
+
+  def user_details
+    @user_details ||= begin
+      details = []
+      csv_rows.each do |row|
+        identifier = steps.fetch(:user_type).user_type == "provider" ? row["ukprn"] : row["urn"]
+        organisation = find_organisation(identifier)
+
+        # Temp add next calls to make the CSV upload work
+        next if organisation.blank?
+        next if row["email_address"].blank? || URI::MailTo::EMAIL_REGEXP.match(row["email_address"]).nil?
+
+        details << {
+          organisation_id: organisation.id,
+          first_name: row["first_name"],
+          last_name: row["last_name"],
+          email: row["email_address"]
+        }
+      end
+      details
+    end
+  end
+
+  def csv_inputs_valid?
+    @csv_inputs_valid ||= upload_step.csv_inputs_valid?
+  end
+
+  def csv_rows
+    upload_step.csv.reject do |row|
+      row["email_address"].blank? || (steps.fetch(:user_type).user_type == "provider" ? row["ukprn"].blank? : row["urn"].blank?)
+    end
+  end
+
+  def find_organisation(identifier)
+    if steps.fetch(:user_type).user_type == "provider"
+      Provider.find_by(ukprn: identifier)
+    else
+      School.find_by(urn: identifier)
+    end
+  end
+end
