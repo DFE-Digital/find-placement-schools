@@ -135,8 +135,78 @@ RSpec.describe AddHostingInterestWizard do
     end
   end
 
-  describe "#add_placement_preference" do
-    subject(:add_placement_preference) { wizard.add_placement_preference }
+  describe "#save_contact_details" do
+    let(:state) do
+      {
+        "appetite" => { "appetite" => "not_open" },
+        "school_contact" => {
+          "first_name" => "Joe",
+          "last_name" => "Bloggs",
+          "email_address" => "joe_bloggs@example.com"
+        }
+      }
+    end
+
+    context "when a placement preference does not exist" do
+      it "creates a placement preference with the school contact details" do
+        expect { wizard }.to change(PlacementPreference, :count).by(1)
+
+        placement_preference = PlacementPreference.last
+        expect(placement_preference.appetite).to eq("not_open")
+        expect(placement_preference.placement_details["appetite"]).to eq(state["appetite"])
+        expect(placement_preference.placement_details["school_contact"]).to eq(state["school_contact"])
+      end
+    end
+
+    context "when a placement preference exists" do
+      let(:placement_preference) do
+        create(
+          :placement_preference,
+          organisation: school,
+          academic_year: AcademicYear.next,
+          placement_details:,
+        )
+      end
+
+      before do
+        placement_preference
+        wizard
+        placement_preference.reload
+      end
+
+      context "when the placement preference school contact details do not match the step attributes" do
+        let(:placement_details) do
+          {
+            "appetite" => { "appetite" => "actively_looking" },
+            "school_contact" => {
+              "first_name" => "Jane",
+              "last_name" => "Doe",
+              "email_address" => "jane_doe@example.com"
+            }
+          }
+        end
+
+        it "updates the appetite and the school contact details" do
+          expect(placement_preference.appetite).to eq("not_open")
+          expect(placement_preference.placement_details["appetite"]).to eq(state["appetite"])
+          expect(placement_preference.placement_details["school_contact"]).to eq(state["school_contact"])
+        end
+      end
+
+      context "when the placement preference school contact details do not match the step attributes" do
+        let(:placement_details) { state }
+
+        it "does not update the school contact details" do
+          expect(placement_preference.appetite).to eq("not_open")
+          expect(placement_preference.placement_details["appetite"]).to eq(state["appetite"])
+          expect(placement_preference.placement_details["school_contact"]).to eq(state["school_contact"])
+        end
+      end
+    end
+  end
+
+  describe "#save_placement_preference" do
+    subject(:save_placement_preference) { wizard.save_placement_preference }
 
     before { school }
 
@@ -157,7 +227,7 @@ RSpec.describe AddHostingInterestWizard do
           end
 
           it "creates an actively looking placement preference record with primary preferences" do
-            expect { add_placement_preference }.to change(PlacementPreference, :count).by(1)
+            expect { save_placement_preference }.to change(PlacementPreference, :count).by(1)
             school.reload
 
             placement_preferences = school.placement_preferences.last
@@ -183,7 +253,7 @@ RSpec.describe AddHostingInterestWizard do
           end
 
           it "creates an actively looking placement preference record with secondary preferences" do
-            expect { add_placement_preference }.to change(PlacementPreference, :count).by(1)
+            expect { save_placement_preference }.to change(PlacementPreference, :count).by(1)
             school.reload
 
             placement_preferences = school.placement_preferences.last
@@ -211,7 +281,7 @@ RSpec.describe AddHostingInterestWizard do
             end
 
             it "creates an actively looking placement preference record with secondary preferences with child subjects" do
-              expect { add_placement_preference }.to change(PlacementPreference, :count).by(1)
+              expect { save_placement_preference }.to change(PlacementPreference, :count).by(1)
               school.reload
 
               placement_preferences = school.placement_preferences.last
@@ -239,7 +309,7 @@ RSpec.describe AddHostingInterestWizard do
           end
 
           it "creates an actively looking placement preference record with primary and secondary preferences" do
-            expect { add_placement_preference }.to change(PlacementPreference, :count).by(1)
+            expect { save_placement_preference }.to change(PlacementPreference, :count).by(1)
             school.reload
 
             placement_preferences = school.placement_preferences.last
@@ -252,12 +322,17 @@ RSpec.describe AddHostingInterestWizard do
       context "when the appetite is 'interested'" do
         let(:english) { create(:placement_subject, :secondary, name: "English") }
         let(:mathematics) { create(:placement_subject, :secondary, name: "Mathematics") }
+        let(:statistics) { create(:placement_subject, :secondary, name: "Statistics", parent_subject: mathematics) }
+        let(:mechanics) { create(:placement_subject, :secondary, name: "Mechanics", parent_subject: mathematics) }
         let(:state) do
           {
             "appetite" => { "appetite" => "interested" },
             "phase" => { "phases" => %w[primary secondary] },
             "year_group_selection" => { "year_groups" => %w[reception year_3 mixed_year_groups] },
             "secondary_subject_selection" => { "subject_ids" => [ english.id, mathematics.id ] },
+            "secondary_child_subject_selection_#{mathematics.id}" => {
+              "child_subject_ids" => [ statistics.id, mechanics.id ]
+            },
             "note_to_providers" => { "note" => "Will accept additional placements" },
             "school_contact" => {
               "first_name" => "Joe",
@@ -268,7 +343,7 @@ RSpec.describe AddHostingInterestWizard do
         end
 
         it "creates an actively looking placement preference record with primary and secondary preferences" do
-          expect { add_placement_preference }.to change(PlacementPreference, :count).by(1)
+          expect { save_placement_preference }.to change(PlacementPreference, :count).by(1)
           school.reload
 
           placement_preferences = school.placement_preferences.last
@@ -297,7 +372,7 @@ RSpec.describe AddHostingInterestWizard do
         end
 
         it "creates a not open placement preference record with reasons not hosting" do
-          expect { add_placement_preference }.to change(PlacementPreference, :count).by(1)
+          expect { save_placement_preference }.to change(PlacementPreference, :count).by(1)
           school.reload
 
           placement_preferences = school.placement_preferences.last
@@ -322,7 +397,7 @@ RSpec.describe AddHostingInterestWizard do
         end
 
         it "returns an error" do
-          expect { add_placement_preference }.to raise_error "Invalid wizard state"
+          expect { save_placement_preference }.to raise_error "Invalid wizard state"
         end
       end
     end

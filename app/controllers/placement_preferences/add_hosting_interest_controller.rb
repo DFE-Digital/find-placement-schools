@@ -14,7 +14,7 @@ class PlacementPreferences::AddHostingInterestController < ApplicationController
     elsif @wizard.next_step.present?
       redirect_to step_path(@wizard.next_step)
     else
-      placement_preference = @wizard.add_placement_preference
+      placement_preference = @wizard.save_placement_preference
       @wizard.reset_state
 
       redirect_to placement_preference_path(placement_preference)
@@ -43,15 +43,11 @@ class PlacementPreferences::AddHostingInterestController < ApplicationController
     placement_preferences_path(@school)
   end
 
-  def appetite
-    @appetite ||= next_academic_year_hosting_interest&.appetite
-  end
-
   def set_school
-    @school = current_organisation
+    @school ||= current_organisation
   end
 
   def authorize_placement_preference
-    authorize PlacementPreference.new
+    authorize PlacementPreference.new, :new?
   end
 end

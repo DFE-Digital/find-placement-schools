@@ -13,7 +13,7 @@ class AddHostingInterestWizard < BaseWizard
     super(state:, params:, current_step:)
     return unless steps[:school_contact].present?
 
-    save_placement_details if steps.fetch(:school_contact).email_address.present?
+    save_contact_details if steps.fetch(:school_contact).email_address.present?
   end
 
   def define_steps
@@ -29,7 +29,7 @@ class AddHostingInterestWizard < BaseWizard
     end
   end
 
-  def add_placement_preference
+  def save_placement_preference
     raise "Invalid wizard state" unless valid?
 
     save_placement_details
@@ -48,10 +48,31 @@ class AddHostingInterestWizard < BaseWizard
 
   private
 
+  def save_contact_details
+    details_changed = false
+
+    ApplicationRecord.transaction do
+      if placement_preference.appetite != appetite
+        placement_preference.appetite = appetite
+        details_changed = true
+      end
+
+      if placement_preference.placement_details.dig("school_contact") != steps.fetch(:school_contact).attributes
+        placement_preference.placement_details[:appetite] = steps.fetch(:appetite).attributes
+        placement_preference.placement_details[:school_contact] = steps.fetch(:school_contact).attributes
+        details_changed = true
+      end
+
+      placement_preference.save! if details_changed
+    end
+  end
+
   def save_placement_details
     ApplicationRecord.transaction do
       placement_preference.appetite = appetite
-      placement_preference.placement_details = state
+      placement_preference.placement_details = state.select do |step_name, attributes|
+        steps.keys.include?(step_name.to_sym) && attributes.present?
+      end
 
       placement_preference.save!
     end
@@ -120,43 +141,19 @@ class AddHostingInterestWizard < BaseWizard
     super(step_prefix:)
   end
 
-  def wizard_school_contact
-    @wizard_school_contact = steps[:school_contact].school_contact
-  end
-
   def appetite
     @appetite ||= steps.fetch(:appetite).appetite
-  end
-
-  def reasons_not_hosting
-    @reasons_not_hosting ||= steps.fetch(:reason_not_hosting).reasons_not_hosting
   end
 
   def placement_preference
     @placement_preference ||= begin
       upcoming_interest = school.placement_preferences.for_academic_year(academic_year).last
-      upcoming_interest.presence || school.placement_preferences.build(academic_year: academic_year, created_by: current_user)
+      upcoming_interest.presence || school.placement_preferences.build(
+        academic_year: academic_year,
+        created_by: current_user,
+        placement_details: {},
+      )
     end
-  end
-
-  def value_unknown(value)
-    value.include?(UNKNOWN_OPTION)
-  end
-
-  def save_potential_placements_information
-    potential_placement_details = {}
-    potential_placement_details[:phase] = {
-      phases: steps.fetch(:phase).phases
-    }
-
-    potential_placement_details = potential_placement_details
-      .merge(placements_information)
-
-    potential_placement_details[:note_to_providers] = {
-      note: steps.fetch(:note_to_providers).note
-    }
-
-    @school.update!(potential_placement_details:)
   end
 
   def appetite_interested?

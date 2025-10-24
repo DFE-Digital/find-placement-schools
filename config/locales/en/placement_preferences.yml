@@ -11,6 +11,9 @@ en:
     add_hosting_interest:
       edit:
         cancel: Cancel
+    edit_hosting_interest:
+      edit:
+        cancel: Cancel
     not_open_preferences:
       panel_title: Information added
       panel_text:

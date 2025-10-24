@@ -1,10 +1,17 @@
 require "rails_helper"
 
-RSpec.describe "School user successfully adds their hosting interest, including a child subject", type: :system do
+RSpec.describe "School user updates the placement preference to actively looking", type: :system do
   scenario do
     given_academic_years_exist
     and_secondary_subjects_exist
+    and_a_placement_preference_exists
     when_i_am_signed_in
+    then_i_see_the_placement_information_page
+
+    when_i_click_on_the_next_academic_year
+    then_i_see_the_school_is_not_offering_placements
+
+    when_i_click_on_edit_placement_information
     then_i_see_the_appetite_form_page
 
     when_i_select_yes
@@ -15,37 +22,26 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     and_i_click_on_continue
     then_i_see_the_education_phase_form_page
 
-    when_i_select_secondary
+    when_i_select_primary
+    and_i_select_secondary
+    and_i_select_send
+    and_i_click_on_continue
+    then_i_see_the_year_group_selection_form_page
+
+    when_i_select_year_1
     and_i_click_on_continue
     then_i_see_the_secondary_subject_selection_form_page
 
-    when_i_select_modern_languages
+    when_i_select_english
     and_i_click_on_continue
-    then_i_see_the_secondary_child_subject_selection_form_page
+    then_i_see_the_key_stage_selection_form_page
 
-    when_i_select_french
-    and_i_select_spanish
+    when_i_select_key_stage_2
     and_i_click_on_continue
     then_i_see_the_note_to_providers_form_page
 
     when_i_enter_a_note_to_providers
     and_i_click_on_continue
-    then_i_see_the_check_your_answers_page
-
-    when_i_click_on_change_subject
-    then_i_see_the_secondary_subject_selection_form_page
-    and_i_see_modern_languages_selected
-
-    when_i_click_on_continue
-    then_i_see_the_secondary_child_subject_selection_form_page
-    and_i_see_french_selected
-    and_i_see_spanish_selected
-
-    when_i_click_on_continue
-    then_i_see_the_note_to_providers_form_page
-    and_i_see_the_note_i_entered_prefilled
-
-    when_i_click_on_continue
     then_i_see_the_check_your_answers_page
 
     when_i_click_on_publish_placements
@@ -55,7 +51,6 @@ RSpec.describe "School user successfully adds their hosting interest, including 
   private
 
   def when_i_am_signed_in
-    @school = build(:school, name: "Hogwarts")
     sign_in_user(organisations: [ @school ])
   end
 
@@ -69,10 +64,75 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     @english = create(:placement_subject, :secondary, name: "English")
     @science = create(:placement_subject, :secondary, name: "Science")
     @mathematics = create(:placement_subject, :secondary, name: "Mathematics")
-    @modern_languages = create(:placement_subject, :secondary, name: "Modern Languages")
-    @french = create(:placement_subject, :secondary, name: "French", parent_subject: @modern_languages)
-    @spanish = create(:placement_subject, :secondary, name: "Spanish", parent_subject: @modern_languages)
-    @russian = create(:placement_subject, :secondary, name: "Russian", parent_subject: @modern_languages)
+  end
+
+  def and_a_placement_preference_exists
+    placement_details = {
+      "appetite" => { "appetite" => "not_open" },
+      "are_you_sure" => nil,
+      "school_contact" => {
+        "first_name" => "Joe",
+        "last_name" => "Bloggs",
+        "email_address" => "joe_bloggs@example.com"
+      },
+      "reason_not_hosting" => {
+        "reasons_not_hosting" => [ "Working to improve our OFSTED rating" ],
+        "other_reason_not_hosting" => ""
+      }
+    }
+    @school = build(:school, name: "Hogwarts")
+    @placement_preference = create(
+      :placement_preference,
+      appetite: :not_open,
+      organisation: @school,
+      academic_year: @next_academic_year,
+      placement_details:,
+    )
+  end
+
+  def then_i_see_the_placement_information_page
+    expect(page).to have_caption("Hogwarts")
+    expect(page).to have_h1("Placement information")
+
+    expect(page).to have_element(:caption, text: "Placement information")
+    expect(page).to have_table_row({
+      "Academic year" => @next_academic_year_name,
+      "Status" => "Not offering placements"
+    })
+  end
+
+  def when_i_click_on_the_next_academic_year
+    click_on @next_academic_year_name
+  end
+
+  def then_i_see_the_school_is_not_offering_placements
+    expect(page).to have_title(
+      "What happens next? - Find placement schools",
+    )
+    expect(page).to have_panel(
+      "Information added",
+      "Providers can see that your school is not offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
+    )
+    expect(page).to have_h1("What happens next?")
+    expect(page).to have_paragraph(
+      "We will email the placement contact to ask if your school can offer placements for trainee teachers in future academic years: joe_bloggs@example.com",
+    )
+    expect(page).to have_paragraph(
+      "If you would like to host placements this year, edit placement information for your school.",
+    )
+    expect(page).to have_link(
+      "edit placement information",
+      href: new_edit_hosting_interest_placement_preference_path(@placement_preference)
+    )
+
+    expect(page).to have_h3("Placement contact")
+    expect(page).to have_summary_list_row("First name", "Joe")
+    expect(page).to have_summary_list_row("Last name", "Bloggs")
+    expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
+  end
+
+  def when_i_click_on_edit_placement_information
+    click_on "edit placement information"
   end
 
   def then_i_see_the_appetite_form_page
@@ -102,8 +162,8 @@ RSpec.describe "School user successfully adds their hosting interest, including 
 
   def then_i_see_the_education_phase_form_page
     expect(page).to have_title(
-      "What education phase or specialism can your school offer placements in? - Find placement schools",
-    )
+                      "What education phase or specialism can your school offer placements in? - Find placement schools",
+                      )
     expect(page).to have_caption("Placement information #{@next_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
@@ -120,8 +180,44 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
-  def when_i_select_secondary
+  def when_i_select_primary
+    check "Primary"
+  end
+
+  def and_i_select_secondary
     check "Secondary"
+  end
+
+  def and_i_select_send
+    check "Special educational needs and disabilities (SEND) specific"
+  end
+
+  def then_i_see_the_year_group_selection_form_page
+    expect(page).to have_title(
+      "Which primary year groups can your school offer placements in? - Find placement schools",
+    )
+    expect(page).to have_element(
+      :legend,
+      text: "Which primary year groups can your school offer placements in?",
+      class: "govuk-fieldset__legend",
+    )
+    expect(page).to have_caption(
+      "Primary placement information #{@next_academic_year_short_name}",
+    )
+    expect(page).to have_field("Nursery", type: :checkbox)
+    expect(page).to have_field("Reception", type: :checkbox)
+    expect(page).to have_field("Year 1", type: :checkbox)
+    expect(page).to have_field("Year 2", type: :checkbox)
+    expect(page).to have_field("Year 3", type: :checkbox)
+    expect(page).to have_field("Year 4", type: :checkbox)
+    expect(page).to have_field("Year 5", type: :checkbox)
+    expect(page).to have_field("Year 6", type: :checkbox)
+    expect(page).to have_field("Mixed year groups", type: :checkbox)
+    expect(page).to have_field("I don’t know", type: :checkbox)
+  end
+
+  def when_i_select_year_1
+    check "Year 1"
   end
 
   def then_i_see_the_secondary_subject_selection_form_page
@@ -133,53 +229,39 @@ RSpec.describe "School user successfully adds their hosting interest, including 
       text: "Which secondary subjects can your school offer placements in?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_caption(
-      "Secondary placement information #{@next_academic_year_short_name}",
-    )
+    expect(page).to have_caption("Secondary placement information #{@next_academic_year_short_name}")
     expect(page).to have_field("English", type: :checkbox)
     expect(page).to have_field("Mathematics", type: :checkbox)
     expect(page).to have_field("Science", type: :checkbox)
-    expect(page).to have_field("Modern Languages", type: :checkbox)
-
-    expect(page).not_to have_field("French", type: :checkbox)
-    expect(page).not_to have_field("Spanish", type: :checkbox)
-    expect(page).not_to have_field("Russian", type: :checkbox)
     expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
-  def when_i_select_modern_languages
-    check "Modern Languages"
+  def when_i_select_english
+    check "English"
   end
 
-  def then_i_see_the_secondary_child_subject_selection_form_page
+  def then_i_see_the_key_stage_selection_form_page
     expect(page).to have_title(
-      "What languages are taught on your schoolʼs Modern Languages placements? - Find placement schools",
+      "Which key stages can you offer SEND placements in? - Find placement schools",
     )
+    expect(page).to have_caption("SEND placement information #{@next_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
-      text: "What languages are taught on your schoolʼs Modern Languages placements?",
+      text: "Which key stages can you offer SEND placements in?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_caption(
-      "Secondary placement information #{@next_academic_year_short_name}",
-    )
-    expect(page).not_to have_field("English", type: :checkbox)
-    expect(page).not_to have_field("Mathematics", type: :checkbox)
-    expect(page).not_to have_field("Science", type: :checkbox)
-    expect(page).not_to have_field("Modern Languages", type: :checkbox)
-
-    expect(page).to have_field("French", type: :checkbox)
-    expect(page).to have_field("Spanish", type: :checkbox)
-    expect(page).to have_field("Russian", type: :checkbox)
+    expect(page).to have_field("Early year", type: :checkbox)
+    expect(page).to have_field("Key stage 1", type: :checkbox)
+    expect(page).to have_field("Key stage 2", type: :checkbox)
+    expect(page).to have_field("Key stage 3", type: :checkbox)
+    expect(page).to have_field("Key stage 4", type: :checkbox)
+    expect(page).to have_field("Key stage 5", type: :checkbox)
+    expect(page).to have_field("Mixed key stages", type: :checkbox)
     expect(page).to have_field("I don’t know", type: :checkbox)
   end
 
-  def when_i_select_french
-    check "French"
-  end
-
-  def and_i_select_spanish
-    check "Spanish"
+  def when_i_select_key_stage_2
+    check "Key stage 2"
   end
 
   def then_i_see_the_school_contact_form_page
@@ -218,9 +300,14 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     expect(page).to have_h2("Education phase and specialism")
     expect(page).to have_summary_list_row("Phase", "Primary Secondary Send")
 
+    expect(page).to have_h2("Primary placements")
+    expect(page).to have_summary_list_row("Year group", "Year 1")
 
     expect(page).to have_h2("Secondary placements")
-    expect(page).to have_summary_list_row("Subject", "Modern Languages - French and Spanish")
+    expect(page).to have_summary_list_row("Subject", "English")
+
+    expect(page).to have_h2("SEND placements")
+    expect(page).to have_summary_list_row("Key stage", "Key stage 2")
 
     expect(page).to have_h2("Additional information")
     expect(page).to have_summary_list_row(
@@ -234,26 +321,45 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
   end
 
+  def when_i_click_on_back
+    click_on "Back"
+  end
+
   def and_i_see_the_school_contact_inputs_prefilled
     expect(page).to have_field("First name", with: "Joe")
     expect(page).to have_field("Last name", with: "Bloggs")
     expect(page).to have_field("Email address", with: "joe_bloggs@example.com")
   end
 
-  def when_i_click_on_change_subject
-    click_on "Change Subject"
+  def and_i_see_key_stage_2_selected
+    expect(page).to have_checked_field("Key stage 2", type: :checkbox)
   end
 
-  def and_i_see_modern_languages_selected
-    expect(page).to have_checked_field("Modern Languages", type: :checkbox)
+  def and_i_see_english_selected
+    expect(page).to have_checked_field("English", type: :checkbox)
   end
 
-  def and_i_see_french_selected
-    expect(page).to have_checked_field("French", type: :checkbox)
+  def and_i_see_year_1_selected
+    expect(page).to have_checked_field("Year 1", type: :checkbox)
   end
 
-  def and_i_see_spanish_selected
-    expect(page).to have_checked_field("Spanish", type: :checkbox)
+  def and_i_see_primary_selected
+    expect(page).to have_checked_field("Primary", type: :checkbox)
+  end
+
+  def and_i_see_secondary_selected
+    expect(page).to have_checked_field("Secondary", type: :checkbox)
+  end
+
+  def and_i_see_send_selected
+    expect(page).to have_checked_field(
+      "Special educational needs and disabilities (SEND) specific",
+      type: :checkbox,
+    )
+  end
+
+  def and_i_see_yes_selected
+    expect(page).to have_checked_field("Yes", type: :radio)
   end
 
   def when_i_click_on_publish_placements
@@ -285,9 +391,14 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     )
 
     expect(page).to have_h2("Placement information or your school")
+    expect(page).to have_h3("Primary placements")
+    expect(page).to have_summary_list_row("Year group", "Year 1")
 
     expect(page).to have_h3("Secondary placements")
-    expect(page).to have_summary_list_row("Subject", "English Science")
+    expect(page).to have_summary_list_row("Subject", "English")
+
+    expect(page).to have_h3("SEND placements")
+    expect(page).to have_summary_list_row("Key stage", "Key stage 2")
 
     expect(page).to have_h3("Placement contact")
     expect(page).to have_summary_list_row("First name", "Joe")
