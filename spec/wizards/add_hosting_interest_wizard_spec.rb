@@ -186,8 +186,8 @@ RSpec.describe AddHostingInterestWizard do
           }
         end
 
-        it "updates the appetite and the school contact details" do
-          expect(placement_preference.appetite).to eq("not_open")
+        it "updates only the school contact details" do
+          expect(placement_preference.appetite).to eq("actively_looking")
           expect(placement_preference.placement_details["appetite"]).to eq(state["appetite"])
           expect(placement_preference.placement_details["school_contact"]).to eq(state["school_contact"])
         end
@@ -197,8 +197,6 @@ RSpec.describe AddHostingInterestWizard do
         let(:placement_details) { state }
 
         it "does not update the school contact details" do
-          expect(placement_preference.appetite).to eq("not_open")
-          expect(placement_preference.placement_details["appetite"]).to eq(state["appetite"])
           expect(placement_preference.placement_details["school_contact"]).to eq(state["school_contact"])
         end
       end
