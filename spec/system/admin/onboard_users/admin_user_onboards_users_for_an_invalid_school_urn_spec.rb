@@ -19,8 +19,8 @@ RSpec.describe "Admin user onboards users for an invalid school urn", service: :
   private
 
   def given_providers_exist
-    @london_provider = create(:provider, name: "London Provider", urn: 111_111)
-    @guildford_provider = create(:provider, name: "Guildford Provider", urn: 222_222)
+    @london_provider = create(:provider, name: "London Provider", ukprn: 11111111)
+    @guildford_provider = create(:provider, name: "Guildford Provider", ukprn: 22222222)
   end
 
   def and_i_am_signed_in
@@ -68,8 +68,8 @@ RSpec.describe "Admin user onboards users for an invalid school urn", service: :
     expect(page).to have_element(:span, text: "Onboard users", class: "govuk-caption-l")
     expect(page).to have_h1("Upload users", class: "govuk-heading-l")
     expect(page).to have_element(:h2, text: "There is a problem")
-    expect(page).to have_element(:div, text: "You need to fix 3 errors related to specific rows", class: "govuk-error-summary")
-    expect(page).to have_element(:td, text: "Invalid Identifier", class: "govuk-table__cell", count: 3)
+    expect(page).to have_element(:div, text: "You need to fix 1 error related to a specific row", class: "govuk-error-summary")
+    expect(page).to have_element(:td, text: "Invalid Identifier", class: "govuk-table__cell", count: 1)
     expect(page).to have_element(:p, text: "Only showing rows with errors", class: "govuk-!-text-align-centre")
   end
 end

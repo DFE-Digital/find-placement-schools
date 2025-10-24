@@ -7,7 +7,7 @@ class Users::CreateCollectionJob < ApplicationJob
     user_details.each_slice(100) do |batch|
       batch.each do |user_detail|
         organisation = Organisation.find(user_detail[:organisation_id])
-        return if organisation.users.find_by(email_address: user_detail[:email_address])
+        next if organisation.users.find_by(email_address: user_detail[:email_address])
 
         user = User.find_or_create_by!(email_address: user_detail[:email_address]) do |u|
           u.first_name = user_detail[:first_name]

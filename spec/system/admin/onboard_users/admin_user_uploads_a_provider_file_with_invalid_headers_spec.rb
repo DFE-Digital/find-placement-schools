@@ -19,9 +19,9 @@ RSpec.describe "Admin user uploads a provider file with invalid headers", type: 
   private
 
   def given_providers_exist
-    @london_provider = create(:provider, name: "London Provider", urn: 111_111)
-    @guildford_provider = create(:provider, name: "Guildford Provider", urn: 222_222)
-    @york_provider = create(:provider, name: "York Provider", urn: 333_333)
+    @london_provider = create(:provider, name: "London Provider", ukprn: 11111111)
+    @guildford_provider = create(:provider, name: "Guildford Provider", ukprn: 22222222)
+    @york_provider = create(:provider, name: "York Provider", ukprn: 33333333)
   end
 
   def and_i_am_signed_in
