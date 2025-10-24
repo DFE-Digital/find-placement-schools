@@ -18,8 +18,8 @@ class OnboardUsersWizard::UploadErrorsStep < BaseStep
   private
 
   def combined_errors
-    invalid_email_address_rows +
-      invalid_identifier_rows +
+    invalid_identifier_rows +
+      invalid_email_address_rows +
       missing_first_name_rows +
       missing_last_name_rows
   end
