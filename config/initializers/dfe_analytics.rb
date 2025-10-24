@@ -1,3 +1,5 @@
+require "rake"
+
 ALLOWED_ENVS = %w[production].freeze
 
 DfE::Analytics.configure do |config|
