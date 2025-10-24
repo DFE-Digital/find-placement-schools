@@ -73,7 +73,7 @@ Rails.application.routes.draw do
   resources :admin_dashboard, only: %i[index]
 
   namespace :admin do
-    resources :previous_placements do
+    resources :previous_placements, only: [] do
       collection do
         get "new", to: "previous_placements/import_register_data#new", as: :new_import_register_data
         get "new/:state_key/:step", to: "previous_placements/import_register_data#edit", as: :import_register_data
@@ -81,7 +81,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :users do
+    resources :users, only: [] do
       collection do
         get "onboard_users", to: "users/onboard_users#new", as: :new_onboard_users
         get "onboard_users/:state_key/:step", to: "users/onboard_users#edit", as: :onboard_users

@@ -18,9 +18,9 @@ RSpec.describe "Admin user does not upload a provider file", type: :system do
   private
 
   def given_providers_exist
-    @london_provider = create(:provider, name: "London Provider", ukprn: 111_111_11)
-    @guildford_provider = create(:provider, name: "Guildford Provider", ukprn: 222_222_22)
-    @york_provider = create(:provider, name: "York Provider", urn: 333_333_33)
+    @london_provider = create(:provider, name: "London Provider", ukprn: 11111111)
+    @guildford_provider = create(:provider, name: "Guildford Provider", ukprn: 22222222)
+    @york_provider = create(:provider, name: "York Provider", urn: 33333333)
   end
 
   def and_i_am_signed_in

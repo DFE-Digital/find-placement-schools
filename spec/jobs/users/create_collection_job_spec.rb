@@ -66,6 +66,7 @@ RSpec.describe Users::CreateCollectionJob, type: :job do
       context "when a user already exists" do
         before do
           create(:user, schools: [ school ], email_address: "joe_bloggs@example.com")
+          create(:user, schools: [ school ], email_address: "sue_doe@example.com")
           allow(Users::Invite).to receive(:call)
         end
 
