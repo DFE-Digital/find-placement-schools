@@ -9,12 +9,14 @@ class Users::CreateCollectionJob < ApplicationJob
         organisation = Organisation.find(user_detail[:organisation_id])
         next if organisation.users.find_by(email_address: user_detail[:email_address])
 
-        user = User.find_or_create_by!(email_address: user_detail[:email_address]) do |u|
+        user = User.find_or_create_by(email_address: user_detail[:email_address]) do |u|
           u.first_name = user_detail[:first_name]
           u.last_name = user_detail[:last_name]
         end
 
-        user.user_memberships.create!(organisation:)
+        next unless user.present?
+
+        user.user_memberships.find_or_create_by(organisation:)
 
         Users::Invite.call(user:, organisation:, wait_time:)
       end
