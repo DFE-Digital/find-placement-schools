@@ -55,6 +55,12 @@ Rails.application.routes.draw do
   end
 
   resources :placement_preferences, only: %i[index show] do
+    member do
+      get "edit", to: "placement_preferences/edit_hosting_interest#new", as: :new_edit_hosting_interest
+      get "new/:state_key/:step", to: "placement_preferences/edit_hosting_interest#edit", as: :edit_hosting_interest
+      put "new/:state_key/:step", to: "placement_preferences/edit_hosting_interest#update"
+    end
+
     collection do
       get "new", to: "placement_preferences/add_hosting_interest#new", as: :new_add_hosting_interest
       get "new/:state_key/:step", to: "placement_preferences/add_hosting_interest#edit", as: :add_hosting_interest
