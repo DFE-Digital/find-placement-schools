@@ -14,5 +14,5 @@ en:
           cancel: Cancel
         update:
           success:
-            heading: Users uploaded
+            heading: Users have been onboarded successfully
             body: It may take a moment for the users to appear in the service.

@@ -79,7 +79,7 @@
     <%= t(".only_showing_rows_with_errors") %>
   </p>
 
-  <%= govuk_button_link_to t(".upload_your_file_again"), step_path(:upload) %>
+  <%= govuk_button_link_to t(".upload_your_file_again"), step_path(@wizard.steps[:user_type].user_type == "provider" ? :provider_upload : :school_upload) %>
 
   </div>
 </div>

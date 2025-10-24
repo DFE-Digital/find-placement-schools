@@ -4,3 +4,4 @@ en:
       onboard_users:
         update:
           success: Users have been onboarded successfully
+          success_body: It may take a few minutes for all users to receive invitations

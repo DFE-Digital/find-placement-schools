@@ -61,6 +61,10 @@ en:
                 Your file needs a column called %{missing_columns}.
               uploaded_headers:
                 Right now it has columns called %{uploaded_headers}.
+        onboard_users_wizard/user_type_step:
+          attributes:
+            user_type:
+              blank: Please select an option
         onboard_users_wizard/school_upload_step:
           attributes:
             csv_upload:

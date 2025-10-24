@@ -101,8 +101,8 @@ RSpec.describe "Admin user onboards school users", type: :system do
   end
 
   def then_i_see_a_success_message
-    expect(page).to have_important_banner(
-      "Users uploaded",
+    expect(page).to have_success_banner(
+      "Users have been onboarded successfully",
       "It may take a moment for the users to appear in the service.",
     )
   end
