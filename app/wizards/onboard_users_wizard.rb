@@ -45,7 +45,7 @@ class OnboardUsersWizard < BaseWizard
           organisation_id: organisation.id,
           first_name: row["first_name"],
           last_name: row["last_name"],
-          email: row["email_address"]
+          email_address: row["email_address"]
         }
       end
       details

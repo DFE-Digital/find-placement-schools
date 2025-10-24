@@ -11,7 +11,7 @@ RSpec.describe "Admin user uploads a school file with invalid inputs", type: :sy
     and_i_click_on_continue
     then_i_see_the_upload_page
 
-    when_i_upload_a_file_containing_containing_invalid_inputs
+    when_i_upload_a_file_containing_invalid_inputs
     and_i_click_on_upload
     then_i_see_the_errors_page
   end
@@ -56,7 +56,7 @@ RSpec.describe "Admin user uploads a school file with invalid inputs", type: :sy
     expect(page).to have_button("Upload")
   end
 
-  def when_i_upload_a_file_containing_containing_invalid_inputs
+  def when_i_upload_a_file_containing_invalid_inputs
     attach_file "Upload CSV file",
                 "spec/fixtures/users/invalid_data_school_users.csv"
   end

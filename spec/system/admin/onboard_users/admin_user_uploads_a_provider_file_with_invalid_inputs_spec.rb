@@ -11,7 +11,7 @@ RSpec.describe "Admin user uploads a provider file with invalid inputs", type: :
     and_i_click_on_continue
     then_i_see_the_upload_page
 
-    when_i_upload_a_file_containing_containing_invalid_inputs
+    when_i_upload_a_file_containing_invalid_inputs
     and_i_click_on_upload
     then_i_see_the_errors_page
   end
@@ -19,9 +19,9 @@ RSpec.describe "Admin user uploads a provider file with invalid inputs", type: :
   private
 
   def given_providers_exist
-    @london_provider = create(:provider, name: "London Provider", urn: 111111)
-    @guildford_provider = create(:provider, name: "Guildford Provider", urn: 222222)
-    @york_provider = create(:provider, name: "York Provider", urn: 333333)
+    @london_provider = create(:provider, name: "London Provider", ukprn: 11111111)
+    @guildford_provider = create(:provider, name: "Guildford Provider", ukprn: 22222222)
+    @york_provider = create(:provider, name: "York Provider", ukprn: 33333333)
   end
 
   def and_i_am_signed_in
@@ -56,7 +56,7 @@ RSpec.describe "Admin user uploads a provider file with invalid inputs", type: :
     expect(page).to have_button("Upload")
   end
 
-  def when_i_upload_a_file_containing_containing_invalid_inputs
+  def when_i_upload_a_file_containing_invalid_inputs
     attach_file "Upload CSV file",
                 "spec/fixtures/users/invalid_data_provider_users.csv"
   end
