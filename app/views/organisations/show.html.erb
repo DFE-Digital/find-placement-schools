@@ -5,6 +5,13 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-!-margin-top-5">
         <%= govuk_tabs do |tabs| %>
+          <% if placement_details.present? %>
+            <%= tabs.with_tab(label: t(".placement_preferences")) do %>
+              <span class="govuk-caption-l"><%= organisation.name %></span>
+              <%= render "/organisations/placement_preferences", placement_details: %>
+            <% end %>
+          <% end %>
+
           <% tabs.with_tab(label: t(".organisation_details")) do %>
             <span class="govuk-caption-l"><%= organisation.name %></span>
             <h1 class="govuk-heading-l"><%= t(".organisation_details") %></h1>
@@ -19,13 +26,6 @@
           <%= tabs.with_tab(label: t(".location") ) do %>
             <span class="govuk-caption-l"><%= organisation.name %></span>
             <%= render "/organisations/location", organisation: %>
-          <% end %>
-
-          <% if placement_details.present? %>
-            <%= tabs.with_tab(label: t(".placement_preferences")) do %>
-              <span class="govuk-caption-l"><%= organisation.name %></span>
-              <%= render "/organisations/placement_preferences", placement_details: %>
-            <% end %>
           <% end %>
         <% end %>
       </div>
