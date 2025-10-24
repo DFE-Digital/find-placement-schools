@@ -11,7 +11,7 @@ RSpec.describe OnboardUsersWizard::UserTypeStep, type: :model do
 
       it "is not valid" do
         expect(step).not_to be_valid
-        expect(step.errors[:user_type]).to include("can't be blank")
+        expect(step.errors[:user_type]).to include("Please select an option")
       end
     end
 

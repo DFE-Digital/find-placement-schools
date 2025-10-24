@@ -14,7 +14,11 @@ class Admin::Users::OnboardUsersController < ApplicationController
     else
       @wizard.upload_users
       @wizard.reset_state
-      redirect_to index_path, flash: t(".success")
+      redirect_to index_path, flash: {
+        success: true,
+        heading: t(".success.heading"),
+        body: t(".success.body")
+      }
     end
   end
 
