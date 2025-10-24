@@ -1,4 +1,4 @@
-ALLOWED_ENVS = %w[production qa sandbox staging].freeze
+ALLOWED_ENVS = %w[production].freeze
 
 DfE::Analytics.configure do |config|
   # Whether to log events instead of sending them to BigQuery.
@@ -42,7 +42,7 @@ DfE::Analytics.configure do |config|
   # enable analytics. You might want to hook this up to a feature flag or
   # environment variable.
   #
-  config.enable_analytics = proc { ALLOWED_ENVS.include?(ENV.fetch("HOSTING_ENV", "development")) }
+  config.enable_analytics = proc { ALLOWED_ENVS.include?(ENV.fetch("HOSTING_ENV")) }
 
   # The environment we’re running in. This value will be attached
   # to all events we send to BigQuery.
@@ -74,7 +74,7 @@ DfE::Analytics.configure do |config|
   # instead of the BigQuery API JSON Key. Note that this also will also
   # use a new version of the BigQuery streaming APIs.
   #
-  config.azure_federated_auth = true
+  config.azure_federated_auth = ENV.include? "GOOGLE_CLOUD_CREDENTIALS"
 
   # Client Id of the app in azure
   #
