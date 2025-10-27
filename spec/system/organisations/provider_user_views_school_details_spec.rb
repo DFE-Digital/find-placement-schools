@@ -107,6 +107,16 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
       expect(page).to have_caption("Hogwarts")
       expect(page).to have_h1("Organisation details")
 
+      expect(page).not_to have_inset_text(
+        "These details will be displayed to teacher training providers." \
+          " If any details are incorrect, go to the Get Information about Schools" \
+          " (GIAS) (opens in new tab) service to update them."
+      )
+      expect(page).not_to have_link(
+        "Get Information about Schools (GIAS) (opens in new tab)",
+        href: "https://www.get-information-schools.service.gov.uk/Guidance/Governance",
+      )
+
       expect(page).to have_summary_list_row("Organisation name", "Hogwarts")
       expect(page).to have_summary_list_row("UKPRN", "100323043")
       expect(page).to have_summary_list_row("Unique reference number (URN)", "136534")

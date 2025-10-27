@@ -67,6 +67,9 @@ en:
       you_can_edit_placements: "You can %{link} at any time."
       edit_your_placements: edit your schoolʼs placement information
       additional_information: Additional information
+      click_here: Click here
+      to_see_how_your_placement_information_will_be_shown:
+        "%{link} to see how your placement information will be shown to providers."
     interested_preferences:
       panel_title: Information added
       panel_text:
@@ -87,3 +90,6 @@ en:
       you_can_edit_placements: "You can %{link} at any time."
       edit_your_placements: edit your schoolʼs placement information
       additional_information: Additional information
+      click_here: Click here
+      to_see_how_your_placement_information_will_be_shown:
+        "%{link} to see how your placement information will be shown to providers."

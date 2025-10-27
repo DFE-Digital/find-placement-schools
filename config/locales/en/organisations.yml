@@ -20,6 +20,10 @@ en:
       organisation_details: Organisation details
       location: Location
       placement_preferences: Placement information
+      gias: Get Information about Schools (GIAS)
+      these_details_will_be_displayed:
+        These details will be displayed to teacher training providers.
+        If any details are incorrect, go to the %{link} service to update them.
     provider_details:
       organisation_name: Organisation name
       urn: Unique reference number (URN)
