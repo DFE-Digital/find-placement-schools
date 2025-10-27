@@ -58,7 +58,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
       academic_year: AcademicYear.next,
       placement_details: {
         "appetite" => { "appetite" => "actively_looking" },
-        "phase" => { "phases" => %w[primary send] },
+        "phase" => { "phases" => %w[primary send] }
       }
     )
   end

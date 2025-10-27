@@ -18,7 +18,7 @@ describe SchoolsQuery do
       longitude: 14.350231,
       placement_preferences: [ build(:placement_preference, appetite: "actively_looking", academic_year: AcademicYear.next, placement_details: {
             "phase" => {
-              "phases" => %w[primary send],
+              "phases" => %w[primary send]
             },
             "secondary_subject_selection" => {
               "subject_ids" => [ maths.id, biology.id ]
