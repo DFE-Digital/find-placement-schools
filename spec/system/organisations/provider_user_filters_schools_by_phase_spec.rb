@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe "Provider user filters schools by phase", type: :system do
   scenario do
     given_that_schools_exist
+    and_a_send_placement_preference_exists
     and_i_am_signed_in
     then_i_see_the_find_placements_page
     and_i_see_all_schools
@@ -31,6 +32,13 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
     then_i_see_all_schools
     and_i_do_not_see_any_selected_phase_checkboxes
     and_i_do_not_see_any_phase_filter_tags
+
+    when_i_select_send_from_the_phase_filters
+    and_i_click_on_apply_filters
+    then_i_see_the_primary_school
+    and_i_do_not_see_the_secondary_school
+    and_i_see_that_the_send_phase_checkbox_is_selected
+    and_i_see_the_send_filter_tag
   end
 
   private
@@ -40,6 +48,19 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
 
     @primary_school = create(:school, :with_placement_preferences, phase: "Primary", name: "Hogwarts")
     @secondary_school = create(:school, :with_placement_preferences, phase: "Secondary", name: "Beauxbatons")
+  end
+
+  def and_a_send_placement_preference_exists
+    @send_placement_preference = create(
+      :placement_preference,
+      appetite: "actively_looking",
+      organisation: @primary_school,
+      academic_year: AcademicYear.next,
+      placement_details: {
+        "appetite" => { "appetite" => "actively_looking" },
+        "phase" => { "phases" => %w[primary send] },
+      }
+    )
   end
 
   def and_i_am_signed_in
@@ -145,5 +166,17 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
     expect(page).not_to have_h3("Phase")
     expect(page).not_to have_filter_tag("Primary")
     expect(page).not_to have_filter_tag("Secondary")
+  end
+
+  def when_i_select_send_from_the_phase_filters
+    check "Special educational needs and disabilities (SEND)"
+  end
+
+  def and_i_see_that_the_send_phase_checkbox_is_selected
+    expect(page).to have_checked_field("Special educational needs and disabilities (SEND)")
+  end
+
+  def and_i_see_the_send_filter_tag
+    expect(page).to have_filter_tag("Special educational needs and disabilities (SEND)")
   end
 end
