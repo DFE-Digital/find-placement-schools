@@ -7,13 +7,11 @@
 
       <p class="govuk-body"><%= t(".register_description_2") %></p>
 
-      <p class="govuk-body"><%= t(".register_description_3") %></p>
-
       <h2 class="govuk-heading-m"><%= t(".find_heading") %></h2>
 
       <p class="govuk-body"><%= t(".find_description_1") %></p>
 
-      <p class="govuk-body"><%= t(".find_description_2") %></p>
+      <%= govuk_inset_text(text: t(".service_description") )%>
 
       <%= govuk_start_button(text: t(".start_now"), href: sign_in_path) %>
     </div>

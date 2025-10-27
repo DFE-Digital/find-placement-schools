@@ -1,11 +1,10 @@
 en:
   pages:
     home:
-      register_heading: Register placement schools
+      register_heading: Actions for schools
       register_description_1: Use this service to register your school’s ability to offer school placements for trainee teachers.
       register_description_2: This helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
-      register_description_3: This service is being trialled by the Department for Education with schools and teacher training providers in England.
-      find_heading: Find placement schools
+      find_heading: Actions for providers
       find_description_1: Use this service to find placement schools for your trainee teachers.
-      find_description_2: This service is being trialled by the Department for Education with schools and teacher training providers in England.
+      service_description: This service is being trialled by the Department for Education with schools and teacher training providers in England.
       start_now: Start now
