@@ -17,6 +17,20 @@
             <h1 class="govuk-heading-l"><%= t(".organisation_details") %></h1>
 
             <% if organisation.is_a?(School) %>
+              <% if organisation == current_organisation %>
+                <%= govuk_inset_text do %>
+                  <%= embedded_link_text(
+                    t(".these_details_will_be_displayed",
+                      link: govuk_link_to(
+                        t(".gias"),
+                        "https://www.get-information-schools.service.gov.uk/Guidance/Governance",
+                        target: "_blank",
+                        new_tab: true,
+                      )
+                    ),
+                  ) %>
+                <% end %>
+              <% end %>
               <%= render "/organisations/school_details", organisation: %>
             <% else %>
               <%= render "/organisations/provider_details", organisation: %>

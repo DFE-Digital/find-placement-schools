@@ -51,6 +51,16 @@ RSpec.describe "School user views organisation details", type: :system do
     expect(page).to have_title("Organisation details")
     expect(service_navigation).to have_current_item("Organisation details")
 
+    expect(page).to have_inset_text(
+      "These details will be displayed to teacher training providers." \
+        " If any details are incorrect, go to the Get Information about Schools" \
+        " (GIAS) (opens in new tab) service to update them."
+    )
+    expect(page).to have_link(
+      "Get Information about Schools (GIAS) (opens in new tab)",
+      href: "https://www.get-information-schools.service.gov.uk/Guidance/Governance",
+    )
+
     within("#organisation-details") do
       expect(page).to have_caption("Hogwarts")
       expect(page).to have_h1("Organisation details")

@@ -24,7 +24,19 @@
       link: govuk_link_to(
         t(".edit_your_placements"),
         new_edit_hosting_interest_placement_preference_path(@placement_preference),
-      )),
+      )
+    ),
+  ) %>
+</p>
+
+<p class="govuk-body">
+  <%= embedded_link_text(
+    t(".to_see_how_your_placement_information_will_be_shown",
+      link: govuk_link_to(
+        t(".click_here"),
+        organisation_path(current_organisation),
+      )
+    ),
   ) %>
 </p>
 

@@ -30,4 +30,8 @@ RSpec.describe "School user views placement preferences", type: :system do
       "Status" => "Placements available"
     })
   end
+
+  def when_i_click_on_click_here
+    click_on "Click here"
+  end
 end
