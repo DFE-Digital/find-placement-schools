@@ -17,6 +17,9 @@ describe SchoolsQuery do
       latitude: 51.648438,
       longitude: 14.350231,
       placement_preferences: [ build(:placement_preference, appetite: "actively_looking", academic_year: AcademicYear.next, placement_details: {
+            "phase" => {
+              "phases" => %w[primary send],
+            },
             "secondary_subject_selection" => {
               "subject_ids" => [ maths.id, biology.id ]
             }
@@ -91,6 +94,15 @@ describe SchoolsQuery do
       it "returns the filtered schools" do
         expect(query.call).to include(query_school)
         expect(query.call).not_to include(non_query_school)
+      end
+
+      context "when filtering by SEND phase" do
+        let(:params) { { filters: { phases: [ "send" ] } } }
+
+        it "returns the filtered schools" do
+          expect(query.call).to include(query_school)
+          expect(query.call).not_to include(non_query_school)
+        end
       end
     end
 

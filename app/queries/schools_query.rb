@@ -23,7 +23,12 @@ class SchoolsQuery < ApplicationQuery
   def phase_condition(scope)
     return scope if filter_params[:phases].blank?
 
-    scope.where(phase: filter_params[:phases])
+    scope.where(phase: filter_params[:phases]).or(
+      scope.where(
+        "(placement_preferences.placement_details #> '{phase,phases}') ?| array[:options]",
+        options: filter_params[:phases],
+      )
+    )
   end
 
   def subject_condition(scope)
@@ -83,5 +88,11 @@ class SchoolsQuery < ApplicationQuery
     else
       MAX_LOCATION_DISTANCE
     end
+  end
+
+  private
+
+  def send_value
+    AddHostingInterestWizard::PhaseStep::SEND
   end
 end

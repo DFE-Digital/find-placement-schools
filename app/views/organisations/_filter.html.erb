@@ -74,7 +74,7 @@
               <% filter_form.phases.each do |phase| %>
                 <li>
                   <%= govuk_link_to(
-                        phase,
+                        (phase == AddHostingInterestWizard::PhaseStep::SEND ? t(".send") : phase),
                         filter_form.index_path_without_filter(
                           filter: "phases",
                           value: phase,
@@ -200,9 +200,10 @@
               small: true,
               multiple: true,
             ) do %>
-              <% School.distinct.pluck(:phase).each do |phase| %>
+              <% School.distinct.pluck(:phase).sort.each do |phase| %>
                 <%= form.govuk_check_box :phases, phase, label: { text: phase } %>
               <% end %>
+              <%= form.govuk_check_box :phases, AddHostingInterestWizard::PhaseStep::SEND, label: { text: t(".send") } %>
             <% end %>
           </div>
 
