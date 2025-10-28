@@ -72,7 +72,6 @@ RSpec.describe "Admin user imports previous placement register data", type: :sys
       "school_urn" => "100003",
       "subject_name" => "Computing",
       "subject_code" => "11",
-      "number_of_placements" => "5",
     )
     expect(page).to have_element(
       :p,

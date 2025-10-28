@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_25_093452) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_28_095558) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+  enable_extension "pgcrypto"
+
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "appetite", ["actively_looking", "interested", "not_open"]
@@ -120,7 +124,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_25_093452) do
     t.uuid "school_id", null: false
     t.uuid "academic_year_id", null: false
     t.uuid "placement_subject_id", null: false
-    t.integer "number_of_placements", default: 0, null: false
     t.index ["academic_year_id"], name: "index_previous_placements_on_academic_year_id"
     t.index ["placement_subject_id"], name: "index_previous_placements_on_placement_subject_id"
     t.index ["school_id", "placement_subject_id", "academic_year_id"], name: "idx_on_school_id_placement_subject_id_academic_year_290aca342d", unique: true

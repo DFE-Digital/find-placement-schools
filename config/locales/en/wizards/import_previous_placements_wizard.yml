@@ -32,12 +32,10 @@ en:
             school_urn: school_urn
             subject_name: subject_name
             subject_code: subject_code
-            number_of_placements: number_of_placements
           errors:
             missing_academic_year: Enter an academic year start date
             invalid_school_urn: Enter a valid school URN
             missing_subject_name: Enter a subject name
             invalid_subject_code: Enter a valid subject code
-            invalid_number_of_placements: Enter a whole number greater than 0
         only_showing_rows_with_errors: Only showing rows with errors
         upload_your_file_again: Upload your file again
