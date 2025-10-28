@@ -70,6 +70,24 @@ describe SchoolsQuery do
       end
     end
 
+    context "when filtering by schools not offering placements" do
+      let(:params) { { filters: { schools_to_show: "not_open" } } }
+      let(:interested_school) { create(:school, name: "Interested school", placement_preferences: [ build(:placement_preference, :interested, academic_year: AcademicYear.next) ]) }
+      let(:not_open_school) { create(:school, name: "Not open school", placement_preferences: [ build(:placement_preference, :not_open, academic_year: AcademicYear.next) ]) }
+
+      before do
+        interested_school
+        not_open_school
+      end
+
+      it "returns schools with matching placement preferences" do
+        expect(query.call).to include(not_open_school)
+        expect(query.call).not_to include(query_school)
+        expect(query.call).not_to include(non_query_school)
+        expect(query.call).not_to include(interested_school)
+      end
+    end
+
     context "when filtering by all schools" do
       let(:params) { { filters: { schools_to_show: "all" } } }
 
