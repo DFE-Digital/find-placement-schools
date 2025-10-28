@@ -10,12 +10,12 @@ RSpec.describe RegisterTraineeTeachers::Import do
       {
        school_id: school.id,
        academic_year_id: academic_year.id,
-       subject_id: placement_subject.id,
+       subject_id: placement_subject.id
       },
       {
         school_id: another_school.id,
         academic_year_id: academic_year.id,
-        subject_id: placement_subject.id,
+        subject_id: placement_subject.id
       }
     ]
   end
