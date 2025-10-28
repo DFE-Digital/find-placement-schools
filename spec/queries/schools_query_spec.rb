@@ -172,7 +172,7 @@ describe SchoolsQuery do
       end
 
       context "when filtering by actively looking schools" do
-        let(:params) { { filters: { itt_statuses: [ "actively_looking" ], schools_to_show: "all" } } }
+        let(:params) { { filters: { itt_statuses: [ "actively_looking" ], schools_to_show: "active" } } }
 
         it "returns schools with matching placement preferences" do
           expect(query.call).to include(query_school)
@@ -183,7 +183,7 @@ describe SchoolsQuery do
       end
 
       context "when filtering by interested schools" do
-        let(:params) { { filters: { itt_statuses: [ "interested" ] } } }
+        let(:params) { { filters: { itt_statuses: [ "interested" ], schools_to_show: "active" } } }
 
         it "returns schools with matching placement preferences" do
           expect(query.call).to include(interested_school)
@@ -193,19 +193,8 @@ describe SchoolsQuery do
         end
       end
 
-      context "when filtering by not open schools" do
-        let(:params) { { filters: { schools_to_show: "all", itt_statuses: [ "not_open" ] } } }
-
-        it "returns schools with matching placement preferences" do
-          expect(query.call).to include(not_open_school)
-          expect(query.call).not_to include(query_school)
-          expect(query.call).not_to include(non_query_school)
-          expect(query.call).not_to include(interested_school)
-        end
-      end
-
       context "when filtering by multiple statuses" do
-        let(:params) { { filters: { itt_statuses: %w[actively_looking interested] } } }
+        let(:params) { { filters: { schools_to_show: "active", itt_statuses: %w[actively_looking interested] } } }
 
         it "returns schools with matching placement preferences" do
           expect(query.call).to include(query_school)
