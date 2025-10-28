@@ -58,7 +58,7 @@ class SchoolsQuery < ApplicationQuery
   end
 
   def itt_statuses_condition(scope)
-    return scope if filter_params[:itt_statuses].blank?
+    return scope if filter_params[:itt_statuses].blank? || filter_params[:schools_to_show] != "active"
 
     scope.where(placement_preferences: { appetite: filter_params[:itt_statuses] })
   end
