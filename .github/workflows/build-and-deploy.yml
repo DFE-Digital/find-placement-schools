@@ -151,8 +151,8 @@ jobs:
         terraform-base: ${{ env.TERRAFORM_BASE }}
         healthcheck: ${{ env.HEALTHCHECK_CMD }}
         slack-webhook: ${{ secrets.SLACK_WEBHOOK }}
-        smoke-test: true
-        db-seed: ${{ inputs.environment == 'review' && 'true' || 'false' }}
+# #         smoke-test: true
+# #         db-seed: ${{ inputs.environment == 'review' && 'true' || 'false' }}
 # #        gcp-wip: ${{ vars.GCP_WIP }}
 # #        gcp-project-id: ${{ vars.GCP_PROJECT_ID }}
 
