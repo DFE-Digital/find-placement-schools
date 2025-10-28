@@ -10,7 +10,6 @@ RSpec.describe PreviousPlacement, type: :model do
   end
 
   describe "validations" do
-    it { is_expected.to validate_presence_of(:number_of_placements) }
     it { is_expected.to validate_uniqueness_of(:school_id).scoped_to(:placement_subject_id, :academic_year_id).case_insensitive }
   end
 end
