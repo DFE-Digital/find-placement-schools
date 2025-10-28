@@ -19,10 +19,7 @@ module RegisterTraineeTeachers
             school_id: row[:school_id],
             academic_year_id: row[:academic_year_id],
             placement_subject_id: row[:subject_id],
-          ).tap do |previous_placement|
-            previous_placement.number_of_placements = row[:number_of_placements].to_i
-            previous_placement.save!
-          end
+          )
         end
       end
     end
