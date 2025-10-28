@@ -30,7 +30,6 @@
           <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.school_urn") %>
           <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.subject_name") %>
           <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.subject_code") %>
-          <% row.with_cell text: t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.headers.number_of_placements") %>
         <% end %>
       <% end %>
 
@@ -75,15 +74,6 @@
                 <%= csv_row["subject_code"] %>
               </p>
             <% end %>
-
-            <% row.with_cell do %>
-              <p>
-                <% if current_step.invalid_number_of_placements_rows.include?(csv_row_index) %>
-                  <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.invalid_number_of_placements") %></strong><br>
-                <% end %>
-                <%= csv_row["number_of_placements"] %>
-              </p>
-            <% end %>
           <% end %>
         <% end %>
       <% end %>
@@ -94,6 +84,5 @@
     </p>
 
     <%= govuk_button_link_to t(".upload_your_file_again"), step_path(:upload) %>
-
   </div>
 </div>
