@@ -58,9 +58,9 @@ RSpec.describe "School user successfully adds their hosting interest, including 
 
   def then_i_see_the_academic_years_page
     expect(page).to have_title(
-      "For which academic year are you providing information about placements for trainee teachers? - Find ITT placements",
+      "For which academic year are you providing information about placements for trainee teachers? - Find placement schools",
     )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
       :legend,
       text: "For which academic year are you providing information about placements for trainee teachers?",

@@ -12,6 +12,10 @@ RSpec.describe "School user updates the placement preference with an invalid val
     then_i_see_the_school_is_not_offering_placements
 
     when_i_click_on_edit_placement_information
+    then_i_see_the_academic_years_page
+
+    when_i_choose_the_next_academic_year
+    and_i_click_on_continue
     then_i_see_the_appetite_form_page
 
     when_i_select_yes
@@ -63,6 +67,23 @@ RSpec.describe "School user updates the placement preference with an invalid val
       academic_year: @next_academic_year,
       placement_details:,
       )
+  end
+
+  def then_i_see_the_academic_years_page
+    expect(page).to have_title(
+                      "For which academic year are you providing information about placements for trainee teachers? - Find placement schools",
+                      )
+    expect(page).to have_caption("Placement information")
+    expect(page).to have_element(
+                      :legend,
+                      text: "For which academic year are you providing information about placements for trainee teachers?",
+                      class: "govuk-fieldset__legend",
+                      )
+    expect(page).to have_field(@next_academic_year_name, type: :radio)
+  end
+
+  def when_i_choose_the_next_academic_year
+    choose @next_academic_year_name
   end
 
   def then_i_see_the_placement_information_page

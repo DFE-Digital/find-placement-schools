@@ -3,7 +3,7 @@ en:
     add_hosting_interest_wizard:
       unknown: I don’t know
       academic_year_step:
-        caption: Placement preferences
+        caption: Placement information
         title: For which academic year are you providing information about placements for trainee teachers?
         continue: Continue
       appetite_step:
@@ -139,7 +139,7 @@ en:
         providers_see_you_can_offer_placements:
           Providers will be able to see that you may be able to offer placements for trainee teachers.
         providers_can_see_approximate_info:
-          They will be able to see your potential placement details and will be able to use your email to contact you.
+          They will be able to see your potential placement information and will be able to use your email to contact you.
         placement_contact: Placement contact
         additional_information: Additional information
         message_to_providers: Message to providers
