@@ -12,14 +12,15 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
 
     when_i_select_no
     and_i_click_on_continue
-    then_i_see_the_reason_for_not_hosting_form_page
-
-    when_i_select_no_mentors_available_due_to_capacity
-    and_i_click_on_continue
     then_i_see_the_school_contact_form_page
 
     when_i_fill_in_the_school_contact_details
     and_i_click_on_continue
+    then_i_see_the_reason_for_not_hosting_form_page
+
+    when_i_select_no_mentors_available_due_to_capacity
+    and_i_click_on_continue
+
     then_i_see_the_are_you_sure_page
     and_i_see_the_reason_not_hosting_i_entered
     and_i_see_the_entered_school_contact_details
@@ -27,7 +28,7 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     when_i_click_on_continue
     then_i_see_the_confirmation_page
 
-    when_i_click_on_placement_preferences
+    when_i_click_on_placement_information
     then_i_see_the_placements_preferences_page
     and_i_see_my_placement_preference_for_current_academic_year
 
@@ -51,7 +52,7 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     when_i_click_on_continue
     then_i_see_the_confirmation_page
 
-    when_i_click_on_placement_preferences
+    when_i_click_on_placement_information
     then_i_see_the_placements_preferences_page_without_add_link
     and_i_see_my_placement_preference_for_current_academic_year
     and_i_see_my_placement_preference_for_next_academic_year
@@ -67,15 +68,17 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
   def given_academic_years_exist
     @current_academic_year = create(:academic_year, :current)
     @current_academic_year_name = @current_academic_year.name
+    @current_academic_year_short_name = "#{@current_academic_year.starts_on.year}/#{@current_academic_year.ends_on.strftime("%y")}"
     @next_academic_year = create(:academic_year, :next)
     @next_academic_year_name = @next_academic_year.name
+    @next_academic_year_short_name = "#{@next_academic_year.starts_on.year}/#{@next_academic_year.ends_on.strftime("%y")}"
   end
 
   def then_i_see_the_academic_years_page
     expect(page).to have_title(
-                      "For which academic year are you providing information about placements for trainee teachers? - Find ITT placements",
+                      "For which academic year are you providing information about placements for trainee teachers? - Find placement schools",
                       )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
                       :legend,
                       text: "For which academic year are you providing information about placements for trainee teachers?",
@@ -97,31 +100,31 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
 
   def then_i_see_the_appetite_form_page_for_current_academic_year
     expect(page).to have_title(
-                      "Can your school offer placements for trainee teachers in the academic year #{@current_academic_year_name}? - Find ITT placements",
+                      "Can your school offer placements for trainee teachers in the #{@current_academic_year_name} academic year? - Find placement schools",
                       )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
                       :legend,
-                      text: "Can your school offer placements for trainee teachers in the academic year #{@current_academic_year_name}?",
+                      text: "Can your school offer placements for trainee teachers in the #{@current_academic_year_name} academic year?",
                       class: "govuk-fieldset__legend",
                       )
-    expect(page).to have_field("Yes - I can offer placements", type: :radio)
-    expect(page).to have_field("Maybe - I’m not sure yet", type: :radio)
-    expect(page).to have_field("No - I can’t offer placements", type: :radio)
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_select_no
-    choose "No - I can’t offer placements"
+    choose "No"
   end
 
   def then_i_see_the_reason_for_not_hosting_form_page
     expect(page).to have_title(
-                      "Tell us why you are not able to offer placements for trainee teachers - Find ITT placements",
+                      "Tell us why your school cannot offer placements for trainee teachers",
                       )
-    expect(page).to have_caption("Not offering placements this year")
+    expect(page).to have_caption("Not offering placements #{@next_academic_year_short_name}")
     expect(page).to have_element(
                       :legend,
-                      text: "Tell us why you are not able to offer placements for trainee teachers",
+                      text: "Tell us why your school cannot offer placements for trainee teachers",
                       class: "govuk-fieldset__legend",
                       )
     expect(page).to have_field("Trainees we were offered did not meet our expectations", type: :checkbox)
@@ -139,12 +142,12 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
 
   def then_i_see_the_school_contact_form_page
     expect(page).to have_title(
-                      "Who is the preferred contact for next year? - Find ITT placements",
+                      "Who can we contact in your school? - Find placement schools",
                       )
-    expect(page).to have_caption("Not offering placements this year")
-    expect(page).to have_h1("Who is the preferred contact for next year?")
+    expect(page).to have_caption("Placement contact")
+    expect(page).to have_h1("Who can we contact in your school?")
     expect(page).to have_paragraph(
-                      "We will ask in the next academic year whether you are able to offer placements for trainee teachers.",
+                      "We will email to ask if your school can offer placements for trainee teachers in future academic years.",
                       )
     expect(page).to have_paragraph(
                       "Choose the person best placed to organise placements for trainee teachers at your school.",
@@ -163,19 +166,19 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
 
   def then_i_see_the_are_you_sure_page
     expect(page).to have_title(
-                      "Confirm and let providers know you are not offering placements - Find ITT placements",
+                      "Check your answers - Find placement schools",
                       )
-    expect(page).to have_caption("Not offering placements this year")
-    expect(page).to have_h1(
-                      "Confirm and let providers know you are not offering placements",
-                      )
+    expect(page).to have_caption("Not offering placements #{@current_academic_year_short_name}")
+    expect(page).to have_h1("Check your answers")
     expect(page).to have_paragraph(
-                      "We will ask in the next academic year whether you are able to offer placements for trainee teachers.",
+                      "Providers in England can see that your school is unable to offer placements for trainee teachers in #{@current_academic_year_short_name}. They will not be able to see the reasons why or the placement contact.",
                       )
     expect(page).to have_paragraph("No information will be shared with providers.")
     expect(page).to have_paragraph(
-                      "Your reason for not offering placements be shared with the Department for Education to help understand teacher training and recruitment.",
+                      "Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.",
                       )
+
+    expect(page).to have_summary_list_row("Academic year", @current_academic_year_name)
   end
 
   def and_i_see_the_reason_not_hosting_i_entered
@@ -186,7 +189,7 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
   end
 
   def and_i_see_the_entered_school_contact_details
-    expect(page).to have_h2("Contact details", class: "govuk-heading-m")
+    expect(page).to have_h2("Placement contact", class: "govuk-heading-m")
     expect(page).to have_summary_list_row("First name", "Joe")
     expect(page).to have_summary_list_row("Last name", "Bloggs")
     expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
@@ -194,16 +197,16 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
 
   def then_i_see_the_confirmation_page
     expect(page).to have_title(
-                      "What happens next? - Find ITT placements",
+                      "What happens next? - Find placement schools",
                       )
     expect(page).to have_h1("What happens next?")
     expect(page).to have_paragraph(
-                      "We will ask in the next academic year whether you are able to offer placements for trainee teachers.",
+                      "We will email the placement contact to ask if your school can offer placements for trainee teachers in future academic years: joe_bloggs@example.com.",
                       )
     expect(page).to have_paragraph(
-                      "If you would like to host placements this year, update your placement preferences to let providers know you’re interested.",
+                      "If you would like to host placements this year, edit placement information for your school.",
                       )
-    expect(page).to have_link("update your placement preferences", href: "")
+    expect(page).to have_link("edit placement information")
 
     expect(page).to have_h3("Placement contact")
     expect(page).to have_summary_list_row("First name", "Joe")
@@ -211,16 +214,15 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     expect(page).to have_summary_list_row("Email address", "joe_bloggs@example.com")
   end
 
-  def when_i_click_on_placement_preferences
-    click_on "Placement preferences"
+  def when_i_click_on_placement_information
+    click_on "Placement information"
   end
 
   def then_i_see_the_placements_preferences_page
     expect(page).to have_title(
-                      "Placement preferences - Find ITT placements",
+                      "Placement information - Find placement schools",
                       )
-    expect(page).to have_h1("Placement preferences")
-    expect(page).to have_link("Add placement preferences")
+    expect(page).to have_h1("Placement information")
   end
 
   def and_i_see_my_placement_preference_for_current_academic_year
@@ -236,9 +238,9 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
 
   def then_i_see_the_appetite_form_page_for_next_academic_year
     expect(page).to have_title(
-                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find ITT placements",
+                      "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}? - Find placement schools",
                       )
-    expect(page).to have_caption("Placement preferences")
+    expect(page).to have_caption("Placement information")
     expect(page).to have_element(
                       :legend,
                       text: "Can your school offer placements for trainee teachers in the academic year #{@next_academic_year_name}?",
@@ -258,7 +260,7 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
 
   def then_i_see_the_placements_preferences_page_without_add_link
     expect(page).to have_title(
-                      "Placement preferences - Find ITT placements",
+                      "Placement preferences - Find placement schools",
                       )
     expect(page).to have_h1("Placement preferences")
     expect(page).not_to have_link("Add placement preferences")

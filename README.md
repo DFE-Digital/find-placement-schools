@@ -1,6 +1,6 @@
 # Readme
 
-# Find school placements
+# Find placement schools
 
 > A Ruby on Rails application that allows **schools** to publish their placement preferences and **providers** to find schools that are open to, or intersted in hosting placements to facilitate more placements across the initial teacher training (ITT) market.
 

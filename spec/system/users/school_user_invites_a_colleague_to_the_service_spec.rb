@@ -4,7 +4,7 @@ RSpec.describe "School user invites a colleague to the service", type: :system d
   scenario do
     given_that_schools_exist
     and_i_am_signed_in
-    then_i_see_the_placement_details_page
+    then_i_see_the_academic_years_page
 
     when_i_navigate_to_the_users_tab
     then_i_see_the_users_page
@@ -34,11 +34,17 @@ RSpec.describe "School user invites a colleague to the service", type: :system d
     sign_in_user(organisations: [ @hogwarts ])
   end
 
-  def then_i_see_the_placement_details_page
-    expect(page).to have_title("Can your school offer placements for trainee teachers in the #{@next_academic_year.name} academic year? - Find placement schools")
-    expect(service_navigation).to have_current_item("Placement information")
+  def then_i_see_the_academic_years_page
+    expect(page).to have_title(
+                      "For which academic year are you providing information about placements for trainee teachers? - Find placement schools",
+                      )
     expect(page).to have_caption("Placement information")
-    expect(page).to have_element(:legend, text: "Can your school offer placements for trainee teachers in the #{@next_academic_year.name} academic year?")
+    expect(page).to have_element(
+                      :legend,
+                      text: "For which academic year are you providing information about placements for trainee teachers?",
+                      class: "govuk-fieldset__legend",
+                      )
+    expect(page).to have_field(@next_academic_year_name, type: :radio)
   end
 
   def when_i_navigate_to_the_users_tab

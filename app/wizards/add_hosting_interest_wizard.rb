@@ -50,7 +50,9 @@ class AddHostingInterestWizard < BaseWizard
                          AcademicYear.find(steps.fetch(:academic_year).academic_year_id).decorate
     else
                          AcademicYear.next.decorate
-    end
+                       end
+
+    debugger
   end
 
   private
