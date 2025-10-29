@@ -19,7 +19,8 @@ RUN apk add --update --no-cache tzdata && \
 # build-base: dependencies for bundle
 # yarn: node package manager
 # postgresql-dev: postgres driver and libraries
-RUN apk add --no-cache build-base yarn postgresql17-dev
+# git: to install dfe-analytics
+RUN apk add --no-cache build-base yarn postgresql17-dev git
 
 RUN apk add --no-cache nodejs npm
 
