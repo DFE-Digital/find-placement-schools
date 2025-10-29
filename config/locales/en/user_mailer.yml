@@ -1,17 +1,6 @@
 en:
   school:
     user_mailer:
-      placement_preferences_notification:
-        subject: "Please update your schools placement preferences"
-        body: |-
-          %{user_name},
-  
-          The following schools:
-          %{school_names}
-  
-          Have no placement preferences. Please update their placement preferences.
-  
-          This notification will be sent once a month.
       user_membership_created_notification:
         subject: Invitation to join %{service_name}
         body: |
@@ -46,5 +35,55 @@ en:
           If you have any questions or feedback, please contact the team at [%{support_email}](mailto:%{support_email}).
           
           Regards
+          
+          %{service_name} team
+      user_membership_sign_in_reminder_notification:
+        subject: "Reminder: Record Your School’s interest in hosting ITT placements"
+        body: |
+          Dear %{user_name},
+          
+          A couple of weeks ago, we let you know about the Department for Education’s new [Find Placement Schools](%{sign_in_url}) service - designed to make it quicker and easier for you to record your school’s ability to host trainee teachers on placements.
+          
+          We’ve noticed your school hasn’t yet signed in. To get started, your DfE Sign-in approver should have received an on-boarding email and can log in and add other users if needed.
+
+          ## Please take a moment to:
+            
+          1. Sign in using your DfE Sign-in credentials
+          
+          2. Record your preferences for hosting placements
+          
+          3. Add any extra details you’d like to share (e.g. phase, subject)
+          
+          Sharing your preferences makes it easier for ITT providers to connect with your school if you’re interested in hosting placements - or lets them know you’re not able to host placements at the moment.
+          
+          You can update your information at any time, and we’ll send reminders to help keep it current.
+          
+          If you have any questions or feedback, please contact us at [%{support_email}](mailto:%{support_email}).
+          
+          Many thanks,
+          
+          %{service_name} team
+      placement_preferences_reminder_notification:
+        subject: "Reminder: Record Your School’s interest in hosting ITT placements"
+        body: |
+          Dear %{user_name},
+          
+          Thank you for signing in to the Department for Education’s new [Find Placement Schools](%{sign_in_url}) service. 
+          
+          We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements. Sharing your preferences helps ITT providers connect with your school if you're interested in hosting placements - and lets them know if you're not currently able to.
+
+          ## To complete your expression of interest:
+          
+          1. Sign in using your DfE Sign-in credentials
+          
+          2. Record your preferences for hosting placements
+          
+          3. Add any extra details you’d like to share (e.g. phase, subject)
+          
+          You can update your information at any time, and we’ll send reminders to help keep it current.
+          
+          If you have any questions or feedback, please contact us at [%{support_email}](mailto:%{support_email}).
+          
+          Many thanks, 
           
           %{service_name} team
