@@ -1,39 +1,6 @@
 require "rails_helper"
 
 RSpec.describe School::UserMailer, type: :mailer do
-  describe "#placement_preferences_notification" do
-    let!(:user) { create(:user, email_address: "test@sample.com", first_name: "Joe") }
-    subject(:placement_preferences_notification) { described_class.placement_preferences_notification(user) }
-
-    let!(:current_year) { create(:academic_year, :current) }
-
-    let!(:eligible_school) { create(:school, name: "Shelbyville School") }
-
-    let!(:user_membership_to_eligible_school) do
-      create(:user_membership, user: user, organisation: eligible_school)
-    end
-
-    let!(:ineligible_school) { create(:school, name: "Springfield High") }
-    let!(:ineligible_placement_preference) do
-      create(:placement_preference, organisation: ineligible_school, academic_year: current_year, created_by: create(:user))
-    end
-
-    it "sends the placement preferences notification email" do
-      expect(placement_preferences_notification.to).to contain_exactly("test@sample.com")
-      expect(placement_preferences_notification.subject).to eq("Please update your schools placement preferences")
-      expect(placement_preferences_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
-        Joe,
-
-        The following schools:
-        Shelbyville School
-
-        Have no placement preferences. Please update their placement preferences.
-
-        This notification will be sent once a month.
-      EMAIL
-    end
-  end
-
   describe "#user_membership_created_notification" do
     subject(:invite_email) { described_class.user_membership_created_notification(user, organisation) }
 
@@ -128,6 +95,132 @@ RSpec.describe School::UserMailer, type: :mailer do
 
       it "prepends the hosting environment to the subject" do
         expect(removal_email.subject).to eq("[STAGING] You have been removed from Find placement schools")
+      end
+    end
+  end
+
+  describe "#user_membership_sign_in_reminder_notification" do
+    subject(:user_membership_sign_in_reminder_notification) do
+      described_class.user_membership_sign_in_reminder_notification(user)
+    end
+
+    let(:user) { create(:user) }
+
+    it "sends a sign in reminder to the user" do
+      expect(user_membership_sign_in_reminder_notification.to).to contain_exactly(user.email_address)
+      expect(user_membership_sign_in_reminder_notification.subject).to eq(
+        "Reminder: Record Your School’s interest in hosting ITT placements"
+      )
+      expect(user_membership_sign_in_reminder_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
+        Dear #{user.first_name},
+
+        A couple of weeks ago, we let you know about the Department for Education’s new [Find Placement Schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email) service - designed to make it quicker and easier for you to record your school’s ability to host trainee teachers on placements.
+
+        We’ve noticed your school hasn’t yet signed in. To get started, your DfE Sign-in approver should have received an on-boarding email and can log in and add other users if needed.
+
+        ## Please take a moment to:
+
+        1. Sign in using your DfE Sign-in credentials
+
+        2. Record your preferences for hosting placements
+
+        3. Add any extra details you’d like to share (e.g. phase, subject)
+
+        Sharing your preferences makes it easier for ITT providers to connect with your school if you’re interested in hosting placements - or lets them know you’re not able to host placements at the moment.
+
+        You can update your information at any time, and we’ll send reminders to help keep it current.
+
+        If you have any questions or feedback, please contact us at [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk).
+
+        Many thanks,
+
+        Find placement schools team
+      EMAIL
+    end
+
+    context "when HostingEnvironment.env is 'production'" do
+      before do
+        allow(HostingEnvironment).to receive(:env).and_return("production")
+      end
+
+      it "does not prepend the hosting environment to the subject" do
+        expect(user_membership_sign_in_reminder_notification.subject).to eq(
+          "Reminder: Record Your School’s interest in hosting ITT placements"
+        )
+      end
+    end
+
+    context "when HostingEnvironment.env is 'staging'" do
+      before do
+        allow(HostingEnvironment).to receive(:env).and_return("staging")
+      end
+
+      it "prepends the hosting environment to the subject" do
+        expect(user_membership_sign_in_reminder_notification.subject).to eq(
+          "[STAGING] Reminder: Record Your School’s interest in hosting ITT placements"
+        )
+      end
+    end
+  end
+
+  describe "placement_preferences_reminder_notification" do
+    subject(:placement_preferences_reminder_notification) do
+      described_class.placement_preferences_reminder_notification(user)
+    end
+
+    let(:user) { create(:user) }
+
+    it "sends a sign in reminder to the user" do
+      expect(placement_preferences_reminder_notification.to).to contain_exactly(user.email_address)
+      expect(placement_preferences_reminder_notification.subject).to eq(
+        "Reminder: Record Your School’s interest in hosting ITT placements"
+      )
+      expect(placement_preferences_reminder_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
+        Dear #{user.first_name},
+
+        Thank you for signing in to the Department for Education’s new [Find Placement Schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email) service.#{' '}
+
+        We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements. Sharing your preferences helps ITT providers connect with your school if you're interested in hosting placements - and lets them know if you're not currently able to.
+
+        ## To complete your expression of interest:
+
+        1. Sign in using your DfE Sign-in credentials
+
+        2. Record your preferences for hosting placements
+
+        3. Add any extra details you’d like to share (e.g. phase, subject)
+
+        You can update your information at any time, and we’ll send reminders to help keep it current.
+
+        If you have any questions or feedback, please contact us at [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk).
+
+        Many thanks,
+
+        Find placement schools team
+      EMAIL
+    end
+
+    context "when HostingEnvironment.env is 'production'" do
+      before do
+        allow(HostingEnvironment).to receive(:env).and_return("production")
+      end
+
+      it "does not prepend the hosting environment to the subject" do
+        expect(placement_preferences_reminder_notification.subject).to eq(
+          "Reminder: Record Your School’s interest in hosting ITT placements"
+        )
+      end
+    end
+
+    context "when HostingEnvironment.env is 'staging'" do
+      before do
+        allow(HostingEnvironment).to receive(:env).and_return("staging")
+      end
+
+      it "prepends the hosting environment to the subject" do
+        expect(placement_preferences_reminder_notification.subject).to eq(
+          "[STAGING] Reminder: Record Your School’s interest in hosting ITT placements"
+        )
       end
     end
   end

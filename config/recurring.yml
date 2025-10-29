@@ -17,3 +17,9 @@ production:
     class: "DfE::Analytics::EntityTableCheckJob"
     queue: dfe_analytics
     schedule: every day at midnight
+  send_user_sign_in_reminders:
+    class: "UserSignInReminderJob"
+    schedule: every day at 9am
+  send_placement_preference_reminders:
+    class: "CompletePlacementPreferenceReminderJob"
+    schedule: every day at 10am
