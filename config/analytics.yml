@@ -46,7 +46,6 @@ shared:
     - school_id
     - academic_year_id
     - placement_subject_id
-    - number_of_placements
   :organisation_addresses:
     - id
     - organisation_id
