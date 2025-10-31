@@ -49,6 +49,19 @@ class School::UserMailer < ApplicationMailer
                  )
   end
 
+  def placement_preference_completion_notification(user)
+    notify_email to: user.email_address,
+                 subject: t(".subject"),
+                 body: t(
+                   ".body",
+                   user_name: user.first_name,
+                   service_name:,
+                   support_email:,
+                   survey_link: ENV.fetch("EOI_SURVEY_LINK", ""),
+                   sign_in_url: sign_in_url(utm_source: "email", utm_medium: "notification", utm_campaign: "school")
+                 )
+  end
+
   private
 
   def support_email

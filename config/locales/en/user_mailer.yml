@@ -68,7 +68,7 @@ en:
         body: |
           Dear %{user_name},
           
-          Thank you for signing in to the Department for Education’s new [Find Placement Schools](%{sign_in_url}) service. 
+          Thank you for signing in to the Department for Education’s new [Find Placement Schools](%{sign_in_url}) service.
           
           We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements. Sharing your preferences helps ITT providers connect with your school if you're interested in hosting placements - and lets them know if you're not currently able to.
 
@@ -86,4 +86,20 @@ en:
           
           Many thanks, 
           
+          %{service_name} team
+      placement_preference_completion_notification:
+        subject: We’d Appreciate Your Feedback – Just 1 Minute
+        body: |
+          Dear %{user_name},
+
+          Thank you for using the [Find Placement Schools](%{sign_in_url}) service.
+
+          To help us continue improving, we’d be grateful if you could take a moment to complete a very short feedback form. It should take less than one minute to complete.
+
+          %{survey_link}
+
+          We really appreciate your feedback – it helps us make the service work better for you.
+
+          Regards,
+
           %{service_name} team
