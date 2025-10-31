@@ -50,7 +50,7 @@
 
             <% row.with_cell do %>
               <p>
-                <% if current_step.invalid_identifier_rows.include?(csv_row_index) %>
+                <% if current_step.invalid_school_urn_rows.include?(csv_row_index) %>
                   <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.invalid_school_urn") %></strong><br>
                 <% end %>
                 <%= csv_row["school_urn"] %>
