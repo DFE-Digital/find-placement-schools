@@ -4,4 +4,6 @@ class PreviousPlacement < ApplicationRecord
   belongs_to :academic_year
 
   validates :school_id, uniqueness: { scope: [ :placement_subject_id, :academic_year_id ] }
+
+  delegate :name, to: :placement_subject, prefix: true
 end

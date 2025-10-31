@@ -39,4 +39,18 @@ class SchoolDecorator < ApplicationDecorator
 
     duration.gsub(/\bmins\b/, "minutes")
   end
+
+  def previously_hosted_placements
+    academic_years = 5.times.map{ |i| AcademicYear.for_date(Date.today - i.years) }
+    return unless previous_placements.where(academic_year: academic_years).exists?
+
+    academic_years.map do |academic_year|
+      subject_names = previous_placements.where(academic_year: academic_year)
+        .map(&:placement_subject_name)
+        .sort
+      next if subject_names.blank?
+
+      "#{academic_year.name} - #{subject_names.to_sentence}"
+    end
+  end
 end
