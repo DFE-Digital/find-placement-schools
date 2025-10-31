@@ -193,6 +193,23 @@ RSpec.describe "School user updates the placement preference to interest", type:
     click_on "edit placement information"
   end
 
+  def then_i_see_the_academic_years_page
+    expect(page).to have_title(
+      "For which academic year are you providing information about placements for trainee teachers? - Find placement schools",
+    )
+    expect(page).to have_caption("Placement information")
+    expect(page).to have_element(
+      :legend,
+      text: "For which academic year are you providing information about placements for trainee teachers?",
+      class: "govuk-fieldset__legend",
+    )
+    expect(page).to have_field(@next_academic_year_name, type: :radio)
+  end
+
+  def when_i_choose_the_next_academic_year
+    choose @next_academic_year_name
+  end
+
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
       "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools",
@@ -461,11 +478,10 @@ RSpec.describe "School user updates the placement preference to interest", type:
     )
 
     expect(page).to have_paragraph(
-      "You can edit your schoolʼs placement information at any time.",
+      "You can edit your school’s placement information at any time.",
     )
     expect(page).to have_link(
-      "edit your schoolʼs placement information",
-      href: new_edit_hosting_interest_placement_preference_path(PlacementPreference.last),
+      "edit your school’s placement information",
     )
 
     expect(page).to have_paragraph(

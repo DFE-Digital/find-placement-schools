@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_28_095558) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_31_080524) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
-  enable_extension "pgcrypto"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
@@ -92,12 +91,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_28_095558) do
     t.string "urban_or_rural"
     t.string "website"
     t.index ["code"], name: "index_organisations_on_code"
+    t.index ["type", "code"], name: "index_organisations_on_type_and_code", unique: true, where: "((type)::text = 'Provider'::text)"
     t.index ["ukprn"], name: "index_organisations_on_ukprn"
     t.index ["urn"], name: "index_organisations_on_urn", unique: true, where: "((type)::text = 'School'::text)"
   end
 
   create_table "placement_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "academic_year_id", null: false
+    t.uuid "academic_year_id"
     t.uuid "organisation_id", null: false
     t.uuid "created_by_id", null: false
     t.enum "appetite", enum_type: "appetite"

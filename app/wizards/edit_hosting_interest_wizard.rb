@@ -13,6 +13,10 @@ class EditHostingInterestWizard < AddHostingInterestWizard
     end
   end
 
+  def academic_year
+    placement_preference.academic_year.decorate
+  end
+
   private
 
   def placement_details

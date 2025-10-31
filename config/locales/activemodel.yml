@@ -2,6 +2,10 @@ en:
   activemodel:
     errors:
       models:
+        add_hosting_interest_wizard/academic_year_step:
+          attributes:
+            academic_year_id:
+                blank: Please select an academic year
         add_hosting_interest_wizard/appetite_step:
           attributes:
             appetite: 

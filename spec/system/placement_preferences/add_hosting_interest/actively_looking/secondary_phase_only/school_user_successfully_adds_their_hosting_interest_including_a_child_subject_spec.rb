@@ -5,6 +5,10 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     given_academic_years_exist
     and_secondary_subjects_exist
     when_i_am_signed_in
+    then_i_see_the_academic_years_page
+
+    when_i_select_the_next_academic_year
+    and_i_click_on_continue
     then_i_see_the_appetite_form_page
 
     when_i_select_yes
@@ -60,6 +64,8 @@ RSpec.describe "School user successfully adds their hosting interest, including 
   end
 
   def given_academic_years_exist
+    @current_academic_year = create(:academic_year, :current)
+    @current_academic_year_name = @current_academic_year.name
     @next_academic_year = create(:academic_year, :next)
     @next_academic_year_name = @next_academic_year.name
     @next_academic_year_short_name = "#{@next_academic_year.starts_on.year}/#{@next_academic_year.ends_on.strftime("%y")}"
@@ -73,6 +79,24 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     @french = create(:placement_subject, :secondary, name: "French", parent_subject: @modern_languages)
     @spanish = create(:placement_subject, :secondary, name: "Spanish", parent_subject: @modern_languages)
     @russian = create(:placement_subject, :secondary, name: "Russian", parent_subject: @modern_languages)
+  end
+
+  def then_i_see_the_academic_years_page
+    expect(page).to have_title(
+                      "For which academic year are you providing information about placements for trainee teachers? - Find placement schools",
+                      )
+    expect(page).to have_caption("Placement information")
+    expect(page).to have_element(
+                      :legend,
+                      text: "For which academic year are you providing information about placements for trainee teachers?",
+                      class: "govuk-fieldset__legend",
+                      )
+    expect(page).to have_field(@current_academic_year_name, type: :radio)
+    expect(page).to have_field(@next_academic_year_name, type: :radio)
+  end
+
+  def when_i_select_the_next_academic_year
+    choose @next_academic_year_name
   end
 
   def then_i_see_the_appetite_form_page
@@ -153,11 +177,11 @@ RSpec.describe "School user successfully adds their hosting interest, including 
 
   def then_i_see_the_secondary_child_subject_selection_form_page
     expect(page).to have_title(
-      "What languages are taught on your schoolʼs Modern Languages placements? - Find placement schools",
+      "What languages are taught on your school’s Modern Languages placements? - Find placement schools",
     )
     expect(page).to have_element(
       :legend,
-      text: "What languages are taught on your schoolʼs Modern Languages placements?",
+      text: "What languages are taught on your school’s Modern Languages placements?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_caption(
@@ -216,6 +240,7 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     )
 
     expect(page).to have_h2("Education phase and specialism")
+    expect(page).to have_summary_list_row("Academic year", @next_academic_year_name)
     expect(page).to have_summary_list_row("Phase", "Primary Secondary Send")
 
 
@@ -277,11 +302,10 @@ RSpec.describe "School user successfully adds their hosting interest, including 
     )
 
     expect(page).to have_paragraph(
-      "You can edit your schoolʼs placement information at any time.",
+      "You can edit your school’s placement information at any time.",
     )
     expect(page).to have_link(
-      "edit your schoolʼs placement information",
-      href: new_edit_hosting_interest_placement_preference_path(PlacementPreference.last),
+      "edit your school’s placement information",
     )
 
     expect(page).to have_paragraph(

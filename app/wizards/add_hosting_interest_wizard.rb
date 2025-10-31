@@ -18,6 +18,7 @@ class AddHostingInterestWizard < BaseWizard
 
   def define_steps
     # Define the wizard steps here
+    add_step(AcademicYearStep) unless placement_preference_for_current_academic_year? || placement_preference_for_next_academic_year?
     add_step(AppetiteStep)
     case appetite
     when "actively_looking"
@@ -43,12 +44,21 @@ class AddHostingInterestWizard < BaseWizard
   end
 
   def academic_year
-    @academic_year ||= AcademicYear.next.decorate
+    @academic_year ||= if placement_preference_for_current_academic_year?
+      AcademicYear.next.decorate
+    elsif placement_preference_for_next_academic_year?
+      AcademicYear.current.decorate
+    elsif steps.fetch(:academic_year)&.academic_year_id.present?
+      AcademicYear.find(steps.fetch(:academic_year).academic_year_id).decorate
+    else
+      AcademicYear.next.decorate
+    end
   end
 
   private
 
   def save_contact_details
+    academic_year = placement_preference.academic_year
     details_changed = false
 
     ApplicationRecord.transaction do
@@ -60,10 +70,12 @@ class AddHostingInterestWizard < BaseWizard
       if placement_preference.placement_details.dig("school_contact") != steps.fetch(:school_contact).attributes
         placement_preference.placement_details[:appetite] = steps.fetch(:appetite).attributes
         placement_preference.placement_details[:school_contact] = steps.fetch(:school_contact).attributes
+        placement_preference.academic_year = nil
         details_changed = true
       end
 
       placement_preference.save! if details_changed
+      placement_preference.academic_year = academic_year
     end
   end
 
@@ -149,7 +161,7 @@ class AddHostingInterestWizard < BaseWizard
     @placement_preference ||= begin
       upcoming_interest = school.placement_preferences.for_academic_year(academic_year).last
       upcoming_interest.presence || school.placement_preferences.build(
-        academic_year: academic_year,
+        academic_year:,
         created_by: current_user,
         placement_details: {},
       )
@@ -158,5 +170,13 @@ class AddHostingInterestWizard < BaseWizard
 
   def appetite_interested?
     @appetite_interested ||= appetite == "interested"
+  end
+
+  def placement_preference_for_current_academic_year?
+    school.placement_preferences.for_academic_year(AcademicYear.current).exists?
+  end
+
+  def placement_preference_for_next_academic_year?
+    school.placement_preferences.for_academic_year(AcademicYear.next).exists?
   end
 end

@@ -155,11 +155,10 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     )
 
     expect(page).to have_paragraph(
-      "You can edit your schoolʼs placement information at any time.",
+      "You can edit your school’s placement information at any time.",
     )
     expect(page).to have_link(
-      "edit your schoolʼs placement information",
-      href: new_edit_hosting_interest_placement_preference_path(PlacementPreference.last),
+      "edit your school’s placement information",
     )
 
     expect(page).to have_h2("Placement information or your school")
@@ -185,7 +184,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
   end
 
   def when_i_click_on_edit_placement_information
-    click_on "edit your schoolʼs placement information"
+    click_on "edit your school’s placement information"
   end
 
   def then_i_see_the_appetite_form_page

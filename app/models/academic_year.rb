@@ -6,6 +6,8 @@ class AcademicYear < ApplicationRecord
   validates :starts_on, presence: true
   validates :ends_on, presence: true, comparison: { greater_than_or_equal_to: :starts_on }
 
+  scope :order_by_date_desc, -> { order(starts_on: :desc) }
+
   START_DATE = {
     day: 1,
     month: 9 # September
@@ -36,5 +38,9 @@ class AcademicYear < ApplicationRecord
 
   def self.next
     for_date(Date.current + 1.year)
+  end
+
+  def self.previous
+    for_date(Date.current - 1.year)
   end
 end
