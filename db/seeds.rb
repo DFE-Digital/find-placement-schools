@@ -34,3 +34,12 @@ create_user_membership(organisation: Provider.first, user_first_name: "Patricia"
 
 # Create subjects
 PublishTeacherTraining::Subject::Import.call
+
+previous_placement_school = School.all.sample
+PlacementSubject.last(3).each do |placement_subject|
+  PreviousPlacement.create!(
+    placement_subject: placement_subject,
+    school: previous_placement_school,
+    academic_year: AcademicYear.for_date(Date.today - 1.year),
+  )
+end
