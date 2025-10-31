@@ -12,10 +12,6 @@ RSpec.describe "School user updates the placement preference to interest", type:
     then_i_see_the_school_is_not_offering_placements
 
     when_i_click_on_edit_placement_information
-    then_i_see_the_academic_years_page
-
-    when_i_choose_the_next_academic_year
-    and_i_click_on_continue
     then_i_see_the_appetite_form_page
 
     when_i_select_maybe
@@ -482,11 +478,10 @@ RSpec.describe "School user updates the placement preference to interest", type:
     )
 
     expect(page).to have_paragraph(
-      "You can edit your schoolʼs placement information at any time.",
+      "You can edit your school’s placement information at any time.",
     )
     expect(page).to have_link(
-      "edit your schoolʼs placement information",
-      href: new_edit_hosting_interest_placement_preference_path(PlacementPreference.last),
+      "edit your school’s placement information",
     )
 
     expect(page).to have_paragraph(

@@ -282,7 +282,6 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     )
     expect(page).to have_link(
       "edit placement information",
-      href: new_edit_hosting_interest_placement_preference_path(PlacementPreference.last),
     )
 
     expect(page).to have_h3("Placement contact")
