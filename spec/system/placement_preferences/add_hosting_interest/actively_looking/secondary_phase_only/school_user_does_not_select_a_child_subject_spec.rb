@@ -172,11 +172,11 @@ RSpec.describe "School user successfully adds their hosting interest, including 
 
   def then_i_see_the_secondary_child_subject_selection_form_page
     expect(page).to have_title(
-      "What languages are taught on your schoolʼs Modern Languages placements? - Find placement schools",
+      "What languages are taught on your school’s Modern Languages placements? - Find placement schools",
     )
     expect(page).to have_element(
       :legend,
-      text: "What languages are taught on your schoolʼs Modern Languages placements?",
+      text: "What languages are taught on your school’s Modern Languages placements?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_caption(

@@ -1,5 +1,5 @@
 class PlacementPreference < ApplicationRecord
-  belongs_to :academic_year
+  belongs_to :academic_year, optional: true
   belongs_to :organisation
   belongs_to :created_by, class_name: "User", foreign_key: :created_by_id
 
