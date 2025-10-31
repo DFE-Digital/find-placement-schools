@@ -1,6 +1,12 @@
 require "rails_helper"
 
 RSpec.describe "School user successfully adds their hosting interest", type: :system do
+  include ActiveJob::TestHelper
+
+  around do |example|
+    perform_enqueued_jobs { example.run }
+  end
+
   scenario do
     given_academic_years_exist
     and_secondary_subjects_exist
@@ -97,6 +103,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
 
     when_i_click_on_publish_potential_placement_information
     then_i_see_the_my_placement_preferences
+    and_i_receive_a_survey_email
   end
 
   private
@@ -421,5 +428,13 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       "Message to providers",
       "We are open to hosting additional placements at the provider's request.",
     )
+  end
+
+  def and_i_receive_a_survey_email
+    email = ActionMailer::Base.deliveries.find do |delivery|
+      delivery.to.include?(@current_user.email_address) && delivery.subject == "We’d Appreciate Your Feedback – Just 1 Minute"
+    end
+
+    expect(email).not_to be_nil
   end
 end

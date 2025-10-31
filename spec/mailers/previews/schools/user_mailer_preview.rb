@@ -7,6 +7,10 @@ class Schools::UserMailerPreview < ActionMailer::Preview
     School::UserMailer.placement_preferences_reminder_notification(user)
   end
 
+  def placement_preference_completion_notification
+    School::UserMailer.placement_preference_completion_notification(user)
+  end
+
   private
 
   def user

@@ -15,6 +15,7 @@ class PlacementPreferences::AddHostingInterestController < ApplicationController
       redirect_to step_path(@wizard.next_step)
     else
       placement_preference = @wizard.save_placement_preference
+      School::UserMailer.placement_preference_completion_notification(current_user).deliver_later
       @wizard.reset_state
 
       redirect_to placement_preference_path(placement_preference)
