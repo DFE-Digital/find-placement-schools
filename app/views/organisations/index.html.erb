@@ -79,17 +79,19 @@
                   </div>
                 </div>
 
-                <% if school.previous_placements.exist? %>
+                <% if school.previously_hosted_placements.present? %>
                   <div class="govuk-!-margin-top-2">
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Previously hosted placements</h3>
-                    <div class="app-result-detail__row">
-                      <dt class="app-result-detail__key">
-                        <%= t(".address") %>
-                      </dt>
-                      <dd class="app-result-detail__value">
-                        <%= school.formatted_address %>
-                      </dd>
-                    </div>
+                    <% school.previously_hosted_placements.each do |academic_year_name, previous_placement| %>
+                      <div class="app-result-detail__row">
+                        <dt class="app-result-detail__key">
+                          <%= academic_year_name %>
+                        </dt>
+                        <dd class="app-result-detail__value">
+                          <%= previous_placement %>
+                        </dd>
+                      </div>
+                    <% end %>
                   </div>
                 <% end %>
 

@@ -41,16 +41,24 @@ class SchoolDecorator < ApplicationDecorator
   end
 
   def previously_hosted_placements
-    academic_years = 5.times.map{ |i| AcademicYear.for_date(Date.today - i.years) }
-    return unless previous_placements.where(academic_year: academic_years).exists?
+    @previously_hosted_placements ||= begin
+      previous_hosted_placements ||= {}
+      academic_years = AcademicYear
+         .where("starts_on < ?", Date.current)
+         .order("starts_on DESC")
+         .limit(3)
+      return unless previous_placements.where(academic_year: academic_years).exists?
 
-    academic_years.map do |academic_year|
-      subject_names = previous_placements.where(academic_year: academic_year)
-        .map(&:placement_subject_name)
-        .sort
-      next if subject_names.blank?
+      academic_years.map do |academic_year|
+        subject_names = PlacementSubject.where(
+          id: previous_placements.where(academic_year: academic_year).select(:placement_subject_id)
+        ).order(:name).pluck(:name)
+        next if subject_names.blank?
 
-      "#{academic_year.name} - #{subject_names.to_sentence}"
+        previous_hosted_placements[academic_year.name] = subject_names.to_sentence
+      end
+
+      previous_hosted_placements
     end
   end
 end
