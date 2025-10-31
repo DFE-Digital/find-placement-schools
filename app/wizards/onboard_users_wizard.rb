@@ -2,7 +2,7 @@ class OnboardUsersWizard < BaseWizard
   def define_steps
     add_step(UserTypeStep)
 
-    if steps.fetch(:user_type).user_type == "provider"
+    if user_type_provider?
       add_step(ProviderUploadStep)
     else
       add_step(SchoolUploadStep)
@@ -25,7 +25,7 @@ class OnboardUsersWizard < BaseWizard
 
 
   def upload_step
-    @upload_step ||= steps[steps.fetch(:user_type).user_type == "provider" ? :provider_upload : :school_upload]
+    @upload_step ||= steps[user_type_provider? ? :provider_upload : :school_upload]
   end
 
   private
@@ -34,7 +34,7 @@ class OnboardUsersWizard < BaseWizard
     @user_details ||= begin
       details = []
       csv_rows.each do |row|
-        identifier = steps.fetch(:user_type).user_type == "provider" ? row["ukprn"] : row["urn"]
+        identifier = user_type_provider? ? row["ukprn"] : row["urn"]
         organisation = find_organisation(identifier)
 
         # Temp add next calls to make the CSV upload work
@@ -58,15 +58,19 @@ class OnboardUsersWizard < BaseWizard
 
   def csv_rows
     upload_step.csv.reject do |row|
-      row["email_address"].blank? || (steps.fetch(:user_type).user_type == "provider" ? row["ukprn"].blank? : row["urn"].blank?)
+      row["email_address"].blank? || (user_type_provider? ? row["ukprn"].blank? : row["urn"].blank?)
     end
   end
 
   def find_organisation(identifier)
-    if steps.fetch(:user_type).user_type == "provider"
+    if user_type_provider?
       Provider.find_by(ukprn: identifier)
     else
       School.find_by(urn: identifier)
     end
+  end
+
+  def user_type_provider?
+    @user_type_provider ||= steps.fetch(:user_type).user_type == "provider"
   end
 end
