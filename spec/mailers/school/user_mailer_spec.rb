@@ -178,7 +178,7 @@ RSpec.describe School::UserMailer, type: :mailer do
       expect(placement_preferences_reminder_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
         Dear #{user.first_name},
 
-        Thank you for signing in to the Department for Education’s new [Find Placement Schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email) service.#{' '}
+        Thank you for signing in to the Department for Education’s new [Find Placement Schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email) service.
 
         We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements. Sharing your preferences helps ITT providers connect with your school if you're interested in hosting placements - and lets them know if you're not currently able to.
 
@@ -220,6 +220,60 @@ RSpec.describe School::UserMailer, type: :mailer do
       it "prepends the hosting environment to the subject" do
         expect(placement_preferences_reminder_notification.subject).to eq(
           "[STAGING] Reminder: Record Your School’s interest in hosting ITT placements"
+        )
+      end
+    end
+  end
+
+  describe "placement_preference_completion_notification" do
+    subject(:placement_preference_completion_notification) do
+      described_class.placement_preference_completion_notification(user)
+    end
+
+    let(:user) { create(:user) }
+
+    it "sends a sign in reminder to the user" do
+      expect(placement_preference_completion_notification.to).to contain_exactly(user.email_address)
+      expect(placement_preference_completion_notification.subject).to eq(
+        "We’d Appreciate Your Feedback – Just 1 Minute"
+      )
+      expect(placement_preference_completion_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
+        Dear #{user.first_name},
+
+        Thank you for using the [Find Placement Schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email) service.
+
+        To help us continue improving, we’d be grateful if you could take a moment to complete a very short feedback form. It should take less than one minute to complete.
+
+        #{ENV.fetch("EOI_SURVEY_LINK", "")}
+
+        We really appreciate your feedback – it helps us make the service work better for you.
+
+        Regards,
+
+        Find placement schools team
+      EMAIL
+    end
+
+    context "when HostingEnvironment.env is 'production'" do
+      before do
+        allow(HostingEnvironment).to receive(:env).and_return("production")
+      end
+
+      it "does not prepend the hosting environment to the subject" do
+        expect(placement_preference_completion_notification.subject).to eq(
+          "We’d Appreciate Your Feedback – Just 1 Minute"
+        )
+      end
+    end
+
+    context "when HostingEnvironment.env is 'staging'" do
+      before do
+        allow(HostingEnvironment).to receive(:env).and_return("staging")
+      end
+
+      it "prepends the hosting environment to the subject" do
+        expect(placement_preference_completion_notification.subject).to eq(
+          "[STAGING] We’d Appreciate Your Feedback – Just 1 Minute"
         )
       end
     end
