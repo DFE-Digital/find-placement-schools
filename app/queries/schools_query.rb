@@ -55,13 +55,15 @@ class SchoolsQuery < ApplicationQuery
       scope
     elsif filter_params[:schools_to_show] == "previously_hosted"
       scope.where.associated(:previous_placements)
+    elsif filter_params[:schools_to_show] == "not_open"
+      scope.where(placement_preferences: { appetite: "not_open" })
     else
       scope.open_to_hosting_for(AcademicYear.next)
     end
   end
 
   def itt_statuses_condition(scope)
-    return scope if filter_params[:itt_statuses].blank?
+    return scope if filter_params[:itt_statuses].blank? || filter_params[:schools_to_show] != "active"
 
     scope.where(placement_preferences: { appetite: filter_params[:itt_statuses] })
   end
