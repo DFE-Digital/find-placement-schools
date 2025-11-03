@@ -1,7 +1,7 @@
 en:
   service:
     name: Find placement schools
-    email: my-service@email
+    email: find.placementschools@education.gov.uk
   date:
     formats:
       month: "%B"
