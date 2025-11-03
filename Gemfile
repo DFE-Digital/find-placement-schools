@@ -75,7 +75,7 @@ gem "pundit"
 
 gem "okcomputer", "~> 1.19"
 
-gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.6"
+gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.9"
 
 group :development, :staging, :test, :review, :az_development do
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
