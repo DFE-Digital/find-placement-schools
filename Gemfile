@@ -77,6 +77,9 @@ gem "okcomputer", "~> 1.19"
 
 gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.9"
 
+gem "google-cloud-bigquery", "1.59.0"
+gem "google-apis-bigquery_v2", "0.95.0"
+
 gem "sentry-rails"
 
 group :development, :staging, :test, :review, :az_development do
