@@ -23,7 +23,7 @@ when "dfe-sign-in"
       response_type: :code,
       path_prefix: "/auth",
       callback_path: "/auth/dfe/callback",
-      issuer: "#{dfe_sign_in_issuer_uri}",
+      issuer: "#{dfe_sign_in_issuer_uri}:#{dfe_sign_in_issuer_uri.port}",
 
       client_options: {
         port: dfe_sign_in_issuer_uri.port,
