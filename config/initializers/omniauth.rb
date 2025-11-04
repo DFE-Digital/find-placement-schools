@@ -13,7 +13,7 @@ when "persona"
 
 when "dfe-sign-in"
   dfe_sign_in_issuer_uri = URI(ENV.fetch("DFE_SIGN_IN_ISSUER_URL"))
-  dfe_sign_in_redirect_uri = "#{ENV.fetch("APP_BASE_URL")}/auth/dfe/callback"
+  dfe_sign_in_redirect_uri = URI.join(ENV.fetch("APP_BASE_URL"), "/auth/dfe/callback")
 
   Rails.application.config.middleware.use OmniAuth::Builder do
     provider :openid_connect, {
