@@ -120,3 +120,20 @@ variable "postgres_enable_high_availability" {
 variable "postgres_flexible_server_sku" {
   default = "B_Standard_B1ms"
 }
+
+variable "enable_dfe_analytics_federated_auth" {
+  description = "Create the resources in Google cloud for federated authentication and enable in application"
+  default     = false
+}
+
+variable "worker_memory_max" {
+  type        = string
+  default     = "1Gi"
+  description = "Maximum memory allocation for Solid Queue worker pods"
+}
+
+variable "worker_replicas" {
+  type        = number
+  default     = 1
+  description = "Number of Solid Queue worker replicas"
+}
