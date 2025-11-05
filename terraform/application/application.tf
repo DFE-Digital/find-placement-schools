@@ -44,7 +44,6 @@ module "web_application" {
   enable_logit = true
 
   send_traffic_to_maintenance_page = var.send_traffic_to_maintenance_page
-  enable_gcp_wif               = true
 }
 
 module "worker_application" {
@@ -71,7 +70,7 @@ module "worker_application" {
 
   enable_logit = true
 
-  enable_gcp_wif = true
+  enable_gcp_wif = var.enable_dfe_analytics_federated_auth
 
   run_as_non_root = true
 }
