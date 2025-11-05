@@ -1,6 +1,6 @@
 require "rake"
 
-ALLOWED_ENVS = %w[production].freeze
+ALLOWED_ENVS = %w[production staging].freeze
 
 DfE::Analytics.configure do |config|
   # Whether to log events instead of sending them to BigQuery.
@@ -44,7 +44,7 @@ DfE::Analytics.configure do |config|
   # enable analytics. You might want to hook this up to a feature flag or
   # environment variable.
   #
-  config.enable_analytics = proc { true unless Rails.env.test? }
+  config.enable_analytics = proc { ALLOWED_ENVS.include?(ENV.fetch("RAILS_ENV", "development")) }
 
   # The environment we’re running in. This value will be attached
   # to all events we send to BigQuery.
@@ -76,7 +76,7 @@ DfE::Analytics.configure do |config|
   # instead of the BigQuery API JSON Key. Note that this also will also
   # use a new version of the BigQuery streaming APIs.
   #
-  config.azure_federated_auth = true
+  config.azure_federated_auth = ENV.include? "GOOGLE_CLOUD_CREDENTIALS"
 
   # Client Id of the app in azure
   #
