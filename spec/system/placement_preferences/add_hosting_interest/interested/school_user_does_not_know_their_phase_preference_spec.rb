@@ -243,7 +243,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       "edit your school’s placement information",
     )
 
-    expect(page).to have_h2("Placement information or your school")
+    expect(page).to have_h2("Placement information for your school")
 
     expect(page).to have_h3("Placement contact")
     expect(page).to have_summary_list_row("First name", "Joe")

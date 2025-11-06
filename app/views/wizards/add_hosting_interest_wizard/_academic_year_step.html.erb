@@ -9,12 +9,26 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <span class="govuk-caption-l"><%= t(".caption") %></span>
-      <%= f.govuk_collection_radio_buttons(
-        :academic_year_id,
-        current_step.academic_year_options,
-        :value, :name,
-        legend: { size: "l", text: t(".title", academic_year_name: @wizard.academic_year.name), tag: "h1" },
-      ) %>
+      <% if current_step.recent_preference_exists? %>
+        <h1 class="govuk-heading-l"><%= t(".title") %></h1>
+        <p class="govuk-body">
+          <%= t(".information_html",
+            existing_academic_year_name: current_step.existing_preference_academic_year.name,
+            link: govuk_link_to(
+              t(".edit_preference"),
+              new_edit_hosting_interest_placement_preference_path(current_step.recent_placement_preference),
+          )) %>
+        </p>
+        <p class="govuk-body"><%= t(".add_information_for", academic_year_name: @wizard.academic_year.name) %></p>
+        <%= f.hidden_field :academic_year_id, value: current_step.existing_preference_academic_year.id %>
+      <% else %>
+        <%= f.govuk_collection_radio_buttons(
+          :academic_year_id,
+          current_step.academic_year_options,
+          :value, :name,
+          legend: { size: "l", text: t(".title"), tag: "h1" },
+        ) %>
+      <% end %>
 
       <%= f.govuk_submit t(".continue") %>
     </div>
