@@ -320,15 +320,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       "edit your school’s placement information",
     )
 
-    expect(page).to have_paragraph(
-      "Click here to see how your placement information will be shown to providers."
-    )
-    expect(page).to have_link(
-      "Click here",
-      href: organisation_path(@school)
-    )
-
-    expect(page).to have_h2("Placement information or your school")
+    expect(page).to have_h2("Placement information for your school")
     expect(page).to have_h3("Primary placements")
     expect(page).to have_summary_list_row("Year group", "Year 1 Year 5")
 
