@@ -38,7 +38,7 @@ class AddHostingInterestWizard < BaseWizard
   end
 
   def selected_secondary_subjects
-    return [UNKNOWN_OPTION] if selected_secondary_subject_ids.include?(UNKNOWN_OPTION)
+    return [ UNKNOWN_OPTION ] if selected_secondary_subject_ids.include?(UNKNOWN_OPTION)
 
     super
   end
@@ -46,7 +46,7 @@ class AddHostingInterestWizard < BaseWizard
   def academic_year
     @academic_year = if steps[:academic_year].present? && steps.fetch(:academic_year).academic_year_id.present?
                        AcademicYear.find(steps.fetch(:academic_year).academic_year_id).decorate
-                     else
+    else
                        if school.placement_preferences.for_academic_year(AcademicYear.current).exists?
                          AcademicYear.next.decorate
                        elsif school.placement_preferences.for_academic_year(AcademicYear.next).exists?
@@ -54,7 +54,7 @@ class AddHostingInterestWizard < BaseWizard
                        else
                          AcademicYear.next.decorate
                        end
-                     end
+    end
     end
 
   def placement_preference_exists_for?(academic_year)
@@ -160,7 +160,7 @@ class AddHostingInterestWizard < BaseWizard
   end
 
   def child_subject_steps(step_prefix: AddHostingInterestWizard)
-    return if selected_secondary_subjects == [UNKNOWN_OPTION]
+    return if selected_secondary_subjects == [ UNKNOWN_OPTION ]
 
     super(step_prefix:)
   end
