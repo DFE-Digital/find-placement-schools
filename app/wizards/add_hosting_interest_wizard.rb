@@ -45,17 +45,17 @@ class AddHostingInterestWizard < BaseWizard
 
   def academic_year
     @academic_year = if steps[:academic_year].present? && steps.fetch(:academic_year).academic_year_id.present?
-                       AcademicYear.find(steps.fetch(:academic_year).academic_year_id).decorate
+       AcademicYear.find(steps.fetch(:academic_year).academic_year_id).decorate
     else
-                       if school.placement_preferences.for_academic_year(AcademicYear.current).exists?
-                         AcademicYear.next.decorate
-                       elsif school.placement_preferences.for_academic_year(AcademicYear.next).exists?
-                         AcademicYear.current.decorate
-                       else
-                         AcademicYear.next.decorate
-                       end
+     if school.placement_preferences.for_academic_year(AcademicYear.current).exists?
+       AcademicYear.next.decorate
+     elsif school.placement_preferences.for_academic_year(AcademicYear.next).exists?
+       AcademicYear.current.decorate
+     else
+       AcademicYear.next.decorate
+     end
     end
-    end
+  end
 
   def placement_preference_exists_for?(academic_year)
     school.placement_preferences.for_academic_year(academic_year).exists?
@@ -171,13 +171,13 @@ class AddHostingInterestWizard < BaseWizard
 
   def placement_preference
     @placement_preference ||= begin
-                                upcoming_interest = school.placement_preferences.for_academic_year(academic_year).last
-                                upcoming_interest.presence || school.placement_preferences.build(
-                                  academic_year:,
-                                  created_by: current_user,
-                                  placement_details: {},
-                                )
-                              end
+      upcoming_interest = school.placement_preferences.for_academic_year(academic_year).last
+      upcoming_interest.presence || school.placement_preferences.build(
+        academic_year:,
+        created_by: current_user,
+        placement_details: {},
+      )
+    end
   end
 
   def appetite_interested?
