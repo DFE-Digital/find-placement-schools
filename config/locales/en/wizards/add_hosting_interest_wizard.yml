@@ -148,6 +148,7 @@ en:
         message_to_providers: Message to providers
         confirm: Publish potential placement information
         change: Change
+        unknown: No information added
       note_to_providers_step:
           title: 
             Is there anything about your school you would like providers to know? (optional)
