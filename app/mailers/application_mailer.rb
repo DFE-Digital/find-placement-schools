@@ -17,7 +17,7 @@ class ApplicationMailer < Mail::Notify::Mailer
   private
 
   def default_url_options
-    { host: "localhost", port: ENV["PORT"], protocol: }
+    { host: ENV["APP_BASE_URL"], port: ENV["PORT"], protocol: }
   end
 
   def protocol
