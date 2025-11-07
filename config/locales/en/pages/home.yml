@@ -6,10 +6,10 @@ en:
       all_schools: All schools in England should use this service.
       schools: Schools
       schools_description: Use this service to record your school’s ability to offer school placements for trainee teachers.
-      schools_description_two: This helps teacher training providers know whether to contact your school and helps the Department for Education understand school capacity to support teacher training.
+      schools_description_two: This helps teacher training providers know whether to contact your school and helps the Department for Education (DfE) understand school capacity to support teacher training.
       teacher_training_providers: Teacher training providers
-      teacher_training_providers_description: Use this service to find placement schools your trainee teachers. You can view information about the schools and find contact details to enquire about placements.
+      teacher_training_providers_description: Use this service to find placement schools for your trainee teachers. You can view information about the schools and find contact details to enquire about placements.
       before_you_get_started: Before you get started
-      before_you_get_started_description: To access this service, you will be asked to sign in or create a Department for Education (DfE) Sign-in account. DfE Sign-in is how schools and other education organisations access DfE online services.
-      trial_information: This service is being trialled by the Department for Education with schools and teacher training providers in England.
+      before_you_get_started_description: To access this service, you will be asked to sign in using your DfE Sign-in account or to create one if you do not have one. DfE Sign-in is how schools and other education organisations access DfE online services.
+      trial_information: This service is being trialled by the DfE with schools and teacher training providers in England.
       start_now: Start now
