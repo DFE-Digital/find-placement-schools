@@ -19,6 +19,10 @@ class EditHostingInterestWizard < AddHostingInterestWizard
 
   private
 
+  def edit_mode?
+    true
+  end
+
   def placement_details
     @placement_details ||= placement_preference.placement_details
   end

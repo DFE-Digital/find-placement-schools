@@ -10,8 +10,8 @@ class OrganisationsController < ApplicationController
     if @organisation.is_a?(School)
       @organisation = @organisation.decorate
       @placement_preference = @organisation
-        .placement_preference_for(academic_year: AcademicYear.next)
-        &.decorate
+                                .placement_preference_for(academic_year: AcademicYear.next)
+                                &.decorate
       @placement_details = @placement_preference.placement_details if @placement_preference.present?
     end
 

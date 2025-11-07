@@ -20,12 +20,11 @@ end
 
 GIAS::SyncAllSchoolsJob.perform_now unless School.any?
 
-Provider.create!(
-  name: "Oxford University",
-  code: "2AS",
-  ukprn: 20000002,
-  email_address: "oxford@university.ac.uk",
-)
+Provider.find_or_create_by!(code: "2AS") do |provider|
+  provider.name = "Oxford University"
+  provider.ukprn = 20000002
+  provider.email_address = "oxford@university.ac.uk"
+end
 
 create_user_membership(organisation: School.first, user_first_name: "Anne")
 create_user_membership(organisation: School.second, user_first_name: "Mary")
