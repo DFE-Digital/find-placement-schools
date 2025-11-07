@@ -45,16 +45,14 @@ class AddHostingInterestWizard < BaseWizard
 
   def academic_year
     @academic_year = if steps[:academic_year].present? && steps.fetch(:academic_year).academic_year_id.present?
-       AcademicYear.find(steps.fetch(:academic_year).academic_year_id).decorate
+      AcademicYear.find(steps.fetch(:academic_year).academic_year_id)
+    elsif school.placement_preferences.for_academic_year(AcademicYear.current).exists?
+      AcademicYear.next
+    elsif school.placement_preferences.for_academic_year(AcademicYear.next).exists?
+      AcademicYear.current
     else
-     if school.placement_preferences.for_academic_year(AcademicYear.current).exists?
-       AcademicYear.next.decorate
-     elsif school.placement_preferences.for_academic_year(AcademicYear.next).exists?
-       AcademicYear.current.decorate
-     else
-       AcademicYear.next.decorate
-     end
-    end
+      AcademicYear.next
+    end.decorate
   end
 
   def placement_preference_exists_for?(academic_year)
