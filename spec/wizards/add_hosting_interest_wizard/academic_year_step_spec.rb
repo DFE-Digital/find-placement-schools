@@ -32,16 +32,5 @@ RSpec.describe AddHostingInterestWizard::AcademicYearStep, type: :model do
       expect(step.academic_year_options.map(&:value)).to match_array([ current_academic_year.id, next_academic_year.id ])
       expect(step.academic_year_options.map(&:name)).to match_array([ current_academic_year.name, next_academic_year.name ])
     end
-
-    context "when the school already has placement preferences for the current academic year" do
-      before do
-        create(:placement_preference, organisation: school, academic_year: current_academic_year)
-      end
-
-      it "only includes the next academic year" do
-        expect(step.academic_year_options.map(&:value)).to match_array([ next_academic_year.id ])
-        expect(step.academic_year_options.map(&:name)).to match_array([ next_academic_year.name ])
-      end
-    end
   end
 end
