@@ -17,7 +17,7 @@
         legend: { size: "l", text: t(".title"), tag: "h1" },
         hint: { text: t(".hint") },
       ) do %>
-        <p class="govuk-body govuk-hint"><%= t(".sharing_info") %></p>
+        <div class="govuk-hint"><%= t(".sharing_info") %></div>
         <h2 class="govuk-heading-m"><%= t(".stem_subjects") %></h2>
         <% current_step.stem_subjects.each_with_index do |subject, i| %>
           <%= f.govuk_check_box :subject_ids, subject.id,

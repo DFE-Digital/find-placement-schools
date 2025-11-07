@@ -90,7 +90,7 @@ RSpec.describe "School user does not select a year group", type: :system do
     )
     expect(page).to have_caption("Placement contact")
     expect(page).to have_h1("Who should providers contact?")
-    expect(page).to have_paragraph(
+    expect(page).to have_hint(
       "Choose the person best placed to organise placements for trainee teachers at your school",
     )
     expect(page).to have_field("First name")
