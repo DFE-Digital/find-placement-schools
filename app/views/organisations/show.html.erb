@@ -5,7 +5,7 @@
     <div class="govuk-grid-column-two-thirds">
       <div class="govuk-!-margin-top-5">
         <%= govuk_tabs do |tabs| %>
-          <% if placement_details.present? && organisation.is_a?(Provider) %>
+          <% if placement_details.present? && current_organisation.is_a?(Provider) %>
             <%= tabs.with_tab(label: t(".placement_preferences")) do %>
               <span class="govuk-caption-l"><%= organisation.name %></span>
               <%= render "/organisations/placement_preferences", placement_details: %>

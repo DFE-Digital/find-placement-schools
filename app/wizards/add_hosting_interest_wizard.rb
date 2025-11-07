@@ -18,7 +18,7 @@ class AddHostingInterestWizard < BaseWizard
 
   def define_steps
     # Define the wizard steps here
-    add_step(AcademicYearStep) unless placement_preference_for_current_academic_year? || placement_preference_for_next_academic_year?
+    add_step(AcademicYearStep) unless edit_mode?
     add_step(AppetiteStep)
     case appetite
     when "actively_looking"
@@ -38,27 +38,40 @@ class AddHostingInterestWizard < BaseWizard
   end
 
   def selected_secondary_subjects
-    return [ UNKNOWN_OPTION ] if selected_secondary_subject_ids.include?(UNKNOWN_OPTION)
+    return [UNKNOWN_OPTION] if selected_secondary_subject_ids.include?(UNKNOWN_OPTION)
 
     super
   end
 
   def academic_year
-    @academic_year ||= if placement_preference_for_current_academic_year?
-      AcademicYear.next.decorate
-    elsif placement_preference_for_next_academic_year?
-      AcademicYear.current.decorate
-    elsif steps.fetch(:academic_year)&.academic_year_id.present?
-      AcademicYear.find(steps.fetch(:academic_year).academic_year_id).decorate
-    else
-      AcademicYear.next.decorate
+    @academic_year = if steps[:academic_year].present? && steps.fetch(:academic_year).academic_year_id.present?
+                       AcademicYear.find(steps.fetch(:academic_year).academic_year_id).decorate
+                     else
+                       if school.placement_preferences.for_academic_year(AcademicYear.current).exists?
+                         AcademicYear.next.decorate
+                       elsif school.placement_preferences.for_academic_year(AcademicYear.next).exists?
+                         AcademicYear.current.decorate
+                       else
+                         AcademicYear.next.decorate
+                       end
+                     end
     end
+
+  def placement_preference_exists_for?(academic_year)
+    school.placement_preferences.for_academic_year(academic_year).exists?
+  end
+
+  def placement_preference_for(academic_year)
+    school.placement_preferences.for_academic_year(academic_year).last
   end
 
   private
 
+  def edit_mode?
+    false
+  end
+
   def save_contact_details
-    academic_year = placement_preference.academic_year
     details_changed = false
 
     ApplicationRecord.transaction do
@@ -70,18 +83,17 @@ class AddHostingInterestWizard < BaseWizard
       if placement_preference.placement_details.dig("school_contact") != steps.fetch(:school_contact).attributes
         placement_preference.placement_details[:appetite] = steps.fetch(:appetite).attributes
         placement_preference.placement_details[:school_contact] = steps.fetch(:school_contact).attributes
-        placement_preference.academic_year = nil
         details_changed = true
       end
 
       placement_preference.save! if details_changed
-      placement_preference.academic_year = academic_year
     end
   end
 
   def save_placement_details
     ApplicationRecord.transaction do
       placement_preference.appetite = appetite
+      placement_preference.academic_year = academic_year
       placement_preference.placement_details = state.select do |step_name, attributes|
         steps.keys.include?(step_name.to_sym) && attributes.present?
       end
@@ -148,7 +160,7 @@ class AddHostingInterestWizard < BaseWizard
   end
 
   def child_subject_steps(step_prefix: AddHostingInterestWizard)
-    return if selected_secondary_subjects == [ UNKNOWN_OPTION ]
+    return if selected_secondary_subjects == [UNKNOWN_OPTION]
 
     super(step_prefix:)
   end
@@ -159,24 +171,16 @@ class AddHostingInterestWizard < BaseWizard
 
   def placement_preference
     @placement_preference ||= begin
-      upcoming_interest = school.placement_preferences.for_academic_year(academic_year).last
-      upcoming_interest.presence || school.placement_preferences.build(
-        academic_year:,
-        created_by: current_user,
-        placement_details: {},
-      )
-    end
+                                upcoming_interest = school.placement_preferences.for_academic_year(academic_year).last
+                                upcoming_interest.presence || school.placement_preferences.build(
+                                  academic_year:,
+                                  created_by: current_user,
+                                  placement_details: {},
+                                )
+                              end
   end
 
   def appetite_interested?
     @appetite_interested ||= appetite == "interested"
-  end
-
-  def placement_preference_for_current_academic_year?
-    school.placement_preferences.for_academic_year(AcademicYear.current).exists?
-  end
-
-  def placement_preference_for_next_academic_year?
-    school.placement_preferences.for_academic_year(AcademicYear.next).exists?
   end
 end

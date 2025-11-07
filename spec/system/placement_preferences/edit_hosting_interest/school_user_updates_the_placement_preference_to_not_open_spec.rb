@@ -276,10 +276,6 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_paragraph(
       "Providers in England can see that your school is unable to offer placements for trainee teachers in #{@next_academic_year_short_name}. They will not be able to see the reasons why or the placement contact.",
     )
-    expect(page).to have_paragraph("No information will be shared with providers.")
-    expect(page).to have_paragraph(
-      "Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.",
-    )
   end
 
   def and_i_see_the_reason_not_hosting_i_entered

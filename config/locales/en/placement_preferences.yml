@@ -59,7 +59,7 @@ en:
         "Providers in England can see the information you have recorded. They can email the placement contact at your school if they are interested in working together: %{mailto}."
       you_do_not_need_to_take_any_further_action:
         You do not need to take any further action if your information is up to date.
-      your_placements_offers: Placement information or your school
+      your_placements_offers: Placement information for your school
       primary_placements: Primary placements
       secondary_placements: Secondary placements
       send_placements: Placements in a SEND setting
@@ -68,8 +68,7 @@ en:
       edit_your_placements: edit your school’s placement information
       additional_information: Additional information
       click_here: Click here
-      to_see_how_your_placement_information_will_be_shown:
-        "%{link} to see how your placement information will be shown to providers."
+      information_displayed: Your placement information will be displayed to providers as shown below.
     interested_preferences:
       panel_title: Information added
       panel_text:
@@ -86,10 +85,9 @@ en:
       secondary: Potential secondary placements
       send: Potential placements in a SEND setting
       placement_contact: Placement contact
-      your_placements_offers: Placement information or your school
+      your_placements_offers: Placement information for your school
       you_can_edit_placements: "You can %{link} at any time."
+      information_displayed: Your placement information will be displayed to providers as shown below.
       edit_your_placements: edit your school’s placement information
       additional_information: Additional information
       click_here: Click here
-      to_see_how_your_placement_information_will_be_shown:
-        "%{link} to see how your placement information will be shown to providers."

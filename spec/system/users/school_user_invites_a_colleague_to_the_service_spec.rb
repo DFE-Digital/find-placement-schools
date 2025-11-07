@@ -36,12 +36,12 @@ RSpec.describe "School user invites a colleague to the service", type: :system d
 
   def then_i_see_the_academic_years_page
     expect(page).to have_title(
-                      "For which academic year are you providing information about placements for trainee teachers? - Find placement schools",
+                      "Which academic year do you want to add placement information for? - Find placement schools",
                       )
     expect(page).to have_caption("Placement information")
     expect(page).to have_element(
                       :legend,
-                      text: "For which academic year are you providing information about placements for trainee teachers?",
+                      text: "Which academic year do you want to add placement information for?",
                       class: "govuk-fieldset__legend",
                       )
     expect(page).to have_field(@next_academic_year_name, type: :radio)

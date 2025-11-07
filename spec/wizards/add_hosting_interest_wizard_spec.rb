@@ -20,7 +20,7 @@ RSpec.describe AddHostingInterestWizard do
         create(:placement_preference, organisation: school, academic_year: AcademicYear.current)
       end
 
-      it { is_expected.to eq %i[appetite] }
+      it { is_expected.to eq %i[academic_year appetite] }
     end
 
     context "when the appetite is set to 'actively_looking' during the appetite step" do

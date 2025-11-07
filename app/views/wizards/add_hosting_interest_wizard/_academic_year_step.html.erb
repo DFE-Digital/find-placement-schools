@@ -1,5 +1,5 @@
 <% content_for :page_title, title_with_error_prefix(
-  t(".title", academic_year_name: @wizard.academic_year.name),
+  t(".title"),
   error: current_step.errors.any?,
 ) %>
 
@@ -20,7 +20,7 @@
           )) %>
         </p>
         <p class="govuk-body"><%= t(".add_information_for", academic_year_name: @wizard.academic_year.name) %></p>
-        <%= f.hidden_field :academic_year_id, value: current_step.existing_preference_academic_year.id %>
+        <%= f.hidden_field :academic_year_id, value: current_step.new_academic_year.id %>
       <% else %>
         <%= f.govuk_collection_radio_buttons(
           :academic_year_id,

@@ -12,6 +12,22 @@ class AddHostingInterestWizard::AcademicYearStep < BaseStep
     end
   end
 
+  def recent_preference_exists?
+    wizard.placement_preference_exists_for?(AcademicYear.current) || wizard.placement_preference_exists_for?(AcademicYear.next)
+  end
+
+  def existing_preference_academic_year
+    wizard.placement_preference_exists_for?(AcademicYear.current) ? AcademicYear.current : AcademicYear.next
+  end
+
+  def new_academic_year
+    wizard.placement_preference_exists_for?(AcademicYear.current) ? AcademicYear.next : AcademicYear.current
+  end
+
+  def recent_placement_preference
+    wizard.placement_preference_for(existing_preference_academic_year)
+  end
+
   private
 
   def academic_years

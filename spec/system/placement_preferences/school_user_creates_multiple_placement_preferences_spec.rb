@@ -33,6 +33,9 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     and_i_see_my_placement_preference_for_current_academic_year
 
     when_i_click_on_add_placement_information
+    then_i_see_the_academic_years_page_again
+
+    when_i_click_on_continue
     then_i_see_the_appetite_form_page_for_next_academic_year
 
     when_i_select_no
@@ -76,12 +79,12 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
 
   def then_i_see_the_academic_years_page
     expect(page).to have_title(
-                      "For which academic year are you providing information about placements for trainee teachers? - Find placement schools",
+                      "Which academic year do you want to add placement information for? - Find placement schools",
                       )
     expect(page).to have_caption("Placement information")
     expect(page).to have_element(
                       :legend,
-                      text: "For which academic year are you providing information about placements for trainee teachers?",
+                      text: "Which academic year do you want to add placement information for?",
                       class: "govuk-fieldset__legend",
                       )
     expect(page).to have_field(@current_academic_year_name, type: :radio)
@@ -173,11 +176,6 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     expect(page).to have_paragraph(
                       "Providers in England can see that your school is unable to offer placements for trainee teachers in #{@current_academic_year_short_name}. They will not be able to see the reasons why or the placement contact.",
                       )
-    expect(page).to have_paragraph("No information will be shared with providers.")
-    expect(page).to have_paragraph(
-                      "Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.",
-                      )
-
     expect(page).to have_summary_list_row("Academic year", @current_academic_year_name)
   end
 
@@ -236,6 +234,15 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     click_on "Add placement information"
   end
 
+  def then_i_see_the_academic_years_page_again
+    expect(page).to have_title(
+                      "Which academic year do you want to add placement information for? - Find placement schools",
+                      )
+    expect(page).to have_caption("Placement information")
+    expect(page).to have_h1("Which academic year do you want to add placement information for?")
+    expect(page).to have_element(:p, text: "Information is already recorded for the #{@current_academic_year_name} academic year, you can edit your school’s placement information at any time.")
+  end
+
   def then_i_see_the_appetite_form_page_for_next_academic_year
     expect(page).to have_title(
                       "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools",
@@ -278,10 +285,6 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     expect(page).to have_h1("Check your answers")
     expect(page).to have_paragraph(
                       "Providers in England can see that your school is unable to offer placements for trainee teachers in #{@next_academic_year_short_name}. They will not be able to see the reasons why or the placement contact.",
-                      )
-    expect(page).to have_paragraph("No information will be shared with providers.")
-    expect(page).to have_paragraph(
-                      "Your reason for not offering placements will be shared with the Department for Education to help understand teacher training and recruitment.",
                       )
 
     expect(page).to have_summary_list_row("Academic year", @next_academic_year_name)
