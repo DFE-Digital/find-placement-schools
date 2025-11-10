@@ -3,6 +3,6 @@
 <%= govuk_summary_list(html_attributes: { id: "message_to_providers" }, actions: action_link.present?) do |summary_list| %>
   <% summary_list.with_row do |row| %>
     <% row.with_key(text: t(".message_to_providers")) %>
-    <% row.with_value(text: placement_details.dig("note_to_providers", "note").present? ? placement_details.dig("note_to_providers", "note") : t(".unknown")) %>
+    <% row.with_value(text: placement_details.dig("note_to_providers", "note").presence || t(".unknown")) %>
   <% end %>
 <% end %>
