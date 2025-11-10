@@ -49,5 +49,8 @@ module FindIttPlacements
     }
 
     config.action_mailer.preview_paths << "#{Rails.root}/spec/mailers/previews"
+
+    config.mission_control.jobs.base_controller_class = "AdminDashboardController"
+    config.mission_control.jobs.http_basic_auth_enabled = false
   end
 end
