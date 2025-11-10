@@ -621,7 +621,7 @@ GEM
     solargraph-rails (1.2.4)
       activesupport
       solargraph (>= 0.48.0, <= 0.57)
-    solid_cache (1.0.8)
+    solid_cache (1.0.10)
       activejob (>= 7.2)
       activerecord (>= 7.2)
       railties (>= 7.2)
