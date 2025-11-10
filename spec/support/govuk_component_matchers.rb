@@ -241,10 +241,12 @@ module GovukComponentMatchers
     end
   end
 
-  matcher :have_panel do |panel_title, panel_body = nil|
+  matcher :have_panel do |panel_title = nil, panel_body = nil|
     match do |page|
       page.within(".govuk-panel") do
-        page.find(".govuk-panel__title", text: panel_title)
+        if panel_title.present?
+          page.find(".govuk-panel__title", text: panel_title)
+        end
         page.find(".govuk-panel__body", text: panel_body) if panel_body.present?
       end
       true

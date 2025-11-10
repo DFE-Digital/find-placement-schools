@@ -110,7 +110,7 @@ RSpec.describe "School user updates the placement preference to actively looking
       "What happens next? - Find placement schools",
     )
     expect(page).to have_panel(
-      "Information added",
+      nil,
       "Providers can see that your school is not offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
     )
     expect(page).to have_h1("What happens next?")
@@ -371,7 +371,7 @@ RSpec.describe "School user updates the placement preference to actively looking
       "What happens next? - Find placement schools",
     )
     expect(page).to have_panel(
-      "Information added",
+      nil,
       "Providers can see that your school is offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
     )
     expect(page).to have_h1("What happens next?")

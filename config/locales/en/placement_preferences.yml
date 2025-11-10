@@ -50,6 +50,7 @@ en:
         email_address: Email address
       note_to_providers:
         message_to_providers: Message to providers
+        unknown: No information added
     actively_looking_preferences:
       panel_title: Information added
       panel_text:
@@ -63,6 +64,7 @@ en:
       primary_placements: Primary placements
       secondary_placements: Secondary placements
       send_placements: Placements in a SEND setting
+      education_phase: Education phase or specialism
       placement_contact: Placement contact
       you_can_edit_placements: "You can %{link} at any time."
       edit_your_placements: edit your school’s placement information
