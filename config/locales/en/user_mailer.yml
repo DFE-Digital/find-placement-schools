@@ -5,15 +5,15 @@ en:
         subject: Invitation to join %{service_name}
         body: |
           Dear %{user_name},
-  
-          You have been invited to join the %{service_name} service for %{organisation_name}.
-  
-          Use this service to register your school’s ability to offer school placements for trainee teachers.
           
-          This helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
+          You are invited to sign in to the %{service_name} service for %{organisation_name}.
+          
+          Please sign in this week to register your school's ability to offer school placements for trainee teachers. If you are not the right staff member to do this, sign in to the service now to add the appropriate colleague(s) as a user.
+          
+          This is not a commitment to offer school placements but it helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
           
           This service is being trialled by the Department for Education with schools and teacher training providers in England.
-  
+          
           [Sign in to %{service_name}](%{sign_in_url})
           
           If you do not have DfE Sign-in, create an account. You can then return to this email to access the service.
