@@ -44,6 +44,14 @@ en:
         unknown: I don’t know
         not_entered: Not entered
         change: Change
+        key_stages:
+          early_years: Early years
+          key_stage_1: Key stage 1
+          key_stage_2: Key stage 2
+          key_stage_3: Key stage 3
+          key_stage_4: Key stage 4
+          key_stage_5: Key stage 5
+          mixed_key_stages: Mixed key stages
       school_contact_details:
         first_name: First name
         last_name: Last name
@@ -66,6 +74,7 @@ en:
       send_placements: Placements in a SEND setting
       education_phase: Education phase or specialism
       placement_contact: Placement contact
+      message_to_providers: Message to providers
       you_can_edit_placements: "You can %{link} at any time."
       edit_your_placements: edit your school’s placement information
       additional_information: Additional information
@@ -86,6 +95,8 @@ en:
       primary: Potential primary placements
       secondary: Potential secondary placements
       send: Potential placements in a SEND setting
+      message_to_providers: Message to providers
+      no_information_added: No information added
       placement_contact: Placement contact
       your_placements_offers: Placement information for your school
       you_can_edit_placements: "You can %{link} at any time."

@@ -123,6 +123,7 @@ en:
         change: Change
         additional_information: Additional information
         message_to_providers: Message to providers
+        no_information_added: No information added
         placement_contact: Placement contact
       are_you_sure_step:
         title: Check your answers
