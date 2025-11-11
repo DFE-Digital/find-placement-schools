@@ -23,7 +23,7 @@
       <%= govuk_summary_list(html_attributes: { id: "message_to_providers" }) do |summary_list| %>
         <% summary_list.with_row do |row| %>
           <% row.with_key(text: t(".message_to_providers")) %>
-          <% row.with_value(text: current_step.note) %>
+          <% row.with_value(text: current_step.note.presence || t(".no_information_added")) %>
           <% row.with_action(text: t(".change"),
                              href: step_path(:note_to_providers),
                              visually_hidden_text: t(".message_to_providers"),

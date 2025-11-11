@@ -8,7 +8,7 @@
           <% if key_stage == AddHostingInterestWizard::UNKNOWN_OPTION %>
             <li><%= t(".unknown") %></li>
           <% else %>
-            <li><%= key_stage.titleize %></li>
+            <li><%= t("placement_preferences.placement_details.send_placements_list.key_stages.#{key_stage}") %></li>
           <% end %>
         <% end %>
       <% end %>

@@ -81,11 +81,9 @@
     placement_details: placement_details, action_link: nil %>
 <% end %>
 
-<% if placement_details.dig("note_to_providers", "note").present? %>
-  <h3 class="govuk-heading-s">
-    <%= t(".additional_information") %>
-  </h3>
+<h3 class="govuk-heading-s">
+  <%= t(".additional_information") %>
+</h3>
 
-  <%= render "placement_preferences/placement_details/note_to_providers",
+<%= render "placement_preferences/placement_details/note_to_providers",
     placement_details: placement_details, action_link: nil %>
-<% end %>
