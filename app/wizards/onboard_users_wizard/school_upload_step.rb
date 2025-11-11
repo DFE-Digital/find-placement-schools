@@ -50,9 +50,7 @@ class OnboardUsersWizard::SchoolUploadStep < BaseStep
 
       validate_name_fields(row, i)
       validate_email_address(row, i)
-      validate_school_urn(row, i)
     end
-    invalid_identifier_rows.blank? &&
       invalid_email_address_rows.blank? &&
       missing_first_name_rows.blank? &&
       missing_last_name_rows.blank?
@@ -102,11 +100,5 @@ class OnboardUsersWizard::SchoolUploadStep < BaseStep
     return unless URI::MailTo::EMAIL_REGEXP.match(row["email_address"]).nil?
 
     invalid_email_address_rows << row_number
-  end
-
-  def validate_school_urn(row, row_number)
-    return if School.find_by(urn: row["urn"])
-
-    invalid_identifier_rows << row_number
   end
 end

@@ -120,19 +120,6 @@ RSpec.describe OnboardUsersWizard::SchoolUploadStep, type: :model do
       end
     end
 
-    context "when csv_content contains invalid school urn" do
-      let(:csv_content) do
-        "school_name,urn,first_name,last_name,email_address\r\n" \
-        "London School,333333,John,Smith,john_smith@example.com"
-      end
-      let(:attributes) { { csv_content: } }
-
-      it "returns false and assigns the csv row to the 'invalid_identifier_rows' attribute" do
-        expect(csv_inputs_valid).to be(false)
-        expect(step.invalid_identifier_rows).to contain_exactly(0)
-      end
-    end
-
     context "when csv_content contains invalid email_address" do
       let(:csv_content) do
         "school_name,urn,first_name,last_name,email_address\r\n" \
