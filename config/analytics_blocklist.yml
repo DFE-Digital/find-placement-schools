@@ -1,5 +1,11 @@
 ---
 shared:
+  :sessions:
+    - id
+    - session_id
+    - data
+    - created_at
+    - updated_at
   :solid_queue_semaphores:
     - id
     - key
