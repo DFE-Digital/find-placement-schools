@@ -12,9 +12,9 @@ RSpec.describe HostingEnvironment do
     test_matrix = %w[production sandbox staging qa review development test]
 
     test_matrix.each do |environment|
-      context "when HOSTING_ENV is '#{environment}'" do
+      context "when RAILS_ENV is '#{environment}'" do
         it "returns '#{environment}'" do
-          ClimateControl.modify HOSTING_ENV: environment do
+          ClimateControl.modify RAILS_ENV: environment do
             expect(env).to eq(environment)
           end
         end
