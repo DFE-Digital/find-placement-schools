@@ -30,10 +30,6 @@ class ApplicationController < ActionController::Base
     @sign_in_user ||= DfeSignInUser.load_from_session(session)
   end
 
-  def redirect_if_signed_in
-    redirect_to after_sign_in_path if user_signed_in?
-  end
-
   def authenticate_user!
     return if current_user
 
