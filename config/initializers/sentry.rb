@@ -1,7 +1,7 @@
 Sentry.init do |config|
   # Sentry config here is mostly copied from apply-for-teacher-training
   # https://github.com/DFE-Digital/apply-for-teacher-training/blob/main/config/initializers/sentry.rb
-  config.environment = ActiveSupport::EnvironmentInquirer.new(ENV.fetch("HOSTING_ENV", "development"))
+  config.environment = ActiveSupport::EnvironmentInquirer.new(ENV.fetch("RAILS_ENV", "development"))
   config.release = ENV["SHA"]
   config.dsn = ENV.fetch("SENTRY_DSN", "")
 
