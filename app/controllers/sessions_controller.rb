@@ -2,6 +2,7 @@ class SessionsController < ApplicationController
   include OrganisationRedirectable
 
   skip_before_action :authenticate_user!, only: %i[new callback failure]
+  before_action :redirect_to_after_sign_in_path, only: %i[new], if: :user_signed_in?
 
   def new; end
 

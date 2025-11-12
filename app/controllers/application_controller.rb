@@ -42,17 +42,20 @@ class ApplicationController < ActionController::Base
     redirect_to sign_in_path
   end
 
-  # Not currently using this method, but keeping it for future use
   def after_sign_in_path
     if requested_path.present?
       requested_path
-    elsif current_user.admin
-      # This should change
-      root_path
+    elsif current_user.admin?
+      admin_dashboard_index_path
+    elsif current_organisation.is_a?(Provider)
+      organisations_path
     else
-      # This should change
-      root_path
+      placement_preferences_path
     end
+  end
+
+  def redirect_to_after_sign_in_path
+    redirect_to after_sign_in_path
   end
 
   def requested_path
