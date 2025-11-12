@@ -83,6 +83,7 @@ gem "json", "2.15.1"
 gem "net-http", "0.6.0"
 gem "uri", "1.0.4"
 
+gem "sentry-ruby"
 gem "sentry-rails"
 
 group :development, :staging, :test, :review, :az_development do
