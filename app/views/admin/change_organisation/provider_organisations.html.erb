@@ -1,0 +1,24 @@
+<%= content_for :page_title, "Select a provider to view" %>
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">Select a provider to view</h1>
+
+      <%= govuk_summary_list do |summary_list| %>
+        <% providers.each do |provider| %>
+
+          <% summary_list.with_row do |row| %>
+            <% row.with_key(text: provider.name) %>
+            <% row.with_action(text: "Continue",
+              href: update_organisation_admin_change_organisation_index_path(organisation_id: provider.id),
+              visually_hidden_text: provider.name,
+              classes: ["govuk-link--no-visited-state"]) %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <%= render PaginationComponent.new(pagy:) %>
+
+    </div>
+  </div>
+</div>

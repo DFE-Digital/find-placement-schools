@@ -2,16 +2,17 @@ module OrganisationRedirectable
   extend ActiveSupport::Concern
 
   def redirect_to_organisation(user, organisation_id = nil)
-    if user.admin?
-      redirect_to admin_dashboard_index_path,
-                  flash: { heading: "Signed in as #{user.first_name} #{user.last_name}", success: false }
+    if user.admin? && user.selected_organisation.nil?
+      redirect_to admin_dashboard_index_path, flash: { heading: "Signed in as #{user.first_name} #{user.last_name}", success: false }
       return
     end
 
-    organisation = if organisation_id
-        user.organisations.find_by(id: organisation_id)
+    organisation = if user.admin?
+      Organisation.find_by(id: user.selected_organisation_id)
+    elsif organisation_id
+      user.organisations.find_by(id: organisation_id)
     elsif user.organisations.one?
-        user.organisations.first
+      user.organisations.first
     end
 
     if organisation.present?

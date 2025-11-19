@@ -5,7 +5,7 @@ class ServiceNavigationComponent < ApplicationComponent
   end
 
   def navigation_items
-    if current_user&.admin?
+    if current_user&.admin? && !current_organisation
       [
         {
           text: t("components.service_navigation_component.dashboard"),

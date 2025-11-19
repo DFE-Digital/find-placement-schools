@@ -4,6 +4,13 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">Admin dashboard</h1>
 
+      <h2 class="govuk-heading-m">Organisations</h2>
+      <%= govuk_list do %>
+        <li><%= govuk_link_to("Select provider organisation", provider_organisations_admin_change_organisation_index_path) %></li>
+        <li><%= govuk_link_to("Select school organisation", school_organisations_admin_change_organisation_index_path) %></li>
+      <% end %>
+
+      <h2 class="govuk-heading-m">Tools</h2>
       <%= govuk_list do %>
         <li><%= govuk_link_to("Mission control job dashboard", mission_control_jobs_path) %></li>
         <li><%= govuk_link_to("Import Register ITT Placement Data", new_import_register_data_admin_previous_placements_path) %></li>

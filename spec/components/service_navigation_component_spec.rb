@@ -54,4 +54,18 @@ RSpec.describe ServiceNavigationComponent, type: :component do
       expect(page).to have_link("Users", href: "/users")
     end
   end
+
+  context "when the user is signed in as an admin user" do
+    let(:current_user) { create(:user, :admin) }
+    let(:current_organisation) { nil }
+
+    it "renders the service navigation with the correct items" do
+      render_inline ServiceNavigationComponent.new(current_user:, current_organisation:)
+
+      expect(page).to have_content("Dashboard")
+      expect(page).to have_link("Dashboard", href: "/admin_dashboard")
+      expect(page).to have_content("Users")
+      expect(page).to have_link("Users", href: "/admin/users")
+    end
+  end
 end

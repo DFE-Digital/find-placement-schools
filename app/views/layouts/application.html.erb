@@ -30,6 +30,9 @@
       <% end %>
 
       <% if user_signed_in? %>
+        <% if current_organisation.present? && current_user&.admin? %>
+          <% header.with_navigation_item(text: "#{current_organisation&.name} (return to dashboard)", href: return_to_dashboard_admin_change_organisation_index_path) %>
+        <% end %>
         <% if current_organisation.present? && current_user&.organisations&.count > 1  %>
           <% header.with_navigation_item(text: "#{current_organisation&.name} (change)", href: change_organisation_index_path) %>
         <% end %>
