@@ -10,6 +10,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:schools).class_name("Organisation").through(:user_memberships).source(:organisation) }
     it { is_expected.to have_many(:providers).class_name("Organisation").through(:user_memberships).source(:organisation) }
 
+    it { is_expected.to normalize(:email_address).from("EXAMPLE@EXAMPLE.com").to("example@example.com") }
+
     it { is_expected.to have_many(:placement_preferences).class_name("PlacementPreference") }
   end
 
