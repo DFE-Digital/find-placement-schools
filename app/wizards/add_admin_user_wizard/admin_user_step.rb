@@ -16,7 +16,7 @@ class AddAdminUserWizard::AdminUserStep < BaseStep
   end
 
   def admin_user
-    @support_user ||= User.find_or_initialize_by(email_address:).tap do |user|
+    @admin_user ||= User.find_or_initialize_by(email_address:).tap do |user|
       user.assign_attributes(first_name:, last_name:, admin: true)
     end
   end

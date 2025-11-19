@@ -59,7 +59,7 @@ RSpec.describe "Admin user removes a colleague from the service", type: :system 
     expect(page).to have_h2("Details")
     expect(page).to have_summary_list_row("First name", "Harry")
     expect(page).to have_summary_list_row("Last name", "Potter")
-    expect(page).to have_summary_list_row("Email address", "harry.potter@hogwarts.com")
+    expect(page).to have_summary_list_row("Email address", "harry.potter@education.gov.uk")
   end
 
   def when_i_click_on_remove_user

@@ -11,7 +11,6 @@ class Admin::Users::AddAdminUserController < AdminController
       redirect_to step_path(@wizard.next_step)
     else
       user = @wizard.create_user
-      Users::Invite.call(user:, organisation: current_organisation)
       @wizard.reset_state
       redirect_to index_path, flash: {
         success: true,

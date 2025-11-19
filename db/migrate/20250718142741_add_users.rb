@@ -1,4 +1,4 @@
-class AddUsers < ActiveRecord::Migration[8.0]
+ class AddUsers < ActiveRecord::Migration[8.0]
   def change
     create_table :users, id: :uuid do |t|
       t.string :first_name, null: false
@@ -11,4 +11,4 @@ class AddUsers < ActiveRecord::Migration[8.0]
       t.timestamps
     end
   end
-end
+ end

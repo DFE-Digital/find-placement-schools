@@ -1,7 +1,7 @@
 <%= content_for :page_title, t(".heading", user_name: @user.full_name) %>
 
 <%= content_for(:before_content) do %>
-  <%= govuk_back_link(href: admin_users_path(@school)) %>
+  <%= govuk_back_link(href: admin_users_path) %>
 <% end %>
 
 <div class="govuk-width-container">

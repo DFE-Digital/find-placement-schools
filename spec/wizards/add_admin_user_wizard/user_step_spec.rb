@@ -48,7 +48,7 @@ RSpec.describe AddAdminUserWizard::AdminUserStep, type: :model do
     describe "#admin_user" do
       let(:first_name) { "John" }
       let(:last_name) { "Doe" }
-      let(:email_address) { "john_doe@eduction.gov.uk" }
+      let(:email_address) { "john_doe@education.gov.uk" }
       let(:attributes) { { first_name:, last_name:, email_address: } }
 
       context "when the user does not already exist" do
