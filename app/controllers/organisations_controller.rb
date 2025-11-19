@@ -23,17 +23,17 @@ class OrganisationsController < ApplicationController
 
   def index
     schools = SchoolsQuery.call(params: query_params)
-    @pagy, @schools = pagy(schools)
-    @schools = @schools.decorate
+    pagy, schools = pagy(schools)
+    @schools = schools.decorate
     calculate_travel_time
 
-    render locals: { pagy: @pagy, schools: @schools, filter_form: }
+    render locals: { pagy:, schools: @schools, filter_form: }
   end
 
   private
 
   def filter_form
-    @filter_form = Organisations::FilterForm.new(filter_params)
+    @filter_form ||= Organisations::FilterForm.new(filter_params)
   end
 
   def search_location

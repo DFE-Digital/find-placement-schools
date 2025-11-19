@@ -5,3 +5,10 @@ en:
         update:
           success: Users have been onboarded successfully
           success_body: It may take a few minutes for all users to receive invitations
+    change_organisation:
+      school_organisations:
+        title: Select a school to view
+        continue: Continue
+      provider_organisations:
+        title: Select a provider to view
+        continue: Continue

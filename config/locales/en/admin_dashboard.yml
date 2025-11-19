@@ -1,0 +1,10 @@
+en:
+  admin_dashboard:
+    index:
+      title: Admin dashboard
+      organisations: Organisations
+      select_school: Select a school to view
+      select_provider: Select a provider to view
+      job_dashboard: Mission control job dashboard
+      import_register_itt_placement_data: Import Register ITT Placement Data
+      onboard_users: Onboard users

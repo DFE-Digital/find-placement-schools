@@ -1,12 +1,12 @@
 class Admin::ChangeOrganisationController < AdminController
   def provider_organisations
-    @pagy, @organisations = pagy(Provider.order(:name))
-    render locals: { pagy: @pagy, providers: @organisations }
+    pagy, organisations = pagy(Provider.order(:name))
+    render locals: { pagy:, providers: organisations }
   end
 
   def school_organisations
-    @pagy, @organisations = pagy(School.order(:name))
-    render locals: { pagy: @pagy, schools: @organisations }
+    pagy, organisations = pagy(School.order(:name))
+    render locals: { pagy:, schools: organisations }
   end
 
   def update_organisation
