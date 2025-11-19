@@ -3,5 +3,6 @@ en:
     service_navigation_component:
       placement_information: Placement information
       users: Users
+      dashboard: Dashboard
       organisation_details: Organisation details
       find_placements: Find placements

@@ -5,7 +5,22 @@ class ServiceNavigationComponent < ApplicationComponent
   end
 
   def navigation_items
-    if current_user && current_organisation
+    if current_user&.admin?
+      [
+        {
+          text: t("components.service_navigation_component.dashboard"),
+          href: helpers.admin_dashboard_index_path,
+          active: request.path.match?(/^\/admin_dashboard/),
+          current: request.path.match?(/^\/admin_dashboard/)
+        },
+        {
+          text: t("components.service_navigation_component.users"),
+          href: helpers.admin_users_path,
+          active: request.path.match?(/^\/admin\/users/),
+          current: request.path.match?(/^\/admin\/users/)
+        }
+      ]
+    elsif current_user && current_organisation
       case current_organisation
       when School
         [

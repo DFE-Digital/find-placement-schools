@@ -1,0 +1,36 @@
+<%= content_for :page_title, t(".heading", user_name: @user.full_name) %>
+
+<%= content_for(:before_content) do %>
+  <%= govuk_back_link(href: admin_users_path(@school)) %>
+<% end %>
+
+<div class="govuk-width-container">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l"><%= t(".caption") %></span>
+      <h1 class="govuk-heading-l"><%= t(".heading", user_name: @user.full_name) %></h1>
+
+      <h2 class="govuk-heading-m"><%= t(".details") %></h2>
+      <%= govuk_summary_list(actions: false) do |summary_list| %>
+        <% summary_list.with_row do |row| %>
+          <% row.with_key(text: User.human_attribute_name(:first_name)) %>
+          <% row.with_value(text: @user.first_name) %>
+        <% end %>
+
+        <% summary_list.with_row do |row| %>
+          <% row.with_key(text: User.human_attribute_name(:last_name)) %>
+          <% row.with_value(text: @user.last_name) %>
+        <% end %>
+
+        <% summary_list.with_row do |row| %>
+          <% row.with_key(text: User.human_attribute_name(:email_address)) %>
+          <% row.with_value(text: @user.email_address) %>
+        <% end %>
+      <% end %>
+
+      <% if policy(@user).destroy? %>
+        <%= govuk_link_to t(".remove_user"), remove_admin_user_path(@user), class: "app-link app-link--destructive" %>
+      <% end %>
+    </div>
+  </div>
+</div>
