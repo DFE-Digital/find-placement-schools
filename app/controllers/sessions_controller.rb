@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
     else
       DfeSignInUser.end_session!(session)
       redirect_to after_sign_out_path, flash: {
-        heading: "Cannot sign in",
+        heading: "#{I18n.t('.you_do_not_have_access_to_this_service')}",
         success: false
       }
     end

@@ -16,7 +16,7 @@ If we change these General Terms we will post the revised document here with an 
 This Service is operated by the Department for Education (“we”, “our”, or “us”). We are a central government department and have our registered office at Sanctuary Buildings, 20 Great Smith Street, SW1P 3BT.
 
 You can contact us using the following email address:
-[manage.schoolplacements@education.gov.uk](mailto:manage.schoolplacements@education.gov.uk)
+[find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk)
 
 ## Access to the Service
 We will not be liable if for any reason the Service is unavailable at any time or for any period. From time to time, we may restrict access to all or some parts of the Service to users who have registered with us.

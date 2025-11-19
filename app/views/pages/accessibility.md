@@ -22,11 +22,11 @@ We know some parts of this website are not fully accessible:
 
 ## Feedback and contact information
 
-If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille, email [manage.schoolplacements@education.gov.uk](mailto:manage.schoolplacements@education.gov.uk). We’ll consider your request and get back to you in 5 working days.
+If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille, email [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk). We’ll consider your request and get back to you in 5 working days.
 
 ## Reporting accessibility problems with this website
 
-We're always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we're not meeting accessibility requirements, email [manage.schoolplacements@education.gov.uk](mailto:manage.schoolplacements@education.gov.uk). We’ll consider your request and get back to you in 5 working days.
+We're always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we're not meeting accessibility requirements, email [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk). We’ll consider your request and get back to you in 5 working days.
 
 ## Enforcement procedure
 
@@ -48,7 +48,7 @@ This issue is being tracked by the GOV.UK Design System team as part a wider iss
 
 ## What we’re doing to improve accessibility
 
-We will continue to review feedback provided via the feedback link or through queries sent to [manage.schoolplacements@education.gov.uk](mailto:manage.schoolplacements@education.gov.uk) to inform improvements to the service.
+We will continue to review feedback provided via the feedback link or through queries sent to [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk) to inform improvements to the service.
 
 ## Preparation of this accessibility statement
 
