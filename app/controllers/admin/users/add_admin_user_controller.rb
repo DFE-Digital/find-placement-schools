@@ -1,10 +1,8 @@
-class Admin::Users::OnboardUsersController < AdminController
+class Admin::Users::AddAdminUserController < AdminController
   include WizardController
 
   before_action :set_wizard
   before_action :authorize_user
-
-  helper_method :index_path
 
   def update
     if !@wizard.save_step
@@ -12,12 +10,13 @@ class Admin::Users::OnboardUsersController < AdminController
     elsif @wizard.next_step.present?
       redirect_to step_path(@wizard.next_step)
     else
-      @wizard.upload_users
+      user = @wizard.create_user
+      Users::Invite.call(user:, organisation: current_organisation)
       @wizard.reset_state
       redirect_to index_path, flash: {
         success: true,
-        heading: t(".success.heading"),
-        body: t(".success.body")
+        heading: t(".success"),
+        body: t(".success_body", user_name: user.first_name)
       }
     end
   end
@@ -27,18 +26,18 @@ class Admin::Users::OnboardUsersController < AdminController
   def set_wizard
     state = session[state_key] ||= {}
     current_step = params[:step]&.to_sym
-    @wizard = ::OnboardUsersWizard.new(params:, state:, current_step:)
+    @wizard = AddAdminUserWizard.new(params:, state:, current_step:)
   end
 
   def authorize_user
-    authorize User, :new?
-  end
-
-  def index_path
-    admin_dashboard_index_path
+    authorize User
   end
 
   def step_path(step)
-    onboard_users_admin_users_path(state_key:, step:)
+    add_admin_user_admin_users_path(state_key:, step:)
+  end
+
+  def index_path
+    admin_users_path
   end
 end

@@ -1,4 +1,4 @@
-class Admin::PreviousPlacements::ImportRegisterDataController < ApplicationController
+class Admin::PreviousPlacements::ImportRegisterDataController < AdminController
   include WizardController
 
   before_action :set_wizard
