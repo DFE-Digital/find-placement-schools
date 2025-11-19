@@ -97,6 +97,15 @@ Rails.application.routes.draw do
         put "new/:state_key/:step", to: "users/add_admin_user#update"
       end
     end
+
+    resources :change_organisation do
+      collection do
+        get "/provider_organisations", to: "change_organisation#provider_organisations", as: :provider_organisations
+        get "/school_organisations", to: "change_organisation#school_organisations", as: :school_organisations
+        get "/update_organisation", to: "change_organisation#update_organisation", as: :update_organisation
+        get "/return_to_dashboard", to: "change_organisation#return_to_dashboard", as: :return_to_dashboard
+      end
+    end
   end
 
   get "api/google/map-key", to: "api/google#map_key", as: :google_map_key
