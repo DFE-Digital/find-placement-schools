@@ -9,7 +9,7 @@ class Users::CreateCollectionJob < ApplicationJob
         organisation = Organisation.find_by(id: user_detail[:organisation_id])
         next if organisation&.users&.find_by(email_address: user_detail[:email_address].downcase)
 
-        user = User.find_or_create_by(email_address: user_detail[:email_address].downcase) do |u|
+        user = User.find_or_create_by(email_address: user_detail[:email_address]) do |u|
           u.first_name = user_detail[:first_name]
           u.last_name = user_detail[:last_name]
         end
