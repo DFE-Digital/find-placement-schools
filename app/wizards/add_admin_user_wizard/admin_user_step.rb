@@ -10,7 +10,7 @@ class AddAdminUserWizard::AdminUserStep < BaseStep
   validate :new_admin_user
 
   def new_admin_user
-    return if User.where(admin: true).find_by(email_address:).blank?
+    return if User.admin.find_by(email_address:).blank?
 
     errors.add(:email_address, :taken)
   end
