@@ -34,7 +34,7 @@ RSpec.describe "Admin user changes organisation to a school", type: :system do
   end
 
   def when_i_navigate_to_select_school_organisation_option
-    click_on "Select school organisation"
+    click_on "Select a school to view"
   end
 
   def then_i_see_the_select_a_school_to_view_page

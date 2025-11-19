@@ -1,28 +1,23 @@
-<%= content_for :page_title, "Select a school to view" %>
+<%= content_for :page_title, t(".title") %>
 <div class="govuk-width-container">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">Select a school to view</h1>
+      <h1 class="govuk-heading-l"><%= t(".title") %></h1>
 
+      <%= govuk_summary_list do |summary_list| %>
+        <% schools.each do |school| %>
 
-      <% if schools.exists? %>
-        <h2 class="govuk-heading-m">Schools</h2>
-
-        <%= govuk_summary_list do |summary_list| %>
-          <% schools.each do |school| %>
-
-            <% summary_list.with_row do |row| %>
-              <% row.with_key(text: school.name) %>
-              <% row.with_action(text: "Continue",
-                                 href: update_organisation_admin_change_organisation_index_path(organisation_id: school.id),
-                                 visually_hidden_text: school.name,
-                                 classes: ["govuk-link--no-visited-state"]) %>
-            <% end %>
+          <% summary_list.with_row do |row| %>
+            <% row.with_key(text: school.name) %>
+            <% row.with_action(text: t(".continue"),
+                               href: update_organisation_admin_change_organisation_index_path(organisation_id: school.id),
+                               visually_hidden_text: school.name,
+                               classes: ["govuk-link--no-visited-state"]) %>
           <% end %>
         <% end %>
-
-        <%= render PaginationComponent.new(pagy:) %>
       <% end %>
+
+      <%= render PaginationComponent.new(pagy:) %>
     </div>
   </div>
 </div>

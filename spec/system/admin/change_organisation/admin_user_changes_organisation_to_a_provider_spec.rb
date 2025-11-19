@@ -34,7 +34,7 @@ RSpec.describe "Admin user changes organisation to a provider", type: :system do
   end
 
   def when_i_navigate_to_select_provider_organisation_option
-    click_on "Select provider organisation"
+    click_on "Select a provider to view"
   end
 
   def then_i_see_the_select_a_provider_to_view_page
