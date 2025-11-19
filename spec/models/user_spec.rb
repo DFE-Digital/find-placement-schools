@@ -19,6 +19,18 @@ RSpec.describe User, type: :model do
     it { is_expected.to validate_presence_of(:email_address) }
   end
 
+  describe "scopes" do
+    describe ".admin" do
+      let!(:admin_user) { create(:user, admin: true) }
+      let!(:regular_user) { create(:user, admin: false) }
+
+      it "returns only admin users" do
+        expect(User.admin).to include(admin_user)
+        expect(User.admin).not_to include(regular_user)
+      end
+    end
+  end
+
   describe "#full_name" do
     let(:user) { build(:user, first_name: "Jane", last_name: "Smith") }
 

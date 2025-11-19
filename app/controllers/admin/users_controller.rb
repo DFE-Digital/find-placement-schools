@@ -3,7 +3,7 @@ class Admin::UsersController < AdminController
   before_action :authorize_user
 
   def index
-    @pagy, @users = pagy(User.where(admin: true))
+    @pagy, @users = pagy(User.admin)
   end
 
   def show; end
@@ -22,7 +22,7 @@ class Admin::UsersController < AdminController
   private
 
   def user
-    @user ||= User.where(admin: true).find(params.require(:id))
+    @user ||= User.admin.find(params.require(:id))
   end
 
   def authorize_user
