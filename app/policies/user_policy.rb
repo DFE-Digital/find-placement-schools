@@ -4,7 +4,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    user.selected_organisation.users.include?(record)
+    user.admin? || user.selected_organisation.users.include?(record)
   end
 
   def index?
@@ -20,11 +20,13 @@ class UserPolicy < ApplicationPolicy
   end
 
   def remove?
-    record != user && user.selected_organisation.users.include?(record)
+    return false if record == user
+    user.admin? || user.selected_organisation.users.include?(record)
   end
 
   def destroy?
-    record != user && user.selected_organisation.users.include?(record)
+    return false if record == user
+    user.admin? || user.selected_organisation.users.include?(record)
   end
 
 

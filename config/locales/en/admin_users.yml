@@ -1,0 +1,23 @@
+en:
+  admin:
+    users:
+      add_admin_user:
+        update:
+          success: User added
+          success_body: "%{user_name} is now able to access this service"
+      destroy:
+        success: User account removed
+      index:
+        heading: Users
+        add_user: Add a user
+        no_users: No users have been added
+      show:
+        heading: "%{user_name}"
+        caption: User details
+        details: Details
+        remove_user: Remove user
+      remove:
+        caption: Remove user
+        heading: Are you sure you want to remove %{user_name}?
+        remove_user: Remove user
+        cancel: Cancel

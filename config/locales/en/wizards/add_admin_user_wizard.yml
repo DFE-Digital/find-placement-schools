@@ -1,0 +1,16 @@
+en:
+  wizards:
+    add_admin_user_wizard:
+      admin_user_step:
+        title: User details
+        caption: Add user
+        continue: Continue
+        attributes:
+          email:
+            hint: Email address must be a valid Department for Education address, like name@education.gov.uk
+      check_your_answers_step:
+        title: Confirm user details
+        caption: Add user
+        submit: Confirm and add user
+        change: Change
+        details: Details

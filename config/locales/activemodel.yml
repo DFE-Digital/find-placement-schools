@@ -56,6 +56,17 @@ en:
               blank: Enter a first name
             last_name:
               blank: Enter a last name
+        add_admin_user_wizard/admin_user_step:
+          attributes:
+            email_address:
+              blank: Enter an email address
+              invalid: Enter a valid email address
+              taken: This email address has already been invited.
+              invalid_support_email: Enter a Department for Education email address in the correct format, like name@education.gov.uk
+            first_name:
+              blank: Enter a first name
+            last_name:
+              blank: Enter a last name
         import_previous_placements_wizard/upload_step:
           attributes:
             csv_upload:

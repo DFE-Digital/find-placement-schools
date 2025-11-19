@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   resources :change_organisation, only: %i[index] do
     get "/update_organisation", to: "change_organisation#update_organisation", as: :update_organisation
   end
+
   resources :admin_dashboard, only: %i[index]
 
   namespace :admin do
@@ -81,11 +82,19 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :users, only: [] do
+    resources :users, only: %i[index show destroy] do
+      get :remove, on: :member
+
       collection do
         get "onboard_users", to: "users/onboard_users#new", as: :new_onboard_users
         get "onboard_users/:state_key/:step", to: "users/onboard_users#edit", as: :onboard_users
         put "onboard_users/:state_key/:step", to: "users/onboard_users#update"
+      end
+
+      collection do
+        get "new", to: "users/add_admin_user#new", as: :new_add_admin_user
+        get "new/:state_key/:step", to: "users/add_admin_user#edit", as: :add_admin_user
+        put "new/:state_key/:step", to: "users/add_admin_user#update"
       end
     end
   end
