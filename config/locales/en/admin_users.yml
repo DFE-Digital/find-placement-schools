@@ -5,6 +5,8 @@ en:
         update:
           success: User added
           success_body: "%{user_name} is now able to access this service"
+        edit:
+          cancel: Cancel
       destroy:
         success: User account removed
       index:
