@@ -194,8 +194,8 @@ GEM
       logger
     faraday-follow_redirects (0.4.0)
       faraday (>= 1, < 3)
-    faraday-net_http (3.4.1)
-      net-http (>= 0.5.0)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     fugit (1.12.1)
       et-orbi (~> 1.4)
       raabro (~> 1.4)
@@ -214,7 +214,7 @@ GEM
       mini_mime (~> 1.1)
       representable (~> 3.0)
       retriable (~> 3.1)
-    google-cloud-bigquery (1.59.0)
+    google-cloud-bigquery (1.61.0)
       bigdecimal (~> 3.0)
       concurrent-ruby (~> 1.0)
       google-apis-bigquery_v2 (~> 0.71)
@@ -282,7 +282,7 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
-    jwt (2.10.2)
+    jwt (3.1.2)
       base64
     kamal (2.8.2)
       activesupport (>= 7.0)
@@ -372,8 +372,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-musl)
       racc (~> 1.4)
-    notifications-ruby-client (6.2.0)
-      jwt (>= 1.5, < 3)
+    notifications-ruby-client (6.3.0)
+      jwt (>= 1.5, < 4)
     observer (0.1.2)
     okcomputer (1.19.0)
     omniauth (2.1.4)
@@ -743,7 +743,7 @@ DEPENDENCIES
   factory_bot_rails
   geocoder (~> 1.8)
   google-apis-bigquery_v2 (= 0.95.0)
-  google-cloud-bigquery (= 1.59.0)
+  google-cloud-bigquery (= 1.61.0)
   govuk-components
   govuk_design_system_formbuilder
   govuk_markdown
