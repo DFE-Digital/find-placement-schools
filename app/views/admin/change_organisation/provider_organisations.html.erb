@@ -2,23 +2,38 @@
 <div class="govuk-width-container">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l"><%= t(".title") %></h1>
-
-      <%= govuk_summary_list do |summary_list| %>
-        <% providers.each do |provider| %>
-
-          <% summary_list.with_row do |row| %>
-            <% row.with_key(text: provider.name) %>
-            <% row.with_action(text: t(".continue"),
-              href: update_organisation_admin_change_organisation_index_path(organisation_id: provider.id),
-              visually_hidden_text: provider.name,
-              classes: ["govuk-link--no-visited-state"]) %>
-          <% end %>
-        <% end %>
+      <%= content_for(:before_content) do %>
+        <%= govuk_back_link(href: admin_dashboard_index_path) %>
       <% end %>
 
-      <%= render PaginationComponent.new(pagy:) %>
+      <h1 class="govuk-heading-l"><%= t(".title") %></h1>
 
+      <%= render partial: "search", locals: {
+        url: provider_organisations_admin_change_organisation_index_path,
+        label: { text: t(".search_for_provider"), size: "m" },
+        name: :name,
+        clear_search_url: provider_organisations_admin_change_organisation_index_path(filters: filter_params),
+        filters: filter_params,
+      } %>
+
+      <% if providers.any? %>
+        <%= govuk_summary_list do |summary_list| %>
+          <% providers.each do |provider| %>
+
+            <% summary_list.with_row do |row| %>
+              <% row.with_key(text: provider.name) %>
+              <% row.with_action(text: t(".continue"),
+                href: update_organisation_admin_change_organisation_index_path(organisation_id: provider.id),
+                visually_hidden_text: provider.name,
+                classes: ["govuk-link--no-visited-state"]) %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <%= render PaginationComponent.new(pagy:) %>
+      <% else %>
+        <p class="govuk-body"><%= t(".no_providers_found") %></p>
+      <% end %>
     </div>
   </div>
 </div>
