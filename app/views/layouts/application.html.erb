@@ -49,7 +49,7 @@
             <%= render(GovukComponent::NotificationBannerComponent.new(title_text: flash[:success] ? "Success" : "Important", success: flash[:success])) do |nb| %>
               <% nb.with_heading(text: flash[:heading]) %>
               <% if flash[:body].present? %>
-                <p class="govuk-body"><%= flash[:body] %></p>
+                <p class="govuk-body"><%= flash[:body].html_safe %></p>
               <% end %>
             <% end %>
           </div>

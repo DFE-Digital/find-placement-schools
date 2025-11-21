@@ -16,4 +16,5 @@ en:
       time_on_date: "%l:%M%P on %A %-d %B %Y"
       date_at_time: "%-d %B %Y at %l:%M%P"
   change: Change
-  you_do_not_have_access_to_this_service: You do not have access to this service, please contact [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk) for assistance.
+  you_do_not_have_access_to_this_service: You do not have access to this service
+  contact_support_html: Please contact <a class="govuk-link" href="mailto:find.placementschools@education.gov.uk?subject=Find placement schools%20support">find.placementschools@education.gov.uk</a> for assistance.
