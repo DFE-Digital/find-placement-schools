@@ -16,3 +16,6 @@ en:
         continue: Continue
         search_for_provider: Search for a provider
         no_providers_found: No providers found
+      search:
+        submit: Submit
+        clear: Clear
