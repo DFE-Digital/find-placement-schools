@@ -1,12 +1,14 @@
 class Admin::ChangeOrganisationController < AdminController
   def provider_organisations
-    pagy, organisations = pagy(Provider.order(:name))
-    render locals: { pagy:, providers: organisations }
+    organisations = ProvidersQuery.call(params: filter_params_hash)
+    pagy, organisations = pagy(organisations.order(:name))
+    render locals: { pagy:, providers: organisations, filter_params: filter_params_hash }
   end
 
   def school_organisations
-    pagy, organisations = pagy(School.order(:name))
-    render locals: { pagy:, schools: organisations }
+    organisations = SchoolsQuery.call(params: filter_params_hash)
+    pagy, organisations = pagy(organisations)
+    render locals: { pagy:, schools: organisations, filter_params: filter_params_hash }
   end
 
   def update_organisation
@@ -19,5 +21,13 @@ class Admin::ChangeOrganisationController < AdminController
   def return_to_dashboard
     current_user.update(selected_organisation: nil)
     redirect_to admin_dashboard_index_path
+  end
+
+  def search_by_name_param
+    params.fetch(:search_by_name, "").to_s.strip.presence
+  end
+
+  def filter_params_hash
+    { filters: { search_by_name: search_by_name_param || "" } }
   end
 end
