@@ -9,6 +9,10 @@ en:
       school_organisations:
         title: Select a school to view
         continue: Continue
+        search_for_school: Search for a school
+        no_schools_found: No schools found
       provider_organisations:
         title: Select a provider to view
         continue: Continue
+        search_for_provider: Search for a provider
+        no_providers_found: No providers found
