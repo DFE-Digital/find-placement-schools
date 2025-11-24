@@ -111,7 +111,7 @@ group :test do
   gem "selenium-webdriver"
   gem "rails-controller-testing"
   gem "shoulda-matchers"
-  gem "webmock", "~> 3.25"
+  gem "webmock", "~> 3.26"
   gem "timecop", "~> 0.9.10"
   gem "undercover"
   gem "simplecov", require: false
