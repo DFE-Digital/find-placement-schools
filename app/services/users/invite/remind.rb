@@ -1,9 +1,12 @@
 class Users::Invite::Remind < ApplicationService
     def call
-      idle_users.find_in_batches do |batch|
+      wait_time = 0.minutes
+      idle_users.find_in_batches(batch_size: 100) do |batch|
         batch.each do |user|
-          School::UserMailer.user_membership_sign_in_reminder_notification(user).deliver_later
+          School::UserMailer.user_membership_sign_in_reminder_notification(user).deliver_later(wait: wait_time)
         end
+
+        wait_time += 1.minute
       end
     end
 
