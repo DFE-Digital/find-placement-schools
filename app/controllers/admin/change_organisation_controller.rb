@@ -1,14 +1,14 @@
 class Admin::ChangeOrganisationController < AdminController
   def provider_organisations
-    organisations = params[:name].present? ? Provider.where("name ILIKE ?", "%#{params[:name]}%") : Provider
+    organisations = ProvidersQuery.call(params: filter_params_hash)
     pagy, organisations = pagy(organisations.order(:name))
-    render locals: { pagy:, providers: organisations, filter_params: }
+    render locals: { pagy:, providers: organisations, filter_params: filter_params_hash }
   end
 
   def school_organisations
-    organisations = params[:name].present? ? School.where("name ILIKE ?", "%#{params[:name]}%") : School
-    pagy, organisations = pagy(organisations.order(:name))
-    render locals: { pagy:, schools: organisations, filter_params: }
+    organisations = SchoolsQuery.call(params: filter_params_hash)
+    pagy, organisations = pagy(organisations)
+    render locals: { pagy:, schools: organisations, filter_params: filter_params_hash }
   end
 
   def update_organisation
@@ -23,7 +23,11 @@ class Admin::ChangeOrganisationController < AdminController
     redirect_to admin_dashboard_index_path
   end
 
-  def filter_params
-    params.fetch(:filters, []).compact.reject(&:blank?)
+  def search_by_name_param
+    params.fetch(:search_by_name, "").to_s.strip.presence
+  end
+
+  def filter_params_hash
+    { filters: { search_by_name: search_by_name_param || "" } }
   end
 end

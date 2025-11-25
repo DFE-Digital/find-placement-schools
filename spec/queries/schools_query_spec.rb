@@ -38,9 +38,9 @@ describe SchoolsQuery do
   end
 
   describe "#call" do
-    it "returns available schools" do
+    it "returns all schools" do
       expect(query.call).to include(query_school)
-      expect(query.call).not_to include(non_query_school)
+      expect(query.call).to include(non_query_school)
     end
 
     context "when filtering by previously hosted placements" do
