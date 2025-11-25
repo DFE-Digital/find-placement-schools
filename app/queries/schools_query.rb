@@ -51,14 +51,14 @@ class SchoolsQuery < ApplicationQuery
   end
 
   def schools_to_show_condition(scope)
-    if filter_params[:schools_to_show] == "all"
-      scope
+    if filter_params[:schools_to_show] == "active"
+      scope.open_to_hosting_for(AcademicYear.next)
     elsif filter_params[:schools_to_show] == "previously_hosted"
       scope.where.associated(:previous_placements)
     elsif filter_params[:schools_to_show] == "not_open"
       scope.where(placement_preferences: { appetite: "not_open" })
     else
-      scope.open_to_hosting_for(AcademicYear.next)
+      scope
     end
   end
 

@@ -11,7 +11,7 @@
       <%= render partial: "search", locals: {
         url: school_organisations_admin_change_organisation_index_path,
         label: { text: t(".search_for_school"), size: "m" },
-        name: :name,
+        name: :search_by_name,
         clear_search_url: school_organisations_admin_change_organisation_index_path(filters: filter_params),
         filters: filter_params,
       } %>
