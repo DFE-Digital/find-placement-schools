@@ -118,5 +118,27 @@ RSpec.describe Users::PlacementPreferences::Remind do
         end
       end
     end
+
+    context "when there are more than 100 users to remind" do
+      150.times do
+        let!("user_#{_1}") do
+          create(:user,
+            last_signed_in_at: 2.weeks.ago,
+            organisations: [ create(:school) ])
+        end
+      end
+
+      let(:mailer_double) { double }
+
+      before do
+        allow(School::UserMailer).to receive(:placement_preferences_reminder_notification).and_return(mailer_double)
+      end
+
+      it "sends emails to all users in batches" do
+        expect(mailer_double).to receive(:deliver_later).with(wait: 0.minutes).exactly(100).times
+        expect(mailer_double).to receive(:deliver_later).with(wait: 1.minute).exactly(50).times
+        user_placement_preference_remind_service
+      end
+    end
   end
 end
