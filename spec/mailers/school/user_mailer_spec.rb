@@ -114,25 +114,21 @@ RSpec.describe School::UserMailer, type: :mailer do
       expect(user_membership_sign_in_reminder_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
         Dear #{user.first_name},
 
-        A couple of weeks ago, we let you know about the Department for Education’s new [Find Placement Schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email) service - designed to make it quicker and easier for you to record your school’s ability to host trainee teachers on placements.
+        You are invited to sign in to the Find placement schools service.
 
-        We’ve noticed your school hasn’t yet signed in. To get started, your DfE Sign-in approver should have received an on-boarding email and can log in and add other users if needed.
+        Please sign in this week to register your school's ability to offer school placements for trainee teachers. If you are not the right staff member to do this, sign in to the service now to add the appropriate colleague(s) as a user.
 
-        ## Please take a moment to:
+        This is not a commitment to offer school placements but it helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
 
-        1. Sign in using your DfE Sign-in credentials
+        This service is being trialled by the Department for Education with schools and teacher training providers in England.
 
-        2. Record your preferences for hosting placements
+        [Sign in to Find placement schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email)
 
-        3. Add any extra details you’d like to share (e.g. phase, subject)
+        If you do not have DfE Sign-in, create an account. You can then return to this email to access the service.
 
-        Sharing your preferences makes it easier for ITT providers to connect with your school if you’re interested in hosting placements - or lets them know you’re not able to host placements at the moment.
+        If you need help or have feedback for us, contact [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk).
 
-        You can update your information at any time, and we’ll send reminders to help keep it current.
-
-        If you have any questions or feedback, please contact us at [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk).
-
-        Many thanks,
+        Regards,
 
         Find placement schools team
       EMAIL
@@ -178,17 +174,11 @@ RSpec.describe School::UserMailer, type: :mailer do
       expect(placement_preferences_reminder_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
         Dear #{user.first_name},
 
-        Thank you for signing in to the Department for Education’s new [Find Placement Schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email) service.
+        Thank you for signing in to the Department for Education’s new Find Placement Schools service.
 
-        We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements. Sharing your preferences helps ITT providers connect with your school if you're interested in hosting placements - and lets them know if you're not currently able to.
+        We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements. Please sign in to the service and record this information as soon as you can.
 
-        ## To complete your expression of interest:
-
-        1. Sign in using your DfE Sign-in credentials
-
-        2. Record your preferences for hosting placements
-
-        3. Add any extra details you’d like to share (e.g. phase, subject)
+        This is not a commitment to offer school placements but it helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
 
         You can update your information at any time, and we’ll send reminders to help keep it current.
 
