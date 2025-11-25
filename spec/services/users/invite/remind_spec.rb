@@ -90,5 +90,21 @@ RSpec.describe Users::Invite::Remind do
         end
       end
     end
+
+    context "when there are more than 100 users to remind" do
+      let(:created_at) { 2.week.ago }
+      let!(:users) { create_list(:user, 149, created_at:) }
+      let(:mailer_double) { double }
+
+      before do
+        allow(School::UserMailer).to receive(:user_membership_sign_in_reminder_notification).and_return(mailer_double)
+      end
+
+      it "sends emails to all users in batches" do
+        expect(mailer_double).to receive(:deliver_later).with(wait: 0.minutes).exactly(100).times
+        expect(mailer_double).to receive(:deliver_later).with(wait: 1.minute).exactly(50).times
+        user_invite_remind_service
+      end
+    end
   end
 end
