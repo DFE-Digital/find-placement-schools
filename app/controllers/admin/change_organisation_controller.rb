@@ -1,7 +1,7 @@
 class Admin::ChangeOrganisationController < AdminController
   def provider_organisations
     organisations = ProvidersQuery.call(params: filter_params_hash)
-    pagy, organisations = pagy(organisations.order(:name))
+    pagy, organisations = pagy(organisations)
     render locals: { pagy:, providers: organisations, filter_params: filter_params_hash }
   end
 
