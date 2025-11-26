@@ -48,8 +48,8 @@ class ServiceNavigationComponent < ApplicationComponent
           {
             text: t("components.service_navigation_component.find_placements"),
             href: helpers.organisations_path,
-            active: helpers.current_page?(helpers.organisations_path),
-            current: helpers.current_page?(helpers.organisations_path)
+            active: request.path.match?(/^\/organisation/) && !helpers.current_page?(helpers.organisation_path(current_organisation.id)),
+            current: request.path.match?(/^\/organisation/) && !helpers.current_page?(helpers.organisation_path(current_organisation.id))
           },
           {
             text: t("components.service_navigation_component.users"),
