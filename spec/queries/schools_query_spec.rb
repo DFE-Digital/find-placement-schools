@@ -107,11 +107,22 @@ describe SchoolsQuery do
     end
 
     context "when filtering by phase" do
-      let(:params) { { filters: { phases: [ query_school.phase ] } } }
+      context "when filtering by primary" do
+        let(:params) { { filters: { phases: [ "primary" ] } } }
 
-      it "returns the filtered schools" do
-        expect(query.call).to include(query_school)
-        expect(query.call).not_to include(non_query_school)
+        it "returns the filtered schools" do
+          expect(query.call).to include(query_school)
+          expect(query.call).not_to include(non_query_school)
+        end
+      end
+
+      context "when filtering by secondary" do
+        let(:params) { { filters: { phases: [ "secondary" ] } } }
+
+        it "returns the filtered schools" do
+          expect(query.call).not_to include(query_school)
+          expect(query.call).not_to include(non_query_school)
+        end
       end
 
       context "when filtering by SEND phase" do

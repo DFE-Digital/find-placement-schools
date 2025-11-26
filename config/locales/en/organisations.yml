@@ -6,8 +6,11 @@ en:
       search_location: Search by location
       search_by_name: Search by school name
       search_by_name_prompt: Enter a school name or URN
-      phase: School phase and specialism
-      send: Special educational needs and disabilities (SEND)
+      phase: Placement phase and specialism
+      phases:
+        primary: Primary
+        secondary: Secondary
+        send: Special educational needs and disabilities (SEND)
       itt_status: ITT status
       apply_filters: Apply filters
       schools_to_show: Schools to show
