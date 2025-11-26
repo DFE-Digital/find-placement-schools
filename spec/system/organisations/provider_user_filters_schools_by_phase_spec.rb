@@ -104,7 +104,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
   end
 
   def and_i_see_the_phase_filter
-    expect(page).to have_element(:legend, text: "Placement phase", class: "govuk-fieldset__legend")
+    expect(page).to have_element(:legend, text: "Placement phase or specialism", class: "govuk-fieldset__legend")
     expect(page).to have_unchecked_field("Primary")
     expect(page).to have_unchecked_field("Secondary")
     expect(page).to have_unchecked_field("Special educational needs and disabilities (SEND)")

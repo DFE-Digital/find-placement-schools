@@ -6,7 +6,7 @@ en:
       search_location: Search by location
       search_by_name: Search by school name
       search_by_name_prompt: Enter a school name or URN
-      phase: Placement phase and specialism
+      phase: Placement phase or specialism
       phases:
         primary: Primary
         secondary: Secondary
