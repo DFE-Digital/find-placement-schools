@@ -166,6 +166,8 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
         expect(page).to have_caption("Hogwarts")
         expect(page).to have_h1("Placement information")
 
+        expect(page).to have_paragraph("Placement information is indicative. It does not reflect how many placements a school can offer.")
+
         expect(page).to have_h2("Primary placements")
         expect(page).to have_summary_list_row("Year group", "Reception Year 2")
 
