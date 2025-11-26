@@ -105,6 +105,8 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
     expect(page).to have_title("Organisation details - Hogwarts")
     expect(service_navigation).to have_current_item("Find placements")
 
+    expect(page).to have_link("Back", href: organisations_path)
+
     within("#organisation-details") do
       expect(page).to have_caption("Hogwarts")
       expect(page).to have_h1("Organisation details")
