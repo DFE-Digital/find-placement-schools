@@ -12,4 +12,6 @@ class PlacementPreference < ApplicationRecord
        validate: true
 
   scope :for_academic_year, ->(academic_year) { where(academic_year:) }
+
+  PHASES = %w[primary secondary send].freeze
 end

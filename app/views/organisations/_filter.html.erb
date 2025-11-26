@@ -74,7 +74,7 @@
               <% filter_form.phases.each do |phase| %>
                 <li>
                   <%= govuk_link_to(
-                        (phase == AddHostingInterestWizard::PhaseStep::SEND ? t(".send") : phase),
+                        t(".phases.#{phase}"),
                         filter_form.index_path_without_filter(
                           filter: "phases",
                           value: phase,
@@ -189,11 +189,11 @@
                 <% end %>
               <% end %>
               <%= form.govuk_radio_button :schools_to_show,
-                                          "previously_hosted",
-                                          label: { text: t(".schools_to_show_options.previously_hosted") } %>
-              <%= form.govuk_radio_button :schools_to_show,
                                           "not_open",
                                           label: { text: "Not offering placements" } %>
+              <%= form.govuk_radio_button :schools_to_show,
+                                          "previously_hosted",
+                                          label: { text: t(".schools_to_show_options.previously_hosted") } %>
               <%= form.govuk_radio_button :schools_to_show,
                                           "all",
                                           label: { text: t(".schools_to_show_options.all") } %>
@@ -207,10 +207,9 @@
               small: true,
               multiple: true,
             ) do %>
-              <% School.distinct.pluck(:phase).sort.each do |phase| %>
-                <%= form.govuk_check_box :phases, phase, label: { text: phase } %>
+              <% PlacementPreference::PHASES.sort.each do |phase| %>
+                <%= form.govuk_check_box :phases, phase, label: { text: t(".phases.#{phase}") } %>
               <% end %>
-              <%= form.govuk_check_box :phases, AddHostingInterestWizard::PhaseStep::SEND, label: { text: t(".send") } %>
             <% end %>
           </div>
 

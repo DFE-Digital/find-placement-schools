@@ -18,7 +18,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
 
     when_i_select_primary_from_the_phase_filter
     and_i_click_on_apply_filters
-    then_i_see_all_schools
+    then_i_see_the_primary_school
     and_i_see_that_the_primary_and_secondary_phases_checkbox_are_selected
     and_i_see_the_primary_and_secondary_filter_tags
 
@@ -35,7 +35,8 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
 
     when_i_select_send_from_the_phase_filters
     and_i_click_on_apply_filters
-    then_i_see_the_primary_school
+    then_i_see_the_send_school
+    and_i_do_not_see_the_primary_school
     and_i_do_not_see_the_secondary_school
     and_i_see_that_the_send_phase_checkbox_is_selected
     and_i_see_the_send_filter_tag
@@ -46,19 +47,42 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
   def given_that_schools_exist
     @provider = build(:provider, name: "Ministry of Magic")
 
-    @primary_school = create(:school, :with_placement_preferences, phase: "Primary", name: "Hogwarts")
-    @secondary_school = create(:school, :with_placement_preferences, phase: "Secondary", name: "Beauxbatons")
+    @primary_school = create(:school, phase: "Primary", name: "Hogwarts")
+    @secondary_school = create(:school, phase: "Secondary", name: "Beauxbatons")
+    @send_school = create(:school, name: "Durmstrang")
   end
 
   def and_a_send_placement_preference_exists
-    @send_placement_preference = create(
+    @primary_placement_preference = create(
       :placement_preference,
       appetite: "actively_looking",
       organisation: @primary_school,
       academic_year: AcademicYear.next,
       placement_details: {
         "appetite" => { "appetite" => "actively_looking" },
-        "phase" => { "phases" => %w[primary send] }
+        "phase" => { "phases" => %w[primary] }
+      }
+    )
+
+    @secondary_placement_preference = create(
+      :placement_preference,
+      appetite: "actively_looking",
+      organisation: @secondary_school,
+      academic_year: AcademicYear.next,
+      placement_details: {
+        "appetite" => { "appetite" => "actively_looking" },
+        "phase" => { "phases" => %w[secondary] }
+      }
+    )
+
+    @send_placement_preference = create(
+      :placement_preference,
+      appetite: "actively_looking",
+      organisation: @send_school,
+      academic_year: AcademicYear.next,
+      placement_details: {
+        "appetite" => { "appetite" => "actively_looking" },
+        "phase" => { "phases" => %w[send] }
       }
     )
   end
@@ -80,9 +104,10 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
   end
 
   def and_i_see_the_phase_filter
-    expect(page).to have_element(:legend, text: "School phase", class: "govuk-fieldset__legend")
+    expect(page).to have_element(:legend, text: "Placement phase", class: "govuk-fieldset__legend")
     expect(page).to have_unchecked_field("Primary")
     expect(page).to have_unchecked_field("Secondary")
+    expect(page).to have_unchecked_field("Special educational needs and disabilities (SEND)")
   end
 
   def when_i_select_secondary_from_the_phase_filter
@@ -155,6 +180,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
   def then_i_see_all_schools
     expect(page).to have_h2("Hogwarts")
     expect(page).to have_h2("Beauxbatons")
+    expect(page).to have_h2("Durmstrang")
   end
 
   def and_i_do_not_see_any_selected_phase_checkboxes
@@ -178,5 +204,9 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
 
   def and_i_see_the_send_filter_tag
     expect(page).to have_filter_tag("Special educational needs and disabilities (SEND)")
+  end
+
+  def then_i_see_the_send_school
+    expect(page).to have_h2("Durmstrang")
   end
 end
