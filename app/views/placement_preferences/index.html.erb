@@ -22,7 +22,7 @@
         <% end %>
 
         <% table.with_body do |body| %>
-          <% academic_years.find_each do |academic_year| %>
+          <% academic_years.each do |academic_year| %>
             <% placement_preference = organisation.placement_preference_for(academic_year:) %>
             <% body.with_row do |row| %>
               <% row.with_cell do %>
@@ -36,7 +36,7 @@
               <% end %>
               <% row.with_cell do %>
                 <% if placement_preference.present? %>
-                  <% render InterestTagComponent.new(school: organisation, academic_year: placement_preference.academic_year) %>
+                  <%= render InterestTagComponent.new(school: organisation, academic_year: placement_preference.academic_year) %>
                 <% else %>
                   <span class="govuk-tag govuk-tag--grey"><%= t("placement_preferences.index.no_information_added") %></span>
                 <% end %>
