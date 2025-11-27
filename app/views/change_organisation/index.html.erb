@@ -1,19 +1,19 @@
-<%= content_for :page_title, "Change organisation" %>
+<%= content_for :page_title, t(".title") %>
 <div class="govuk-width-container">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">Change organisation</h1>
+      <h1 class="govuk-heading-l"><%= t(".title") %></h1>
 
 
       <% if schools.exists? %>
-        <h2 class="govuk-heading-m">Schools</h2>
+        <h2 class="govuk-heading-m"><%= t(".schools") %></h2>
 
         <%= govuk_summary_list do |summary_list| %>
           <% schools.each do |school| %>
 
             <% summary_list.with_row do |row| %>
               <% row.with_key(text: school.name) %>
-              <% row.with_action(text: "Change",
+              <% row.with_action(text: t(".continue"),
                                  href: change_organisation_update_organisation_path(school.id),
                                  visually_hidden_text: school.name,
                                  classes: ["govuk-link--no-visited-state"]) %>
@@ -23,14 +23,14 @@
       <% end %>
 
       <% if providers.exists? %>
-        <h2 class="govuk-heading-m">Providers</h2>
+        <h2 class="govuk-heading-m"><%= t(".providers") %></h2>
 
         <%= govuk_summary_list do |summary_list| %>
           <% providers.each do |provider| %>
 
             <% summary_list.with_row do |row| %>
               <% row.with_key(text: provider.name) %>
-              <% row.with_action(text: "Change",
+              <% row.with_action(text: t(".continue"),
                                  href: change_organisation_update_organisation_path(provider.id),
                                  visually_hidden_text: provider.name,
                                  classes: ["govuk-link--no-visited-state"]) %>
