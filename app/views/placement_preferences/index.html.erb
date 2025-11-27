@@ -12,32 +12,39 @@
               new_add_hosting_interest_placement_preferences_path(organisation)) %>
       <% end %>
 
-      <% if placement_preferences.exists? %>
-        <%= govuk_table do |table| %>
-          <% table.with_caption(size: 'm', text: t(".placement_information")) %>
-          <% table.with_head do |header| %>
-            <% header.with_row do |row| %>
-              <% row.with_cell(text: t("placement_preferences.index.academic_year")) %>
-              <% row.with_cell(text: t("placement_preferences.index.status")) %>
-            <% end %>
+      <%= govuk_table do |table| %>
+        <% table.with_caption(size: 'm', text: t(".placement_information")) %>
+        <% table.with_head do |header| %>
+          <% header.with_row do |row| %>
+            <% row.with_cell(text: t("placement_preferences.index.academic_year")) %>
+            <% row.with_cell(text: t("placement_preferences.index.status")) %>
           <% end %>
+        <% end %>
 
-          <% table.with_body do |body| %>
-            <% placement_preferences.each do |placement_preference| %>
-              <% body.with_row do |row| %>
-                <% row.with_cell do %>
+        <% table.with_body do |body| %>
+          <% academic_years.find_each do |academic_year| %>
+            <% placement_preference = organisation.placement_preference_for(academic_year:) %>
+            <% body.with_row do |row| %>
+              <% row.with_cell do %>
+                <% if placement_preference.present? %>
                   <%= govuk_link_to(placement_preference.academic_year.name,
                     placement_preference_path(placement_preference),
-                                    no_visited_state: true) %>
+                    no_visited_state: true) %>
+                <% else %>
+                  <%= academic_year.name %>
                 <% end %>
-                <% row.with_cell do %>
+              <% end %>
+              <% row.with_cell do %>
+                <% if placement_preference.present? %>
                   <% render InterestTagComponent.new(school: organisation, academic_year: placement_preference.academic_year) %>
+                <% else %>
+                  <span class="govuk-tag govuk-tag--grey"><%= t("placement_preferences.index.no_information_added") %></span>
                 <% end %>
               <% end %>
             <% end %>
           <% end %>
         <% end %>
-    <% end %>
+      <% end %>
     </div>
   </div>
 </div>

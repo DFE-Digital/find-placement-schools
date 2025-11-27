@@ -5,6 +5,7 @@ en:
       add_placement_information: Add placement information
       placement_information: Placement information
       academic_year: Academic year
+      no_information_added: No information added
       status: Status
     show:
       what_happens_next: What happens next?
