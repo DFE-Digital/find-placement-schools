@@ -28,14 +28,14 @@ RSpec.describe "Multi provider user changes organisation", type: :system do
     expect(page).to have_title("Change organisation")
     expect(page).to have_h1("Change organisation")
     expect(page).to have_h2("Providers")
-    expect(page).to have_summary_list_row("Order of the Phoenix", expected_action: "Change")
-    expect(page).to have_link("Change", href: "/change_organisation/#{@order_of_the_phoenix.id}/update_organisation")
-    expect(page).to have_summary_list_row("Ministry of Magic", expected_action: "Change")
-    expect(page).to have_link("Change", href: "/change_organisation/#{@ministry_of_magic.id}/update_organisation")
+    expect(page).to have_summary_list_row("Order of the Phoenix", expected_action: "Continue")
+    expect(page).to have_link("Continue", href: "/change_organisation/#{@order_of_the_phoenix.id}/update_organisation")
+    expect(page).to have_summary_list_row("Ministry of Magic", expected_action: "Continue")
+    expect(page).to have_link("Continue", href: "/change_organisation/#{@ministry_of_magic.id}/update_organisation")
   end
 
   def when_i_select_order_of_the_phoenix
-    click_link "Change Order of the Phoenix"
+    click_link "Continue Order of the Phoenix"
   end
 
   def then_i_see_the_find_placements_page_for_order_of_the_phoenix
@@ -51,7 +51,7 @@ RSpec.describe "Multi provider user changes organisation", type: :system do
   end
 
   def when_i_select_ministry_of_magic
-    click_link "Change Ministry of Magic"
+    click_link "Continue Ministry of Magic"
   end
 
   def then_i_see_the_find_placements_page_for_ministry_of_magic
