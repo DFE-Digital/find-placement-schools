@@ -31,7 +31,7 @@ RSpec.describe "School user views placement preferences", type: :system do
     })
     expect(page).to have_table_row({
       "Academic year" => AcademicYear.current.name,
-      "Status" => "No information added",
+      "Status" => "No information added"
     })
   end
 
