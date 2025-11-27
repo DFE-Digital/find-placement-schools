@@ -29,6 +29,10 @@ RSpec.describe "School user views placement preferences", type: :system do
       "Academic year" => AcademicYear.next.name,
       "Status" => "Placements available"
     })
+    expect(page).to have_table_row({
+      "Academic year" => AcademicYear.current.name,
+      "Status" => "No information added",
+    })
   end
 
   def when_i_click_on_click_here
