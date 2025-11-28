@@ -37,3 +37,10 @@
   <%= render "placement_preferences/placement_details/send_placements_list",
              placement_details: placement_details, action_link: nil %>
 <% end %>
+
+<h2 class="govuk-heading-m">
+  <%= t(".additional_information") %>
+</h2>
+
+<%= render "placement_preferences/placement_details/note_to_providers",
+           placement_details: placement_details, action_link: nil %>

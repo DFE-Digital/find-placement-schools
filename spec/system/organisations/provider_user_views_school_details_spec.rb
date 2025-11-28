@@ -185,6 +185,9 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
         expect(page).to have_summary_list_row("First name", "John")
         expect(page).to have_summary_list_row("Last name", "Smith")
         expect(page).to have_summary_list_row("Email address", "john_smith@example.com")
+
+        expect(page).to have_h2("Additional information")
+        expect(page).to have_summary_list_row("Message to providers", "No information added")
       end
     end
   end
