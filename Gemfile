@@ -79,7 +79,7 @@ gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.9"
 
 gem "google-cloud-bigquery", "1.61.1"
 gem "google-apis-bigquery_v2", "0.95.0"
-gem "json", "2.15.1"
+gem "json", "2.16.0"
 gem "net-http", "0.6.0"
 gem "uri", "1.1.1"
 
