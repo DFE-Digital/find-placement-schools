@@ -6,8 +6,8 @@ class Organisations::FilterForm < ApplicationForm
   attribute :search_by_name, default: nil
   attribute :phases, default: []
   attribute :subject_ids, default: []
-  attribute :itt_statuses, default: []
-  attribute :schools_to_show, default: "active"
+  attribute :schools_to_show, default: []
+  attribute :academic_year_id, default: -> { AcademicYear.current.id }
 
   def initialize(params = {})
     params.each_value { |v| v.compact_blank! if v.is_a?(Array) }
@@ -18,7 +18,7 @@ class Organisations::FilterForm < ApplicationForm
 
   def filters_selected?
     attributes
-      .except("schools_to_show")
+      .except("academic_year_id")
       .values
       .compact
       .flatten
@@ -55,8 +55,8 @@ class Organisations::FilterForm < ApplicationForm
       search_by_name:,
       subject_ids:,
       phases:,
-      itt_statuses:,
-      schools_to_show:
+      schools_to_show:,
+      academic_year_id:
     }
   end
 
@@ -80,9 +80,13 @@ class Organisations::FilterForm < ApplicationForm
     PlacementSubject.parent_subjects.secondary
   end
 
+  def academic_years
+    AcademicYear.joins(:placement_preferences).order(:starts_on).distinct
+  end
+
   private
 
-  SINGULAR_ATTRIBUTES = %w[search_location search_by_name schools_to_show].freeze
+  SINGULAR_ATTRIBUTES = %w[search_location search_by_name academic_year].freeze
 
   def compacted_attributes
     @compacted_attributes ||= attributes.compact_blank

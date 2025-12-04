@@ -16,7 +16,7 @@ RSpec.describe InterestTagComponent, type: :component do
     let(:placement_preferences) { [ build(:placement_preference, appetite: "actively_looking") ] }
 
     it "renders the correct text" do
-      expect(page).to have_content "Placements available"
+      expect(page).to have_content "Offering placements"
     end
 
     it "renders the correct tag" do
@@ -28,7 +28,7 @@ RSpec.describe InterestTagComponent, type: :component do
     let(:placement_preferences) { [ build(:placement_preference, appetite: "interested") ] }
 
     it "renders the correct text" do
-      expect(page).to have_content "May offer placements"
+      expect(page).to have_content "Potentially offering placements"
     end
 
     it "renders the correct tag" do
@@ -61,7 +61,7 @@ RSpec.describe InterestTagComponent, type: :component do
   end
 
   context "when the school has previous offered placements" do
-    let(:previous_placements) { [ build(:previous_placement, academic_year:) ] }
+    let(:previous_placements) { [ build(:previous_placement, academic_year: AcademicYear.current) ] }
     let(:school) { create(:school, previous_placements:) }
 
     it "renders the correct text" do
@@ -69,7 +69,7 @@ RSpec.describe InterestTagComponent, type: :component do
     end
 
     it "renders the correct tag" do
-      expect(page).to have_css(".govuk-tag--turquoise")
+      expect(page).to have_css(".govuk-tag--blue")
     end
   end
 end

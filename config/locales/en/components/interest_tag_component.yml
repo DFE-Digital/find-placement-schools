@@ -1,8 +1,8 @@
 en:
   components:
     interest_tag_component:
-      actively_looking: Placements available
+      actively_looking: Offering placements
       not_open: Not offering placements
-      interested: May offer placements
+      interested: Potentially offering placements
       not_participating: Placement availability unknown
       previously_offered: Previously offered placements
