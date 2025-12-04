@@ -93,7 +93,8 @@ class SchoolsQuery < ApplicationQuery
         "organisations.*, CASE
           WHEN placement_preferences.appetite = 'actively_looking' THEN 1
           WHEN placement_preferences.appetite = 'interested' THEN 2
-          WHEN EXISTS (SELECT 1 FROM previous_placements WHERE previous_placements.school_id = organisations.id) THEN 3
+          WHEN EXISTS (SELECT 1 FROM previous_placements WHERE previous_placements.school_id = organisations.id AND
+          previous_placements.academic_year_id = #{ActiveRecord::Base.connection.quote(selected_academic_year&.previous&.id)}) THEN 3
           WHEN placement_preferences.appetite = 'not_open' THEN 5
           ELSE 4
         END AS ordering_index"
@@ -118,6 +119,6 @@ class SchoolsQuery < ApplicationQuery
   end
 
   def selected_academic_year
-    AcademicYear.find_by(id: filter_params[:academic_year_id])
+    AcademicYear.find_by(id: filter_params[:academic_year_id]) || AcademicYear.current
   end
 end
