@@ -23,7 +23,8 @@ describe SchoolsQuery do
             "secondary_subject_selection" => {
               "subject_ids" => [ maths.id, biology.id ]
             }
-          }) ]
+      }) ],
+      organisation_address: build(:organisation_address, postcode: "LS1 2HE")
     )
   end
 
@@ -98,11 +99,31 @@ describe SchoolsQuery do
     end
 
     context "when filtering by name" do
-      let(:params) { { filters: { search_by_name: "London" } } }
+      context "when a name is provided" do
+        let(:params) { { filters: { search_by_name: "London" } } }
 
-      it "returns the filtered schools" do
-        expect(query.call).to include(query_school)
-        expect(query.call).not_to include(non_query_school)
+        it "returns the filtered schools" do
+          expect(query.call).to include(query_school)
+          expect(query.call).not_to include(non_query_school)
+        end
+      end
+
+      context "when a urn is provided" do
+        let(:params) { { filters: { search_by_name: query_school.urn } } }
+
+        it "returns the filtered schools" do
+          expect(query.call).to include(query_school)
+          expect(query.call).not_to include(non_query_school)
+        end
+      end
+
+      context "when a postcode is provided" do
+        let(:params) { { filters: { search_by_name: "LS1 2HE" } } }
+
+        it "returns the filtered schools" do
+          expect(query.call).to include(query_school)
+          expect(query.call).not_to include(non_query_school)
+        end
       end
     end
 
