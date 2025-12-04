@@ -16,8 +16,9 @@ class SchoolsQuery < ApplicationQuery
   def search_by_name_condition(scope)
     return scope if filter_params[:search_by_name].blank?
 
-    scope.where("organisations.name ILIKE ?", "%#{filter_params[:search_by_name]}%")
-         .or(scope.where("urn ILIKE ?", "%#{filter_params[:search_by_name]}%"))
+    term = "%#{filter_params[:search_by_name]}%"
+    scope.left_outer_joins(:organisation_address)
+         .where("organisations.name ILIKE ? OR organisations.urn ILIKE ? OR organisation_addresses.postcode = ?", term, term, filter_params[:search_by_name])
   end
 
   def phase_condition(scope)
