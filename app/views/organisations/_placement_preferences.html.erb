@@ -5,7 +5,7 @@
 </div>
 
 <% if placement_details.present? && placement_preference&.appetite != "not_open" %>
-  <% if placement_details.dig("key_stage_selection", "key_stages").present? || placement_details.dig("year_group_selection", "year_groups").present? ||  placement_details.dig("secondary_subject_selection", "subject_ids").present? %>
+  <% if placement_details.dig("key_stage_selection", "key_stages").present? || placement_details.dig("year_group_selection", "year_groups").present? || placement_details.dig("secondary_subject_selection", "subject_ids").present? %>
     <p class="govuk-body"><%= t(".indicative_information") %></p>
   <% end %>
 

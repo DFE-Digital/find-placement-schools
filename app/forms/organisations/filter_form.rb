@@ -86,7 +86,7 @@ class Organisations::FilterForm < ApplicationForm
 
   private
 
-  SINGULAR_ATTRIBUTES = %w[search_location search_by_name academic_year].freeze
+  SINGULAR_ATTRIBUTES = %w[search_location search_by_name academic_year_id].freeze
 
   def compacted_attributes
     @compacted_attributes ||= attributes.compact_blank

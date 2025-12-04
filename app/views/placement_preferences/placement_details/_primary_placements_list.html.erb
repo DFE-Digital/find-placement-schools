@@ -6,7 +6,7 @@
       <%= govuk_list do %>
         <% placement_details.dig("year_group_selection", "year_groups").each do |year_group| %>
           <% if year_group == AddHostingInterestWizard::UNKNOWN_OPTION %>
-            <li><%= current_organisation.is_a?(Provider) ? t("organisations.placement_preferences.none_selected"): t(".unknown") %></li>
+            <li><%= current_organisation.is_a?(Provider) ? t("organisations.placement_preferences.none_selected") : t(".unknown") %></li>
           <% else %>
             <li><%= year_group.titleize %></li>
           <% end %>
