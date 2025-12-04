@@ -57,7 +57,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
       :placement_preference,
       appetite: "actively_looking",
       organisation: @primary_school,
-      academic_year: AcademicYear.next,
+      academic_year: AcademicYear.current,
       placement_details: {
         "appetite" => { "appetite" => "actively_looking" },
         "phase" => { "phases" => %w[primary] }
@@ -68,7 +68,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
       :placement_preference,
       appetite: "actively_looking",
       organisation: @secondary_school,
-      academic_year: AcademicYear.next,
+      academic_year: AcademicYear.current,
       placement_details: {
         "appetite" => { "appetite" => "actively_looking" },
         "phase" => { "phases" => %w[secondary] }
@@ -79,7 +79,7 @@ RSpec.describe "Provider user filters schools by phase", type: :system do
       :placement_preference,
       appetite: "actively_looking",
       organisation: @send_school,
-      academic_year: AcademicYear.next,
+      academic_year: AcademicYear.current,
       placement_details: {
         "appetite" => { "appetite" => "actively_looking" },
         "phase" => { "phases" => %w[send] }

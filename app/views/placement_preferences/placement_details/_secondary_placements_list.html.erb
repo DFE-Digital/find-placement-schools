@@ -6,9 +6,9 @@
       <%= govuk_list do %>
         <% placement_details.dig("secondary_subject_selection", "subject_ids").each do |subject_id| %>
           <% if subject_id == AddHostingInterestWizard::UNKNOWN_OPTION %>
-            <li><%= t(".unknown") %></li>
+            <li><%= current_organisation.is_a?(Provider) ? t("organisations.placement_preferences.none_selected"): t(".unknown") %></li>
           <% else %>
-            <li><%= @placement_preference.secondary_subject_name(subject_id:) %></li>
+            <li><%= placement_preference.secondary_subject_name(subject_id:) %></li>
           <% end %>
         <% end %>
       <% end %>

@@ -6,7 +6,7 @@
       <%= govuk_list do %>
         <% placement_details.dig("key_stage_selection", "key_stages").each do |key_stage| %>
           <% if key_stage == AddHostingInterestWizard::UNKNOWN_OPTION %>
-            <li><%= t(".unknown") %></li>
+            <li><%= current_organisation.is_a?(Provider) ? t("organisations.placement_preferences.none_selected"): t(".unknown") %></li>
           <% else %>
             <li><%= t("placement_preferences.placement_details.send_placements_list.key_stages.#{key_stage}") %></li>
           <% end %>

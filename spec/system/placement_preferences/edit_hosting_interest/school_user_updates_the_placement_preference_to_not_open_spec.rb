@@ -130,7 +130,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_element(:caption, text: "Placement information")
     expect(page).to have_table_row({
       "Academic year" => @next_academic_year_name,
-      "Status" => "Placements available"
+      "Status" => "Offering placements"
     })
   end
 

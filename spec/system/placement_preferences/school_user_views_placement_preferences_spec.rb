@@ -26,11 +26,11 @@ RSpec.describe "School user views placement preferences", type: :system do
     expect(page).to have_caption("Hogwarts")
     expect(page).to have_h1("Placement information")
     expect(page).to have_table_row({
-      "Academic year" => AcademicYear.next.name,
-      "Status" => "Placements available"
+      "Academic year" => AcademicYear.current.name,
+      "Status" => "Offering placements"
     })
     expect(page).to have_table_row({
-      "Academic year" => AcademicYear.current.name,
+      "Academic year" => AcademicYear.next.name,
       "Status" => "No information added"
     })
   end

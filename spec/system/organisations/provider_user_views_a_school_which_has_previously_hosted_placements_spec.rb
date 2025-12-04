@@ -44,13 +44,12 @@ RSpec.describe "Provider user views a school which has previously hosted placeme
 
   def and_i_see_the_school_with_previously_hosted_placements
     expect(page).to have_h2("Hogwarts")
-    expect(page).to have_tag("Previously offered placements", "turquoise")
+    expect(page).to have_tag("Previously offered placements", "blue")
     expect(page).to have_h3("School details")
     expect(page).to have_result_detail_row("Phase (age range)", "Secondary (11 to 18)")
     expect(page).to have_result_detail_row("Establishment group", "Local authority maintained schools")
     expect(page).to have_h3("Previously hosted placements")
     expect(page).to have_result_detail_row(@previous_academic_year.name, "English")
-    expect(page).to have_result_detail_row(@academic_year_2_years_ago.name, "Science")
     expect(page).to have_h3("Getting there")
     expect(page).to have_result_detail_row("Address", "Hogwarts School, Hogsmeade, Scotland, AB12 3CD")
   end

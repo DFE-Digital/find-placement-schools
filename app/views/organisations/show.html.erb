@@ -1,24 +1,31 @@
-<%= content_for :page_title, t(".title", organisation_name: organisation.name) %>
+<%= content_for :page_title, t(".title", organisation_type: organisation.type, organisation_name: organisation.name) %>
 
 <div class="govuk-width-container">
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <%= content_for(:before_content) do %>
-        <%= govuk_back_link(href: organisations_path) %>
+        <%= govuk_back_link(href: :back) %>
       <% end %>
 
       <div class="govuk-!-margin-top-5">
         <%= govuk_tabs do |tabs| %>
-          <% if placement_details.present? && current_organisation.is_a?(Provider) %>
-            <%= tabs.with_tab(label: t(".placement_preferences")) do %>
+          <% if current_organisation.is_a?(Provider) && organisation.is_a?(School) %>
+            <%= tabs.with_tab(label: t(".placement_preferences", academic_year_name: AcademicYear.current.decorate.shortest_name)) do %>
               <span class="govuk-caption-l"><%= organisation.name %></span>
-              <%= render "/organisations/placement_preferences", placement_details: %>
+              <%= render "/organisations/placement_preferences", organisation: organisation, academic_year: AcademicYear.current, placement_details: current_placement_details, placement_preference: current_placement_preference %>
             <% end %>
           <% end %>
 
-          <% tabs.with_tab(label: t(".organisation_details")) do %>
+          <% if current_organisation.is_a?(Provider) && organisation.is_a?(School) %>
+            <%= tabs.with_tab(label: t(".placement_preferences", academic_year_name: AcademicYear.next.decorate.shortest_name)) do %>
+              <span class="govuk-caption-l"><%= organisation.name %></span>
+              <%= render "/organisations/placement_preferences", organisation: organisation, academic_year: AcademicYear.next, placement_details: next_placement_details, placement_preference: next_placement_preference %>
+            <% end %>
+          <% end %>
+
+          <% tabs.with_tab(label: t(".organisation_details.#{organisation.type.downcase}")) do %>
             <span class="govuk-caption-l"><%= organisation.name %></span>
-            <h1 class="govuk-heading-l"><%= t(".organisation_details") %></h1>
+            <h1 class="govuk-heading-l"><%= t(".organisation_details.#{organisation.type.downcase}") %></h1>
 
             <% if organisation.is_a?(School) %>
               <% if organisation == current_organisation %>
@@ -39,11 +46,6 @@
             <% else %>
               <%= render "/organisations/provider_details", organisation: %>
             <% end %>
-          <% end %>
-
-          <%= tabs.with_tab(label: t(".location") ) do %>
-            <span class="govuk-caption-l"><%= organisation.name %></span>
-            <%= render "/organisations/location", organisation: %>
           <% end %>
         <% end %>
       </div>

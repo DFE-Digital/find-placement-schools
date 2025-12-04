@@ -1,39 +1,87 @@
 <h1 class="govuk-heading-l"><%= t(".title") %></h1>
 
-<p class="govuk-body"><%= t(".indicative_information") %></p>
+<div class="app-result-detail">
+  <%= render InterestTagComponent.new(school: organisation, academic_year: academic_year) %>
+</div>
 
-<% if placement_details.dig("school_contact", "email_address").present? %>
-  <h2 class="govuk-heading-m">
-    <%= t(".placement_contact") %>
-  </h2>
+<% if placement_details.present? && placement_preference&.appetite != "not_open" %>
+  <% if placement_details.dig("key_stage_selection", "key_stages").present? || placement_details.dig("year_group_selection", "year_groups").present? ||  placement_details.dig("secondary_subject_selection", "subject_ids").present? %>
+    <p class="govuk-body"><%= t(".indicative_information") %></p>
+  <% end %>
 
-  <%= render "placement_preferences/placement_details/school_contact_details",
-             placement_details: placement_details, action_link: nil %>
+  <% if placement_details.dig("school_contact", "email_address").present? %>
+    <h2 class="govuk-heading-m">
+      <%= t(".placement_contact") %>
+    </h2>
+
+    <%= render "placement_preferences/placement_details/school_contact_details",
+               placement_details: placement_details, action_link: nil %>
+  <% end %>
+
+  <% if placement_details.dig("key_stage_selection", "key_stages").blank? && placement_details.dig("year_group_selection", "year_groups").blank? && placement_details.dig("secondary_subject_selection", "subject_ids").blank? %>
+    <h2 class="govuk-heading-m">
+      <%= t(".education_phase") %>
+    </h2>
+
+    <%= govuk_summary_list(html_attributes: { id: "phase-or-specialism" }, actions: false) do |summary_list| %>
+      <% summary_list.with_row do |row| %>
+        <% row.with_key(text: t(".phase")) %>
+        <% row.with_value(text: t(".none_selected")) %>
+      <% end %>
+
+      <% summary_list.with_row do |row| %>
+        <% row.with_key(text: t(".specialism")) %>
+        <% row.with_value(text: t(".none_selected")) %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if placement_details.dig("year_group_selection", "year_groups").present? %>
+    <h2 class="govuk-heading-m">
+      <%= t(".primary_placements") %>
+    </h2>
+
+    <%= render "placement_preferences/placement_details/primary_placements_list",
+               placement_details: placement_details, action_link: nil %>
+  <% end %>
+
+  <% if placement_details.dig("secondary_subject_selection", "subject_ids").present? %>
+    <h2 class="govuk-heading-m">
+      <%= t(".secondary_placements") %>
+    </h2>
+
+    <%= render "placement_preferences/placement_details/secondary_placements_list",
+               placement_preference: placement_preference, placement_details: placement_details, action_link: nil %>
+  <% end %>
+
+  <% if placement_details.dig("key_stage_selection", "key_stages").present? %>
+    <h2 class="govuk-heading-m">
+      <%= t(".send_placements") %>
+    </h2>
+
+    <%= render "placement_preferences/placement_details/send_placements_list",
+               placement_details: placement_details, action_link: nil %>
+  <% end %>
+<% elsif placement_preference&.appetite == "not_open" %>
+  <p class="govuk-body"><%= t(".not_offering_placements") %></p>
+<% else %>
+  <p class="govuk-body"><%= t(".no_information") %></p>
 <% end %>
 
-<% if placement_details.dig("year_group_selection", "year_groups").present? %>
+<% if organisation.previously_hosted_placements(academic_year).present? %>
   <h2 class="govuk-heading-m">
-    <%= t(".primary_placements") %>
+    <%= t(".previous_placements") %>
   </h2>
 
-  <%= render "placement_preferences/placement_details/primary_placements_list",
-             placement_details: placement_details, action_link: nil %>
+  <%= render "placement_preferences/placement_details/previous_placements",
+             organisation: organisation, academic_year: academic_year, action_link: nil %>
 <% end %>
 
-<% if placement_details.dig("secondary_subject_selection", "subject_ids").present? %>
+<% if placement_details.present? && placement_preference&.appetite != "not_open" %>
   <h2 class="govuk-heading-m">
-    <%= t(".secondary_placements") %>
+    <%= t(".additional_information") %>
   </h2>
 
-  <%= render "placement_preferences/placement_details/secondary_placements_list",
-             placement_details: placement_details, action_link: nil %>
-<% end %>
-
-<% if placement_details.dig("key_stage_selection", "key_stages").present? %>
-  <h2 class="govuk-heading-m">
-    <%= t(".send_placements") %>
-  </h2>
-
-  <%= render "placement_preferences/placement_details/send_placements_list",
+  <%= render "placement_preferences/placement_details/note_to_providers",
              placement_details: placement_details, action_link: nil %>
 <% end %>

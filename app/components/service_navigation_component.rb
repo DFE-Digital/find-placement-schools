@@ -37,7 +37,7 @@ class ServiceNavigationComponent < ApplicationComponent
             current: matches_users_path?
           },
           {
-            text: t("components.service_navigation_component.organisation_details"),
+            text: t("components.service_navigation_component.school_details"),
             href: helpers.organisation_path(current_organisation.id),
             active: matches_organisation_details_path?,
             current: matches_organisation_details_path?
@@ -58,7 +58,7 @@ class ServiceNavigationComponent < ApplicationComponent
             current: matches_users_path?
           },
           {
-            text: t("components.service_navigation_component.organisation_details"),
+            text: t("components.service_navigation_component.provider_details"),
             href: helpers.organisation_path(current_organisation.id),
             active: matches_organisation_details_path?,
             current: matches_organisation_details_path?

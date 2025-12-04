@@ -1,20 +1,22 @@
 require "rails_helper"
 
-RSpec.describe "Provider user filters schools by ITT status", type: :system do
+RSpec.describe "Provider views school details", type: :system do
   scenario do
-    given_that_a_school_exist
+    given_that_a_school_exists
     and_i_am_signed_in
     then_i_see_the_find_placements_page
 
     when_i_click_on_hogwarts
+    then_i_see_the_placement_preference_details_for_hogwarts
+
+    when_i_click_on_school_details
     then_i_see_the_organisation_details_for_hogwarts
-    and_i_see_the_location_details_for_hogwarts
-    and_i_see_the_placement_preference_details_for_hogwarts
   end
 
   private
 
-  def given_that_a_school_exist
+  def given_that_a_school_exists
+    @academic_year = AcademicYear.current.decorate
     @english = create(:placement_subject, name: "English")
     @mathematics = create(:placement_subject, name: "Mathematics")
     @science = create(:placement_subject, name: "Science")
@@ -62,7 +64,7 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
     @placement_preference = create(
       :placement_preference,
       organisation: @school,
-      academic_year: AcademicYear.next,
+      academic_year: @academic_year,
       placement_details: {
         "phase" => {
           "phases" => %w[primary secondary send]
@@ -102,14 +104,14 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
   end
 
   def then_i_see_the_organisation_details_for_hogwarts
-    expect(page).to have_title("Organisation details - Hogwarts")
+    expect(page).to have_title("School details - Hogwarts")
     expect(service_navigation).to have_current_item("Find placements")
 
-    expect(page).to have_link("Back", href: organisations_path)
+    expect(page).to have_link("Back")
 
-    within("#organisation-details") do
+    within "#school-details" do
       expect(page).to have_caption("Hogwarts")
-      expect(page).to have_h1("Organisation details")
+      expect(page).to have_h1("School details")
 
       expect(page).not_to have_inset_text(
         "These details will be displayed to teacher training providers." \
@@ -152,40 +154,36 @@ RSpec.describe "Provider user filters schools by ITT status", type: :system do
       expect(page).to have_h2("Ofsted")
       expect(page).to have_summary_list_row("Rating", "Unknown")
       expect(page).to have_summary_list_row("Last inspection date", "Unknown")
+
+      expect(page).to have_h2("Location")
+      expect(page).to have_summary_list_row("Address", "Hogwarts, Hogsmeade, Scotland, AB12 3CD")
     end
+  end
 
-    def and_i_see_the_location_details_for_hogwarts
-      within("#location") do
-        expect(page).to have_caption("Hogwarts")
-        expect(page).to have_h1("Location")
-        page.find("#map-component")
-        expect(page).to have_summary_list_row(
-          "Address", "Hogwarts School, Hogsmeade, Scotland, AB12 3CD",
-        )
-      end
+  def then_i_see_the_placement_preference_details_for_hogwarts
+    within "#academic-year-#{@academic_year.shortest_name_anchor}" do
+      expect(page).to have_caption("Hogwarts")
+      expect(page).to have_h1("Placement information")
+
+      expect(page).to have_paragraph("Placement information is indicative. It does not reflect how many placements a school can offer.")
+
+      expect(page).to have_h2("Primary placements")
+      expect(page).to have_summary_list_row("Year group", "Reception Year 2")
+
+      expect(page).to have_h2("Secondary placements")
+      expect(page).to have_summary_list_row("Subject", "English Mathematics Science")
+
+      expect(page).to have_h2("SEND placements")
+      expect(page).to have_summary_list_row("Key stage", "Key Stage 2 Key Stage 5")
+
+      expect(page).to have_h2("Placement contact")
+      expect(page).to have_summary_list_row("First name", "John")
+      expect(page).to have_summary_list_row("Last name", "Smith")
+      expect(page).to have_summary_list_row("Email address", "john_smith@example.com")
     end
+  end
 
-    def and_i_see_the_placement_preference_details_for_hogwarts
-      within("#placement-information") do
-        expect(page).to have_caption("Hogwarts")
-        expect(page).to have_h1("Placement information")
-
-        expect(page).to have_paragraph("Placement information is indicative. It does not reflect how many placements a school can offer.")
-
-        expect(page).to have_h2("Primary placements")
-        expect(page).to have_summary_list_row("Year group", "Reception Year 2")
-
-        expect(page).to have_h2("Secondary placements")
-        expect(page).to have_summary_list_row("Subject", "English Mathematics Science")
-
-        expect(page).to have_h2("SEND placements")
-        expect(page).to have_summary_list_row("Key stage", "Key Stage 2 Key Stage 5")
-
-        expect(page).to have_h2("Placement contact")
-        expect(page).to have_summary_list_row("First name", "John")
-        expect(page).to have_summary_list_row("Last name", "Smith")
-        expect(page).to have_summary_list_row("Email address", "john_smith@example.com")
-      end
-    end
+  def when_i_click_on_school_details
+    click_on "School details"
   end
 end
