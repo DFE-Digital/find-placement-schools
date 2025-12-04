@@ -68,6 +68,22 @@
             </ul>
           <% end %>
 
+          <% if filter_form.schools_to_show.present? %>
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".schools_to_show") %></h3>
+            <ul class="app-filter-tags">
+              <% filter_form.schools_to_show.each do |option| %>
+                <li>
+                  <%= govuk_link_to(
+                        t(".schools_to_show_options.#{option}"),
+                        filter_form.index_path_without_filter(filter: "schools_to_show", value: option),
+                        class: "app-filter__tag",
+                        no_visited_state: true,
+                        ) %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+
           <% if filter_form.phases.present? %>
             <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".phase") %></h3>
             <ul class="app-filter-tags">
@@ -98,25 +114,6 @@
                         class: "app-filter__tag",
                         no_visited_state: true,
                       ) %>
-                </li>
-              <% end %>
-            </ul>
-          <% end %>
-
-          <% if filter_form.itt_statuses.present? %>
-            <h3 class="govuk-heading-s govuk-!-margin-bottom-0"><%= t(".schools_to_show") %></h3>
-            <ul class="app-filter-tags">
-              <% filter_form.itt_statuses.each do |status| %>
-                <li>
-                  <%= govuk_link_to(
-                        t("components.interest_tag_component.#{status}"),
-                        filter_form.index_path_without_filter(
-                          filter: "itt_statuses",
-                          value: status,
-                          ),
-                        class: "app-filter__tag",
-                        no_visited_state: true,
-                        ) %>
                 </li>
               <% end %>
             </ul>
@@ -165,38 +162,40 @@
 
           <div class="app-filter__option">
             <%= form.govuk_radio_buttons_fieldset(
+              :academic_year_id,
+              legend: {
+                text: t(".academic_year"),
+                size: "s",
+              },
+              small: true,
+            ) do %>
+              <% filter_form.academic_years.each do |academic_year| %>
+                <%= form.govuk_radio_button :academic_year_id,
+                  academic_year.id,
+                  label: { text: academic_year.name } %>
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="app-filter__option">
+            <%= form.govuk_check_boxes_fieldset(
               :schools_to_show,
               legend: {
                 text: t(".schools_to_show"),
                 size: "s",
               },
               small: true,
+              multiple: true,
               ) do %>
-              <%= form.govuk_radio_button :schools_to_show,
-                                          "active",
-                                          label: { text: t(".schools_to_show_options.active") } do %>
-
-                <%= form.govuk_check_boxes_fieldset(
-                  :itt_statuses,
-                  legend: { text: t(".itt_status"), size: "s", hidden: true },
-                  small: true,
-                  multiple: true,
-                  ) do %>
-                  <% PlacementPreference.appetites.values.each do |appetite|%>
-                    <% next if appetite == "not_open" %>
-                    <%= form.govuk_check_box :itt_statuses, appetite, label: { text: t("components.interest_tag_component.#{appetite}") } %>
-                  <% end %>
-                <% end %>
-              <% end %>
-              <%= form.govuk_radio_button :schools_to_show,
-                                          "not_open",
-                                          label: { text: "Not offering placements" } %>
-              <%= form.govuk_radio_button :schools_to_show,
+              <%= form.govuk_check_box :schools_to_show,
+                                          "actively_looking",
+                                          label: { text: t(".schools_to_show_options.actively_looking") } %>
+              <%= form.govuk_check_box :schools_to_show,
+                                          "interested",
+                                          label: { text: t(".schools_to_show_options.interested") } %>
+              <%= form.govuk_check_box :schools_to_show,
                                           "previously_hosted",
                                           label: { text: t(".schools_to_show_options.previously_hosted") } %>
-              <%= form.govuk_radio_button :schools_to_show,
-                                          "all",
-                                          label: { text: t(".schools_to_show_options.all") } %>
             <% end %>
           </div>
 

@@ -25,6 +25,22 @@ class School < Organisation
     )
   }
 
+  scope :actively_hosting_for, ->(academic_year) {
+    where(id:
+      PlacementPreference.where(academic_year:)
+         .where(appetite: "actively_looking")
+         .select(:organisation_id),
+    )
+  }
+
+  scope :interested_in_hosting_for, ->(academic_year) {
+    where(id:
+      PlacementPreference.where(academic_year:)
+         .where(appetite: "interested")
+         .select(:organisation_id),
+    )
+  }
+
   def self.users_without_preference_for(academic_year)
     User.joins(:user_memberships)
         .where(user_memberships: { organisation_id: without_preference_for(academic_year).select(:id) })

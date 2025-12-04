@@ -4,5 +4,6 @@ en:
       placement_information: Placement information
       users: Users
       dashboard: Dashboard
-      organisation_details: Organisation details
+      school_details: School details
+      provider_details: Provider details
       find_placements: Find placements

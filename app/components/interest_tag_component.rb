@@ -4,7 +4,7 @@ class InterestTagComponent < ApplicationComponent
     "interested" => "yellow",
     "not_open" => "red",
     "not_participating" => "grey",
-    "previously_offered" => "turquoise"
+    "previously_offered" => "blue"
   }.freeze
 
   INTEREST_TEXT = {
@@ -67,7 +67,7 @@ class InterestTagComponent < ApplicationComponent
   end
 
   def previously_offered_placements?
-    school.previous_placements.exists?
+    school.previous_placements.where(academic_year: academic_year.previous).exists?
   end
 
   def placement_preference

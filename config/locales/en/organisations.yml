@@ -6,6 +6,7 @@ en:
       search_location: Search by location
       search_by_name: Search by school name
       search_by_name_prompt: Enter a school name or URN
+      academic_year: Academic year
       phase: Placement phase or specialism
       phases:
         primary: Primary
@@ -15,15 +16,18 @@ en:
       apply_filters: Apply filters
       schools_to_show: Schools to show
       schools_to_show_options:
-        active: Can offer placements
+        actively_looking: Offering placements
+        interested: Potentially offering placements
         previously_hosted: Previously hosted placements
         all: All schools
       powered_by_google: Powered by Google
     show:
-      title: Organisation details - %{organisation_name}
-      organisation_details: Organisation details
+      title: "%{organisation_type} details - %{organisation_name}"
+      organisation_details:
+        provider: Provider details
+        school: School details
       location: Location
-      placement_preferences: Placement information
+      placement_preferences: Academic year %{academic_year_name}
       gias: Get Information about Schools (GIAS)
       these_details_will_be_displayed:
         These details will be displayed to teacher training providers.
@@ -65,6 +69,8 @@ en:
       special_classes: Special classes
       send_provision: SEND provision
       ofsted: Ofsted
+      location: Location
+      address: Address
       rating: Rating
       last_inspection_date: Last inspection date
     location_details:
@@ -74,7 +80,15 @@ en:
       primary_placements: Primary placements
       secondary_placements: Secondary placements
       send_placements: SEND placements
+      additional_information: Additional information
+      previous_placements: Previous placements
       placement_contact: Placement contact
+      none_selected: None selected
+      phase: Phase
+      specialism: Specialism
+      education_phase: Placement phase or specialism
+      no_information: This school has not recorded placement information for this academic year.
+      not_offering_placements: This school is not offering placements for this academic year.
       indicative_information: Placement information is indicative. It does not reflect how many placements a school can offer.
     index:
       title: Find placements

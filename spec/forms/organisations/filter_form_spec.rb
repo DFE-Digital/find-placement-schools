@@ -3,6 +3,8 @@ require "rails_helper"
 describe Organisations::FilterForm, type: :model do
   include Rails.application.routes.url_helpers
 
+  let(:academic_year_id) { AcademicYear.current.id }
+
   describe "#filters_selected?" do
     subject(:filters_selected) { described_class.new(params).filters_selected? }
 
@@ -68,14 +70,6 @@ describe Organisations::FilterForm, type: :model do
       end
     end
 
-    context "when given itt statuses params" do
-      let(:params) { { itt_statuses: %w[open not_open] } }
-
-      it "returns true" do
-        expect(filters_selected).to be(true)
-      end
-    end
-
     context "when given no params" do
       let(:params) { {} }
 
@@ -107,7 +101,7 @@ describe Organisations::FilterForm, type: :model do
             filter: "search_location",
             value: "London",
           ),
-        ).to eq(organisations_path(filters: { schools_to_show: "active" }))
+        ).to eq(organisations_path(filters: { academic_year_id: }))
       end
     end
 
@@ -122,7 +116,7 @@ describe Organisations::FilterForm, type: :model do
             filter: "search_by_name",
             value: "Hogwarts",
           ),
-        ).to eq(organisations_path(filters: { schools_to_show: "active" }))
+        ).to eq(organisations_path(filters: { academic_year_id: }))
       end
     end
 
@@ -137,22 +131,13 @@ describe Organisations::FilterForm, type: :model do
             filter: "phases",
             value: "primary",
           ),
-        ).to eq(organisations_path(filters: { phases: [ "secondary" ], schools_to_show: "active"  }))
+        ).to eq(organisations_path(filters: { phases: [ "secondary" ], academic_year_id: }))
       end
     end
 
     context "when removing itt statuses params" do
       let(:params) do
         { itt_statuses: %w[open not_open] }
-      end
-
-      it "returns the find index page path without the given itt statuses param" do
-        expect(
-          filter_form.index_path_without_filter(
-            filter: "itt_statuses",
-            value: "open",
-          ),
-        ).to eq(organisations_path(filters: { itt_statuses: [ "not_open" ], schools_to_show: "active" }))
       end
     end
   end
@@ -164,9 +149,9 @@ describe Organisations::FilterForm, type: :model do
           search_location: nil,
           search_by_name: nil,
           search_distance: nil,
-          schools_to_show: "active",
+          academic_year_id:,
+          schools_to_show: [],
           subject_ids: [],
-          itt_statuses: [],
           phases: []
         },
       )

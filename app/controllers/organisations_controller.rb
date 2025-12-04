@@ -1,7 +1,7 @@
 class OrganisationsController < ApplicationController
   before_action :store_filter_params, only: %i[index]
 
-  helper_method :location_coordinates
+  helper_method :location_coordinates, :academic_year
 
   def show
     @organisation = Organisation.find(params[:id])
@@ -9,15 +9,20 @@ class OrganisationsController < ApplicationController
 
     if @organisation.is_a?(School)
       @organisation = @organisation.decorate
-      @placement_preference = @organisation
+      @current_placement_preference = @organisation
+        .placement_preference_for(academic_year: AcademicYear.current)&.decorate
+      @next_placement_preference = @organisation
         .placement_preference_for(academic_year: AcademicYear.next)&.decorate
-      @placement_details = @placement_preference.placement_details if @placement_preference.present?
+      @current_placement_details = @current_placement_preference.placement_details if @current_placement_preference.present?
+      @next_placement_details = @next_placement_preference.placement_details if @next_placement_preference.present?
     end
 
     render locals: {
       organisation: @organisation,
-      placement_preference: @placement_preference,
-      placement_details: @placement_details
+      current_placement_preference: @current_placement_preference,
+      current_placement_details: @current_placement_details,
+      next_placement_preference: @next_placement_preference,
+      next_placement_details: @next_placement_details
     }
   end
 
@@ -40,6 +45,10 @@ class OrganisationsController < ApplicationController
     @search_location ||= params[:search_location] || params.dig(:filters, :search_location)
   end
 
+  def academic_year
+    @academic_year ||= AcademicYear.find_by(id: filter_params[:academic_year_id])&.decorate || AcademicYear.current&.decorate
+  end
+
   def location_coordinates
     return if search_location.blank?
 
@@ -51,8 +60,8 @@ class OrganisationsController < ApplicationController
       :search_location,
       :search_distance,
       :search_by_name,
-      :schools_to_show,
-      itt_statuses: [],
+      :academic_year_id,
+      schools_to_show: [],
       phases: [],
       subject_ids: [],
       )

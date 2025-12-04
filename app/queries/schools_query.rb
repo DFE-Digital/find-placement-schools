@@ -3,11 +3,11 @@ class SchoolsQuery < ApplicationQuery
 
   def call
     scope = School.left_outer_joins(:placement_preferences)
+    scope = academic_year_condition(scope)
     scope = schools_to_show_condition(scope)
     scope = search_by_name_condition(scope)
     scope = phase_condition(scope)
     scope = subject_condition(scope)
-    scope = itt_statuses_condition(scope)
     order_condition(scope)
   end
 
@@ -50,21 +50,31 @@ class SchoolsQuery < ApplicationQuery
   end
 
   def schools_to_show_condition(scope)
-    if filter_params[:schools_to_show] == "active"
-      scope.open_to_hosting_for(AcademicYear.next)
-    elsif filter_params[:schools_to_show] == "previously_hosted"
-      scope.where.associated(:previous_placements)
-    elsif filter_params[:schools_to_show] == "not_open"
-      scope.where(placement_preferences: { appetite: "not_open" })
-    else
-      scope
+    return scope if filter_params[:schools_to_show].blank?
+
+    ids = []
+
+    if filter_params[:schools_to_show].include?("previously_hosted")
+      ids += School.joins(:previous_placements)
+                   .where(previous_placements: { academic_year: selected_academic_year.previous })
+                   .pluck(:id)
     end
+
+    appetite_values = filter_params[:schools_to_show] - [ "previously_hosted" ]
+    if appetite_values.any?
+      ids += School.left_outer_joins(:placement_preferences)
+                   .where(placement_preferences: { academic_year_id: selected_academic_year, appetite: appetite_values })
+                   .pluck(:id)
+    end
+
+    ids.uniq!
+    return scope if ids.empty?
+
+    scope.where(id: ids)
   end
 
-  def itt_statuses_condition(scope)
-    return scope if filter_params[:itt_statuses].blank? || filter_params[:schools_to_show] != "active"
-
-    scope.where(placement_preferences: { appetite: filter_params[:itt_statuses] })
+  def academic_year_condition(scope)
+    scope.where("placement_preferences.academic_year_id = :year OR placement_preferences.id IS NULL", year: filter_params[:academic_year_id])
   end
 
   def order_condition(scope)
@@ -79,7 +89,17 @@ class SchoolsQuery < ApplicationQuery
            .distinct
            .order(Arel.sql("ordering_index"))
     else
-      scope.distinct.order(:name)
+      scope.select(
+        "organisations.*, CASE
+          WHEN placement_preferences.appetite = 'actively_looking' THEN 1
+          WHEN placement_preferences.appetite = 'interested' THEN 2
+          WHEN EXISTS (SELECT 1 FROM previous_placements WHERE previous_placements.school_id = organisations.id) THEN 3
+          WHEN placement_preferences.appetite = 'not_open' THEN 5
+          ELSE 4
+        END AS ordering_index"
+      )
+       .distinct
+       .order(Arel.sql("ordering_index"), :name)
     end
   end
 
@@ -95,5 +115,9 @@ class SchoolsQuery < ApplicationQuery
 
   def send_value
     AddHostingInterestWizard::PhaseStep::SEND
+  end
+
+  def selected_academic_year
+    AcademicYear.find_by(id: filter_params[:academic_year_id])
   end
 end
