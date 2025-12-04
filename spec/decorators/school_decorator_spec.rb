@@ -76,7 +76,7 @@ RSpec.describe SchoolDecorator do
 
   describe "#previously_hosted_placements" do
     subject(:previously_hosted_placements) do
-      school.decorate.previously_hosted_placements
+      school.decorate.previously_hosted_placements(AcademicYear.current)
     end
 
     let(:school) { create(:school) }
@@ -136,28 +136,13 @@ RSpec.describe SchoolDecorator do
 
       it "returns a hash of academic years and their previous placement subjects" do
         expect(previously_hosted_placements).to eq({
-          last_academic_year.name => "English and Science",
-          academic_year_2_years_ago.name => "Mathematics",
-          academic_year_3_years_ago.name => "English"
+          last_academic_year.name => "English and Science"
         })
       end
 
-      context "when there is a previous placement older than 3 years ago" do
-        before do
-          create(
-            :previous_placement,
-            placement_subject: english,
-            academic_year: AcademicYear.for_date(Time.now - 4.years),
-            school:,
-          )
-        end
-        it "returns a hash only containing previous placements for the last 3 years" do
-          expect(previously_hosted_placements).to eq({
-            last_academic_year.name => "English and Science",
-            academic_year_2_years_ago.name => "Mathematics",
-            academic_year_3_years_ago.name => "English"
-          })
-        end
+      it "does not return placements for other academic years" do
+        expect(previously_hosted_placements).not_to include(academic_year_2_years_ago.name)
+        expect(previously_hosted_placements).not_to include(academic_year_3_years_ago.name)
       end
     end
   end

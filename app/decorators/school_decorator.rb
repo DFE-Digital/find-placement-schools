@@ -40,23 +40,18 @@ class SchoolDecorator < ApplicationDecorator
     duration.gsub(/\bmins\b/, "minutes")
   end
 
-  def previously_hosted_placements
+  def previously_hosted_placements(academic_year)
+    previous_academic_year = academic_year.previous
+
     @previously_hosted_placements ||= begin
       previous_hosted_placements ||= {}
-      academic_years = AcademicYear
-         .where("starts_on < ?", Date.current)
-         .order("starts_on DESC")
-         .limit(3)
-      return unless previous_placements.where(academic_year: academic_years).exists?
+      return unless previous_placements.where(academic_year: previous_academic_year).exists?
 
-      academic_years.map do |academic_year|
-        subject_names = PlacementSubject.where(
-          id: previous_placements.where(academic_year: academic_year).select(:placement_subject_id)
-        ).order(:name).pluck(:name)
-        next if subject_names.blank?
+      subject_names = PlacementSubject.where(
+        id: previous_placements.where(academic_year: previous_academic_year).select(:placement_subject_id)
+      ).order(:name).pluck(:name)
 
-        previous_hosted_placements[academic_year.name] = subject_names.to_sentence
-      end
+      previous_hosted_placements[previous_academic_year.name] = subject_names.to_sentence
 
       previous_hosted_placements
     end

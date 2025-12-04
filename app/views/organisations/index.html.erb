@@ -44,11 +44,11 @@
           <% schools.each do |school| %>
             <li class="app-search-results__item">
               <h2 class="govuk-heading-m">
-                <%= govuk_link_to("#{school.name}, #{school.town}", organisation_path(school), no_visited_state: true) %>
+                <%= govuk_link_to("#{school.name}, #{school.town}", organisation_path(school, anchor: "academic-year-#{academic_year.shortest_name_anchor}"), no_visited_state: true) %>
               </h2>
 
               <div class="app-result-detail">
-                <%= render InterestTagComponent.new(school:) %>
+                <%= render InterestTagComponent.new(school:, academic_year:) %>
               </div>
 
               <dl class="app-result-detail">
@@ -80,10 +80,10 @@
                   </div>
                 </div>
 
-                <% if school.previously_hosted_placements.present? %>
+                <% if school.previously_hosted_placements(academic_year).present? %>
                   <div class="govuk-!-margin-top-2">
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Previously hosted placements</h3>
-                    <% school.previously_hosted_placements.each do |academic_year_name, previous_placement| %>
+                    <% school.previously_hosted_placements(academic_year).each do |academic_year_name, previous_placement| %>
                       <div class="app-result-detail__row">
                         <dt class="app-result-detail__key">
                           <%= academic_year_name %>
