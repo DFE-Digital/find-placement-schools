@@ -5,7 +5,7 @@ describe ProvidersQuery do
 
   let(:params) { {} }
 
-  let(:query_provider) { create(:provider, name: "Ministry of Magic") }
+  let(:query_provider) { create(:provider, name: "Ministry of Magic", ukprn: "12345678") }
   let(:non_query_provider) { create(:provider, name: "Order of the Phoenix") }
 
   before do
@@ -20,11 +20,35 @@ describe ProvidersQuery do
     end
 
     context "when filtering by name" do
-      let(:params) { { filters: { search_by_name: "Ministry" } } }
+      context "when a name is provided" do
+        let(:params) { { filters: { search_by_name: "Ministry" } } }
 
-      it "returns the filtered providers" do
-        expect(query.call).to include(query_provider)
-        expect(query.call).not_to include(non_query_provider)
+        it "returns the filtered providers" do
+          expect(query.call).to include(query_provider)
+          expect(query.call).not_to include(non_query_provider)
+        end
+      end
+
+      context "when a ukprn is provided" do
+        let(:params) { { filters: { search_by_name: query_provider.ukprn } } }
+
+        it "returns the filtered providers" do
+          expect(query.call).to include(query_provider)
+          expect(query.call).not_to include(non_query_provider)
+        end
+      end
+
+      context "when a postcode is provided" do
+        let(:params) { { filters: { search_by_name: "AB1 2CD" } } }
+
+        before do
+          create(:organisation_address, organisation: query_provider, postcode: "AB1 2CD")
+        end
+
+        it "returns the filtered providers" do
+          expect(query.call).to include(query_provider)
+          expect(query.call).not_to include(non_query_provider)
+        end
       end
     end
   end
