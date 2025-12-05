@@ -20,9 +20,7 @@
     <% row.with_key(text: t(".website")) %>
     <% if organisation.website.present? %>
       <% row.with_value do %>
-        <%= govuk_link_to(organisation.website,
-                          organisation.website,
-                          new_tab: true) %>
+        <%= organisation.website_link %>
       <% end %>
     <% else %>
       <% row.with_value(text: t(".unknown"), classes: "govuk-hint") %>

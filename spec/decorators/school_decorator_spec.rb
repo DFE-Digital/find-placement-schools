@@ -161,4 +161,45 @@ RSpec.describe SchoolDecorator do
       end
     end
   end
+
+  describe "#website_link" do
+    let(:school) { build(:school, website:) }
+    let(:html) { Nokogiri::HTML.fragment(school.decorate.website_link) }
+    let(:link) { html.at_css("a") }
+
+    before { school }
+
+    context "when website does not start with http/https" do
+      let(:website) { "www.hogwarts.ac.uk" }
+
+      it "returns a link" do
+        expect(link['href']).to eq("https://www.hogwarts.ac.uk")
+        expect(link.text).to eq("https://www.hogwarts.ac.uk (opens in new tab)")
+        expect(link['target']).to eq("_blank")
+        expect(link['rel'].to_s.split.sort).to eq(%w[noopener noreferrer].sort)
+      end
+    end
+
+    context "when website does not start with http/https" do
+      let(:website) { "http://www.hogwarts.ac.uk" }
+
+      it "returns a link" do
+        expect(link['href']).to eq("http://www.hogwarts.ac.uk")
+        expect(link.text).to eq("http://www.hogwarts.ac.uk (opens in new tab)")
+        expect(link['target']).to eq("_blank")
+        expect(link['rel'].to_s.split.sort).to eq(%w[noopener noreferrer].sort)
+      end
+    end
+
+    context "when website starts with https" do
+      let(:website) { "https://www.hogwarts.ac.uk" }
+
+      it "returns a link" do
+        expect(link['href']).to eq("https://www.hogwarts.ac.uk")
+        expect(link.text).to eq("https://www.hogwarts.ac.uk (opens in new tab)")
+        expect(link['target']).to eq("_blank")
+        expect(link['rel'].to_s.split.sort).to eq(%w[noopener noreferrer].sort)
+      end
+    end
+  end
 end
