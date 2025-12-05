@@ -15,9 +15,17 @@ RSpec.describe Provider::UserMailer, type: :mailer do
 
         You have been invited to join the Find placement schools service for #{organisation.name}.
 
-        Use this service to find placement schools for your trainee teachers.
+        Use this service to find placement schools for your trainee teachers. You can find information about:
 
-        This service is being trialled by the Department for Education with schools and teacher training providers in England.
+        - schools' ability to host placements for trainee teachers in academic years 2025/26 and 2026/27
+
+        - previous school engagement in initial teacher training
+
+        Please note that:
+
+        - you cannot contact schools via this service
+
+        - information about schools' ability to host placements is indicative and does not reflect the number of placements a school can offer.
 
         [Sign in to Find placement schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email)
 
