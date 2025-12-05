@@ -28,7 +28,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
         it "does not send an email to the school user" do
           expect { user_placement_preference_remind_service }.not_to enqueue_mail(
             School::UserMailer,
-            :placement_preferences_reminder_notification,
+            :user_feedback_request_notification,
           )
         end
       end
@@ -43,7 +43,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
         it "does not send an email to the school user" do
           expect { user_placement_preference_remind_service }.not_to enqueue_mail(
             School::UserMailer,
-            :placement_preferences_reminder_notification,
+            :user_feedback_request_notification,
           )
         end
       end
@@ -54,7 +54,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
         it "does not send an email to the school user" do
           expect { user_placement_preference_remind_service }.to enqueue_mail(
             School::UserMailer,
-            :placement_preferences_reminder_notification,
+            :user_feedback_request_notification,
           )
         end
       end
@@ -66,7 +66,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
           it "does not send an email to the user" do
             expect { user_placement_preference_remind_service }.not_to enqueue_mail(
               School::UserMailer,
-              :placement_preferences_reminder_notification,
+              :user_feedback_request_notification,
             )
           end
         end
@@ -77,7 +77,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
           it "sends an email to the user" do
             expect { user_placement_preference_remind_service }.to enqueue_mail(
               School::UserMailer,
-              :placement_preferences_reminder_notification,
+              :user_feedback_request_notification,
             )
           end
         end
@@ -89,7 +89,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
             it "does not send an email to the user" do
               expect { user_placement_preference_remind_service }.not_to enqueue_mail(
                 School::UserMailer,
-                :placement_preferences_reminder_notification,
+                :user_feedback_request_notification,
               )
             end
           end
@@ -100,7 +100,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
             it "sends an email to the user" do
               expect { user_placement_preference_remind_service }.to enqueue_mail(
                 School::UserMailer,
-                :placement_preferences_reminder_notification,
+                :user_feedback_request_notification,
               )
             end
           end
@@ -111,7 +111,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
             it "does not send an email to the user" do
               expect { user_placement_preference_remind_service }.not_to enqueue_mail(
                 School::UserMailer,
-                :placement_preferences_reminder_notification,
+                :user_feedback_request_notification,
               )
             end
           end
@@ -131,7 +131,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
       let(:mailer_double) { double }
 
       before do
-        allow(School::UserMailer).to receive(:placement_preferences_reminder_notification).and_return(mailer_double)
+        allow(School::UserMailer).to receive(:user_feedback_request_notification).and_return(mailer_double)
       end
 
       it "sends emails to all users in batches" do

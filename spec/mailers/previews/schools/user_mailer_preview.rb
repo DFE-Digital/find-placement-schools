@@ -3,12 +3,12 @@ class Schools::UserMailerPreview < ActionMailer::Preview
     School::UserMailer.user_membership_sign_in_reminder_notification(user)
   end
 
-  def placement_preferences_reminder_notification
-    School::UserMailer.placement_preferences_reminder_notification(user)
+  def user_feedback_request_notification
+    School::UserMailer.user_feedback_request_notification(user)
   end
 
-  def placement_preference_completion_notification
-    School::UserMailer.placement_preference_completion_notification(user)
+  def user_feedback_request_notification
+    School::UserMailer.user_feedback_request_notification(user)
   end
 
   private

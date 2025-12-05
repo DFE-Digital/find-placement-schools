@@ -19,7 +19,7 @@ RSpec.describe Provider::UserMailer, type: :mailer do
 
         This service is being trialled by the Department for Education with schools and teacher training providers in England.
 
-        [Sign in to Find placement schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email)
+        [Sign in to Find placement schools](http://localhost/sign-in?utm_campaign=provider&utm_medium=notification&utm_source=email)
 
         If you do not have DfE Sign-in, create an account. You can then return to this email to access the service.
 
@@ -94,6 +94,32 @@ RSpec.describe Provider::UserMailer, type: :mailer do
       it "prepends the hosting environment to the subject" do
         expect(removal_email.subject).to eq("[STAGING] You have been removed from Find placement schools")
       end
+    end
+  end
+
+  describe "#user_feedback_request_notification" do
+    subject(:feedback_email) { described_class.user_feedback_request_notification(user) }
+
+    let(:user) { create(:user) }
+
+    it "sends expected message to user" do
+      expect(feedback_email.to).to contain_exactly user.email_address
+      expect(feedback_email.subject).to eq "We’d Appreciate Your Feedback – Just 1 Minute"
+      expect(feedback_email.body.to_s.squish).to eq(<<~EMAIL.squish)
+        Dear #{user.first_name},
+
+        Thank you for using the [Find placement schools service](http://localhost/sign-in?utm_campaign=provider&utm_medium=notification&utm_source=email).
+
+        To help us continue improving, we’d be grateful if you could take a moment to complete a very short feedback form. It should take less than one minute to complete.
+
+        #{ENV.fetch("EOI_SURVEY_LINK", "")}
+
+        We really appreciate your feedback – it helps us make the service work better for you.
+
+        Regards,
+
+        Find placement schools team
+      EMAIL
     end
   end
 end

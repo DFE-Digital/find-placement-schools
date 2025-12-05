@@ -3,7 +3,7 @@ class Users::PlacementPreferences::Remind < ApplicationService
     wait_time = 0.minutes
     idle_users.find_in_batches(batch_size: 100) do |batch|
       batch.each do |user|
-        School::UserMailer.placement_preferences_reminder_notification(user).deliver_later(wait: wait_time)
+        School::UserMailer.user_feedback_request_notification(user).deliver_later(wait: wait_time)
       end
 
       wait_time += 1.minute

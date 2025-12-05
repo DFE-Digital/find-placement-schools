@@ -89,3 +89,5 @@ shared:
     - concurrency_key
     - expires_at
     - created_at
+  :users:
+    - survey_sent_at
