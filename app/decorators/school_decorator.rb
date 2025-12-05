@@ -61,4 +61,10 @@ class SchoolDecorator < ApplicationDecorator
       previous_hosted_placements
     end
   end
+
+  def website_link
+    url = website.to_s.strip
+    url = "https://#{url}" unless url.blank? || url =~ /\Ahttps?:\/\//i
+    h.govuk_link_to(url, url, new_tab: true, rel: "noopener noreferrer")
+  end
 end
