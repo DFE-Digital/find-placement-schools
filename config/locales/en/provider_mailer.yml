@@ -5,22 +5,28 @@ en:
         subject: Invitation to join %{service_name}
         body: |
           Dear %{user_name},
-  
+
           You have been invited to join the %{service_name} service for %{organisation_name}.
 
-          Use this service to find placement schools for your trainee teachers.
-          
-          This service is being trialled by the Department for Education with schools and teacher training providers in England.
-  
+          Use this service to find placement schools for your trainee teachers. You can find information about:
+
+          - schools' ability to host placements for trainee teachers in academic years 2025/26 and 2026/27
+
+          - previous school engagement in initial teacher training
+
+          Please note that:
+
+          - you cannot contact schools via this service
+
+          - information about schools' ability to host placements is indicative and does not reflect the number of placements a school can offer.
+
           [Sign in to %{service_name}](%{sign_in_url})
-          
+
           If you do not have DfE Sign-in, create an account. You can then return to this email to access the service.
-          
+
           If you need help or have feedback for us, contact [%{support_email}](mailto:%{support_email}).
-          
-          Regards
-          
-          %{service_name} team
+
+          Regards %{service_name} team
       user_membership_destroyed_notification:
         subject: You have been removed from %{service_name}
         body: |
