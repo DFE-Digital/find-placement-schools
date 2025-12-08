@@ -50,6 +50,32 @@ describe ProvidersQuery do
           expect(query.call).not_to include(non_query_provider)
         end
       end
+
+      context "when a mixed case postcode is provided" do
+        let(:params) { { filters: { search_by_name: "aB1 2cD" } } }
+
+        before do
+          create(:organisation_address, organisation: query_provider, postcode: "AB1 2CD")
+        end
+
+        it "returns the filtered providers" do
+          expect(query.call).to include(query_provider)
+          expect(query.call).not_to include(non_query_provider)
+        end
+      end
+
+      context "when a partial postcode is provided" do
+        let(:params) { { filters: { search_by_name: "AB1" } } }
+
+        before do
+          create(:organisation_address, organisation: query_provider, postcode: "AB1 2CD")
+        end
+
+        it "returns the filtered providers" do
+          expect(query.call).to include(query_provider)
+          expect(query.call).not_to include(non_query_provider)
+        end
+      end
     end
   end
 end
