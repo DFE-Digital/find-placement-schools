@@ -63,6 +63,8 @@ class SchoolDecorator < ApplicationDecorator
   end
 
   def website_link
+    return I18n.t("helpers.text_helper.unknown") if website.blank?
+
     url = website.to_s.strip
     url = "https://#{url}" unless url.blank? || url =~ /\Ahttps?:\/\//i
     h.govuk_link_to(url, url, new_tab: true, rel: "noopener noreferrer")
