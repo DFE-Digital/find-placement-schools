@@ -16,6 +16,5 @@ RSpec.describe PreviousPlacement, type: :model do
   describe "delegations" do
     it { is_expected.to delegate_method(:name).to(:placement_subject).with_prefix }
     it { is_expected.to delegate_method(:name).to(:academic_year).with_prefix }
-
   end
 end

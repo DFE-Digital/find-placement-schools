@@ -48,7 +48,7 @@ class OrganisationsController < ApplicationController
   end
 
   def academic_year
-    @academic_year ||= AcademicYear.find_by(id: filter_params[:academic_year_id])&.decorate || AcademicYear.current&.decorate
+    @academic_year ||= (AcademicYear.find_by(id: filter_params[:academic_year_id]) || AcademicYear.current)&.decorate
   end
 
   def location_coordinates
