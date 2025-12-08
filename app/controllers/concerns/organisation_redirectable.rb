@@ -18,7 +18,7 @@ module OrganisationRedirectable
     if organisation.present?
       user.update!(selected_organisation: organisation)
 
-      if organisation.is_a?(Provider)
+      if organisation.is_a?(Provider) && user.survey_sent_at.blank?
         Users::SendSurvey.call(user: user, organisation: organisation)
       end
 
