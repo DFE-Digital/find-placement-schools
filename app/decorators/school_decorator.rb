@@ -61,6 +61,14 @@ class SchoolDecorator < ApplicationDecorator
     hosted_placements_for_years(years)
   end
 
+  def website_link
+    return I18n.t("helpers.text_helper.unknown") if website.blank?
+
+    url = website.to_s.strip
+    url = "https://#{url}" unless url.blank? || url =~ /\Ahttps?:\/\//i
+    h.govuk_link_to(url, url, new_tab: true, rel: "noopener noreferrer")
+  end
+
   private
 
   def hosted_placements_for_years(years)
@@ -76,13 +84,5 @@ class SchoolDecorator < ApplicationDecorator
     end
 
     previous_hosted_placements
-  end
-
-  def website_link
-    return I18n.t("helpers.text_helper.unknown") if website.blank?
-
-    url = website.to_s.strip
-    url = "https://#{url}" unless url.blank? || url =~ /\Ahttps?:\/\//i
-    h.govuk_link_to(url, url, new_tab: true, rel: "noopener noreferrer")
   end
 end

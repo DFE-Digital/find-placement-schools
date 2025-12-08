@@ -148,7 +148,7 @@ describe SchoolsQuery do
       end
 
       context "when a urn is provided" do
-        let(:params) { { filters: { search_by_name: query_school.urn } } }
+        let(:params) { { filters: { academic_year_id:, search_by_name: query_school.urn } } }
 
         it "returns the filtered schools" do
           expect(query.call).to include(query_school)
@@ -157,7 +157,7 @@ describe SchoolsQuery do
       end
 
       context "when a postcode is provided" do
-        let(:params) { { filters: { search_by_name: "LS1 2HE" } } }
+        let(:params) { { filters: { academic_year_id:, search_by_name: "LS1 2HE" } } }
 
         it "returns the filtered schools" do
           expect(query.call).to include(query_school)
@@ -166,7 +166,7 @@ describe SchoolsQuery do
       end
 
       context "when a mixed case postcode is provided" do
-        let(:params) { { filters: { search_by_name: "LS1 2he" } } }
+        let(:params) { { filters: { academic_year_id:, search_by_name: "LS1 2he" } } }
 
         it "returns the filtered schools" do
           expect(query.call).to include(query_school)
@@ -175,7 +175,7 @@ describe SchoolsQuery do
       end
 
       context "when a partial postcode is provided" do
-        let(:params) { { filters: { search_by_name: "LS1" } } }
+        let(:params) { { filters: { academic_year_id:, search_by_name: "LS1" } } }
 
         it "returns the filtered schools" do
           expect(query.call).to include(query_school)
