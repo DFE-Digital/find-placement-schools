@@ -77,7 +77,7 @@ en:
           Many thanks, 
           
           %{service_name} team
-      placement_preference_completion_notification:
+      user_feedback_request_notification:
         subject: We’d Appreciate Your Feedback – Just 1 Minute
         body: |
           Dear %{user_name},

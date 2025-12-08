@@ -49,7 +49,7 @@ class School::UserMailer < ApplicationMailer
                  )
   end
 
-  def placement_preference_completion_notification(user)
+  def user_feedback_request_notification(user)
     notify_email to: user.email_address,
                  subject: t(".subject"),
                  body: t(

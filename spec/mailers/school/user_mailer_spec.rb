@@ -215,19 +215,19 @@ RSpec.describe School::UserMailer, type: :mailer do
     end
   end
 
-  describe "placement_preference_completion_notification" do
-    subject(:placement_preference_completion_notification) do
-      described_class.placement_preference_completion_notification(user)
+  describe "user_feedback_request_notification" do
+    subject(:user_feedback_request_notification) do
+      described_class.user_feedback_request_notification(user)
     end
 
     let(:user) { create(:user) }
 
     it "sends a sign in reminder to the user" do
-      expect(placement_preference_completion_notification.to).to contain_exactly(user.email_address)
-      expect(placement_preference_completion_notification.subject).to eq(
+      expect(user_feedback_request_notification.to).to contain_exactly(user.email_address)
+      expect(user_feedback_request_notification.subject).to eq(
         "We’d Appreciate Your Feedback – Just 1 Minute"
       )
-      expect(placement_preference_completion_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
+      expect(user_feedback_request_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
         Dear #{user.first_name},
 
         Thank you for using the [Find Placement Schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email) service.
@@ -250,7 +250,7 @@ RSpec.describe School::UserMailer, type: :mailer do
       end
 
       it "does not prepend the hosting environment to the subject" do
-        expect(placement_preference_completion_notification.subject).to eq(
+        expect(user_feedback_request_notification.subject).to eq(
           "We’d Appreciate Your Feedback – Just 1 Minute"
         )
       end
@@ -262,7 +262,7 @@ RSpec.describe School::UserMailer, type: :mailer do
       end
 
       it "prepends the hosting environment to the subject" do
-        expect(placement_preference_completion_notification.subject).to eq(
+        expect(user_feedback_request_notification.subject).to eq(
           "[STAGING] We’d Appreciate Your Feedback – Just 1 Minute"
         )
       end
