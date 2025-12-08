@@ -169,7 +169,7 @@ RSpec.describe SchoolDecorator do
 
     before { school }
 
-    context "when website does not start with http/https" do
+    context "when the website starts with www" do
       let(:website) { "www.hogwarts.ac.uk" }
 
       it "returns a link" do
@@ -180,7 +180,7 @@ RSpec.describe SchoolDecorator do
       end
     end
 
-    context "when website does not start with http/https" do
+    context "when the website starts with http" do
       let(:website) { "http://www.hogwarts.ac.uk" }
 
       it "returns a link" do
@@ -191,7 +191,7 @@ RSpec.describe SchoolDecorator do
       end
     end
 
-    context "when website starts with https" do
+    context "when the website starts with https" do
       let(:website) { "https://www.hogwarts.ac.uk" }
 
       it "returns a link" do
@@ -199,6 +199,14 @@ RSpec.describe SchoolDecorator do
         expect(link.text).to eq("https://www.hogwarts.ac.uk (opens in new tab)")
         expect(link['target']).to eq("_blank")
         expect(link['rel'].to_s.split.sort).to eq(%w[noopener noreferrer].sort)
+      end
+    end
+
+    context "when website is nil" do
+      let(:website) { nil }
+
+      it "returns unknown" do
+        expect(school.decorate.website_link).to eq("Unknown")
       end
     end
   end
