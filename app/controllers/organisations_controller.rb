@@ -9,20 +9,22 @@ class OrganisationsController < ApplicationController
 
     if @organisation.is_a?(School)
       @organisation = @organisation.decorate
-      @current_placement_preference = @organisation
-        .placement_preference_for(academic_year: AcademicYear.current)&.decorate
-      @next_placement_preference = @organisation
-        .placement_preference_for(academic_year: AcademicYear.next)&.decorate
-      @current_placement_details = @current_placement_preference.placement_details if @current_placement_preference.present?
-      @next_placement_details = @next_placement_preference.placement_details if @next_placement_preference.present?
+      academic_years = [ AcademicYear.current, AcademicYear.next ]
+
+      @placement_by_academic_year = academic_years.each_with_object({}) do |year, h|
+        placement_preference = @organisation.placement_preference_for(academic_year: year)&.decorate
+        previous_placements = @organisation.previous_academic_years_hosted_placements(year)
+        h[year] = {
+          placement_preference:,
+          placement_details: placement_preference&.placement_details,
+          previous_placements:
+        }
+      end
     end
 
     render locals: {
       organisation: @organisation,
-      current_placement_preference: @current_placement_preference,
-      current_placement_details: @current_placement_details,
-      next_placement_preference: @next_placement_preference,
-      next_placement_details: @next_placement_details
+      placement_by_academic_year: @placement_by_academic_year
     }
   end
 

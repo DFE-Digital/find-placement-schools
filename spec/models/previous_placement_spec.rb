@@ -12,4 +12,10 @@ RSpec.describe PreviousPlacement, type: :model do
   describe "validations" do
     it { is_expected.to validate_uniqueness_of(:school_id).scoped_to(:placement_subject_id, :academic_year_id).case_insensitive }
   end
+
+  describe "delegations" do
+    it { is_expected.to delegate_method(:name).to(:placement_subject).with_prefix }
+    it { is_expected.to delegate_method(:name).to(:academic_year).with_prefix }
+
+  end
 end

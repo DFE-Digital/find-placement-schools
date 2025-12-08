@@ -80,10 +80,10 @@
                   </div>
                 </div>
 
-                <% if school.previously_hosted_placements(academic_year).present? %>
+                <% if school.previous_academic_year_hosted_placements(academic_year).present? %>
                   <div class="govuk-!-margin-top-2">
                     <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Previously hosted placements</h3>
-                    <% school.previously_hosted_placements(academic_year).each do |academic_year_name, previous_placement| %>
+                    <% school.previous_academic_year_hosted_placements(academic_year).each do |academic_year_name, previous_placement| %>
                       <div class="app-result-detail__row">
                         <dt class="app-result-detail__key">
                           <%= academic_year_name %>
