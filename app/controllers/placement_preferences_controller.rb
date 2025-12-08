@@ -1,6 +1,6 @@
 class PlacementPreferencesController < ApplicationController
   def index
-    academic_years = AcademicYear.order(:starts_on)
+    academic_years = AcademicYear.order(:starts_on).last(2)
     render locals: { academic_years:, organisation: current_organisation }
   end
 

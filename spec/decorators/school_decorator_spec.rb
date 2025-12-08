@@ -74,25 +74,22 @@ RSpec.describe SchoolDecorator do
     end
   end
 
-  describe "#previously_hosted_placements" do
-    subject(:previously_hosted_placements) do
-      school.decorate.previously_hosted_placements(AcademicYear.current)
+  describe "#previous_academic_year_hosted_placements" do
+    subject(:previous_academic_year_hosted_placements) do
+      school.decorate.previous_academic_year_hosted_placements(AcademicYear.current)
     end
 
     let(:school) { create(:school) }
 
-    context "when the school has not previously hosted placements" do
+    context "when the school has not previously hosted placements in the last academic year" do
       it "returns nil" do
-        expect(previously_hosted_placements).to be_nil
+        expect(previous_academic_year_hosted_placements).to be_nil
       end
     end
 
-    context "when the school has previously hosted placements" do
+    context "when the school has previously hosted placements in the last academic year" do
       let(:last_academic_year) { AcademicYear.for_date(Time.now - 1.year) }
-      let(:academic_year_2_years_ago) { AcademicYear.for_date(Time.now - 2.year) }
-      let(:academic_year_3_years_ago) { AcademicYear.for_date(Time.now - 3.year) }
       let(:english) { create(:placement_subject, name: "English", code: "A1") }
-      let(:maths) { create(:placement_subject, name: "Mathematics", code: "B2") }
       let(:science) { create(:placement_subject, name: "Science", code: "C3") }
       let(:english_previous_placement_ay1) do
         create(
@@ -100,7 +97,7 @@ RSpec.describe SchoolDecorator do
           placement_subject: english,
           academic_year: last_academic_year,
           school:,
-      )
+        )
       end
       let(:science_previous_placement_ay1) do
         create(
@@ -110,39 +107,65 @@ RSpec.describe SchoolDecorator do
           school:,
         )
       end
-      let(:maths_previous_placement_ay2) do
-        create(
-          :previous_placement,
-          placement_subject: maths,
-          academic_year: academic_year_2_years_ago,
-          school:,
-        )
+
+      before do
+        english_previous_placement_ay1
+        science_previous_placement_ay1
       end
-      let(:english_previous_placement_ay3) do
+
+      it "returns a hash of the last academic year and its previous placement subjects" do
+        expect(previous_academic_year_hosted_placements).to eq({
+          last_academic_year.name => "English and Science"
+        })
+      end
+    end
+  end
+
+  describe "#previous_academic_years_hosted_placements" do
+    subject(:previous_academic_years_hosted_placements) do
+      school.decorate.previous_academic_years_hosted_placements(AcademicYear.current)
+    end
+
+    let(:school) { create(:school) }
+
+    context "when the school has not previously hosted placements in the last two academic years" do
+      it "returns an empty hash" do
+        expect(previous_academic_years_hosted_placements).to eq({})
+      end
+    end
+
+    context "when the school has previously hosted placements in the last two academic years" do
+      let(:last_academic_year) { AcademicYear.for_date(Time.now - 1.year) }
+      let(:academic_year_2_years_ago) { AcademicYear.for_date(Time.now - 2.year) }
+      let(:english) { create(:placement_subject, name: "English", code: "A1") }
+      let(:science) { create(:placement_subject, name: "Science", code: "C3") }
+      let(:english_previous_placement_ay1) do
         create(
           :previous_placement,
           placement_subject: english,
-          academic_year: academic_year_3_years_ago,
+          academic_year: last_academic_year,
+          school:,
+        )
+      end
+      let(:science_previous_placement_ay2) do
+        create(
+          :previous_placement,
+          placement_subject: science,
+          academic_year: academic_year_2_years_ago,
           school:,
         )
       end
 
       before do
         english_previous_placement_ay1
-        science_previous_placement_ay1
-        maths_previous_placement_ay2
-        english_previous_placement_ay3
+        science_previous_placement_ay2
       end
 
-      it "returns a hash of academic years and their previous placement subjects" do
-        expect(previously_hosted_placements).to eq({
-          last_academic_year.name => "English and Science"
+      it "returns a hash of the last two academic years and their previous placement subjects" do
+        expect(previous_academic_years_hosted_placements).to eq({
+          last_academic_year.name => "English",
+          academic_year_2_years_ago.name => "Science"
         })
-      end
-
-      it "does not return placements for other academic years" do
-        expect(previously_hosted_placements).not_to include(academic_year_2_years_ago.name)
-        expect(previously_hosted_placements).not_to include(academic_year_3_years_ago.name)
       end
     end
   end

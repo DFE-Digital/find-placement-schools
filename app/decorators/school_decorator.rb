@@ -40,21 +40,42 @@ class SchoolDecorator < ApplicationDecorator
     duration.gsub(/\bmins\b/, "minutes")
   end
 
-  def previously_hosted_placements(academic_year)
+  def previous_academic_year_hosted_placements(academic_year)
     previous_academic_year = academic_year.previous
+    return unless previous_academic_year.present?
+    return unless previous_placements.where(academic_year: previous_academic_year).exists?
 
-    @previously_hosted_placements ||= begin
-      previous_hosted_placements ||= {}
-      return unless previous_placements.where(academic_year: previous_academic_year).exists?
+    hosted_placements_for_years([ previous_academic_year ])
+  end
+
+  def previous_academic_years_hosted_placements(academic_year)
+    years = []
+    current = academic_year.previous
+
+    while current.present? && years.size < 2
+      break if years.include?(current)
+      years << current
+      current = current.previous
+    end
+
+    hosted_placements_for_years(years)
+  end
+
+  private
+
+  def hosted_placements_for_years(years)
+    previous_hosted_placements = {}
+    years.each do |year|
+      placements = previous_placements.where(academic_year: year)
+      next unless placements.exists?
 
       subject_names = PlacementSubject.where(
-        id: previous_placements.where(academic_year: previous_academic_year).select(:placement_subject_id)
-      ).order(:name).pluck(:name)
-
-      previous_hosted_placements[previous_academic_year.name] = subject_names.to_sentence
-
-      previous_hosted_placements
+        id: placements.select(:placement_subject_id)
+      ).order_by_name.pluck(:name)
+      previous_hosted_placements[year.name] = subject_names.to_sentence
     end
+
+    previous_hosted_placements
   end
 
   def website_link

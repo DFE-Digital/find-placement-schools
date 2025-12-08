@@ -1,10 +1,10 @@
 <%# locals: { organisation: nil, academic_year: nil, action_link: nil } -%>
 
 <%= govuk_summary_list(html_attributes: { id: "previous_placements" }, actions: action_link.present?) do |summary_list| %>
-  <% organisation.previously_hosted_placements(academic_year).each do |academic_year_name, previous_placement| %>
+  <% previous_placements.each do |academic_year, subject| %>
     <% summary_list.with_row do |row| %>
-      <% row.with_key(text: academic_year_name) %>
-      <% row.with_value(text: previous_placement) %>
+      <% row.with_key(text: academic_year) %>
+      <% row.with_value(text: subject) %>
     <% end %>
   <% end %>
 <% end %>
