@@ -17,14 +17,19 @@ module OrganisationRedirectable
 
     if organisation.present?
       user.update!(selected_organisation: organisation)
+
+      if organisation.is_a?(Provider)
+        Users::SendSurvey.call(user: user, organisation: organisation)
+      end
+
       notice = organisation_id ? "You have changed your organisation to #{organisation.name}" : "Signed in as #{user.first_name} #{user.last_name}"
 
       path = if organisation.is_a?(School) && organisation.placement_preferences.blank?
-               new_add_hosting_interest_placement_preferences_path(organisation)
+        new_add_hosting_interest_placement_preferences_path(organisation)
       elsif organisation.is_a?(School)
-               placement_preferences_path
+        placement_preferences_path
       else
-               organisations_path
+        organisations_path
       end
       redirect_to path, flash: { success: false, heading: notice }
     else

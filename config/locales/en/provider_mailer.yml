@@ -35,3 +35,19 @@ en:
           Regards
           
           %{service_name} team
+      user_feedback_request_notification:
+        subject: We’d Appreciate Your Feedback – Just 1 Minute
+        body: |
+          Dear %{user_name},
+
+          Thank you for using the [Find placement schools service](%{sign_in_url}).
+
+          To help us continue improving, we’d be grateful if you could take a moment to complete a very short feedback form. It should take less than one minute to complete.
+
+          %{survey_link}
+
+          We really appreciate your feedback – it helps us make the service work better for you.
+
+          Regards,
+
+          %{service_name} team
