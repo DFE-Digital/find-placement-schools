@@ -26,7 +26,9 @@ en:
 
           If you need help or have feedback for us, contact [%{support_email}](mailto:%{support_email}).
 
-          Regards %{service_name} team
+          Regards
+          
+          %{service_name} team
       user_membership_destroyed_notification:
         subject: You have been removed from %{service_name}
         body: |
