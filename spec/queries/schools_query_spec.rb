@@ -79,22 +79,34 @@ describe SchoolsQuery do
 
       context "when filtering by previously hosted placements" do
         let(:params) { { filters: { academic_year_id:, schools_to_show: [ "previously_hosted" ] } } }
+
         let(:previously_hosted_school) do
           create(
             :school,
             name: "Brixton Primary School",
             phase: "All-through",
             previous_placements: [ build(:previous_placement, placement_subject: PlacementSubject.first, academic_year: AcademicYear.previous) ],
-          )
+            )
+        end
+
+        let(:same_year_previous_school) do
+          create(
+            :school,
+            name: "Not Previously Hosted School",
+            phase: "All-through",
+            previous_placements: [ build(:previous_placement, placement_subject: PlacementSubject.first, academic_year: AcademicYear.current) ],
+            )
         end
 
         before do
           previously_hosted_school
+          same_year_previous_school
           create(:previous_placement, school: query_school, academic_year: AcademicYear.next)
         end
 
-        it "returns the previously hosted school" do
+        it "returns only schools with previous placements in earlier academic years" do
           expect(query.call).to include(previously_hosted_school)
+          expect(query.call).not_to include(same_year_previous_school)
           expect(query.call).not_to include(query_school)
           expect(query.call).not_to include(non_query_school)
         end
