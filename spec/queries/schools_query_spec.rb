@@ -125,6 +125,24 @@ describe SchoolsQuery do
           expect(query.call).not_to include(non_query_school)
         end
       end
+
+      context "when a mixed case postcode is provided" do
+        let(:params) { { filters: { search_by_name: "LS1 2he" } } }
+
+        it "returns the filtered schools" do
+          expect(query.call).to include(query_school)
+          expect(query.call).not_to include(non_query_school)
+        end
+      end
+
+      context "when a partial postcode is provided" do
+        let(:params) { { filters: { search_by_name: "LS1" } } }
+
+        it "returns the filtered schools" do
+          expect(query.call).to include(query_school)
+          expect(query.call).not_to include(non_query_school)
+        end
+      end
     end
 
     context "when filtering by phase" do

@@ -18,7 +18,7 @@ class SchoolsQuery < ApplicationQuery
 
     term = "%#{filter_params[:search_by_name]}%"
     scope.left_outer_joins(:organisation_address)
-         .where("organisations.name ILIKE ? OR organisations.urn ILIKE ? OR organisation_addresses.postcode = ?", term, term, filter_params[:search_by_name])
+         .where("organisations.name ILIKE ? OR organisations.urn ILIKE ? OR organisation_addresses.postcode ILIKE ?", term, term, term)
   end
 
   def phase_condition(scope)
