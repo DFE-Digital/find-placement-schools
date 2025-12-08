@@ -55,8 +55,9 @@ class SchoolsQuery < ApplicationQuery
     ids = []
 
     if filter_params[:schools_to_show].include?("previously_hosted")
-      ids += School.joins(:previous_placements)
-                   .where(previous_placements: { academic_year: selected_academic_year.previous })
+      selected_start_date = selected_academic_year.starts_on
+      ids += School.joins(previous_placements: :academic_year)
+                   .where("academic_years.starts_on < ?", selected_start_date)
                    .pluck(:id)
     end
 

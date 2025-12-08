@@ -17,7 +17,7 @@ class InterestTagComponent < ApplicationComponent
 
   private_constant :INTEREST_COLOURS, :INTEREST_TEXT
 
-  def initialize(school:, academic_year: AcademicYear.next, classes: [], html_attributes: {})
+  def initialize(school:, academic_year:, classes: [], html_attributes: {})
     super(classes:, html_attributes:)
 
     @school = school
@@ -67,7 +67,8 @@ class InterestTagComponent < ApplicationComponent
   end
 
   def previously_offered_placements?
-    school.previous_placements.where(academic_year: academic_year.previous).exists?
+    prior_academic_years = AcademicYear.where("starts_on < ?", academic_year.starts_on)
+    school.previous_placements.where(academic_year: prior_academic_years).exists?
   end
 
   def placement_preference
