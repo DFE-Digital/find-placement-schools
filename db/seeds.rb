@@ -37,7 +37,7 @@ PublishTeacherTraining::Subject::Import.call
 previous_placement_school = School.all.sample
 PlacementSubject.last(3).each do |placement_subject|
   PreviousPlacement.create!(
-    placement_subject: placement_subject,
+    subject_name: placement_subject.name,
     school: previous_placement_school,
     academic_year: AcademicYear.for_date(Date.today - 1.year),
   )
