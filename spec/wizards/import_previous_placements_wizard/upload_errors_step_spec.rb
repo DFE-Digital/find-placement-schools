@@ -13,7 +13,6 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
       allow(mock_upload_step).to receive_messages(
         missing_academic_year_rows:,
         invalid_school_urn_rows:,
-        missing_subject_name_rows:,
         invalid_subject_code_rows:,
         file_name:,
         csv:,
@@ -35,7 +34,6 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
   describe "delegations" do
     it { is_expected.to delegate_method(:missing_academic_year_rows).to(:upload_step) }
     it { is_expected.to delegate_method(:invalid_school_urn_rows).to(:upload_step) }
-    it { is_expected.to delegate_method(:missing_subject_name_rows).to(:upload_step) }
     it { is_expected.to delegate_method(:invalid_subject_code_rows).to(:upload_step) }
     it { is_expected.to delegate_method(:csv).to(:upload_step) }
     it { is_expected.to delegate_method(:file_name).to(:upload_step) }
@@ -46,11 +44,10 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
 
     let(:missing_academic_year_rows) { [ 1 ] }
     let(:invalid_school_urn_rows) { [ 2 ] }
-    let(:missing_subject_name_rows) { [ 3 ] }
-    let(:invalid_subject_code_rows) { [ 4 ] }
+    let(:invalid_subject_code_rows) { [ 3 ] }
 
     it "merges all the validation attributes containing row numbers together (removing duplicates)" do
-      expect(row_indexes_with_errors).to contain_exactly(1, 2, 3, 4)
+      expect(row_indexes_with_errors).to contain_exactly(1, 2, 3)
     end
   end
 
@@ -59,11 +56,10 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
 
     let(:missing_academic_year_rows) { [ 1 ] }
     let(:invalid_school_urn_rows) { [ 2 ] }
-    let(:missing_subject_name_rows) { [ 3 ] }
-    let(:invalid_subject_code_rows) { [ 4 ] }
+    let(:invalid_subject_code_rows) { [ 3 ] }
 
     it "adds together the number of elements in validation attribute" do
-      expect(error_count).to eq(4)
+      expect(error_count).to eq(3)
     end
   end
 end
