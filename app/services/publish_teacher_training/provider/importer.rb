@@ -5,7 +5,6 @@ module PublishTeacherTraining
         @invalid_records = []
         @records = []
         @address_records = []
-        @email_details = []
 
         fetch_providers
 
@@ -61,10 +60,6 @@ module PublishTeacherTraining
         end
       end
 
-      def provider_by_code(code)
-        ::Provider.find_by(code:)
-      end
-
       def associate_providers_to_addresses(address_records)
         Rails.logger.info "Associating addresses to providers..."
 
@@ -80,7 +75,7 @@ module PublishTeacherTraining
             address_1: address[:address_1],
             address_2: address[:address_2],
             address_3: address[:address_3],
-            town: address[:city],
+            town: address[:town],
             postcode: address[:postcode],
             created_at: Time.current,
             updated_at: Time.current

@@ -16,15 +16,15 @@ RSpec.describe PublishTeacherTraining::Provider::API do
           {
             "id" => 123,
             "attributes" => {
-              name: "Provider 1",
-              code: "Prov1"
+              "name" => "Provider 1",
+              "code" => "Prov1"
             }
           },
           {
             "id" => 234,
             "attributes" => {
-              name: "Provider 2",
-              code: "Prov2"
+              "name" => "Provider 2",
+              "code" => "Prov2"
             }
           }
         ]
