@@ -36,8 +36,11 @@ class ImportPreviousPlacementsWizard < BaseWizard
     return [] if steps[:upload].blank?
 
     csv_rows.map do |row|
+      school = School.find_by(urn: row["school_urn"])
+      next unless school.present?
+
       {
-        school_id: School.find_by!(urn: row["school_urn"]).id,
+        school_id: school.id,
         academic_year_id: AcademicYear.for_date(Date.parse(row["academic_year_start_date"])).id,
         subject_name: row["subject_name"]
       }

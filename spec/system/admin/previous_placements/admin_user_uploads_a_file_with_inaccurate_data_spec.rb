@@ -40,7 +40,7 @@ RSpec.describe "Admin user imports previous placement register data", type: :sys
   end
 
   def when_i_upload_a_csv_containing_valid_register_data
-    attach_file "Upload CSV file", "spec/fixtures/register_trainee_teachers/import.csv"
+    attach_file "Upload CSV file", "spec/fixtures/register_trainee_teachers/invalid_import.csv"
   end
 
   def and_i_click_on_upload
@@ -52,7 +52,7 @@ RSpec.describe "Admin user imports previous placement register data", type: :sys
     expect(page).to have_caption("Import Register ITT Placement Data")
     expect(page).to have_h1("Upload file")
     expect(page).to have_element(:div, text: "You need to fix 1 error related to a specific row", class: "govuk-error-summary")
-    expect(page).to have_element(:td, text: "Enter a valid school URN", class: "govuk-table__cell")
+    expect(page).to have_element(:td, text: "Enter a subject name", class: "govuk-table__cell")
     expect(page).to have_element(:p, text: "Only showing rows with errors", class: "govuk-!-text-align-centre")
     expect(page).to have_link("Upload your file again", class: "govuk-button")
     expect(page).to have_link("Cancel", href: "/admin_dashboard")
