@@ -1,7 +1,0 @@
-<%# locals: { placement_details: nil, action_link: nil } -%>
-<%= govuk_summary_list(html_attributes: { id: "note_to_providers" }, actions: action_link.present?) do |summary_list| %>
-  <% summary_list.with_row do |row| %>
-    <% row.with_key(text: t(".note")) %>
-    <% row.with_value(**value_or_unknown(value: placement_details.dig("note_to_providers", "note"))) %>>
-  <% end %>
-<% end %>

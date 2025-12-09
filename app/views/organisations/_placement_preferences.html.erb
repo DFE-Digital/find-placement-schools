@@ -15,7 +15,7 @@
     </h2>
 
     <%= render "placement_preferences/placement_details/school_contact_details",
-               placement_details: placement_details, action_link: nil %>
+      placement_details: placement_details, action_link: nil %>
   <% end %>
 
   <% if placement_details.dig("key_stage_selection", "key_stages").blank? && placement_details.dig("year_group_selection", "year_groups").blank? && placement_details.dig("secondary_subject_selection", "subject_ids").blank? %>
@@ -42,7 +42,7 @@
     </h2>
 
     <%= render "placement_preferences/placement_details/primary_placements_list",
-               placement_details: placement_details, action_link: nil %>
+      placement_details: placement_details, action_link: nil %>
   <% end %>
 
   <% if placement_details.dig("secondary_subject_selection", "subject_ids").present? %>
@@ -51,7 +51,7 @@
     </h2>
 
     <%= render "placement_preferences/placement_details/secondary_placements_list",
-               placement_preference: placement_preference, placement_details: placement_details, action_link: nil %>
+      placement_preference: placement_preference, placement_details: placement_details, action_link: nil %>
   <% end %>
 
   <% if placement_details.dig("key_stage_selection", "key_stages").present? %>
@@ -60,7 +60,7 @@
     </h2>
 
     <%= render "placement_preferences/placement_details/send_placements_list",
-               placement_details: placement_details, action_link: nil %>
+      placement_details: placement_details, action_link: nil %>
   <% end %>
 <% elsif placement_preference&.appetite == "not_open" %>
   <p class="govuk-body"><%= t(".not_offering_placements") %></p>
@@ -74,7 +74,7 @@
   </h2>
 
   <%= render "placement_preferences/placement_details/previous_placements",
-             previous_placements: previous_placements, action_link: nil %>
+    previous_placements: previous_placements, action_link: nil %>
 <% end %>
 
 <% if placement_details.present? && placement_preference&.appetite != "not_open" %>
@@ -83,15 +83,5 @@
   </h2>
 
   <%= render "placement_preferences/placement_details/note_to_providers",
-             placement_details: placement_details, action_link: nil %>
-<% end %>
-
-<% if placement_details.dig("note_to_providers", "note").present? %>
-  <h3 class="govuk-heading-s">
-    <%= t(".additional_details") %>
-  </h3>
-
-  <%= render "placement_preferences/placement_details/note_to_providers",
-             placement_details: placement_details, action_link: nil %>
-
+    placement_details: placement_details, action_link: nil %>
 <% end %>
