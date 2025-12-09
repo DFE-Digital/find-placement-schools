@@ -160,17 +160,6 @@ RSpec.describe OnboardUsersWizard do
           expect { upload_users }.to raise_error("Invalid wizard state")
         end
       end
-
-      context "when a provider ukprn is invalid" do
-        let(:csv_content) do
-          "ukprn,first_name,last_name,email_address\r\n" \
-          "11111,John,Smith,john_smith@example.com"
-        end
-
-        it "returns an invalid wizard error" do
-          expect { upload_users }.to raise_error("Invalid wizard state")
-        end
-      end
     end
   end
 end

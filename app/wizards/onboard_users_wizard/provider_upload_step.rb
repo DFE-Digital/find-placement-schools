@@ -50,11 +50,9 @@ class OnboardUsersWizard::ProviderUploadStep < BaseStep
 
       validate_name_fields(row, i)
       validate_email_address(row, i)
-      validate_ukprn(row, i)
     end
 
     invalid_email_address_rows.blank? &&
-      invalid_identifier_rows.blank? &&
       missing_first_name_rows.blank? &&
       missing_last_name_rows.blank?
   end
@@ -88,7 +86,6 @@ class OnboardUsersWizard::ProviderUploadStep < BaseStep
   end
 
   def reset_input_attributes
-    self.invalid_identifier_rows = []
     self.missing_first_name_rows = []
     self.missing_last_name_rows = []
     self.invalid_email_address_rows = []
@@ -103,11 +100,5 @@ class OnboardUsersWizard::ProviderUploadStep < BaseStep
     return unless URI::MailTo::EMAIL_REGEXP.match(row["email_address"]).nil?
 
     invalid_email_address_rows << row_number
-  end
-
-  def validate_ukprn(row, row_number)
-    return if Provider.find_by(ukprn: row["ukprn"])
-
-    invalid_identifier_rows << row_number
   end
 end
