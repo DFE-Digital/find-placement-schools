@@ -16,6 +16,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
         file_name: nil,
         missing_academic_year_rows: [],
         invalid_school_urn_rows: [],
+        missing_subject_name_rows: [],
         invalid_subject_code_rows: [],
       )
     }
@@ -84,7 +85,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
           it "returns errors for missing headers" do
             expect(step.valid?).to be(false)
             expect(step.errors.messages[:csv_upload]).to include(
-              "Your file needs a column called ‘academic_year_start_date’ and ‘subject_code’.",
+              "Your file needs a column called ‘academic_year_start_date’, ‘subject_name’, and ‘subject_code’.",
             )
             expect(step.errors.messages[:csv_upload]).to include(
               "Right now it has columns called ‘school_urn’.",
@@ -126,6 +127,19 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
         it "returns false and assigns the csv row to the 'invalid_school_urn_rows' attribute" do
           expect(csv_inputs_valid).to be(false)
           expect(step.invalid_school_urn_rows).to contain_exactly(0)
+        end
+      end
+
+      context "when csv_content is missing an subject_name" do
+        let(:csv_content) do
+          "academic_year_start_date,school_urn,subject_name,subject_code\r\n" \
+            "2025-09-01,123456,,11"
+        end
+        let(:attributes) { { csv_content: } }
+
+        it "returns false and assigns the csv row to the 'missing_subject_name_rows' attribute" do
+          expect(csv_inputs_valid).to be(false)
+          expect(step.missing_subject_name_rows).to contain_exactly(0)
         end
       end
 

@@ -59,6 +59,15 @@
 
             <% row.with_cell do %>
               <p>
+                <% if current_step.missing_subject_name_rows.include?(csv_row_index) %>
+                  <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.missing_subject_name") %></strong><br>
+                <% end %>
+                <%= csv_row["subject_name"] %>
+              </p>
+            <% end %>
+
+            <% row.with_cell do %>
+              <p>
                 <% if current_step.invalid_subject_code_rows.include?(csv_row_index) %>
                   <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.invalid_subject_code") %></strong><br>
                 <% end %>

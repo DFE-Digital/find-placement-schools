@@ -39,7 +39,7 @@ class ImportPreviousPlacementsWizard < BaseWizard
       {
         school_id: School.find_by!(urn: row["school_urn"]).id,
         academic_year_id: AcademicYear.for_date(Date.parse(row["academic_year_start_date"])).id,
-        subject_id: PlacementSubject.find_by(code: row["subject_code"]).id,
+        subject_id: (PlacementSubject.find_by(code: row["subject_code"]) || PlacementSubject.find_by(name: row["subject_name"])).id,
         number_of_placements: row["number_of_placements"].to_i
       }
     end
