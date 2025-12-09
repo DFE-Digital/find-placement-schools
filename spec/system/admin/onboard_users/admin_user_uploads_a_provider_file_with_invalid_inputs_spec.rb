@@ -70,8 +70,8 @@ RSpec.describe "Admin user uploads a provider file with invalid inputs", type: :
     expect(page).to have_element(:span, text: "Onboard users", class: "govuk-caption-l")
     expect(page).to have_h1("Upload users", class: "govuk-heading-l")
     expect(page).to have_element(:h2, text: "There is a problem")
-    expect(page).to have_element(:div, text: "You need to fix 5 errors related to specific rows", class: "govuk-error-summary")
-    expect(page).to have_element(:td, text: "Invalid Email", class: "govuk-table__cell", count: 1)
+    expect(page).to have_element(:div, text: "You need to fix 4 errors related to specific rows", class: "govuk-error-summary")
+    expect(page).to have_element(:td, text: "Invalid Email", class: "govuk-table__cell", count: 4)
     expect(page).to have_element(:p, text: "Only showing rows with errors", class: "govuk-!-text-align-centre")
   end
 

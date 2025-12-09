@@ -35,6 +35,8 @@ class OnboardUsersWizard < BaseWizard
       details = []
       csv_rows.each do |row|
         identifier = user_type_provider? ? row["ukprn"] : row["urn"]
+        next if identifier.blank?
+
         organisation = find_organisation(identifier)
 
         # Temp add next calls to make the CSV upload work
