@@ -12,7 +12,6 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
     instance_double(ImportPreviousPlacementsWizard::UploadStep).tap do |mock_upload_step|
       allow(mock_upload_step).to receive_messages(
         missing_academic_year_rows:,
-        invalid_school_urn_rows:,
         missing_subject_name_rows:,
         file_name:,
         csv:,
@@ -32,7 +31,6 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
 
   describe "delegations" do
     it { is_expected.to delegate_method(:missing_academic_year_rows).to(:upload_step) }
-    it { is_expected.to delegate_method(:invalid_school_urn_rows).to(:upload_step) }
     it { is_expected.to delegate_method(:missing_subject_name_rows).to(:upload_step) }
     it { is_expected.to delegate_method(:csv).to(:upload_step) }
     it { is_expected.to delegate_method(:file_name).to(:upload_step) }
@@ -42,11 +40,10 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
     subject(:row_indexes_with_errors) { step.row_indexes_with_errors }
 
     let(:missing_academic_year_rows) { [ 1 ] }
-    let(:invalid_school_urn_rows) { [ 2 ] }
-    let(:missing_subject_name_rows) { [ 3 ] }
+    let(:missing_subject_name_rows) { [ 2 ] }
 
     it "merges all the validation attributes containing row numbers together (removing duplicates)" do
-      expect(row_indexes_with_errors).to contain_exactly(1, 2, 3)
+      expect(row_indexes_with_errors).to contain_exactly(1, 2)
     end
   end
 
@@ -54,11 +51,10 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadErrorsStep, type: :model do
     subject(:error_count) { step.error_count }
 
     let(:missing_academic_year_rows) { [ 1 ] }
-    let(:invalid_school_urn_rows) { [ 2 ] }
-    let(:missing_subject_name_rows) { [ 3 ] }
+    let(:missing_subject_name_rows) { [ 2 ] }
 
     it "adds together the number of elements in validation attribute" do
-      expect(error_count).to eq(3)
+      expect(error_count).to eq(2)
     end
   end
 end

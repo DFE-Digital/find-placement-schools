@@ -15,7 +15,6 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
         csv_content: nil,
         file_name: nil,
         missing_academic_year_rows: [],
-        invalid_school_urn_rows: [],
         missing_subject_name_rows: [],
       )
     }
@@ -113,19 +112,6 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
         it "returns false and assigns the csv row to the 'missing_academic_year_rows' attribute" do
           expect(csv_inputs_valid).to be(false)
           expect(step.missing_academic_year_rows).to contain_exactly(0)
-        end
-      end
-
-      context "when csv_content contains invalid school urn" do
-        let(:csv_content) do
-          "academic_year_start_date,school_urn,subject_name,subject_code\r\n" \
-            "2025-09-01,123456,Computing,11"
-        end
-        let(:attributes) { { csv_content: } }
-
-        it "returns false and assigns the csv row to the 'invalid_school_urn_rows' attribute" do
-          expect(csv_inputs_valid).to be(false)
-          expect(step.invalid_school_urn_rows).to contain_exactly(0)
         end
       end
 

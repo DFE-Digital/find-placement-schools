@@ -27,7 +27,7 @@ RSpec.describe PreviousPlacement, type: :model do
       let!(:placement_b) { create(:previous_placement, subject_name: "Art", academic_year:) }
 
       it "orders previous placements by subject_name" do
-        expect(PreviousPlacement.order_by_name).to eq([placement_b, placement_a])
+        expect(PreviousPlacement.order_by_name).to eq([ placement_b, placement_a ])
       end
     end
   end
