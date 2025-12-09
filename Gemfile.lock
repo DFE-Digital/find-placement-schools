@@ -339,8 +339,8 @@ GEM
     msgpack (1.8.0)
     multi_json (1.17.0)
     multi_xml (0.6.0)
-    net-http (0.8.0)
-      uri (>= 0.11.1)
+    net-http (0.6.0)
+      uri
     net-imap (0.5.12)
       date
       net-protocol
@@ -755,7 +755,7 @@ DEPENDENCIES
   kamal
   mail-notify (~> 2.0.0)
   mission_control-jobs (~> 1.1)
-  net-http (= 0.8.0)
+  net-http (= 0.6.0)
   okcomputer (~> 1.19)
   omniauth
   omniauth-rails_csrf_protection
