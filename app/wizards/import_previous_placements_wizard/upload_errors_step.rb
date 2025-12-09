@@ -2,7 +2,6 @@ class ImportPreviousPlacementsWizard::UploadErrorsStep < BaseStep
   delegate :missing_academic_year_rows,
            :invalid_school_urn_rows,
            :missing_subject_name_rows,
-           :invalid_subject_code_rows,
            :file_name,
            :csv,
            to: :upload_step
@@ -20,8 +19,7 @@ class ImportPreviousPlacementsWizard::UploadErrorsStep < BaseStep
   def combined_errors
     missing_academic_year_rows +
       invalid_school_urn_rows +
-      missing_subject_name_rows +
-      invalid_subject_code_rows
+      missing_subject_name_rows
   end
 
   def upload_step

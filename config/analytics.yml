@@ -39,7 +39,7 @@ shared:
     - id
     - school_id
     - academic_year_id
-    - placement_subject_id
+    - subject_name
   :organisation_addresses:
     - id
     - organisation_id

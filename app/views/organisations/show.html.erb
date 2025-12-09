@@ -14,7 +14,7 @@
             <% @placement_by_academic_year.each do |academic_year, details| %>
               <%= tabs.with_tab(label: t(".placement_preferences", academic_year_name: academic_year.decorate.shortest_name)) do %>
                 <span class="govuk-caption-l"><%= organisation.name %></span>
-                <%= render "/organisations/placement_preferences", organisation: organisation, previous_placements: details[:previous_placements], placement_details: details[:placement_details], placement_preference: details[:placement_preference] %>
+                <%= render "/organisations/placement_preferences", academic_year:, organisation:, previous_placements: details[:previous_placements], placement_details: details[:placement_details], placement_preference: details[:placement_preference] %>
               <% end %>
             <% end %>
           <% end %>

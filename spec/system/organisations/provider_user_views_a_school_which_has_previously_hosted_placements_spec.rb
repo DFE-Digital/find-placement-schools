@@ -13,8 +13,6 @@ RSpec.describe "Provider user views a school which has previously hosted placeme
   def give_a_school_with_previously_hosted_placements
     @previous_academic_year = AcademicYear.for_date(Time.now - 1.year)
     @academic_year_2_years_ago = AcademicYear.for_date(Time.now - 2.years)
-    @english = build(:placement_subject, name: "English", code: "A1")
-    @science = build(:placement_subject, name: "Science", code: "B2")
     @school = create(
       :school,
       name: "Hogwarts",
@@ -24,8 +22,8 @@ RSpec.describe "Provider user views a school which has previously hosted placeme
       group: "Local authority maintained schools",
       organisation_address: build(:organisation_address, address_1: "Hogwarts School", address_2: "Hogsmeade", town: "Scotland", postcode: "AB12 3CD"),
       previous_placements: [
-        build(:previous_placement, placement_subject: @english, academic_year: @previous_academic_year),
-        build(:previous_placement, placement_subject: @science, academic_year: @academic_year_2_years_ago)
+        build(:previous_placement, subject_name: "English", academic_year: @previous_academic_year),
+        build(:previous_placement, subject_name: "Science", academic_year: @academic_year_2_years_ago)
       ]
     )
   end

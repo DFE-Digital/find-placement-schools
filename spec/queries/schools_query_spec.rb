@@ -85,7 +85,7 @@ describe SchoolsQuery do
             :school,
             name: "Brixton Primary School",
             phase: "All-through",
-            previous_placements: [ build(:previous_placement, placement_subject: PlacementSubject.first, academic_year: AcademicYear.previous) ],
+            previous_placements: [ build(:previous_placement, subject_name: "English", academic_year: AcademicYear.previous) ],
             )
         end
 
@@ -94,7 +94,7 @@ describe SchoolsQuery do
             :school,
             name: "Not Previously Hosted School",
             phase: "All-through",
-            previous_placements: [ build(:previous_placement, placement_subject: PlacementSubject.first, academic_year: AcademicYear.current) ],
+            previous_placements: [ build(:previous_placement, subject_name: "English", academic_year: AcademicYear.current) ],
             )
         end
 
@@ -120,7 +120,7 @@ describe SchoolsQuery do
             :school,
             name: "Brixton Primary School",
             phase: "All-through",
-            previous_placements: [ build(:previous_placement, placement_subject: PlacementSubject.first, academic_year: AcademicYear.previous) ],
+            previous_placements: [ build(:previous_placement, subject_name: "English", academic_year: AcademicYear.previous) ],
           )
         end
 

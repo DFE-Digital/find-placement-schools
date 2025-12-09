@@ -18,7 +18,7 @@ module RegisterTraineeTeachers
           PreviousPlacement.find_or_create_by!(
             school_id: row[:school_id],
             academic_year_id: row[:academic_year_id],
-            placement_subject_id: row[:subject_id],
+            subject_name: row[:subject_name],
           )
         end
       end

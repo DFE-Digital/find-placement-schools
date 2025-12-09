@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :previous_placement do
-    association :academic_year, :next
+    subject_name { "Mathematics" }
+
+    association :academic_year, :current
     association :school, factory: :school
-    association :placement_subject
   end
 end

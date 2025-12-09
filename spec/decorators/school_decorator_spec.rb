@@ -89,12 +89,10 @@ RSpec.describe SchoolDecorator do
 
     context "when the school has previously hosted placements in the last academic year" do
       let(:last_academic_year) { AcademicYear.for_date(Time.now - 1.year) }
-      let(:english) { create(:placement_subject, name: "English", code: "A1") }
-      let(:science) { create(:placement_subject, name: "Science", code: "C3") }
       let(:english_previous_placement_ay1) do
         create(
           :previous_placement,
-          placement_subject: english,
+          subject_name: "English",
           academic_year: last_academic_year,
           school:,
         )
@@ -102,7 +100,7 @@ RSpec.describe SchoolDecorator do
       let(:science_previous_placement_ay1) do
         create(
           :previous_placement,
-          placement_subject: science,
+          subject_name: "Science",
           academic_year: last_academic_year,
           school:,
         )
@@ -137,12 +135,10 @@ RSpec.describe SchoolDecorator do
     context "when the school has previously hosted placements in the last two academic years" do
       let(:last_academic_year) { AcademicYear.for_date(Time.now - 1.year) }
       let(:academic_year_2_years_ago) { AcademicYear.for_date(Time.now - 2.year) }
-      let(:english) { create(:placement_subject, name: "English", code: "A1") }
-      let(:science) { create(:placement_subject, name: "Science", code: "C3") }
       let(:english_previous_placement_ay1) do
         create(
           :previous_placement,
-          placement_subject: english,
+          subject_name: "English",
           academic_year: last_academic_year,
           school:,
         )
@@ -150,7 +146,7 @@ RSpec.describe SchoolDecorator do
       let(:science_previous_placement_ay2) do
         create(
           :previous_placement,
-          placement_subject: science,
+          subject_name: "Science",
           academic_year: academic_year_2_years_ago,
           school:,
         )

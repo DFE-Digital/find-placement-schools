@@ -77,9 +77,7 @@ class SchoolDecorator < ApplicationDecorator
       placements = previous_placements.where(academic_year: year)
       next unless placements.exists?
 
-      subject_names = PlacementSubject.where(
-        id: placements.select(:placement_subject_id)
-      ).order_by_name.pluck(:name)
+      subject_names = placements.order_by_name.pluck(:subject_name)
       previous_hosted_placements[year.name] = subject_names.to_sentence
     end
 
