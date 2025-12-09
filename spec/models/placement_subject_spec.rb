@@ -5,7 +5,6 @@ RSpec.describe PlacementSubject, type: :model do
     it { is_expected.to belong_to(:parent_subject).optional }
 
     it { is_expected.to have_many(:child_subjects).dependent(:destroy) }
-    it { is_expected.to have_many(:previous_placements).dependent(:destroy) }
   end
 
   describe "validations" do

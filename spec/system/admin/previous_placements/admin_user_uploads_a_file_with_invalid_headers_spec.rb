@@ -51,7 +51,7 @@ RSpec.describe "Admin user does not upload a CSV file", type: :system do
   def then_i_see_validation_error_regarding_invalid_headers
     expect(page).to have_css(
       ".govuk-error-summary__list",
-      text: "Your file needs a column called ‘academic_year_start_date’, ‘school_urn’, ‘subject_name’, and ‘subject_code’.",
+      text: "Your file needs a column called ‘academic_year_start_date’, ‘school_urn’, and ‘subject_name’.",
     )
     expect(page).to have_css(
       ".govuk-error-summary__list",
