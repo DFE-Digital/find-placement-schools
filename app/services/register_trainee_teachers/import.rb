@@ -13,16 +13,14 @@ module RegisterTraineeTeachers
     private
 
     def create_previous_placements
-      ApplicationRecord.transaction do
-        csv_data.each do |row|
-          next unless row.present?
+      csv_data.each do |row|
+        next unless row.present?
 
-          PreviousPlacement.find_or_create_by!(
-            school_id: row[:school_id],
-            academic_year_id: row[:academic_year_id],
-            subject_name: row[:subject_name],
-          )
-        end
+        PreviousPlacement.find_or_create_by!(
+          school_id: row[:school_id],
+          academic_year_id: row[:academic_year_id],
+          subject_name: row[:subject_name],
+        )
       end
     end
   end
