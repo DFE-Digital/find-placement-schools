@@ -75,6 +75,8 @@ class SchoolsQuery < ApplicationQuery
   end
 
   def academic_year_condition(scope)
+    return scope if filter_params[:academic_year_id].blank?
+
     scope.where("placement_preferences.academic_year_id = :year OR placement_preferences.id IS NULL", year: filter_params[:academic_year_id])
   end
 

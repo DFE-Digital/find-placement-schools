@@ -110,6 +110,15 @@ describe SchoolsQuery do
           expect(query.call).not_to include(query_school)
           expect(query.call).not_to include(non_query_school)
         end
+
+        it "returns all schools when no academic year is specified" do
+          params = { filters: {} }
+          query_no_year = described_class.new(params:)
+          expect(query_no_year.call).to include(previously_hosted_school)
+          expect(query_no_year.call).to include(same_year_previous_school)
+          expect(query_no_year.call).to include(query_school)
+          expect(query_no_year.call).to include(non_query_school)
+        end
       end
 
       context "when filtering with multiple schools to show" do
