@@ -41,18 +41,26 @@ class SchoolDecorator < ApplicationDecorator
   end
 
   def previous_academic_year_hosted_placements(academic_year)
-    previous_academic_year = academic_year.previous
-    return unless previous_academic_year.present?
-    return unless previous_placements.where(academic_year: previous_academic_year).exists?
+    current = academic_year.previous
+    checked = 0
 
-    hosted_placements_for_years([ previous_academic_year ])
+    while current.present? && checked < 3
+      if previous_placements.where(academic_year: current).exists?
+        return hosted_placements_for_years([ current ])
+      end
+
+      current = current.previous
+      checked += 1
+    end
+
+    hosted_placements_for_years([ current ])
   end
 
   def previous_academic_years_hosted_placements(academic_year)
     years = []
     current = academic_year.previous
 
-    while current.present? && years.size < 2
+    while current.present? && years.size <= 2
       break if years.include?(current)
       years << current
       current = current.previous

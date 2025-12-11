@@ -4,18 +4,17 @@ RSpec.describe RegisterTraineeTeachers::Import do
   let(:school) { create(:school) }
   let(:another_school) { create(:school) }
   let(:academic_year) { create(:academic_year, :current) }
-  let(:placement_subject) { create(:placement_subject) }
   let(:csv_data) do
     [
       {
        school_id: school.id,
        academic_year_id: academic_year.id,
-       subject_id: placement_subject.id
+       subject_name: "English"
       },
       {
         school_id: another_school.id,
         academic_year_id: academic_year.id,
-        subject_id: placement_subject.id
+        subject_name: "Mathematics"
       }
     ]
   end

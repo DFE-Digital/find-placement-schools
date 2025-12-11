@@ -67,7 +67,7 @@ class InterestTagComponent < ApplicationComponent
   end
 
   def previously_offered_placements?
-    prior_academic_years = AcademicYear.where("starts_on < ?", academic_year.starts_on)
+    prior_academic_years = AcademicYear.where("starts_on < ?", academic_year.starts_on).order(starts_on: :desc).limit(3)
     school.previous_placements.where(academic_year: prior_academic_years).exists?
   end
 

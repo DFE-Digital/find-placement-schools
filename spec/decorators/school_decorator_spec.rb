@@ -82,8 +82,8 @@ RSpec.describe SchoolDecorator do
     let(:school) { create(:school) }
 
     context "when the school has not previously hosted placements in the last academic year" do
-      it "returns nil" do
-        expect(previous_academic_year_hosted_placements).to be_nil
+      it "returns {}" do
+        expect(previous_academic_year_hosted_placements).to eq({})
       end
     end
 
