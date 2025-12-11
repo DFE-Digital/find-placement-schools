@@ -65,7 +65,7 @@ RSpec.describe InterestTagComponent, type: :component do
     let(:school) { create(:school, previous_placements:) }
 
     it "renders the correct text" do
-      expect(page).to have_content "Previously offered placements"
+      expect(page).to have_content "Previously hosted placements"
     end
 
     it "renders the correct tag" do
