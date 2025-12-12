@@ -176,7 +176,7 @@ RSpec.describe School::UserMailer, type: :mailer do
 
         Thank you for signing in to the Department for Education’s new Find Placement Schools service.
 
-        We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements. Please sign in to the service and record this information as soon as you can.
+        We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements in academic year 2026/27. Please sign in to the service and record this information as soon as you can.
 
         This is not a commitment to offer school placements but it helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
 
