@@ -11,7 +11,7 @@ class OnboardUsersWizard::ProviderUploadStep < BaseStep
   validate :validate_csv_file, if: -> { csv_upload.present? }
   validate :validate_csv_headers, if: -> { csv_content.present? }
 
-  REQUIRED_HEADERS = %w[ukprn email_address first_name last_name].freeze
+  REQUIRED_HEADERS = %w[code email_address first_name last_name].freeze
 
   def initialize(wizard:, attributes:)
     super(wizard:, attributes:)
