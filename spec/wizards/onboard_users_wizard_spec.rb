@@ -82,7 +82,7 @@ RSpec.describe OnboardUsersWizard do
   end
 
   context "when the user type is provider" do
-    let(:provider) { create(:provider, name: "London Provider", ukprn: 11111111) }
+    let(:provider) { create(:provider, name: "London Provider", code: "1AB") }
 
     before { provider }
 
@@ -103,8 +103,8 @@ RSpec.describe OnboardUsersWizard do
 
       context "when there are errors in the upload step" do
         let(:csv_content) do
-          "ukprn,first_name,last_name,email_address\r\n" \
-          "11111111,John,Smith,invalid_email"
+          "code,first_name,last_name,email_address\r\n" \
+          "1AB,John,Smith,invalid_email"
         end
         let(:state) do
           {
@@ -139,8 +139,8 @@ RSpec.describe OnboardUsersWizard do
 
       context "when the steps are valid" do
         let(:csv_content) do
-          "ukprn,first_name,last_name,email_address\r\n" \
-          "11111111,John,Smith,john_smith@example.com"
+          "code,first_name,last_name,email_address\r\n" \
+          "1AB,John,Smith,john_smith@example.com"
         end
 
         it "queues a job to create the users" do
@@ -152,8 +152,8 @@ RSpec.describe OnboardUsersWizard do
 
       context "when a email is invalid" do
         let(:csv_content) do
-          "ukprn,first_name,last_name,email_address\r\n" \
-          "11111111,John,Smith,invalid_email"
+          "code,first_name,last_name,email_address\r\n" \
+          "1AB,John,Smith,invalid_email"
         end
 
         it "returns an invalid wizard error" do

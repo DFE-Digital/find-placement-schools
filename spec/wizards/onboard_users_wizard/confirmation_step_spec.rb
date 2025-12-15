@@ -67,8 +67,8 @@ RSpec.describe OnboardUsersWizard::ConfirmationStep, type: :model do
     let(:file_name) { "uploaded.csv" }
     let(:csv) { CSV.parse(csv_content, headers: true, skip_blanks: true) }
     let(:csv_content) do
-      "ukprn,first_name,last_name,email_address\r\n" \
-        "10052837,John,Smith,john_smith@example.com"
+      "code,first_name,last_name,email_address\r\n" \
+        "1AB,John,Smith,john_smith@example.com"
     end
 
     describe "delegations" do
@@ -79,7 +79,7 @@ RSpec.describe OnboardUsersWizard::ConfirmationStep, type: :model do
     describe "#csv_headers" do
       it "returns the headers of the CSV file" do
         expect(step.csv_headers).to match_array(
-          %w[ukprn first_name last_name email_address],
+          %w[code first_name last_name email_address],
         )
       end
     end

@@ -38,8 +38,8 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
 
       context "when the csv_content is present" do
         let(:csv_content) do
-          "ukprn,first_name,last_name,email_address\r\n" \
-            "10052837,John,Smith,john_smith@example.com"
+          "code,first_name,last_name,email_address\r\n" \
+            "1AB,John,Smith,john_smith@example.com"
         end
         let(:attributes) { { csv_content: } }
 
@@ -69,15 +69,13 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
           let(:attributes) { { csv_upload: valid_file } }
           let(:valid_file) do
             ActionDispatch::Http::UploadedFile.new({
-                                                     filename: "valid.csv",
-                                                     type: "text/csv",
-                                                     tempfile: File.open(
-                                                       "spec/fixtures/importers/provider_users.csv",
-                                                       )
-                                                   })
+              filename: "valid.csv",
+              type: "text/csv",
+              tempfile: File.open("spec/fixtures/importers/provider_users.csv")
+            })
           end
-          let(:london_provider) { create(:provider, name: "London Provider", ukprn: 111_111) }
-          let(:guildford_provider) { create(:provider, name: "Guildford Provider", ukprn: 222_222) }
+          let(:london_provider) { create(:provider, name: "London Provider", code: "1AB") }
+          let(:guildford_provider) { create(:provider, name: "Guildford Provider", code: "2CD") }
 
           it "validates that the file is the correct format" do
             expect(step.valid?).to be(true)
@@ -98,7 +96,7 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
           it "returns errors for missing headers" do
             expect(step.valid?).to be(false)
             expect(step.errors.messages[:csv_upload]).to include(
-                                                           "Your file needs a column called ‘ukprn’, ‘email_address’, ‘first_name’, and ‘last_name’.",
+                                                           "Your file needs a column called ‘code’, ‘email_address’, ‘first_name’, and ‘last_name’.",
                                                            )
             expect(step.errors.messages[:csv_upload]).to include(
                                                            "Right now it has columns called ‘something_random’.",
@@ -112,7 +110,7 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
   describe "#csv_inputs_valid?" do
     subject(:csv_inputs_valid) { step.csv_inputs_valid? }
 
-    before { create(:provider, name: "London Provider", ukprn: "10052837") }
+    before { create(:provider, name: "London Provider", code: "1AB") }
 
     context "when the csv_content is blank" do
       it "returns true" do
@@ -122,8 +120,8 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
 
     context "when csv_content contains invalid email_address" do
       let(:csv_content) do
-        "ukprn,first_name,last_name,email_address\r\n" \
-          "10052837,John,Smith,invalid_email"
+        "code,first_name,last_name,email_address\r\n" \
+          "1AB,John,Smith,invalid_email"
       end
       let(:attributes) { { csv_content: } }
 
@@ -135,9 +133,9 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
 
     context "when csv_content contains missing first_name" do
       let(:csv_content) do
-        "ukprn,first_name,last_name,email_address\r\n" \
-          "10052837,James,Samson,test@sample.com\r\n" \
-          "10052837,,Smith,test@sample.com"
+        "code,first_name,last_name,email_address\r\n" \
+          "1AB,James,Samson,test@sample.com\r\n" \
+          "1AB,,Smith,test@sample.com"
       end
       let(:attributes) { { csv_content: } }
 
@@ -149,9 +147,9 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
 
     context "when csv_content contains missing last_name attribute" do
       let(:csv_content) do
-        "ukprn,first_name,last_name,email_address\r\n" \
-          "10052837,James,,test@sample.com\r\n" \
-          "10052837,James,Samson,test@sample.com"
+        "code,first_name,last_name,email_address\r\n" \
+          "1AB,James,,test@sample.com\r\n" \
+          "1AB,James,Samson,test@sample.com"
       end
       let(:attributes) { { csv_content: } }
 
@@ -161,10 +159,10 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
       end
     end
 
-    context "when the csv_content contains valid email_address, ukprn, and all necessary valid attributes" do
+    context "when the csv_content contains valid email_address, code, and all necessary valid attributes" do
       let(:csv_content) do
-        "ukprn,first_name,last_name,email_address\r\n" \
-          "10052837,John,Smith,john_smith@example.com\r\n" \
+        "code,first_name,last_name,email_address\r\n" \
+          "1AB,John,Smith,john_smith@example.com\r\n" \
           ",,,,"
       end
       let(:attributes) { { csv_content: } }
@@ -176,8 +174,8 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
   end
 
   describe "#process_csv" do
-    let(:london_provider) { create(:provider, name: "London Provider", ukprn: "10052837") }
-    let(:guildford_provider) { create(:provider, name: "Guildford Provider", ukprn: "222222") }
+    let(:london_provider) { create(:provider, name: "London Provider", code: "1AB") }
+    let(:guildford_provider) { create(:provider, name: "Guildford Provider", code: "2CD") }
     let(:attributes) { { csv_upload: valid_file } }
     let(:valid_file) do
       ActionDispatch::Http::UploadedFile.new({
@@ -196,11 +194,11 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
 
     it "reads a given CSV and assigns the content to the csv_content attribute" do
       expect(step.csv_content).to eq(
-                                    "ukprn,first_name,last_name,email_address\n" \
-                                      "10052837,Jeff,Barnes,j.barnes@example.com\n" \
-                                      "10032194,Jeff,Barnes,j.barnes@example.com\n" \
-                                      "10032194,James,Hill,j.hill@example.com\n" \
-                                      "10064216,Sarah,Smith,\n",
+                                    "code,first_name,last_name,email_address\n" \
+                                      "1AB,Jeff,Barnes,j.barnes@example.com\n" \
+                                      "2CD,Jeff,Barnes,j.barnes@example.com\n" \
+                                      "2CD,James,Hill,j.hill@example.com\n" \
+                                      "3EF,Sarah,Smith,\n",
                                     )
     end
   end
@@ -209,8 +207,8 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
     subject(:csv) { step.csv }
 
     let(:csv_content) do
-      "ukprn,first_name,last_name,email_address\n" \
-        "10052837,Joe,Bloggs,joe_bloggs@example.com\n" \
+      "code,first_name,last_name,email_address\n" \
+        "1AB,Joe,Bloggs,joe_bloggs@example.com\n" \
         "222222,Sue,Doe,sue_doe@example.com\n" \
         ""
     end
@@ -219,13 +217,13 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
     it "converts the csv content into a CSV record" do
       expect(csv).to be_a(CSV::Table)
       expect(csv.headers).to match_array(
-                               %w[ukprn first_name last_name email_address],
+                               %w[code first_name last_name email_address],
                                )
       expect(csv.count).to eq(2)
 
       expect(csv[0]).to be_a(CSV::Row)
       expect(csv[0].to_h).to eq({
-                                  "ukprn" => "10052837",
+                                  "code" => "1AB",
                                   "first_name" => "Joe",
                                   "last_name" => "Bloggs",
                                   "email_address" => "joe_bloggs@example.com"
@@ -233,7 +231,7 @@ RSpec.describe OnboardUsersWizard::ProviderUploadStep, type: :model do
 
       expect(csv[1]).to be_a(CSV::Row)
       expect(csv[1].to_h).to eq({
-                                  "ukprn" => "222222",
+                                  "code" => "222222",
                                   "first_name" => "Sue",
                                   "last_name" => "Doe",
                                   "email_address" => "sue_doe@example.com"

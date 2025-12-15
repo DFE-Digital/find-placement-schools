@@ -34,7 +34,7 @@ class OnboardUsersWizard < BaseWizard
     @user_details ||= begin
       details = []
       csv_rows.each do |row|
-        identifier = user_type_provider? ? row["ukprn"] : row["urn"]
+        identifier = user_type_provider? ? row["code"] : row["urn"]
         next if identifier.blank?
 
         organisation = find_organisation(identifier)
@@ -50,6 +50,7 @@ class OnboardUsersWizard < BaseWizard
           email_address: row["email_address"]
         }
       end
+
       details
     end
   end
@@ -60,13 +61,13 @@ class OnboardUsersWizard < BaseWizard
 
   def csv_rows
     upload_step.csv.reject do |row|
-      row["email_address"].blank? || (user_type_provider? ? row["ukprn"].blank? : row["urn"].blank?)
+      row["email_address"].blank? || (user_type_provider? ? row["code"].blank? : row["urn"].blank?)
     end
   end
 
   def find_organisation(identifier)
     if user_type_provider?
-      Provider.find_by(ukprn: identifier)
+      Provider.find_by(code: identifier)
     else
       School.find_by(urn: identifier)
     end

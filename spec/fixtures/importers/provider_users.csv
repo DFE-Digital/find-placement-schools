@@ -1,5 +1,5 @@
-ukprn,first_name,last_name,email_address
-10052837,Jeff,Barnes,j.barnes@example.com
-10032194,Jeff,Barnes,j.barnes@example.com
-10032194,James,Hill,j.hill@example.com
-10064216,Sarah,Smith,
+code,first_name,last_name,email_address
+1AB,Jeff,Barnes,j.barnes@example.com
+2CD,Jeff,Barnes,j.barnes@example.com
+2CD,James,Hill,j.hill@example.com
+3EF,Sarah,Smith,
