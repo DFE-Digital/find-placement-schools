@@ -43,7 +43,7 @@
                 <% if current_step.invalid_identifier_rows.include?(csv_row_index) %>
                   <strong class="error-text"><%= t(".csv_table.errors.invalid_identifier") %></strong><br>
                 <% end %>
-                <%= csv_row["urn"] || csv_row["ukprn"] %>
+                <%= csv_row["urn"] || csv_row["code"] %>
               </p>
             <% end %>
           <% row.with_cell do %>

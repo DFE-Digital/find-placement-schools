@@ -39,7 +39,7 @@ en:
 
           The CSV file must contain the following headers in the first row:
 
-            - ukprn
+            - code
             - email_address
             - first_name
             - last_name
