@@ -1,5 +1,9 @@
 ---
 shared:
+  :organisations:
+    - transit_travel_duration
+    - walk_travel_duration
+    - drive_travel_duration
   :sessions:
     - id
     - session_id
