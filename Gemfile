@@ -75,7 +75,7 @@ gem "pundit"
 
 gem "okcomputer", "~> 1.19"
 
-gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.10"
+gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.12"
 
 gem "google-cloud-bigquery", "1.61.1"
 gem "google-apis-bigquery_v2", "0.95.0"
