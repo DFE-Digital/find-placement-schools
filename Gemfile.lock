@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/DFE-Digital/dfe-analytics.git
-  revision: 23ae21ef25f5bd1ce081631fbada4cd3b2667cf7
-  tag: v1.15.10
+  revision: 91427abc46315f266dea803834d21edd6c7ef136
+  tag: v1.15.12
   specs:
-    dfe-analytics (1.15.10)
+    dfe-analytics (1.15.12)
       google-cloud-bigquery (~> 1.38)
       httparty (~> 0.21)
       multi_xml (~> 0.6.0)
@@ -139,7 +139,7 @@ GEM
     childprocess (5.1.0)
       logger (~> 1.5)
     climate_control (1.2.0)
-    concurrent-ruby (1.3.5)
+    concurrent-ruby (1.3.6)
     connection_pool (3.0.2)
     crack (1.0.1)
       bigdecimal
@@ -337,7 +337,7 @@ GEM
       stimulus-rails
       turbo-rails
     msgpack (1.8.0)
-    multi_json (1.17.0)
+    multi_json (1.18.0)
     multi_xml (0.6.0)
     net-http (0.6.0)
       uri
