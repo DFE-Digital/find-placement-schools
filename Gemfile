@@ -80,7 +80,7 @@ gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.12"
 gem "google-cloud-bigquery", "1.61.1"
 gem "google-apis-bigquery_v2", "0.95.0"
 gem "json", "2.18.0"
-gem "net-http", "0.6.0"
+gem "net-http", "0.8.0"
 gem "uri", "1.1.1"
 
 gem "sentry-ruby"
