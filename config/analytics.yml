@@ -95,9 +95,6 @@ shared:
     - type_of_establishment
     - urban_or_rural
     - website
-    - transit_travel_duration
-    - walk_travel_duration
-    - drive_travel_duration
   :placement_preferences:
     - id
     - academic_year_id
