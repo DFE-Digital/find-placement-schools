@@ -23,7 +23,7 @@
 @include govuk.govuk-media-query($until: desktop) {
   .js-enabled .app-filter-layout__filter {
     background-color: govuk.govuk-colour("light-grey");
-    position: fixed; top: govuk.govuk-spacing(1); right: govuk.govuk_spacing(1); bottom: govuk.govuk_spacing(1);
+    position: fixed; top: govuk.govuk-spacing(1); right: govuk.govuk-spacing(1); bottom: govuk.govuk-spacing(1);
     overflow-y: scroll;
     z-index: 100;
   }
@@ -219,10 +219,10 @@
     content: '';
     display: inline-block;
     font-weight: bold;
-    height: govuk_spacing(2);
+    height: govuk-spacing(2);
     margin-left: govuk.govuk-spacing(1);
     vertical-align: middle;
-    width: govuk_spacing(2);
+    width: govuk-spacing(2);
   }
 
   &:hover:after {
