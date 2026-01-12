@@ -1,3 +1,7 @@
+// Using @use to import govuk-frontend styles and mixins under the "govuk" namespace
+// https://sass-lang.com/documentation/at-rules/use/#choosing-a-namespace
+@use "govuk";
+
 .search-form {
   display: flex;
 }
@@ -10,20 +14,20 @@
   margin-top: auto;
   top: -2px;
   margin-bottom: 0;
-  margin-left: govuk-spacing(2);
+  margin-left: govuk.govuk-spacing(2);
 }
 
 .clear-search {
   margin-top: -20px;
 }
 
-@include govuk-media-query($until: desktop) {
+@include govuk.govuk-media-query($until: desktop) {
   .search-form {
     display: block;
   }
 
   .search-form button {
     margin-left: 0;
-    margin-top: govuk-spacing(2);
+    margin-top: govuk.govuk-spacing(2);
   }
 }

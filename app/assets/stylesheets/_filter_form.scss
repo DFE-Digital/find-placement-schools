@@ -1,25 +1,29 @@
+// Using @use to import govuk-frontend styles and mixins under the "govuk" namespace
+// https://sass-lang.com/documentation/at-rules/use/#choosing-a-namespace
+@use "govuk";
+
 .app-filter {
-  background-color: govuk-colour("light-grey");
+  background-color: govuk.govuk-colour("light-grey");
 }
 
 .app-filter-layout {
-  background-color: govuk-colour("light-grey");
-  @include govuk-clearfix;
+  background-color: govuk.govuk-colour("light-grey");
+  @include govuk.govuk-clearfix;
 }
 
 .app-filter-layout__filter:focus {
-  outline: $govuk-focus-width solid $govuk-focus-colour;
+  outline: govuk.$govuk-focus-width solid govuk.$govuk-focus-colour;
   outline-offset: 0;
 
-  @include govuk-media-query(desktop) {
+  @include govuk.govuk-media-query(desktop) {
     outline: none;
   }
 }
 
-@include govuk-media-query($until: desktop) {
+@include govuk.govuk-media-query($until: desktop) {
   .js-enabled .app-filter-layout__filter {
-    background-color: govuk-colour("light-grey");
-    position: fixed; top: govuk-spacing(1); right: govuk_spacing(1); bottom: govuk_spacing(1);
+    background-color: govuk.govuk-colour("light-grey");
+    position: fixed; top: govuk.govuk-spacing(1); right: govuk.govuk_spacing(1); bottom: govuk.govuk_spacing(1);
     overflow-y: scroll;
     z-index: 100;
   }
@@ -28,14 +32,14 @@
 .app-filter-layout__content {
   overflow: hidden;
   overflow-x: auto;
-  background-color: govuk-colour("light-grey");
+  background-color: govuk.govuk-colour("light-grey");
 }
 
 .app-filter__header {
-  background-color: govuk-colour("light-grey");
+  background-color: govuk.govuk-colour("light-grey");
   display: flex;
   justify-content: space-between;
-  padding: govuk-spacing(2) govuk-spacing(3);
+  padding: govuk.govuk-spacing(2) govuk.govuk-spacing(3);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -44,7 +48,7 @@
     margin-bottom: 0;
   }
 
-  @include govuk-media-query($from: desktop) {
+  @include govuk.govuk-media-query($from: desktop) {
     position: static;
   }
 }
@@ -55,7 +59,7 @@
   width: 100%;
 
   button {
-    @include govuk-font($size: 24, $weight: bold);
+    @include govuk.govuk-font($size: 24, $weight: bold);
     background-color: transparent;
     box-sizing: border-box;
     border-radius: 0;
@@ -103,9 +107,9 @@
 }
 
 .app-filter__close {
-  @include govuk-font(19);
+  @include govuk.govuk-font(19);
 
-  color: govuk-colour("black");
+  color: govuk.govuk-colour("black");
   cursor: pointer;
   background-color: transparent;
   border: none;
@@ -115,9 +119,9 @@
   -webkit-appearance: none;
 
   &:focus {
-    background-color: $govuk-focus-colour;
-    color: $govuk-focus-text-colour;
-    box-shadow: 0 -2px $govuk-focus-colour, 0 4px $govuk-focus-text-colour;
+    background-color: govuk.$govuk-focus-colour;
+    color: govuk.$govuk-focus-text-colour;
+    box-shadow: 0 -2px govuk.$govuk-focus-colour, 0 4px govuk.$govuk-focus-text-colour;
     outline: none;
   }
 
@@ -133,7 +137,7 @@
     content: '';
     display: inline-block;
     height: 14px;
-    margin-right: govuk-spacing(1);
+    margin-right: govuk.govuk-spacing(1);
     position: relative;
     top: -1px; // Alignment tweak
     vertical-align: middle;
@@ -142,12 +146,12 @@
 }
 
 .app-filter-layout__selected {
-  background-color: govuk-colour("light-grey");
-  padding: govuk-spacing(1);
-  padding-bottom: govuk-spacing(5);
-  margin: govuk-spacing(2);
-  border-top: 1px solid govuk-colour("mid-grey");
-  border-bottom: 1px solid govuk-colour("mid-grey");
+  background-color: govuk.govuk-colour("light-grey");
+  padding: govuk.govuk-spacing(1);
+  padding-bottom: govuk.govuk-spacing(5);
+  margin: govuk.govuk-spacing(2);
+  border-top: 1px solid govuk.govuk-colour("mid-grey");
+  border-bottom: 1px solid govuk.govuk-colour("mid-grey");
 
   ul:last-of-type {
     margin-bottom: 0; // IE9 +
@@ -167,7 +171,7 @@
 
 .app-filter__heading-title,
 .app-filter__heading-action {
-  padding-top: govuk-spacing(3);
+  padding-top: govuk.govuk-spacing(3);
   display: inline-block;
   text-align: left;
   vertical-align: middle;
@@ -176,38 +180,38 @@
 
 .app-filter-tags {
   font-size: 0;
-  margin-bottom: govuk-spacing(2); // Needs to adjust to 15px on mobile
+  margin-bottom: govuk.govuk-spacing(2); // Needs to adjust to 15px on mobile
   padding-left: 0;
 
   li {
     display: inline-block;
-    margin-right: govuk-spacing(1);
+    margin-right: govuk.govuk-spacing(1);
   }
 }
 
 .app-filter__tag {
-  @include govuk-font(16);
-  background-color: govuk-colour("white");
-  border: 1px solid govuk-colour("black");
-  color: govuk-colour("black");
+  @include govuk.govuk-font(16);
+  background-color: govuk.govuk-colour("white");
+  border: 1px solid govuk.govuk-colour("black");
+  color: govuk.govuk-colour("black");
   display: inline-block;
-  margin-top: govuk-spacing(1);
-  padding: govuk-spacing(1);
+  margin-top: govuk.govuk-spacing(1);
+  padding: govuk.govuk-spacing(1);
   text-decoration: none;
 
   &:link,
   &:visited {
-    color: govuk-colour("black");
+    color: govuk.govuk-colour("black");
   }
 
   &:focus {
-    color: $govuk-focus-text-colour;
-    background-color: $govuk-focus-colour;
+    color: govuk.$govuk-focus-text-colour;
+    background-color: govuk.$govuk-focus-colour;
   }
 
   &:hover {
-    background-color: govuk-colour("black");
-    color: govuk-colour("white");
+    background-color: govuk.govuk-colour("black");
+    color: govuk.govuk-colour("white");
   }
 
   &:after {
@@ -216,7 +220,7 @@
     display: inline-block;
     font-weight: bold;
     height: govuk_spacing(2);
-    margin-left: govuk-spacing(1);
+    margin-left: govuk.govuk-spacing(1);
     vertical-align: middle;
     width: govuk_spacing(2);
   }
@@ -228,7 +232,7 @@
 
 .app-filter__options {
   margin-top: -1px;
-  padding: govuk-spacing(4) govuk-spacing(3);
+  padding: govuk.govuk-spacing(4) govuk.govuk-spacing(3);
 
   div:last-of-type {
     margin-bottom: 0; // IE9 +
@@ -236,10 +240,10 @@
 
   .govuk-checkboxes__label,
   .govuk-radios__label {
-    @include govuk-font(16);
+    @include govuk.govuk-font(16);
 
     &::before {
-      background-color: govuk-colour("white");
+      background-color: govuk.govuk-colour("white");
     }
   }
 }
@@ -249,25 +253,25 @@
   max-height: 200px;
   overflow-x: hidden;
   overflow-y: auto;
-  padding-left: govuk-spacing(2);
+  padding-left: govuk.govuk-spacing(2);
 }
 
 .app-filter__option input[type=search] {
   background: url("icon-magnifying-glass.svg") no-repeat;
-  background-color: govuk-colour("white");
-  padding-left: govuk-spacing(6);
+  background-color: govuk.govuk-colour("white");
+  padding-left: govuk.govuk-spacing(6);
 }
 
 .app-filter__option:not(:last-of-type) {
-  border-bottom: 1px solid $govuk-border-colour;
-  margin-bottom: govuk-spacing(4);
+  border-bottom: 1px solid govuk.$govuk-border-colour;
+  margin-bottom: govuk.govuk-spacing(4);
 
   div:last-of-type {
-    margin-bottom: govuk-spacing(1);
+    margin-bottom: govuk.govuk-spacing(1);
   }
 }
 
-@include govuk-media-query(desktop) {
+@include govuk.govuk-media-query(desktop) {
   .display-initial {
     display: initial;
   }
@@ -281,7 +285,7 @@
   }
 }
 
-@include govuk-media-query($until: desktop) {
+@include govuk.govuk-media-query($until: desktop) {
   .display-none-on-mobile {
     display: none;
   }
