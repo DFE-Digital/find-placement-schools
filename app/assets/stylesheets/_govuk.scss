@@ -1,2 +1,34 @@
 // https://sass-lang.com/documentation/at-rules/forward/
 @forward "govuk-frontend/dist/govuk/index";
+
+// These overrides are required as the Rails asset pipeline adds fingerprinting to the filenames
+// if/when govuk-frontend is updated, these filenames may need to be updated too.
+// When updating, there is no need for the `/assets` prefix as the pipeline will add this.
+@font-face {
+  font-family: "GDS Transport";
+  font-style: normal;
+  font-weight: normal;
+  src: url("/fonts/light-94a07e06a1-v2.woff2") format("woff2"), url("/fonts/light-f591b13f7d-v2.woff") format("woff");
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: "GDS Transport";
+  font-style: normal;
+  font-weight: bold;
+  src: url("/fonts/bold-b542beb274-v2.woff2") format("woff2"), url("/fonts/bold-affa96571d-v2.woff") format("woff");
+  font-display: fallback;
+}
+
+// You will still see warnings about missing font files during compilation like
+// `Unable to resolve '/assets/images/govuk-crest.svg' for missing asset 'assets/images/govuk-crest.svg' in application.css`
+// these can be ignored as the correct files are being referenced below.
+.govuk-footer__copyright-logo::before {
+  background-image: url("/rebrand/images/govuk-crest.svg");
+}
+@supports (-webkit-mask-position: initial) or (mask-position: initial) {
+  .govuk-footer__copyright-logo::before {
+    -webkit-mask-image: url("/rebrand/images/govuk-crest.svg");
+    mask-image: url("/rebrand/images/govuk-crest.svg");
+  }
+}

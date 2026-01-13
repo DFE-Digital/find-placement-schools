@@ -40,8 +40,6 @@ module FindIttPlacements
     # Store user sessions in the database
     config.session_store :active_record_store
 
-    config.assets.paths << Rails.root.join("node_modules/govuk-frontend/dist/govuk/assets")
-
     config.exceptions_app = routes
 
     config.host_authorization = {
