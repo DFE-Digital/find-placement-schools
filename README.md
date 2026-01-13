@@ -18,7 +18,7 @@ This service has different interfaces for schools and providers, whilst also all
   * [asdf toolchain](#asdf-toolchain)
   * [Environment variables](#environment-variables)
   * [Database](#database)
-  * [Node & assets](#node--assets)
+  * [JavaScript, CSS and assets](#javascript-css-and-assets)
 * [Running the app](#running-the-app)
 * [Authentication](#authentication)
 * [Testing](#testing)
@@ -54,7 +54,7 @@ This service enables **providers** to find  **schools** with **placements**  bas
 * **Job queue**: `solid_queue`
 * **Cache**: `solid_cache`
 * **Auth**: OmniAuth OpenID Connect (DfE Sign-in)
-* **Assets**: `jsbundling-rails` + `cssbundling-rails` (Node + Yarn), `propshaft`
+* **Assets**: `jsbundling-rails` + `cssbundling-rails` (Bun), `propshaft`
 * **HTTP**: `httparty`
 * **Pagination**: `pagy`
 * **Presentation**: `draper`
@@ -64,7 +64,7 @@ This service enables **providers** to find  **schools** with **placements**  bas
 ## Requirements
 
 * Postgres **17.x** (server + headers)
-* NodeJS **≥ 18** and Yarn (via asdf)
+* Bun **>= 1.3.6** (for JS/CSS assets)
 * Build tools (for native gems)
 
 > macOS users: install `asdf` via Homebrew; Linux users: follow asdf docs.
@@ -77,8 +77,7 @@ This project depends on:
 
 * [Ruby](https://www.ruby-lang.org/)
 * [Ruby on Rails](https://rubyonrails.org/)
-* [NodeJS](https://nodejs.org/)
-* [Yarn](https://yarnpkg.com/)
+* [Bun](https://bun.com/)
 * [PostgreSQL](https://www.postgresql.org/)
 
 ### asdf toolchain
@@ -88,8 +87,7 @@ Install the required tools and then install versions pinned in `.tool-versions`:
 ```sh
 brew install asdf # on macOS
 asdf plugin add ruby
-asdf plugin add nodejs
-asdf plugin add yarn
+asdf plugin add bun
 asdf plugin add postgres
 asdf install
 ```
@@ -129,12 +127,12 @@ bin/setup
 bundle exec rails db:create db:migrate db:seed
 ```
 
-### Node & assets
+### JavaScript, CSS and assets
 
 Install JS and CSS dependencies and build once:
 
 ```sh
-yarn install
+bun install
 bin/rails assets:precompile # optional for dev; `bin/dev` will build on the fly
 ```
 
@@ -195,7 +193,7 @@ VS Code setting:
 
 ## Docs & ADRs
 
-We keep Architecture Decision Records in [`/adr`](adr/). Generate a new ADR with:
+We keep Architecture Decision Records in [`/adr`](/adr). Generate a new ADR with:
 
 ```sh
 bin/bundle exec rladr new "Title of the decision"

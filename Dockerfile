@@ -6,8 +6,8 @@
 FROM ruby:3.4.1-alpine AS builder
 
 # RUN apk -U upgrade && \
-#     apk add --update --no-cache gcc git libc6-compat libc-dev make nodejs \
-#     postgresql13-dev yarn
+#     apk add --update --no-cache gcc git libc6-compat libc-dev make \
+#     postgresql13-dev
 
 WORKDIR /app
 
@@ -17,16 +17,14 @@ RUN apk add --update --no-cache tzdata && \
     echo "Europe/London" > /etc/timezone
 
 # build-base: dependencies for bundle
-# yarn: node package manager
 # postgresql-dev: postgres driver and libraries
 # git: to install dfe-analytics
-RUN apk add --no-cache build-base yarn postgresql17-dev git
+RUN apk add --no-cache build-base postgresql17-dev git curl bash
 
-RUN apk add --no-cache nodejs npm
-
-RUN npm install -g corepack
-
-RUN corepack enable && corepack prepare yarn@4.9.2 --activate
+ENV BUN_INSTALL=/usr/local/bun
+ENV PATH=/usr/local/bun/bin:$PATH
+ARG BUN_VERSION=1.3.5
+RUN curl -fsSL https://bun.sh/install | bash -s -- "bun-v${BUN_VERSION}"
 
 # Install gems defined in Gemfile
 COPY .ruby-version Gemfile Gemfile.lock ./
@@ -39,9 +37,9 @@ RUN bundler -v && \
     bundle install --retry=5 --jobs=4 && \
     rm -rf /usr/local/bundle/cache
 
-# Install node packages defined in package.json
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+# Install node modules
+COPY package.json bun.lock* ./
+RUN bun install --frozen-lockfile
 
 # Copy all files to /app (except what is defined in .dockerignore)
 COPY . .
