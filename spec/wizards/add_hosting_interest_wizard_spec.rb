@@ -1,9 +1,10 @@
 require "rails_helper"
 
 RSpec.describe AddHostingInterestWizard do
-  subject(:wizard) { described_class.new(state:, params:, school:, current_step:, current_user:) }
+  subject(:wizard) { described_class.new(state:, params:, school:, academic_year:, current_step:, current_user:) }
 
   let(:school) { create(:school) }
+  let(:academic_year) { AcademicYear.next }
   let(:state) { {} }
   let(:params_data) { {} }
   let(:params) { ActionController::Parameters.new(params_data) }
@@ -13,14 +14,14 @@ RSpec.describe AddHostingInterestWizard do
   describe "#steps" do
     subject(:steps) { wizard.steps.keys }
 
-    it { is_expected.to eq %i[academic_year appetite] }
+    it { is_expected.to eq %i[appetite] }
 
     context "when the school already has a placement preference for the current academic year" do
       before do
         create(:placement_preference, organisation: school, academic_year: AcademicYear.current)
       end
 
-      it { is_expected.to eq %i[academic_year appetite] }
+      it { is_expected.to eq %i[appetite] }
     end
 
     context "when the appetite is set to 'actively_looking' during the appetite step" do
@@ -30,7 +31,7 @@ RSpec.describe AddHostingInterestWizard do
         }
       end
 
-      it { is_expected.to eq %i[academic_year appetite school_contact phase note_to_providers check_your_answers] }
+      it { is_expected.to eq %i[appetite school_contact phase note_to_providers check_your_answers] }
 
       context "when the phase is set to 'Primary' during the phase step" do
         let(:state) do
@@ -43,7 +44,6 @@ RSpec.describe AddHostingInterestWizard do
         it {
           expect(steps).to eq(
             %i[
-               academic_year
                appetite
                school_contact
                phase
@@ -65,7 +65,6 @@ RSpec.describe AddHostingInterestWizard do
         it {
           expect(steps).to eq(
             %i[
-               academic_year
                appetite
                school_contact
                phase
@@ -91,7 +90,6 @@ RSpec.describe AddHostingInterestWizard do
           it {
             expect(steps).to eq(
               [
-                :academic_year,
                 :appetite,
                 :school_contact,
                 :phase,
@@ -116,7 +114,6 @@ RSpec.describe AddHostingInterestWizard do
         it {
           expect(steps).to eq(
             %i[
-               academic_year
                appetite
                school_contact
                phase
@@ -136,7 +133,7 @@ RSpec.describe AddHostingInterestWizard do
         }
       end
 
-      it { is_expected.to eq %i[academic_year appetite school_contact reason_not_hosting are_you_sure] }
+      it { is_expected.to eq %i[appetite school_contact reason_not_hosting are_you_sure] }
     end
 
     context "when an appetite is set to 'interested' during the appetite step" do
@@ -146,13 +143,14 @@ RSpec.describe AddHostingInterestWizard do
         }
       end
 
-      it { is_expected.to eq %i[academic_year appetite school_contact phase note_to_providers confirm] }
+      it { is_expected.to eq %i[appetite school_contact phase note_to_providers confirm] }
     end
   end
 
   describe "#save_contact_details" do
     let(:state) do
       {
+        "academic_year" => { "academic_year" => academic_year.id },
         "appetite" => { "appetite" => "not_open" },
         "school_contact" => {
           "first_name" => "Joe",
@@ -229,7 +227,6 @@ RSpec.describe AddHostingInterestWizard do
         context "when the phase selected is 'Primary'" do
           let(:state) do
             {
-              "academic_year" => { "academic_year_id" => AcademicYear.next.id },
               "appetite" => { "appetite" => "actively_looking" },
               "phase" => { "phases" => %w[primary] },
               "year_group_selection" => { "year_groups" => %w[reception year_3 mixed_year_groups] },
@@ -247,7 +244,16 @@ RSpec.describe AddHostingInterestWizard do
 
             placement_preferences = school.placement_preferences.last
             expect(placement_preferences.appetite).to eq("actively_looking")
-            expect(placement_preferences.placement_details).to eq(state)
+            expect(placement_preferences.placement_details).to eq({
+              "appetite" => { "appetite" => "actively_looking" },
+              "phase" => { "phases" => %w[primary] },
+              "year_group_selection" => { "year_groups" => %w[reception year_3 mixed_year_groups] },
+              "school_contact" => {
+                "first_name" => "Joe",
+                "last_name" => "Bloggs",
+                "email_address" => "joe_bloggs@example.com"
+              }
+            })
           end
         end
 
@@ -256,7 +262,6 @@ RSpec.describe AddHostingInterestWizard do
           let(:mathematics) { create(:placement_subject, :secondary, name: "Mathematics") }
           let(:state) do
             {
-              "academic_year" => { "academic_year_id" => AcademicYear.next.id },
               "appetite" => { "appetite" => "actively_looking" },
               "phase" => { "phases" => %w[secondary] },
               "secondary_subject_selection" => { "subject_ids" => [ english.id, mathematics.id ] },
@@ -274,7 +279,16 @@ RSpec.describe AddHostingInterestWizard do
 
             placement_preferences = school.placement_preferences.last
             expect(placement_preferences.appetite).to eq("actively_looking")
-            expect(placement_preferences.placement_details).to eq(state)
+            expect(placement_preferences.placement_details).to eq({
+              "appetite" => { "appetite" => "actively_looking" },
+              "phase" => { "phases" => %w[secondary] },
+              "secondary_subject_selection" => { "subject_ids" => [ english.id, mathematics.id ] },
+              "school_contact" => {
+                "first_name" => "Joe",
+                "last_name" => "Bloggs",
+                "email_address" => "joe_bloggs@example.com"
+              }
+            })
           end
 
           context "when a selected subject has child subjects" do
@@ -282,7 +296,6 @@ RSpec.describe AddHostingInterestWizard do
             let(:mechanics) { create(:placement_subject, :secondary, name: "Mechanics", parent_subject: mathematics) }
             let(:state) do
               {
-                "academic_year" => { "academic_year_id" => AcademicYear.next.id },
                 "appetite" => { "appetite" => "actively_looking" },
                 "phase" => { "phases" => %w[secondary] },
                 "secondary_subject_selection" => { "subject_ids" => [ english.id, mathematics.id ] },
@@ -303,7 +316,19 @@ RSpec.describe AddHostingInterestWizard do
 
               placement_preferences = school.placement_preferences.last
               expect(placement_preferences.appetite).to eq("actively_looking")
-              expect(placement_preferences.placement_details).to eq(state)
+              expect(placement_preferences.placement_details).to eq({
+                "appetite" => { "appetite" => "actively_looking" },
+                "phase" => { "phases" => %w[secondary] },
+                "secondary_subject_selection" => { "subject_ids" => [ english.id, mathematics.id ] },
+                "secondary_child_subject_selection_#{mathematics.id}" => {
+                  "child_subject_ids" => [ statistics.id, mechanics.id ]
+                },
+                "school_contact" => {
+                  "first_name" => "Joe",
+                  "last_name" => "Bloggs",
+                  "email_address" => "joe_bloggs@example.com"
+                }
+              })
             end
           end
         end
@@ -313,7 +338,6 @@ RSpec.describe AddHostingInterestWizard do
           let(:mathematics) { create(:placement_subject, :secondary, name: "Mathematics") }
           let(:state) do
             {
-              "academic_year" => { "academic_year_id" => AcademicYear.next.id },
               "appetite" => { "appetite" => "actively_looking" },
               "phase" => { "phases" => %w[primary secondary] },
               "year_group_selection" => { "year_groups" => %w[reception year_3 mixed_year_groups] },
@@ -332,7 +356,17 @@ RSpec.describe AddHostingInterestWizard do
 
             placement_preferences = school.placement_preferences.last
             expect(placement_preferences.appetite).to eq("actively_looking")
-            expect(placement_preferences.placement_details).to eq(state)
+            expect(placement_preferences.placement_details).to eq({
+              "appetite" => { "appetite" => "actively_looking" },
+              "phase" => { "phases" => %w[primary secondary] },
+              "year_group_selection" => { "year_groups" => %w[reception year_3 mixed_year_groups] },
+              "secondary_subject_selection" => { "subject_ids" => [ english.id, mathematics.id ] },
+              "school_contact" => {
+                "first_name" => "Joe",
+                "last_name" => "Bloggs",
+                "email_address" => "joe_bloggs@example.com"
+              }
+            })
           end
         end
       end
@@ -344,7 +378,6 @@ RSpec.describe AddHostingInterestWizard do
         let(:mechanics) { create(:placement_subject, :secondary, name: "Mechanics", parent_subject: mathematics) }
         let(:state) do
           {
-            "academic_year" => { "academic_year_id" => AcademicYear.next.id },
             "appetite" => { "appetite" => "interested" },
             "phase" => { "phases" => %w[primary secondary] },
             "year_group_selection" => { "year_groups" => %w[reception year_3 mixed_year_groups] },
@@ -367,14 +400,27 @@ RSpec.describe AddHostingInterestWizard do
 
           placement_preferences = school.placement_preferences.last
           expect(placement_preferences.appetite).to eq("interested")
-          expect(placement_preferences.placement_details).to eq(state)
+          expect(placement_preferences.placement_details).to eq({
+            "appetite" => { "appetite" => "interested" },
+            "phase" => { "phases" => %w[primary secondary] },
+            "year_group_selection" => { "year_groups" => %w[reception year_3 mixed_year_groups] },
+            "secondary_subject_selection" => { "subject_ids" => [ english.id, mathematics.id ] },
+            "secondary_child_subject_selection_#{mathematics.id}" => {
+              "child_subject_ids" => [ statistics.id, mechanics.id ]
+            },
+            "note_to_providers" => { "note" => "Will accept additional placements" },
+            "school_contact" => {
+              "first_name" => "Joe",
+              "last_name" => "Bloggs",
+              "email_address" => "joe_bloggs@example.com"
+            }
+          })
         end
       end
 
       context "when the appetite is 'not_open'" do
         let(:state) do
           {
-            "academic_year" => { "academic_year_id" => AcademicYear.next.id },
             "appetite" => { "appetite" => "not_open" },
             "reason_not_hosting" => {
               "reasons_not_hosting" => [
@@ -397,7 +443,21 @@ RSpec.describe AddHostingInterestWizard do
 
           placement_preferences = school.placement_preferences.last
           expect(placement_preferences.appetite).to eq("not_open")
-          expect(placement_preferences.placement_details).to eq(state)
+          expect(placement_preferences.placement_details).to eq({
+            "appetite" => { "appetite" => "not_open" },
+            "reason_not_hosting" => {
+              "reasons_not_hosting" => [
+                "Not enough trained mentors",
+                "Number of pupils with SEND needs",
+                "Working to improve our OFSTED rating"
+              ]
+            },
+            "school_contact" => {
+              "first_name" => "Joe",
+              "last_name" => "Bloggs",
+              "email_address" => "joe_bloggs@example.com"
+            }
+          })
         end
       end
 
@@ -420,18 +480,6 @@ RSpec.describe AddHostingInterestWizard do
           expect { save_placement_preference }.to raise_error "Invalid wizard state"
         end
       end
-    end
-  end
-
-  describe "#academic_year" do
-    subject(:academic_year) { wizard.academic_year }
-
-    let(:next_academic_year) { AcademicYear.next }
-
-    before { next_academic_year }
-
-    it "returns the next academic year" do
-      expect(academic_year).to eq(next_academic_year)
     end
   end
 
