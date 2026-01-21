@@ -44,6 +44,7 @@ class PlacementPreferences::EditHostingInterestController < ApplicationControlle
       placement_preference: @placement_preference,
       current_user:,
       school:,
+      academic_year:,
       params:,
       state:,
       current_step:,
@@ -60,5 +61,13 @@ class PlacementPreferences::EditHostingInterestController < ApplicationControlle
 
   def index_path
     placement_preference_path(@placement_preference)
+  end
+
+  def academic_year
+    @academic_year ||= if params[:academic_year_id].present?
+                         AcademicYear.find(params[:academic_year_id])
+    else
+                         AcademicYear.current
+    end
   end
 end
