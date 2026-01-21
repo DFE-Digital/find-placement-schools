@@ -150,7 +150,6 @@ RSpec.describe AddHostingInterestWizard do
   describe "#save_contact_details" do
     let(:state) do
       {
-        "academic_year" => { "academic_year" => academic_year.id },
         "appetite" => { "appetite" => "not_open" },
         "school_contact" => {
           "first_name" => "Joe",
