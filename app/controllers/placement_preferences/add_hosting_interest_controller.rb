@@ -30,6 +30,7 @@ class PlacementPreferences::AddHostingInterestController < ApplicationController
     @wizard = AddHostingInterestWizard.new(
       current_user:,
       school:,
+      academic_year:,
       params:,
       state:,
       current_step:,
@@ -46,6 +47,14 @@ class PlacementPreferences::AddHostingInterestController < ApplicationController
 
   def set_school
     @school ||= current_organisation
+  end
+
+  def academic_year
+    @academic_year ||= if params[:academic_year_id].present?
+      AcademicYear.find(params[:academic_year_id])
+    else
+      AcademicYear.current
+    end
   end
 
   def authorize_placement_preference

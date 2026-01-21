@@ -5,13 +5,6 @@
       <span class="govuk-caption-l"><%= organisation.name %></span>
       <h1 class="govuk-heading-l"><%= t(".title") %></h1>
 
-      <% unless organisation.placement_preference_for(academic_year: AcademicYear.current).present? &&
-                organisation.placement_preference_for(academic_year: AcademicYear.next).present? %>
-        <%= govuk_button_link_to(
-              t(".add_placement_information"),
-              new_add_hosting_interest_placement_preferences_path(organisation)) %>
-      <% end %>
-
       <%= govuk_table do |table| %>
         <% table.with_caption(size: 'm', text: t(".placement_information")) %>
         <% table.with_head do |header| %>
@@ -31,7 +24,9 @@
                     placement_preference_path(placement_preference),
                     no_visited_state: true) %>
                 <% else %>
-                  <%= academic_year.name %>
+                  <%= govuk_link_to(
+                    academic_year.name,
+                    new_add_hosting_interest_placement_preferences_path(organisation, academic_year_id: academic_year.id)) %>
                 <% end %>
               <% end %>
               <% row.with_cell do %>
