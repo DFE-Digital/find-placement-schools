@@ -1,10 +1,10 @@
 class EditHostingInterestWizard < AddHostingInterestWizard
   attr_reader :placement_preference
 
-  def initialize(placement_preference:, current_user:, school:, params:, state:, current_step: nil)
+  def initialize(placement_preference:, current_user:, school:, academic_year:, params:, state:, current_step: nil)
     @placement_preference = placement_preference
 
-    super(current_user:, school:, params:, state:, current_step:)
+    super(current_user:, school:, academic_year:, params:, state:, current_step:)
   end
 
   def setup_state
