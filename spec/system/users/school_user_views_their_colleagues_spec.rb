@@ -4,7 +4,7 @@ RSpec.describe "School user views their colleagues", type: :system do
   scenario do
     given_that_schools_exist_with_users
     and_i_am_signed_in
-    then_i_see_the_academic_years_page
+    then_i_see_the_appetite_page
 
     when_i_navigate_to_the_users_tab
     then_i_see_the_users_page
@@ -14,7 +14,7 @@ RSpec.describe "School user views their colleagues", type: :system do
   private
 
   def given_that_schools_exist_with_users
-    @next_academic_year = AcademicYear.next.decorate
+    @current_academic_year = AcademicYear.current.decorate
     @hogwarts = create(:school, name: "Hogwarts")
     @harry = create(:user, first_name: "Harry", last_name: "Potter", email_address: "harry.potter@hogwarts.com", organisations: [ @hogwarts ])
     @ron = create(:user, first_name: "Ron", last_name: "Weasley", email_address: "ron.weasley@hogwarts.com", organisations: [ @hogwarts ])
@@ -24,17 +24,19 @@ RSpec.describe "School user views their colleagues", type: :system do
     sign_in_user(organisations: [ @hogwarts ])
   end
 
-  def then_i_see_the_academic_years_page
+  def then_i_see_the_appetite_page
     expect(page).to have_title(
-                      "Which academic year do you want to add placement information for? - Find placement schools",
+                      "Can your school offer placements for trainee teachers in the #{@current_academic_year.name} academic year? - Find placement schools",
                       )
     expect(page).to have_caption("Placement information")
     expect(page).to have_element(
                       :legend,
-                      text: "Which academic year do you want to add placement information for?",
+                      text: "Can your school offer placements for trainee teachers in the #{@current_academic_year.name} academic year?",
                       class: "govuk-fieldset__legend",
                       )
-    expect(page).to have_field(@next_academic_year_name, type: :radio)
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_navigate_to_the_users_tab

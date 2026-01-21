@@ -10,6 +10,8 @@ RSpec.describe "School user views placement preferences", type: :system do
   private
 
   def given_i_am_signed_in
+    @current_academic_year = AcademicYear.current
+    @next_academic_year = AcademicYear.next
     @school = create(:school, :with_placement_preferences, name: "Hogwarts")
     sign_in_user(organisations: [ @school ])
   end

@@ -18,10 +18,6 @@ RSpec.describe "Multi org user changes organisation", type: :system do
   private
 
   def given_i_am_signed_in
-    @current_academic_year = create(:academic_year, :current)
-    @current_academic_year_name = @current_academic_year.name
-    @next_academic_year = create(:academic_year, :next)
-    @next_academic_year_name = @next_academic_year.name
     @hogwarts = build(:school, name: "Hogwarts")
     @order_of_the_phoenix = build(:provider, name: "Order of the Phoenix")
 
@@ -44,17 +40,16 @@ RSpec.describe "Multi org user changes organisation", type: :system do
   end
 
   def then_i_see_the_placement_preferences_form_page
-    expect(page).to have_title(
-                      "Which academic year do you want to add placement information for? - Find placement schools",
-                      )
-    expect(page).to have_caption("Placement information")
+    expect(page).to have_title("Can your school offer placements for trainee teachers in the 2025 to 2026 academic year? - Find placement schools")
+    expect(page).to have_important_banner("You have changed your organisation to Hogwarts")
     expect(page).to have_element(
-                      :legend,
-                      text: "Which academic year do you want to add placement information for?",
-                      class: "govuk-fieldset__legend",
-                      )
-    expect(page).to have_field(@current_academic_year_name, type: :radio)
-    expect(page).to have_field(@next_academic_year_name, type: :radio)
+      :legend,
+      text: "Can your school offer placements for trainee teachers in the 2025 to 2026 academic year?",
+      class: "govuk-fieldset__legend",
+    )
+    expect(page).to have_field("Yes", type: :radio)
+    expect(page).to have_field("Maybe", type: :radio)
+    expect(page).to have_field("No", type: :radio)
   end
 
   def when_i_click_on_hogwarts_change_organisation_link
