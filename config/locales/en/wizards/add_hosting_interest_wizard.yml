@@ -2,14 +2,6 @@ en:
   wizards:
     add_hosting_interest_wizard:
       unknown: I don’t know
-      academic_year_step:
-        caption: Placement information
-        title: Which academic year do you want to add placement information for?
-        information_html: Information is already recorded for the %{existing_academic_year_name} academic year, you can %{link} at any time.
-        edit_preference: edit your school’s placement information
-        add_information_for: Click continue to add placement information for the %{academic_year_name} academic year.
-        continue: Continue
-        add_placement_info: Add placement information
       appetite_step:
         caption: Placement information
         title:
