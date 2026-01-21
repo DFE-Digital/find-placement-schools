@@ -97,7 +97,7 @@ RSpec.describe "School user updates the placement preference with an invalid val
                       )
     expect(page).to have_link(
                       "edit placement information",
-                      href: new_edit_hosting_interest_placement_preference_path(@placement_preference)
+                      href: new_edit_hosting_interest_placement_preference_path(@placement_preference, academic_year: @next_academic_year),
                     )
 
     expect(page).to have_h3("Placement contact")

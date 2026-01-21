@@ -52,11 +52,11 @@ RSpec.describe "Admin user changes organisation to a school", type: :system do
   end
 
   def then_i_see_the_add_placement_details_page
-    expect(page).to have_title("Which academic year do you want to add placement information for? - Find placement schools")
+    expect(page).to have_title("Can your school offer placements for trainee teachers in the 2025 to 2026 academic year? - Find placement schools")
     expect(page).to have_important_banner("You have changed your organisation to Hogwarts School of Witchcraft and Wizardry")
     expect(page).to have_element(
       :legend,
-      text: "Which academic year do you want to add placement information for?",
+      text: "Can your school offer placements for trainee teachers in the 2025 to 2026 academic year?",
       class: "govuk-fieldset__legend",
     )
   end

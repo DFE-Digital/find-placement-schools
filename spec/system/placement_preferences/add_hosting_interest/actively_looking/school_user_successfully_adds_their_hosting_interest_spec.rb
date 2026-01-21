@@ -11,10 +11,6 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     given_academic_years_exist
     and_secondary_subjects_exist
     when_i_am_signed_in
-    then_i_see_the_academic_years_page
-
-    when_i_select_the_next_academic_year
-    and_i_click_on_continue
     then_i_see_the_appetite_form_page
 
     when_i_select_yes
@@ -121,9 +117,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
   def given_academic_years_exist
     @current_academic_year = create(:academic_year, :current)
     @current_academic_year_name = @current_academic_year.name
-    @next_academic_year = create(:academic_year, :next)
-    @next_academic_year_name = @next_academic_year.name
-    @next_academic_year_short_name = "#{@next_academic_year.starts_on.year}/#{@next_academic_year.ends_on.strftime("%y")}"
+    @current_academic_year_short_name = "#{@current_academic_year.starts_on.year}/#{@current_academic_year.ends_on.strftime("%y")}"
   end
 
   def and_secondary_subjects_exist
@@ -132,32 +126,14 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     @mathematics = create(:placement_subject, :secondary, name: "Mathematics")
   end
 
-  def then_i_see_the_academic_years_page
-    expect(page).to have_title(
-                      "Which academic year do you want to add placement information for? - Find placement schools",
-                      )
-    expect(page).to have_caption("Placement information")
-    expect(page).to have_element(
-                      :legend,
-                      text: "Which academic year do you want to add placement information for?",
-                      class: "govuk-fieldset__legend",
-                      )
-    expect(page).to have_field(@current_academic_year_name, type: :radio)
-    expect(page).to have_field(@next_academic_year_name, type: :radio)
-  end
-
-  def when_i_select_the_next_academic_year
-    choose @next_academic_year_name
-  end
-
   def then_i_see_the_appetite_form_page
     expect(page).to have_title(
-      "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year? - Find placement schools",
+      "Can your school offer placements for trainee teachers in the #{@current_academic_year_name} academic year? - Find placement schools",
     )
     expect(page).to have_caption("Placement information")
     expect(page).to have_element(
       :legend,
-      text: "Can your school offer placements for trainee teachers in the #{@next_academic_year_name} academic year?",
+      text: "Can your school offer placements for trainee teachers in the #{@current_academic_year_name} academic year?",
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_field("Yes", type: :radio)
@@ -179,7 +155,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_title(
       "What education phase or specialism can your school offer placements in? - Find placement schools",
     )
-    expect(page).to have_caption("Placement information #{@next_academic_year_short_name}")
+    expect(page).to have_caption("Placement information #{@current_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
       text: "What education phase or specialism can your school offer placements in?",
@@ -217,7 +193,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       class: "govuk-fieldset__legend",
     )
     expect(page).to have_caption(
-      "Primary placement information #{@next_academic_year_short_name}",
+      "Primary placement information #{@current_academic_year_short_name}",
     )
     expect(page).to have_field("Nursery", type: :checkbox)
     expect(page).to have_field("Reception", type: :checkbox)
@@ -244,7 +220,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       text: "Which secondary subjects can your school offer placements in?",
       class: "govuk-fieldset__legend",
     )
-    expect(page).to have_caption("Secondary placement information #{@next_academic_year_short_name}")
+    expect(page).to have_caption("Secondary placement information #{@current_academic_year_short_name}")
     expect(page).to have_field("English", type: :checkbox)
     expect(page).to have_field("Mathematics", type: :checkbox)
     expect(page).to have_field("Science", type: :checkbox)
@@ -259,7 +235,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
      expect(page).to have_title(
       "Which key stages can you offer placements in a SEND setting? - Find placement schools",
     )
-    expect(page).to have_caption("Placements in a SEND setting information #{@next_academic_year_short_name}")
+    expect(page).to have_caption("Placements in a SEND setting information #{@current_academic_year_short_name}")
     expect(page).to have_element(
       :legend,
       text: "Which key stages can you offer placements in a SEND setting?",
@@ -303,7 +279,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     expect(page).to have_title(
       "Check your answers - Find placement schools",
     )
-    expect(page).to have_caption("Placement information #{@next_academic_year_short_name}")
+    expect(page).to have_caption("Placement information #{@current_academic_year_short_name}")
     expect(page).to have_h1("Check your answers")
 
     expect(page).to have_h2("Offering placements")
@@ -313,7 +289,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     )
 
     expect(page).to have_h2("Education phase and specialism")
-    expect(page).to have_summary_list_row("Academic year", @next_academic_year_name)
+    expect(page).to have_summary_list_row("Academic year", @current_academic_year_name)
     expect(page).to have_summary_list_row("Phase", "Primary Secondary Send")
 
     expect(page).to have_h2("Primary placements")
@@ -388,7 +364,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
     )
     expect(page).to have_panel(
       nil,
-      "Providers can see that your school is offering placements for trainee teachers in the academic year #{@next_academic_year_short_name}",
+      "Providers can see that your school is offering placements for trainee teachers in the academic year #{@current_academic_year_short_name}",
     )
     expect(page).to have_h1("What happens next?")
     expect(page).to have_paragraph(
@@ -432,7 +408,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       "Is there anything about your school you would like providers to know? (optional) - Find placement schools",
     )
     expect(page).to have_caption(
-      "Placement information #{@next_academic_year_short_name}",
+      "Placement information #{@current_academic_year_short_name}",
     )
     expect(page).to have_element(
       :label,
