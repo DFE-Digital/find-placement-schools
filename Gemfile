@@ -123,7 +123,7 @@ gem "govuk-components"
 gem "govuk_design_system_formbuilder"
 
 group :test, :development do
-  gem "dotenv-rails", "~> 3.1"
+  gem "dotenv-rails", "~> 3.2"
   gem "erb_lint", require: false
   gem "factory_bot_rails"
   gem "rspec"
