@@ -61,12 +61,4 @@ class PlacementPreferences::EditHostingInterestController < ApplicationControlle
   def index_path
     placement_preference_path(@placement_preference)
   end
-
-  def academic_year
-    @academic_year ||= if params[:academic_year_id].present?
-                         AcademicYear.find(params[:academic_year_id])
-    else
-                         AcademicYear.current
-    end
-  end
 end
