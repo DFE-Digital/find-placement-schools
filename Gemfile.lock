@@ -406,7 +406,7 @@ GEM
     ostruct (0.6.3)
     pagy (9.4.0)
     parallel (1.27.0)
-    parser (3.3.9.0)
+    parser (3.3.10.1)
       ast (~> 2.4.1)
       racc
     pg (1.6.2)
@@ -668,7 +668,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
-    undercover (0.8.1)
+    undercover (0.8.3)
       base64
       bigdecimal
       imagen (>= 0.2.0)
