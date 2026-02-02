@@ -44,7 +44,6 @@ class PlacementPreferences::EditHostingInterestController < ApplicationControlle
       placement_preference: @placement_preference,
       current_user:,
       school:,
-      academic_year:,
       params:,
       state:,
       current_step:,

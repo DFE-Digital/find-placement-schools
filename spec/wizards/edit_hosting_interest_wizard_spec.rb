@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe EditHostingInterestWizard do
   subject(:wizard) do
-    described_class.new(placement_preference:, state:, params:, school:, academic_year:, current_step:, current_user:)
+    described_class.new(placement_preference:, state:, params:, school:, current_step:, current_user:)
   end
 
   let(:school) { create(:school) }
@@ -12,7 +12,7 @@ RSpec.describe EditHostingInterestWizard do
   let(:params) { ActionController::Parameters.new(params_data) }
   let(:current_step) { nil }
   let(:current_user) { create(:user) }
-  let(:placement_preference) { create(:placement_preference, organisation: school, placement_details:) }
+  let(:placement_preference) { create(:placement_preference, organisation: school, placement_details:, academic_year:) }
   let(:placement_details) do
     {
       "phase" => { "phases" => %w[primary secondary send] },
