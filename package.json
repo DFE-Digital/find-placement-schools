@@ -2,8 +2,8 @@
   "name": "app",
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
-    "govuk-frontend": "5.13.0",
-    "sass": "^1.97.1"
+    "govuk-frontend": "5.14.0",
+    "sass": "^1.97.2"
   },
   "scripts": {
     "build:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules --quiet-deps",
