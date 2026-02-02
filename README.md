@@ -2,9 +2,12 @@
 
 # Find placement schools
 
-> A Ruby on Rails application that allows **schools** to publish their placement preferences and **providers** to find schools that are open to, or intersted in hosting placements to facilitate more placements across the initial teacher training (ITT) market.
+> A Ruby on Rails application that allows **schools** to publish their placement preferences and **providers** to find
+> schools that are open to, or interested in hosting placements to facilitate more placements across the initial teacher
+> training (ITT) market.
 
-This service has different interfaces for schools and providers, whilst also allowing users with affiliations to multiple organisation types to switch between their organisations.
+This service has different interfaces for schools and providers, whilst also allowing users with affiliations to
+multiple organisation types to switch between their organisations.
 
 ## Table of contents
 
@@ -14,32 +17,34 @@ This service has different interfaces for schools and providers, whilst also all
 * [Requirements](#requirements)
 * [Setup](#setup)
 
-  * [Prerequisites](#prerequisites)
-  * [asdf toolchain](#asdf-toolchain)
-  * [Environment variables](#environment-variables)
-  * [Database](#database)
-  * [Node & assets](#node--assets)
+    * [Prerequisites](#prerequisites)
+    * [asdf toolchain](#asdf-toolchain)
+    * [Environment variables](#environment-variables)
+    * [Database](#database)
+    * [Node & assets](#node--assets)
 * [Running the app](#running-the-app)
 * [Authentication](#authentication)
 * [Testing](#testing)
 
-  * [Linting & static analysis](#linting--static-analysis)
+    * [Linting & static analysis](#linting--static-analysis)
 
-  * [Intellisense](#intellisense)
+    * [Intellisense](#intellisense)
 * [Docs & ADRs](#docs--adrs)
 
 ---
 
 ## Overview
 
-This service enables **providers** to find  **schools** with **placements**  based on the preferences that they list on the service.
+This service enables **providers** to find  **schools** with **placements**  based on the preferences that they list on
+the service.
 
 * **School interface**: create and manage placement preferences, set dates/subjects/locations.
 * **Provider interface**: find schools who the provider may want to work with.
 
 ## Architecture
 
-* Rails **8.0.2** app (API+server-rendered views) using the **GOV.UK Design System** via `govuk-components` and `govuk_design_system_formbuilder`.
+* Rails **8.0.2** app (API+server-rendered views) using the **GOV.UK Design System** via `govuk-components` and
+  `govuk_design_system_formbuilder`.
 * Two “service contexts”: **schools** and **providers** with distinct navigation and controllers.
 * Database-backed **sessions** (`activerecord-session_store`).
 * **Solid Queue** for background jobs; **Mission Control Jobs** UI for observability.
@@ -80,6 +85,7 @@ This project depends on:
 * [NodeJS](https://nodejs.org/)
 * [Yarn](https://yarnpkg.com/)
 * [PostgreSQL](https://www.postgresql.org/)
+* [cmake](#cmake)
 
 ### asdf toolchain
 
@@ -89,22 +95,57 @@ Install the required tools and then install versions pinned in `.tool-versions`:
 brew install asdf # on macOS
 asdf plugin add ruby
 asdf plugin add nodejs
-asdf plugin add yarn
 asdf plugin add postgres
 asdf install
 ```
 
-When installing the `pg` gem, Bundler executes outside the project directory and can miss the pinned Postgres version. To ensure `pg` compiles correctly use:
+When installing the `pg` gem, Bundler executes outside the project directory and can miss the pinned Postgres version.
+To ensure `pg` compiles correctly use:
 
 ```sh
 ASDF_POSTGRES_VERSION=17.2 bundle install
 ```
 
+### cmake
+
+cmake is required to build some native extensions, specifically the `rugged` gem used by `undercover`, used for test
+coverage reporting.
+
+```sh
+# macOS
+brew install cmake
+```
+
+### yarn
+
+To manage different Yarn versions per project, it is [recommended to use `corepack`](https://yarnpkg.com/corepack), the
+Yarn version is managed in the `.yarnrc.yml` file.
+
+```sh
+npm install -g corepack
+corepack enable
+```
+
+### Quick start
+
+Run the setup script to install gems,
+install [Node dependencies](#node--assets), [create the environment variables file](#environment-variables), [create and seed the database](#database),
+and [start the development server](#running-the-app):
+
+```sh
+  bin/setup
+```
+
+This script can be re-run at any time to ensure your environment is up to date.
+Seeding the database will not be repeated if the database already exists.
+
 ### Environment variables
 
-We use `dotenv-rails` in development and test. Create a `.env` file (not committed):
+We use `dotenv-rails` in development and test. Create a `.env.development.local` file (not committed):
 
 ```dotenv
+# .env.example
+
 SIGN_IN_METHOD=persona
 #SIGN_IN_METHOD=dfe-sign-in
 
@@ -150,7 +191,8 @@ The app should be available at **[http://localhost:3000](http://localhost:3000)*
 
 ## Authentication
 
-We use **DfE Sign-in** via **OmniAuth OpenID Connect**. Currently we sign in with personas in development; DfE-Sign in will be implemented in future.
+We use **DfE Sign-in** via **OmniAuth OpenID Connect**. Currently we sign in with personas in development; DfE-Sign in
+will be implemented in future.
 
 ## Testing
 

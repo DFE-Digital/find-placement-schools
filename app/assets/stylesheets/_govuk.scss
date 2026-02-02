@@ -1,0 +1,5 @@
+// https://sass-lang.com/documentation/at-rules/forward/
+@forward "govuk-frontend/dist/govuk/index" with (
+  $govuk-assets-path: "/",
+  $govuk-global-styles: true,
+);
