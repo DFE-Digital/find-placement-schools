@@ -4,10 +4,6 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
   scenario do
     given_academic_years_exist
     when_i_am_signed_in
-    then_i_see_the_academic_years_page
-
-    when_i_select_the_current_academic_year
-    and_i_click_on_continue
     then_i_see_the_appetite_form_page_for_current_academic_year
 
     when_i_select_no
@@ -33,9 +29,6 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     and_i_see_my_placement_preference_for_current_academic_year
 
     when_i_click_on_add_placement_information
-    then_i_see_the_academic_years_page_again
-
-    when_i_click_on_continue
     then_i_see_the_appetite_form_page_for_next_academic_year
 
     when_i_select_no
@@ -75,24 +68,6 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
     @next_academic_year = create(:academic_year, :next)
     @next_academic_year_name = @next_academic_year.name
     @next_academic_year_short_name = "#{@next_academic_year.starts_on.year}/#{@next_academic_year.ends_on.strftime("%y")}"
-  end
-
-  def then_i_see_the_academic_years_page
-    expect(page).to have_title(
-                      "Which academic year do you want to add placement information for? - Find placement schools",
-                      )
-    expect(page).to have_caption("Placement information")
-    expect(page).to have_element(
-                      :legend,
-                      text: "Which academic year do you want to add placement information for?",
-                      class: "govuk-fieldset__legend",
-                      )
-    expect(page).to have_field(@current_academic_year_name, type: :radio)
-    expect(page).to have_field(@next_academic_year_name, type: :radio)
-  end
-
-  def when_i_select_the_current_academic_year
-    choose @current_academic_year_name
   end
 
   def when_i_click_on_continue
@@ -231,16 +206,7 @@ RSpec.describe "School user creates multiple placement preferences", type: :syst
   end
 
   def when_i_click_on_add_placement_information
-    click_on "Add placement information"
-  end
-
-  def then_i_see_the_academic_years_page_again
-    expect(page).to have_title(
-                      "Which academic year do you want to add placement information for? - Find placement schools",
-                      )
-    expect(page).to have_caption("Placement information")
-    expect(page).to have_h1("Which academic year do you want to add placement information for?")
-    expect(page).to have_element(:p, text: "Information is already recorded for the #{@current_academic_year_name} academic year, you can edit your school’s placement information at any time.")
+    click_on @next_academic_year_name
   end
 
   def then_i_see_the_appetite_form_page_for_next_academic_year

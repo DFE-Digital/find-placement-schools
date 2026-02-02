@@ -1,15 +1,16 @@
 class AddHostingInterestWizard < BaseWizard
   include PlacementPreferenceCreatable
 
-  attr_reader :school, :current_user
+  attr_reader :school, :current_user, :academic_year
 
   delegate :school_contact, to: :school
 
   UNKNOWN_OPTION = "unknown".freeze
 
-  def initialize(current_user:, school:, params:, state:, current_step: nil)
+  def initialize(current_user:, school:, academic_year:, params:, state:, current_step: nil)
     @school = school
     @current_user = current_user
+    set_or_fetch_academic_year(state, academic_year)
     super(state:, params:, current_step:)
     return unless steps[:school_contact].present?
 
@@ -18,7 +19,6 @@ class AddHostingInterestWizard < BaseWizard
 
   def define_steps
     # Define the wizard steps here
-    add_step(AcademicYearStep) unless edit_mode?
     add_step(AppetiteStep)
     case appetite
     when "actively_looking"
@@ -41,26 +41,6 @@ class AddHostingInterestWizard < BaseWizard
     return [ UNKNOWN_OPTION ] if selected_secondary_subject_ids.include?(UNKNOWN_OPTION)
 
     super
-  end
-
-  def academic_year
-    @academic_year = if steps[:academic_year].present? && steps.fetch(:academic_year).academic_year_id.present?
-      AcademicYear.find(steps.fetch(:academic_year).academic_year_id)
-    elsif school.placement_preferences.for_academic_year(AcademicYear.current).exists?
-      AcademicYear.next
-    elsif school.placement_preferences.for_academic_year(AcademicYear.next).exists?
-      AcademicYear.current
-    else
-      AcademicYear.next
-    end.decorate
-  end
-
-  def placement_preference_exists_for?(academic_year)
-    school.placement_preferences.for_academic_year(academic_year).exists?
-  end
-
-  def placement_preference_for(academic_year)
-    school.placement_preferences.for_academic_year(academic_year).last
   end
 
   private
@@ -180,5 +160,13 @@ class AddHostingInterestWizard < BaseWizard
 
   def appetite_interested?
     @appetite_interested ||= appetite == "interested"
+  end
+
+  def set_or_fetch_academic_year(state, academic_year)
+    @academic_year ||= if state[:academic_year].present?
+      state[:academic_year]
+    else
+      state[:academic_year] = academic_year
+    end.decorate
   end
 end

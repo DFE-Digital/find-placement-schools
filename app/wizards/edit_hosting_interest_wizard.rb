@@ -3,8 +3,9 @@ class EditHostingInterestWizard < AddHostingInterestWizard
 
   def initialize(placement_preference:, current_user:, school:, params:, state:, current_step: nil)
     @placement_preference = placement_preference
+    academic_year = placement_preference.academic_year
 
-    super(current_user:, school:, params:, state:, current_step:)
+    super(current_user:, school:, academic_year:, params:, state:, current_step:)
   end
 
   def setup_state
