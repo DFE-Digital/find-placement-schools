@@ -101,10 +101,11 @@ RSpec.describe School::UserMailer, type: :mailer do
 
   describe "#user_membership_sign_in_reminder_notification" do
     subject(:user_membership_sign_in_reminder_notification) do
-      described_class.user_membership_sign_in_reminder_notification(user)
+      described_class.user_membership_sign_in_reminder_notification(user, organisation)
     end
 
     let(:user) { create(:user) }
+    let(:organisation) { create(:school) }
 
     it "sends a sign in reminder to the user" do
       expect(user_membership_sign_in_reminder_notification.to).to contain_exactly(user.email_address)
@@ -114,7 +115,7 @@ RSpec.describe School::UserMailer, type: :mailer do
       expect(user_membership_sign_in_reminder_notification.body.to_s.squish).to eq(<<~EMAIL.squish)
         Dear #{user.first_name},
 
-        You are invited to sign in to the Find placement schools service.
+        You are invited to sign in to the Find placement schools service for #{organisation.name}.
 
         Please sign in this week to register your school's ability to offer school placements for trainee teachers. If you are not the right staff member to do this, sign in to the service now to add the appropriate colleague(s) as a user.
 
