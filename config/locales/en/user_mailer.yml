@@ -42,7 +42,7 @@ en:
         body: |
           Dear %{user_name},
           
-          You are invited to sign in to the %{service_name} service.
+          You are invited to sign in to the %{service_name} service for %{organisation_name}.
           
           Please sign in this week to register your school's ability to offer school placements for trainee teachers. If you are not the right staff member to do this, sign in to the service now to add the appropriate colleague(s) as a user.
           

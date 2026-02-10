@@ -25,12 +25,13 @@ class School::UserMailer < ApplicationMailer
                  )
   end
 
-  def user_membership_sign_in_reminder_notification(user)
+  def user_membership_sign_in_reminder_notification(user, organisation)
     notify_email to: user.email_address,
                  subject: t(".subject"),
                  body: t(
                    ".body",
                    user_name: user.first_name,
+                   organisation_name: organisation.name,
                    service_name:,
                    support_email:,
                    sign_in_url: sign_in_url(utm_source: "email", utm_medium: "notification", utm_campaign: "school")
