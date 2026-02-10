@@ -95,7 +95,7 @@ RSpec.describe Users::Invite::Remind do
 
     context "when there are more than 100 users to remind" do
       let(:created_at) { 2.weeks.ago }
-      let!(:users) { create_list(:user, 149, created_at:, schools: [organisation]) }
+      let!(:users) { create_list(:user, 149, created_at:, schools: [ organisation ]) }
       let(:mailer_double) { double }
 
       before do
@@ -106,6 +106,18 @@ RSpec.describe Users::Invite::Remind do
         expect(mailer_double).to receive(:deliver_later).with(wait: 0.minutes).exactly(100).times
         expect(mailer_double).to receive(:deliver_later).with(wait: 1.minute).exactly(50).times
         user_invite_remind_service
+      end
+    end
+
+    context "when the school has a preference for the next academic year" do
+      let(:created_at) { 2.weeks.ago }
+
+      it "does not send an email to the user" do
+        create(:placement_preference, organisation:, academic_year: AcademicYear.next)
+        expect { user_invite_remind_service }.not_to enqueue_mail(
+          School::UserMailer,
+          :user_membership_sign_in_reminder_notification,
+        )
       end
     end
   end

@@ -55,8 +55,8 @@ class Users::Invite::Remind < ApplicationService
     end
 
     def idle_memberships
-      @idle_memberships ||= UserMembership.joins(:user, :organisation)
-        .where(organisation_id: idle_schools.ids)
+      @idle_memberships ||= UserMembership.includes(:user, :organisation)
+        .where(organisation_id: idle_schools.select(:id))
         .where(user: { last_signed_in_at: nil })
     end
 end
