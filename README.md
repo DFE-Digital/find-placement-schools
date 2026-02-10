@@ -48,7 +48,7 @@ This service enables **providers** to find  **schools** with **placements**  bas
 
 ## Tech stack
 
-* **Ruby**: *3.4.1* (managed via asdf)
+* **Ruby**: *3.4.8* (managed via asdf)
 * **Rails**: 8.0.2
 * **DB**: PostgreSQL (tested with **17.2**)
 * **Job queue**: `solid_queue`
