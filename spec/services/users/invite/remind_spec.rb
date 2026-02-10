@@ -5,10 +5,12 @@ RSpec.describe Users::Invite::Remind do
 
   it_behaves_like "a service object"
 
-  let(:user) { create(:user, created_at:) }
+  let(:user) { build(:user, created_at:) }
+  let(:organisation) { build(:school) }
+  let(:membership) { create(:user_membership, user:, organisation:) }
 
   describe "call" do
-    before { user }
+    before { membership }
 
     context "when the user was created less than 2 weeks ago" do
       let(:created_at) { 1.week.ago }
@@ -22,7 +24,7 @@ RSpec.describe Users::Invite::Remind do
     end
 
     context "when the user was created exactly 2 weeks ago" do
-      let(:created_at) { 2.week.ago }
+      let(:created_at) { 2.weeks.ago }
 
       it "does send an email to the user" do
         expect { user_invite_remind_service }.to enqueue_mail(
@@ -34,7 +36,7 @@ RSpec.describe Users::Invite::Remind do
 
     context "when the user was created more than 2 weeks ago" do
       context "when the user was created less that a month and 2 weeks ago" do
-        let(:created_at) { 2.week.ago - 1.week }
+        let(:created_at) { 2.weeks.ago - 1.week }
 
         it "does not send an email to the user" do
           expect { user_invite_remind_service }.not_to enqueue_mail(
@@ -45,7 +47,7 @@ RSpec.describe Users::Invite::Remind do
       end
 
       context "when the user was created exactly a month and 2 weeks ago" do
-        let(:created_at) { 2.week.ago - 1.month }
+        let(:created_at) { 2.weeks.ago - 1.month }
 
         it "sends an email to the user" do
           expect { user_invite_remind_service }.to enqueue_mail(
@@ -57,7 +59,7 @@ RSpec.describe Users::Invite::Remind do
 
       context "when the user was created more than a month and 2 weeks ago" do
         context "when the user was created less that 2 months and 2 weeks ago" do
-          let(:created_at) { 1.month.ago - 3.week }
+          let(:created_at) { 1.month.ago - 3.weeks }
 
           it "does not send an email to the user" do
             expect { user_invite_remind_service }.not_to enqueue_mail(
@@ -68,7 +70,7 @@ RSpec.describe Users::Invite::Remind do
         end
 
         context "when the user was created exactly 2 months and 2 weeks ago" do
-          let(:created_at) { 2.week.ago - 2.month }
+          let(:created_at) { 2.weeks.ago - 2.months }
 
           it "sends an email to the user" do
             expect { user_invite_remind_service }.to enqueue_mail(
@@ -92,8 +94,8 @@ RSpec.describe Users::Invite::Remind do
     end
 
     context "when there are more than 100 users to remind" do
-      let(:created_at) { 2.week.ago }
-      let!(:users) { create_list(:user, 149, created_at:) }
+      let(:created_at) { 2.weeks.ago }
+      let!(:users) { create_list(:user, 149, created_at:, schools: [organisation]) }
       let(:mailer_double) { double }
 
       before do
