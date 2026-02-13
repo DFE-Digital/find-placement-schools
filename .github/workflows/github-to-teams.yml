@@ -1,0 +1,17 @@
+name: Send GitHub Alerts to Teams
+
+on:
+  pull_request:
+    types: [opened, reopened, closed]
+  issues:
+    types: [opened, edited, closed]
+
+jobs:
+  send_to_teams:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send GitHub notification to Teams
+      uses: DFE-Digital/github-actions/SendToTeams@2501-spike-github-workflow-alerting-to-teams
+      with:
+        POWER-AUTOMATE-WEBHOOK-URL: ${{ secrets.POWER_AUTOMATE_URL }}
