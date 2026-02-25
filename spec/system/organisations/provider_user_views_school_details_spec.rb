@@ -151,10 +151,6 @@ RSpec.describe "Provider views school details", type: :system do
       expect(page).to have_summary_list_row("Special classes", "Has Special Classes")
       expect(page).to have_summary_list_row("SEND provision", "Resourced provision")
 
-      expect(page).to have_h2("Ofsted")
-      expect(page).to have_summary_list_row("Rating", "Unknown")
-      expect(page).to have_summary_list_row("Last inspection date", "Unknown")
-
       expect(page).to have_h2("Location")
       expect(page).to have_summary_list_row("Address", "Hogwarts, Hogsmeade, Scotland, AB12 3CD")
     end

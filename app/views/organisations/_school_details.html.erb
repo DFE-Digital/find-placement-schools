@@ -126,20 +126,6 @@
   <% end %>
 <% end %>
 
-<h2 class="govuk-heading-m"><%= t(".ofsted") %></h2>
-
-<%= govuk_summary_list(actions: false) do |summary_list| %>
-  <% summary_list.with_row do |row| %>
-    <% row.with_key(text: t(".rating")) %>
-    <% row.with_value(**value_or_unknown(value: organisation.rating)) %>
-  <% end %>
-
-  <% summary_list.with_row do |row| %>
-    <% row.with_key(text: t(".last_inspection_date")) %>
-    <% row.with_value(**value_or_unknown(value: organisation.formatted_inspection_date)) %>
-  <% end %>
-<% end %>
-
 <h2 class="govuk-heading-m"><%= t(".location") %></h2>
 
 <%= render MapComponent.new(

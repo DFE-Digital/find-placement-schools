@@ -68,11 +68,8 @@ en:
       send: Special educational needs and disabilities (SEND)
       special_classes: Special classes
       send_provision: SEND provision
-      ofsted: Ofsted
       location: Location
       address: Address
-      rating: Rating
-      last_inspection_date: Last inspection date
     location_details:
       address: Address
     placement_preferences:
