@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_09_153947) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_25_115256) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -64,7 +64,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_153947) do
     t.string "email_address"
     t.string "gender"
     t.string "group"
-    t.date "last_inspection_date"
     t.float "latitude"
     t.string "local_authority_code"
     t.string "local_authority_name"
@@ -74,7 +73,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_153947) do
     t.string "name", null: false
     t.integer "percentage_free_school_meals"
     t.string "phase"
-    t.string "rating"
     t.string "religious_character"
     t.integer "school_capacity"
     t.string "send_provision"
