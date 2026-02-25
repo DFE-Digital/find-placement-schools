@@ -1,4 +1,6 @@
 class Organisation < ApplicationRecord
+  self.ignored_columns = [ :rating, :last_inspection_date ]
+
   has_one :organisation_contact
   has_one :organisation_address
 

@@ -37,8 +37,6 @@ class GIAS::CSVImporter < ApplicationService
         percentage_free_school_meals: school["PercentageFSM"].presence,
         special_classes: school["SpecialClasses (name)"].presence,
         send_provision: school["TypeOfResourcedProvision (name)"].presence,
-        rating: school["OfstedRating (name)"].presence,
-        last_inspection_date: school["OfstedLastInsp"].presence,
         latitude: school["Latitude"].presence,
         longitude: school["Longitude"].presence
       }

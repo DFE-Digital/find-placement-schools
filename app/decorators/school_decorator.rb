@@ -3,12 +3,6 @@ class SchoolDecorator < ApplicationDecorator
 
   delegate_all
 
-  def formatted_inspection_date
-    return "" if last_inspection_date.blank?
-
-    I18n.l(last_inspection_date, format: :long)
-  end
-
   def age_range
     "#{minimum_age} to #{maximum_age}"
   end
