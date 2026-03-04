@@ -1,11 +1,11 @@
 GIT
   remote: https://github.com/DFE-Digital/dfe-analytics.git
-  revision: 91427abc46315f266dea803834d21edd6c7ef136
-  tag: v1.15.12
+  revision: 31c25462e5fa824c1e75a1099c06e0676724731c
+  tag: v1.15.14
   specs:
-    dfe-analytics (1.15.12)
+    dfe-analytics (1.15.14)
       google-cloud-bigquery (~> 1.38)
-      httparty (~> 0.21)
+      httparty (~> 0.24)
       multi_xml (~> 0.6.0)
       request_store_rails (~> 2)
 
@@ -96,7 +96,7 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.8.8)
+    addressable (2.8.9)
       public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     amazing_print (2.0.0)
@@ -230,7 +230,7 @@ GEM
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.5.0)
     google-logging-utils (0.2.0)
-    googleauth (1.16.1)
+    googleauth (1.16.2)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -512,7 +512,7 @@ GEM
       rack (>= 1.4)
     request_store_rails (2.0.0)
       concurrent-ruby (~> 1.0)
-    retriable (3.1.2)
+    retriable (3.2.1)
     reverse_markdown (3.0.2)
       nokogiri
     rexml (3.4.4)
