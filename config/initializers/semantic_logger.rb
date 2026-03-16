@@ -8,7 +8,7 @@ if Rails.env.development? || Rails.env.staging? || Rails.env.production? || Rail
 end
 
 # Monkey patch for ActiveRecord sql_runtime compatibility until Rails fixes
-LAST_TESTED_VERSION = "4.18.0"
+LAST_TESTED_VERSION = "4.19.0"
 
 require "rails_semantic_logger/version"
 
