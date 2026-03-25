@@ -23,3 +23,6 @@ production:
   send_placement_preference_reminders:
     class: "CompletePlacementPreferenceReminderJob"
     schedule: every day at 10am
+  sync_bank_holidays:
+    schedule: every month on the 1st at 2am
+    class: "BankHolidays::SyncJob"
