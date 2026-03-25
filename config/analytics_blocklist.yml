@@ -1,5 +1,11 @@
 ---
 shared:
+  :bank_holidays:
+    - id
+    - title
+    - date
+    - created_at
+    - updated_at
   :organisations:
     - transit_travel_duration
     - walk_travel_duration
