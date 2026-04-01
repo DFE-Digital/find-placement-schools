@@ -1,10 +1,10 @@
-class CreateBankHolidays < ActiveRecord::Migration[8.0]
+class CreateBankHolidays < ActiveRecord::Migration[8.1]
   disable_ddl_transaction!
 
   def change
     create_table :bank_holidays, id: :uuid do |t|
-      t.string :title
-      t.date :date
+      t.string :title, null: false
+      t.date :date, null: false
       t.timestamps
     end
 

@@ -30,8 +30,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_100251) do
 
   create_table "bank_holidays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.date "date"
-    t.string "title"
+    t.date "date", null: false
+    t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["date"], name: "index_bank_holidays_on_date", unique: true
   end
