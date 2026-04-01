@@ -2,6 +2,8 @@ require "rails_helper"
 
 describe BankHoliday, type: :model do
   describe "validations" do
+    subject { build(:bank_holiday) }
+
     it { is_expected.to validate_presence_of(:date) }
     it { is_expected.to validate_uniqueness_of(:date) }
     it { is_expected.to validate_presence_of(:title) }
@@ -9,7 +11,7 @@ describe BankHoliday, type: :model do
 
   describe ".is_bank_holiday?" do
     let(:bank_holiday_date) { Date.parse("2024-12-25") }
-    let(:non_bank_holiday_date) { Date.parse("2024-12-26") }
+    let(:non_bank_holiday_date) { Date.parse("2024-12-27") }
 
     before do
       create(:bank_holiday, date: bank_holiday_date, title: "Christmas Day")
