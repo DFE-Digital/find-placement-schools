@@ -4,3 +4,10 @@ shared:
     - first_name
     - last_name
     - email_address
+  :organisation_contacts:
+    - first_name
+    - last_name
+    - email_address
+    - telephone
+  organisations:
+    - email_address
