@@ -22,6 +22,7 @@ jobs:
   validate:
     name: ${{ matrix.display }}
     runs-on: ubuntu-latest
+    environment: production
     permissions:
       id-token: write
       contents: read
@@ -42,6 +43,12 @@ jobs:
       TEAMS_WEBHOOK_URL: "${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.webhook-target == 'testing' && secrets.TEAMS_WEBHOOK_URL_TESTING) || secrets.TEAMS_WEBHOOK_URL_INFRA }}"
 
     steps:
+      - name: Authenticate to Google for DfE Analytics
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: rugged-abacus-218110
+          workload_identity_provider: projects/712009772377/locations/global/workloadIdentityPools/find-placement-schools/providers/find-placement-schools
+
       - name: Validate ${{ matrix.display }}
         uses: DFE-Digital/github-actions/validate-infra@master
         with:
