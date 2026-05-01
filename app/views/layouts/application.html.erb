@@ -7,11 +7,11 @@
     <%= csp_meta_tag %>
 
     <%= tag :meta, name: "viewport", content: "width=device-width, initial-scale=1" %>
-    <%= tag :meta, property: "og:image", content: asset_path("rebrand/images/govuk-opengraph-image.png") %>
+    <%= tag :meta, property: "og:image", content: asset_path("images/govuk-opengraph-image.png") %>
     <%= tag :meta, name: "theme-color", content: "#1d70b8" %>
-    <%= favicon_link_tag asset_path("rebrand/images/favicon.ico") %>
-    <%= favicon_link_tag asset_path("rebrand/images/govuk-icon-mask.svg"), rel: "mask-icon", type: "image/svg", color: "#0b1c0c" %>
-    <%= favicon_link_tag asset_path("rebrand/images/govuk-icon-180.png"), rel: "apple-touch-icon", type: "image/png", size: "180x180" %>
+    <%= favicon_link_tag asset_path("images/favicon.ico") %>
+    <%= favicon_link_tag asset_path("images/govuk-icon-mask.svg"), rel: "mask-icon", type: "image/svg", color: "#0b0c0c" %>
+    <%= favicon_link_tag asset_path("images/govuk-icon-180.png"), rel: "apple-touch-icon", type: "image/png", size: "180x180" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
@@ -27,16 +27,6 @@
     <%= govuk_header(full_width_border: true) do |header| %>
       <% header.with_custom_logo do %>
         <%= image_tag asset_path("/images/department-for-education_white.png"), alt: "Department for Education", class: "govuk-header__logotype" %>
-      <% end %>
-
-      <% if user_signed_in? %>
-        <% if current_organisation.present? && current_user&.admin? %>
-          <% header.with_navigation_item(text: "#{current_organisation&.name} (return to dashboard)", href: return_to_dashboard_admin_change_organisation_index_path) %>
-        <% end %>
-        <% if current_organisation.present? && current_user&.organisations&.count > 1  %>
-          <% header.with_navigation_item(text: "#{current_organisation&.name} (change)", href: change_organisation_index_path) %>
-        <% end %>
-        <% header.with_navigation_item(text: "Sign out", href: sign_out_path) %>
       <% end %>
     <% end %>
 

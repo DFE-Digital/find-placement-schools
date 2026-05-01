@@ -1,9 +1,11 @@
+@use "govuk-frontend/dist/govuk/index" as *;
+
 .app-filter {
-  background-color: govuk-colour("light-grey");
+  background-color: govuk-colour("black", $variant: "tint-95");
 }
 
 .app-filter-layout {
-  background-color: govuk-colour("light-grey");
+  background-color: govuk-colour("black", $variant: "tint-95");
   @include govuk-clearfix;
 }
 
@@ -18,7 +20,7 @@
 
 @include govuk-media-query($until: desktop) {
   .js-enabled .app-filter-layout__filter {
-    background-color: govuk-colour("light-grey");
+    background-color: govuk-colour("black", $variant: "tint-95");
     position: fixed; top: govuk-spacing(1); right: govuk_spacing(1); bottom: govuk_spacing(1);
     overflow-y: scroll;
     z-index: 100;
@@ -28,11 +30,11 @@
 .app-filter-layout__content {
   overflow: hidden;
   overflow-x: auto;
-  background-color: govuk-colour("light-grey");
+  background-color: govuk-colour("black", $variant: "tint-95");
 }
 
 .app-filter__header {
-  background-color: govuk-colour("light-grey");
+  background-color: govuk-colour("black", $variant: "tint-95");
   display: flex;
   justify-content: space-between;
   padding: govuk-spacing(2) govuk-spacing(3);
@@ -142,12 +144,12 @@
 }
 
 .app-filter-layout__selected {
-  background-color: govuk-colour("light-grey");
+  background-color: govuk-colour("black", $variant: "tint-95");
   padding: govuk-spacing(1);
   padding-bottom: govuk-spacing(5);
   margin: govuk-spacing(2);
-  border-top: 1px solid govuk-colour("mid-grey");
-  border-bottom: 1px solid govuk-colour("mid-grey");
+  border-top: 1px solid govuk-colour("black", $variant: "tint-80");
+  border-bottom: 1px solid govuk-colour("black", $variant: "tint-80");
 
   ul:last-of-type {
     margin-bottom: 0; // IE9 +
