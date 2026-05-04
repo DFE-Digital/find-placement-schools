@@ -40,7 +40,7 @@ gem "thruster", require: false
 
 gem "mission_control-jobs", "~> 1.1"
 
-gem "down", "~> 5.4"
+gem "down", "~> 5.6"
 
 gem "csv", "~> 3.3"
 
