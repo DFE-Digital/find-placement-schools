@@ -96,7 +96,7 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    addressable (2.8.9)
+    addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     amazing_print (2.0.0)
@@ -172,7 +172,7 @@ GEM
     ed25519 (1.4.0)
     email_validator (2.2.4)
       activemodel
-    erb (6.0.2)
+    erb (6.0.4)
     erb_lint (0.9.0)
       activesupport
       better_html (>= 2.0.1)
@@ -344,7 +344,7 @@ GEM
     multi_xml (0.6.0)
     net-http (0.9.1)
       uri (>= 0.11.1)
-    net-imap (0.6.2)
+    net-imap (0.6.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -662,7 +662,7 @@ GEM
     thruster (0.1.18-x86_64-linux)
     tilt (2.7.0)
     timecop (0.9.10)
-    timeout (0.6.0)
+    timeout (0.6.1)
     trailblazer-option (0.1.2)
     tsort (0.2.0)
     turbo-rails (2.0.16)
@@ -711,7 +711,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    yard (0.9.38)
+    yard (0.9.42)
     yard-activesupport-concern (0.0.1)
       yard (>= 0.8)
     yard-solargraph (0.1.0)
