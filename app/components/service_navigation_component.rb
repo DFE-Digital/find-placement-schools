@@ -5,6 +5,15 @@ class ServiceNavigationComponent < ApplicationComponent
   end
 
   def navigation_items
+    items = primary_navigation_items
+    items + auth_navigation_items
+  end
+
+  private
+
+  attr_reader :current_user, :current_organisation
+
+  def primary_navigation_items
     if current_user&.admin? && !current_organisation
       [
         {
@@ -72,13 +81,34 @@ class ServiceNavigationComponent < ApplicationComponent
     end
   end
 
+  def auth_navigation_items
+    return [] unless current_user
+
+    items = []
+
+    if current_organisation.present? && current_user.admin?
+      items << {
+        text: "#{current_organisation.name} (return to dashboard)",
+        href: helpers.return_to_dashboard_admin_change_organisation_index_path
+      }
+    end
+
+    if current_organisation.present? && current_user.organisations.count > 1
+      items << {
+        text: "#{current_organisation.name} (change)",
+        href: helpers.change_organisation_index_path
+      }
+    end
+
+    items << { text: "Sign out", href: helpers.sign_out_path }
+
+    items
+  end
+
   def service_name
     I18n.t(".service.name")
   end
 
-  private
-
-  attr_reader :current_user, :current_organisation
 
   def matches_find_placements_path?
     request.path.match?(/^\/organisation/) && !helpers.current_page?(helpers.organisation_path(current_organisation.id))
