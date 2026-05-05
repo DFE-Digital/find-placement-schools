@@ -26,3 +26,12 @@ production:
   sync_bank_holidays:
     schedule: every day at 2am
     class: "BankHolidays::SyncJob"
+  sync_all_schools:
+    schedule: every day at 3am
+    class: "GIAS::SyncAllSchoolsJob"
+  sync_all_subjects:
+    schedule: every day at 1am
+    class: "PublishTeacherTraining::Subject::SyncAllJob"
+  sync_all_providers:
+    schedule: every day at 1am
+    class: "PublishTeacherTraining::Provider::SyncAllJob"
