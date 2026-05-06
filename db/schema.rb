@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_09_153947) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_25_100251) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,6 +26,14 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_153947) do
     t.date "starts_on", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_academic_years_on_name", unique: true
+  end
+
+  create_table "bank_holidays", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date"], name: "index_bank_holidays_on_date", unique: true
   end
 
   create_table "organisation_addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -64,7 +72,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_153947) do
     t.string "email_address"
     t.string "gender"
     t.string "group"
-    t.date "last_inspection_date"
     t.float "latitude"
     t.string "local_authority_code"
     t.string "local_authority_name"
@@ -74,7 +81,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_09_153947) do
     t.string "name", null: false
     t.integer "percentage_free_school_meals"
     t.string "phase"
-    t.string "rating"
     t.string "religious_character"
     t.integer "school_capacity"
     t.string "send_provision"

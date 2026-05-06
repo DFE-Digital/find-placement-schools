@@ -1,6 +1,13 @@
 require "rails_helper"
 
 RSpec.describe ApplicationMailer, type: :mailer do
+  include ActiveJob::TestHelper
+  class TestApplicationMailer < ApplicationMailer
+    def sample_email
+      notify_email to: "test@example.com", subject: "Test subject", body: "Test body"
+    end
+  end
+
   describe "#environment_prefix" do
     context "when HostingEnvironment.env is production" do
       before do
@@ -63,6 +70,48 @@ RSpec.describe ApplicationMailer, type: :mailer do
 
       it 'returns "http"' do
         expect(application_mailer.send(:protocol)).to eq("http")
+      end
+    end
+  end
+
+  describe "delivery scheduling" do
+    subject(:message_delivery) { TestApplicationMailer.sample_email }
+
+    let(:next_working_day) { Date.parse("2026-03-17") }
+
+    before do
+      allow(BankHoliday).to receive(:is_bank_holiday?).with(Date.current).and_return(is_bank_holiday)
+      allow(BankHoliday).to receive(:next_working_day).with(Date.current).and_return(next_working_day)
+      clear_enqueued_jobs
+    end
+
+    context "when today is not a bank holiday" do
+      let(:is_bank_holiday) { false }
+
+      it "enqueues immediately with no wait_until override" do
+        expect {
+          message_delivery.deliver_later
+        }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with(
+          "TestApplicationMailer",
+          "sample_email",
+          "deliver_now",
+          args: [],
+          )
+      end
+    end
+
+    context "when today is a bank holiday" do
+      let(:is_bank_holiday) { true }
+
+      it "reschedules the email to the next working day" do
+        expect {
+          message_delivery.deliver_later
+        }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with(
+          "TestApplicationMailer",
+          "sample_email",
+          "deliver_now",
+          args: [],
+          ).at(next_working_day.beginning_of_day)
       end
     end
   end

@@ -269,4 +269,50 @@ RSpec.describe School::UserMailer, type: :mailer do
       end
     end
   end
+
+  describe "delivery scheduling" do
+    include ActiveJob::TestHelper
+
+    subject(:message_delivery) { described_class.user_membership_destroyed_notification(user, organisation) }
+
+    let(:user) { create(:user) }
+    let(:organisation) { create(:school) }
+    let(:next_working_day) { Date.parse("2026-03-17") }
+
+    before do
+      allow(BankHoliday).to receive(:is_bank_holiday?).with(Date.current).and_return(is_bank_holiday)
+      allow(BankHoliday).to receive(:next_working_day).with(Date.current).and_return(next_working_day)
+      clear_enqueued_jobs
+    end
+
+    context "when today is not a bank holiday" do
+      let(:is_bank_holiday) { false }
+
+      it "enqueues the mail immediately" do
+        expect {
+          message_delivery.deliver_later
+        }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with(
+          "School::UserMailer",
+          "user_membership_destroyed_notification",
+          "deliver_now",
+          args: [ user, organisation ],
+          )
+      end
+    end
+
+    context "when today is a bank holiday" do
+      let(:is_bank_holiday) { true }
+
+      it "reschedules the mail to the next working day" do
+        expect {
+          message_delivery.deliver_later
+        }.to have_enqueued_job(ActionMailer::MailDeliveryJob).with(
+          "School::UserMailer",
+          "user_membership_destroyed_notification",
+          "deliver_now",
+          args: [ user, organisation ],
+          ).at(next_working_day.beginning_of_day)
+      end
+    end
+  end
 end
