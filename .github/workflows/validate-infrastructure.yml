@@ -3,9 +3,9 @@ name: Validate Infra
 on:
   schedule:
     - cron: '0 8 * * *'
-  pull_request:
+  push:
     branches:
-      validate-workflow-test
+      - validate-workflow-test
   workflow_dispatch:
     inputs:
       webhooktarget:
