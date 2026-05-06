@@ -200,3 +200,9 @@ We keep Architecture Decision Records in [`/adr`](adr/). Generate a new ADR with
 ```sh
 bin/bundle exec rladr new "Title of the decision"
 ```
+
+## Infrastructure validation workflow
+
+The scheduled workflow defined in `.github/workflows/validate-infra.yml` runs Terraform plan validations for the AKS cluster plus domains infrastructure/environment each day at **08:00 UTC** against **production** only. Failures and drift notifications are sent to the SD Infra alerts Teams channel via the `TEAMS_WEBHOOK_URL_INFRA` secret.
+
+To test changes without alerting the infra channel, trigger the workflow manually via *Actions → Validate Infrastructure → Run workflow* and keep the `webhook-target` input on `testing` (the default). This routes notifications to the `TEAMS_WEBHOOK_URL_TESTING` secret instead. Switch the input to `infra` only when you explicitly want manual notifications to the production channel.
