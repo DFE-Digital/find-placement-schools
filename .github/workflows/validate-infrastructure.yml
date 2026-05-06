@@ -1,11 +1,11 @@
-name: Validate Infrastructure
+name: Validate Infra
 
 on:
   schedule:
     - cron: '0 8 * * *'
   workflow_dispatch:
     inputs:
-      webhook-target:
+      webhooktarget:
         description: "Teams webhook destination"
         required: true
         type: choice
