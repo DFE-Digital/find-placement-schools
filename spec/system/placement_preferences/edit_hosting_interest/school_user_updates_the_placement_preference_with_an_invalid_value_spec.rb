@@ -142,7 +142,7 @@ RSpec.describe "School user updates the placement preference with an invalid val
     expect(page).to have_caption("Placement contact")
     expect(page).to have_h1("Who should providers contact?")
     expect(page).to have_hint(
-                      "Choose the person best placed to organise placements for trainee teachers at your school",
+                      "Choose the person best placed to organise placements for trainee teachers at your school. The person should be aware you are adding their details and expect to be contacted by ITT providers interested in placing trainees at your school",
                       )
     expect(page).to have_field("First name")
     expect(page).to have_field("Last name")

@@ -83,7 +83,7 @@ RSpec.describe "School user successfully adds their hosting interest", type: :sy
       "We will email to ask if your school can offer placements for trainee teachers in future academic years.",
     )
     expect(page).to have_hint(
-      "Choose the person best placed to organise placements for trainee teachers at your school.",
+      "Choose the person best placed to organise placements for trainee teachers at your school. The person should be aware you are adding their details and expect to be contacted by ITT providers interested in placing trainees at your school.",
     )
 
     expect(page).to have_field("First name")
