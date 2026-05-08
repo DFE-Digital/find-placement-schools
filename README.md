@@ -125,7 +125,7 @@ Create and seed the database:
 
 ```sh
 bin/setup
-# or 
+# or
 bundle exec rails db:create db:migrate db:seed
 ```
 
@@ -200,3 +200,7 @@ We keep Architecture Decision Records in [`/adr`](adr/). Generate a new ADR with
 ```sh
 bin/bundle exec rladr new "Title of the decision"
 ```
+
+## Infrastructure validation workflow
+
+The scheduled workflow defined in `.github/workflows/validate-infra.yml` runs Terraform plan validations for the AKS cluster plus domains infrastructure/environment each day at **07:00 UTC** against **production** only. Failures and drift notifications are sent to the SD Infra alerts Teams channel via the `TEAMS_WEBHOOK_URL_INFRA` secret.
