@@ -39,3 +39,5 @@ jobs:
           validation-plan: ${{ matrix.validation_plan }}
           service: ${{ vars.TEAMS_MSG_SERVICE_NAME }}
           teams-webhook-url: ${{ secrets.TEAMS_WEBHOOK_URL_INFRA }}
+          gcp-wip: projects/712009772377/locations/global/workloadIdentityPools/find-placement-schools/providers/find-placement-schools
+          gcp-project-id: rugged-abacus-218110
