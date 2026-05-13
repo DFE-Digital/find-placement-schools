@@ -10,6 +10,7 @@ class AddAdminUserWizard < BaseWizard
     raise "Invalid wizard state" unless valid?
 
     user.save!
+    Admin::UserMailer.user_created_notification(user).deliver_later
     user
   end
 
