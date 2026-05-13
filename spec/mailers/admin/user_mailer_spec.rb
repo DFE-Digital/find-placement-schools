@@ -5,12 +5,6 @@ RSpec.describe Admin::UserMailer, type: :mailer do
     subject(:invite_email) { described_class.user_created_notification(user) }
 
     let(:user) { create(:user, :admin) }
-    let(:slack_url) { "https://slack.example.com/support" }
-
-    before do
-      allow(ENV).to receive(:fetch).and_call_original
-      allow(ENV).to receive(:fetch).with("SUPPORT_SLACK_URL", "").and_return(slack_url)
-    end
 
     it "sends invitation email" do
       expect(invite_email.to).to contain_exactly(user.email_address)
