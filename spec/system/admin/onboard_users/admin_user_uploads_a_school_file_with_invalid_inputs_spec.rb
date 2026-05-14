@@ -71,7 +71,7 @@ RSpec.describe "Admin user uploads a school file with invalid inputs", type: :sy
     expect(page).to have_h1("Upload users", class: "govuk-heading-l")
     expect(page).to have_element(:h2, text: "There is a problem")
     expect(page).to have_element(:div, text: "You need to fix 1 error related to a specific row", class: "govuk-error-summary")
-    expect(page).to have_element(:td, text: "Invalid Email", class: "govuk-table__cell", count: 1)
+    expect(page).to have_element(:td, text: "Enter a valid email address", class: "govuk-table__cell", count: 1)
     expect(page).to have_element(:p, text: "Only showing rows with errors", class: "govuk-!-text-align-centre")
   end
 
