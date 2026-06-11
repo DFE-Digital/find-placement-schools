@@ -47,4 +47,15 @@ class AcademicYear < ApplicationRecord
   def previous
     AcademicYear.for_date(starts_on - 1.year)
   end
+
+  def self.for_display
+    current_year = current
+    return unless current_year.present?
+
+    if Date.current.month == 6
+      [ current_year, for_date(current_year.ends_on + 1.day), for_date(current_year.ends_on + 1.day + 1.year) ]
+    else
+      [ current_year, for_date(current_year.ends_on + 1.day) ]
+    end
+  end
 end

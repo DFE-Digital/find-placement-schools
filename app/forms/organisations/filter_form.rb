@@ -81,7 +81,8 @@ class Organisations::FilterForm < ApplicationForm
   end
 
   def academic_years
-    AcademicYear.left_outer_joins(:placement_preferences).order(:starts_on).distinct.last(2)
+    years_for_display = AcademicYear.for_display
+    AcademicYear.where(id: years_for_display.map(&:id)).order(:starts_on)
   end
 
   private
