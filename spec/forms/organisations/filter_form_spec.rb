@@ -237,4 +237,61 @@ describe Organisations::FilterForm, type: :model do
       end
     end
   end
+
+  describe "#academic_years" do
+    subject(:filter_form) { described_class.new }
+
+    context "when the current month is not June" do
+      let!(:current_academic_year) do
+        create(:academic_year,
+               starts_on: Date.parse("1 September 2025"),
+               ends_on: Date.parse("31 August 2026"),
+               name: "2025 to 2026")
+      end
+
+      let!(:next_academic_year) do
+        create(:academic_year,
+               starts_on: Date.parse("1 September 2026"),
+               ends_on: Date.parse("31 August 2027"),
+               name: "2026 to 2027")
+      end
+
+      it "returns current and next academic years" do
+        Timecop.travel(Date.parse("5 December 2025")) do
+          expect(filter_form.academic_years.count).to eq(2)
+          expect(filter_form.academic_years.map(&:name)).to eq([ "2025 to 2026", "2026 to 2027" ])
+        end
+      end
+    end
+
+    context "when the current month is June" do
+      let!(:current_academic_year) do
+        create(:academic_year,
+               starts_on: Date.parse("1 September 2024"),
+               ends_on: Date.parse("31 August 2025"),
+               name: "2024 to 2025")
+      end
+
+      let!(:next_academic_year) do
+        create(:academic_year,
+               starts_on: Date.parse("1 September 2025"),
+               ends_on: Date.parse("31 August 2026"),
+               name: "2025 to 2026")
+      end
+
+      let!(:next_next_academic_year) do
+        create(:academic_year,
+               starts_on: Date.parse("1 September 2026"),
+               ends_on: Date.parse("31 August 2027"),
+               name: "2026 to 2027")
+      end
+
+      it "returns current, next, and next+1 academic years" do
+        Timecop.travel(Date.parse("15 June 2025")) do
+          expect(filter_form.academic_years.count).to eq(3)
+          expect(filter_form.academic_years.map(&:name)).to eq([ "2024 to 2025", "2025 to 2026", "2026 to 2027" ])
+        end
+      end
+    end
+  end
 end
