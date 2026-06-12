@@ -81,8 +81,7 @@ class Organisations::FilterForm < ApplicationForm
   end
 
   def academic_years
-    years_for_display = AcademicYear.for_display
-    AcademicYear.where(id: years_for_display.map(&:id)).order(:starts_on)
+    AcademicYear.for_display
   end
 
   private
