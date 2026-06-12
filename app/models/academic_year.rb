@@ -52,10 +52,10 @@ class AcademicYear < ApplicationRecord
     current_year = current
     return unless current_year.present?
 
-    if Date.current.month == 6
-      [ current_year, for_date(current_year.ends_on + 1.day), for_date(current_year.ends_on + 1.day + 1.year) ]
-    else
-      [ current_year, for_date(current_year.ends_on + 1.day) ]
+    display_count = Date.current.month == 6 ? 3 : 2
+
+    Array.new(display_count) do |offset|
+      for_date(current_year.starts_on + offset.years)
     end
   end
 end

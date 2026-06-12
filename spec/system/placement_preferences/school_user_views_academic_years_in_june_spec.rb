@@ -52,7 +52,7 @@ RSpec.describe "School user views academic years in June", type: :system do
       "Status" => "No information added"
     })
     expect(page).to have_table_row({
-      "Academic year" => AcademicYear.for_display.last.name,
+      "Academic year" => "2026 to 2027",
       "Status" => "No information added"
     })
   end
