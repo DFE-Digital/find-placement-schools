@@ -78,7 +78,7 @@ gem "okcomputer", "~> 1.19"
 gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.17"
 
 gem "google-cloud-bigquery", "1.63.1"
-gem "google-apis-bigquery_v2", "0.98.0"
+gem "google-apis-bigquery_v2", "0.102.0"
 gem "json", "2.19.2"
 gem "net-http", "0.9.1"
 gem "uri", "1.1.1"
