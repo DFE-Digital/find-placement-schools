@@ -150,7 +150,7 @@ class DevelopmentSeedData < ApplicationService
 
   def schools_for(school_count:, year_index:)
     school_offset = academic_year_plan.values.take(year_index).sum
-    School.order(:urn).limit(total_placement_preference_school_count).offset(school_offset).first(school_count)
+    School.order(:urn).offset(school_offset).limit(school_count).to_a
   end
 
   def total_placement_preference_school_count
