@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
   private
 
   def ensure_development_password!
-    return unless Rails.env.development?
+    return unless Rails.env.development? || HostingEnvironment.env.az_development?
     return if controller_path == "development_access"
     return if session["development_access_granted"]
 
