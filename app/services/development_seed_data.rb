@@ -73,6 +73,7 @@ class DevelopmentSeedData < ApplicationService
   def call
     return unless Rails.env.development? || HostingEnvironment.env.az_development?
 
+    reset_placement_data
     seed_personas
     seed_schools
     seed_provider
@@ -88,6 +89,12 @@ class DevelopmentSeedData < ApplicationService
     PERSONAS.each do |persona_attributes|
       User.find_or_create_by!(**persona_attributes)
     end
+  end
+
+  def reset_placement_data
+    PlacementPreference.delete_all
+    PreviousPlacement.delete_all
+    PlacementSubject.destroy_all
   end
 
   def seed_schools
@@ -122,7 +129,7 @@ class DevelopmentSeedData < ApplicationService
     academic_year_plan.each_with_index do |(academic_year, school_count), year_index|
       schools_for(school_count:, year_index:).each_with_index do |school, index|
         profile = PLACEMENT_PROFILES.fetch(index % PLACEMENT_PROFILES.length)
-        subject_group = subject_group_for(profile)
+        secondary_subject_group = secondary_subject_group_for(profile)
 
         upsert_placement_preference(
           school:,
@@ -135,7 +142,7 @@ class DevelopmentSeedData < ApplicationService
             school_contact: contact_details(index),
             year_groups: profile.fetch(:year_groups, []),
             key_stages: profile.fetch(:key_stages, []),
-            subject_ids: subject_group.map(&:first)
+            subject_ids: secondary_subject_group.map(&:first)
           )
         )
       end
@@ -163,14 +170,16 @@ class DevelopmentSeedData < ApplicationService
     total_placement_preference_school_count + PREVIOUS_PLACEMENT_OFFSET_WINDOW_COUNT
   end
 
-  def secondary_subject_groups
-    @secondary_subject_groups ||= PlacementSubject.secondary.order(:name).limit(24).pluck(:id, :name).each_slice(3).to_a
-  end
-
-  def subject_group_for(profile)
+  def secondary_subject_group_for(profile)
     return [] unless secondary_subject_groups.any? && profile[:subject_group_index].present?
 
     secondary_subject_groups.fetch(profile[:subject_group_index] % secondary_subject_groups.length)
+  end
+
+  def secondary_subject_groups
+    @secondary_subject_groups ||= begin
+      PlacementSubject.secondary.order(:name).limit(24).pluck(:id, :name).each_slice(3).to_a
+    end
   end
 
   def provider_user
@@ -225,10 +234,11 @@ class DevelopmentSeedData < ApplicationService
   end
 
   def seed_previous_placements
-    return if previous_placement_subject_names.empty?
-
     previous_placement_schools.each_with_index do |school, index|
-      rotated_subject_names = previous_placement_subject_names.rotate(index)
+      subject_names = previous_placement_subject_names_for(school)
+      next if subject_names.empty?
+
+      rotated_subject_names = subject_names.rotate(index)
 
       previous_academic_years.each_with_index do |academic_year, year_index|
         rotated_subject_names.first(year_index + 2).each do |subject_name|
@@ -244,6 +254,18 @@ class DevelopmentSeedData < ApplicationService
 
   def previous_placement_subject_names
     @previous_placement_subject_names ||= PlacementSubject.secondary.order(:name).limit(12).pluck(:name)
+  end
+
+  def primary_previous_placement_subject_names
+    @primary_previous_placement_subject_names ||= PlacementSubject.primary.order(:name).limit(12).pluck(:name)
+  end
+
+  def previous_placement_subject_names_for(school)
+    primary_school?(school) ? primary_previous_placement_subject_names : previous_placement_subject_names
+  end
+
+  def primary_school?(school)
+    school.phase.to_s.casecmp?("Primary")
   end
 
   def previous_academic_years

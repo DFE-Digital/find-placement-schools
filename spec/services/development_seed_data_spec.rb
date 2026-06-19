@@ -7,10 +7,13 @@ RSpec.describe DevelopmentSeedData do
     before do
       allow(HostingEnvironment.env).to receive(:az_development?).and_return(false)
       allow(GIAS::SyncAllSchoolsJob).to receive(:perform_now) do
-        create_list(:school, 102)
+        create(:school, phase: "Primary")
+        create(:school, phase: "Secondary")
+        create_list(:school, 100, phase: "Secondary")
       end
       allow(PublishTeacherTraining::Subject::Import).to receive(:call) do
-        create_list(:placement_subject, 24, :secondary) if PlacementSubject.none?
+        create_list(:placement_subject, 12, phase: :primary) if PlacementSubject.primary.none?
+        create_list(:placement_subject, 24, :secondary) if PlacementSubject.secondary.none?
       end
     end
 
@@ -20,15 +23,32 @@ RSpec.describe DevelopmentSeedData do
       end
 
       it "seeds development data and is idempotent" do
+        create(:placement_preference)
+        create(:previous_placement)
+        create(:placement_subject, :secondary)
+
         expect {
           described_class.call
         }.to change(User, :count).by(PERSONAS.size)
          .and change(School, :count).by(102)
          .and change(Provider, :count).by(1)
          .and change(UserMembership, :count).by(4)
-         .and change(PlacementSubject.secondary, :count).by(24)
-         .and change(PlacementPreference, :count).by(90)
-         .and change(PreviousPlacement, :count).by(180)
+         .and change(PlacementSubject.secondary, :count).by(23)
+         .and change(PlacementPreference, :count).by(89)
+         .and change(PreviousPlacement, :count).by(179)
+
+        expect(PlacementPreference.count).to eq(90)
+        expect(PreviousPlacement.count).to eq(180)
+
+        primary_school = School.find_by!(phase: "Primary")
+        secondary_school = School.find_by!(phase: "Secondary")
+
+        expect(primary_school.previous_placements.pluck(:subject_name)).to all(
+          be_in(PlacementSubject.primary.order(:name).pluck(:name)),
+        )
+        expect(secondary_school.previous_placements.pluck(:subject_name)).to all(
+          be_in(PlacementSubject.secondary.order(:name).pluck(:name)),
+        )
 
         expect(GIAS::SyncAllSchoolsJob).to have_received(:perform_now).once
 
@@ -54,7 +74,7 @@ RSpec.describe DevelopmentSeedData do
          .and not_change(PlacementPreference, :count)
          .and not_change(PreviousPlacement, :count)
 
-        expect(first_school_preference.reload.appetite).to eq("actively_looking")
+        expect(first_school.placement_preference_for(academic_year: AcademicYear.current).appetite).to eq("actively_looking")
       end
 
       it "syncs schools when only a small subset already exists" do
@@ -64,7 +84,6 @@ RSpec.describe DevelopmentSeedData do
           described_class.call
         }.to change(School, :count).by(102)
          .and change(PlacementPreference, :count).by(90)
-         .and change(PreviousPlacement, :count).by(180)
 
         expect(GIAS::SyncAllSchoolsJob).to have_received(:perform_now).once
       end
