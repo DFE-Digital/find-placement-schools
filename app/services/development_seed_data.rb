@@ -67,6 +67,8 @@ class DevelopmentSeedData < ApplicationService
   CURRENT_YEAR_PLACEMENT_COUNT = 36
   NEXT_YEAR_PLACEMENT_COUNT = 30
   FOLLOWING_YEAR_PLACEMENT_COUNT = 24
+  PREVIOUS_PLACEMENT_PRIMARY_WINDOW_COUNT = 24
+  PREVIOUS_PLACEMENT_OFFSET_WINDOW_COUNT = 12
 
   def call
     return unless Rails.env.development? || HostingEnvironment.env.az_development?
@@ -89,7 +91,7 @@ class DevelopmentSeedData < ApplicationService
   end
 
   def seed_schools
-    GIAS::SyncAllSchoolsJob.perform_now unless School.any?
+    GIAS::SyncAllSchoolsJob.perform_now if School.count < minimum_school_count
   end
 
   def seed_provider
@@ -155,6 +157,10 @@ class DevelopmentSeedData < ApplicationService
 
   def total_placement_preference_school_count
     academic_year_plan.values.sum
+  end
+
+  def minimum_school_count
+    total_placement_preference_school_count + PREVIOUS_PLACEMENT_OFFSET_WINDOW_COUNT
   end
 
   def secondary_subject_groups
@@ -246,8 +252,8 @@ class DevelopmentSeedData < ApplicationService
 
   def previous_placement_schools
     @previous_placement_schools ||= begin
-      School.order(:urn).limit(24).to_a +
-        School.order(:urn).offset(total_placement_preference_school_count).limit(12).to_a
+      School.order(:urn).limit(PREVIOUS_PLACEMENT_PRIMARY_WINDOW_COUNT).to_a +
+        School.order(:urn).offset(total_placement_preference_school_count).limit(PREVIOUS_PLACEMENT_OFFSET_WINDOW_COUNT).to_a
     end.uniq
   end
 end

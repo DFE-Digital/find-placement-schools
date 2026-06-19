@@ -56,6 +56,18 @@ RSpec.describe DevelopmentSeedData do
 
         expect(first_school_preference.reload.appetite).to eq("actively_looking")
       end
+
+      it "syncs schools when only a small subset already exists" do
+        create_list(:school, 3)
+
+        expect {
+          described_class.call
+        }.to change(School, :count).by(102)
+         .and change(PlacementPreference, :count).by(90)
+         .and change(PreviousPlacement, :count).by(180)
+
+        expect(GIAS::SyncAllSchoolsJob).to have_received(:perform_now).once
+      end
     end
 
     context "when in az development" do
