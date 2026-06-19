@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
     return if controller_path == "development_access"
     return if session["development_access_granted"]
 
-    session["requested_path_after_development_access"] = request.fullpath if request.get?
+    session["requested_path_after_development_access"] = request.fullpath if request.get? || request.head?
     redirect_to new_development_access_path
   end
 

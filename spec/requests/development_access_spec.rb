@@ -6,8 +6,15 @@ RSpec.describe "DevelopmentAccess", type: :request do
       allow(Rails.env).to receive(:development?).and_return(true)
     end
 
-    it "redirects requests to the development access page until unlocked" do
+    it "redirects GET requests to the development access page until unlocked" do
       get "/"
+
+      expect(response).to redirect_to(new_development_access_path)
+      expect(session["requested_path_after_development_access"]).to eq("/")
+    end
+
+    it "stores the path for HEAD requests too" do
+      head "/"
 
       expect(response).to redirect_to(new_development_access_path)
       expect(session["requested_path_after_development_access"]).to eq("/")
