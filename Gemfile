@@ -112,7 +112,7 @@ group :test do
   gem "rails-controller-testing"
   gem "shoulda-matchers"
   gem "webmock", "~> 3.26"
-  gem "timecop", "~> 0.9.10"
+  gem "timecop", "~> 0.9.11"
   gem "undercover"
   gem "simplecov", require: false
   gem "simplecov-lcov", require: false

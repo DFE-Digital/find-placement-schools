@@ -668,7 +668,7 @@ GEM
     thruster (0.1.21-x86_64-darwin)
     thruster (0.1.21-x86_64-linux)
     tilt (2.7.0)
-    timecop (0.9.10)
+    timecop (0.9.11)
     timeout (0.6.1)
     trailblazer-option (0.1.2)
     tsort (0.2.0)
@@ -798,7 +798,7 @@ DEPENDENCIES
   stimulus-rails (~> 1.3)
   strong_migrations
   thruster
-  timecop (~> 0.9.10)
+  timecop (~> 0.9.11)
   tzinfo-data
   undercover
   uri (= 1.1.1)
