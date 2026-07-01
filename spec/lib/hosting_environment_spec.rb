@@ -9,7 +9,7 @@ RSpec.describe HostingEnvironment do
   describe ".env" do
     subject(:env) { described_class.env }
 
-    test_matrix = %w[production sandbox staging qa review development test]
+    test_matrix = %w[production sandbox staging qa review development az_development test]
 
     test_matrix.each do |environment|
       context "when RAILS_ENV is '#{environment}'" do

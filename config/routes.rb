@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   end
   match "/500", to: "errors#internal_server_error", via: :all, as: :internal_server_error
   get "/sign-in", to: "sessions#new", as: :sign_in
+  resource :development_access, only: %i[new create], path: "development-access", controller: :development_access
 
   if ENV.fetch("SIGN_IN_METHOD", "persona") == "persona"
     get "/personas", to: "personas#index"
@@ -71,7 +72,11 @@ Rails.application.routes.draw do
     get "/update_organisation", to: "change_organisation#update_organisation", as: :update_organisation
   end
 
-  resources :admin_dashboard, only: %i[index]
+  resources :admin_dashboard, only: %i[index] do
+    collection do
+      get :build_development_seed_data
+    end
+  end
 
   namespace :admin do
     resources :previous_placements, only: [] do

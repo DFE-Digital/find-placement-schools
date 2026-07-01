@@ -15,6 +15,9 @@
         <li><%= govuk_link_to(t(".job_dashboard"), mission_control_jobs_path) %></li>
         <li><%= govuk_link_to(t(".import_register_itt_placement_data"), new_import_register_data_admin_previous_placements_path) %></li>
         <li><%= govuk_link_to(t(".onboard_users"), new_onboard_users_admin_users_path) %></li>
+        <% if development_seed_data_available? %>
+          <li><%= govuk_link_to(t(".build_development_seed_data"), build_development_seed_data_admin_dashboard_index_path) %></li>
+        <% end %>
       <% end %>
     </div>
   </div>

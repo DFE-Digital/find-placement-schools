@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
+  before_action :ensure_development_password!
   before_action :authenticate_user!
   helper_method :current_user, :current_organisation, :user_signed_in?
 
@@ -65,6 +66,15 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def ensure_development_password!
+    return unless Rails.env.development? || HostingEnvironment.env.az_development?
+    return if controller_path == "development_access"
+    return if session["development_access_granted"]
+
+    session["requested_path_after_development_access"] = request.fullpath if request.get? || request.head?
+    redirect_to new_development_access_path
+  end
 
   def user_not_authorized
     flash[:heading] = "You are not authorized to perform this action."
