@@ -1,5 +1,5 @@
-<%= govuk_footer meta_items: footer_meta_items, meta_licence: false do |footer| %>
-  <%= footer.with_content_before_meta_items do %>
+<footer class="govuk-footer" role="contentinfo">
+  <div class="govuk-width-container">
     <h3 class="govuk-heading-m"><%= t(".get_help") %></h3>
 
     <div class="govuk-grid-row">
@@ -7,7 +7,7 @@
         <h4 class="govuk-heading-3 govuk-!-margin-top-0 govuk-!-margin-bottom-1"><%= t(".email.heading") %></h4>
 
         <p class="govuk-!-font-size-16 govuk-!-margin-bottom-1">
-          <%= govuk_footer_link_to t(".support_email_html"), "mailto:#{t(".support_email")}?subject=#{t(".service_name")}%20support" %>
+          <%= link_to t(".support_email_html"), "mailto:#{t(".support_email")}?subject=#{t(".service_name")}%20support", class: "govuk-footer__link" %>
         </p>
 
         <p class="govuk-!-font-size-16">
@@ -15,5 +15,18 @@
         </p>
       </div>
     </div>
-  <% end %>
-<% end %>
+
+    <div class="govuk-footer__meta">
+      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <h2 class="govuk-visually-hidden">Support links</h2>
+        <ul class="govuk-footer__inline-list">
+          <% footer_meta_items.each do |item| %>
+            <li class="govuk-footer__inline-list-item">
+              <%= link_to item[:text], item[:href], class: "govuk-footer__link" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
