@@ -108,4 +108,8 @@ DfE::Analytics.configure do |config|
   # models namespaced with Namespace
   #
   # config.excluded_models_proc = proc { |_model| false }
+  if Rails.env.in?(%w[development staging])
+    # Perform airbyte checks on startup and allow airbyte config generation
+    config.airbyte_enabled = Rails.env.development? || ENV["BIGQUERY_AIRBYTE_DATASET"].present?
+  end
 end
