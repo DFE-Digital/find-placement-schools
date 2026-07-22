@@ -18,6 +18,7 @@ staging: test-cluster
 
 .PHONY: review
 review: test-cluster
+	$(eval PR_NUMBER ?= ${PULL_REQUEST_NUMBER})
 	$(if ${PR_NUMBER},,$(error Missing PR_NUMBER))
 	$(eval ENVIRONMENT=pr-${PR_NUMBER})
 	$(eval include global_config/review.sh)
