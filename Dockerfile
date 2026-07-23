@@ -3,7 +3,7 @@
 # production: runs the actual app
 
 # Build builder image
-FROM ruby:3.4.8-alpine3.23 AS builder
+FROM ruby:3.4.10-alpine3.23 AS builder
 
 # RUN apk -U upgrade && \
 #     apk add --update --no-cache gcc git libc6-compat libc-dev make nodejs \
@@ -21,8 +21,8 @@ RUN apk add --update --no-cache tzdata && \
 # postgresql-dev: postgres driver and libraries
 # git: to install dfe-analytics
 # yaml-dev: psych issues
-# https://security.snyk.io/vuln/SNYK-ALPINE323-OPENSSL-15993266
-RUN apk add --no-cache build-base yarn postgresql17-dev git yaml-dev libcrypto3=3.5.6-r0
+# Keep libcrypto3 present, but do not pin patch version to avoid apk world conflicts.
+RUN apk add --no-cache build-base yarn postgresql17-dev git yaml-dev libcrypto3
 
 RUN apk add --no-cache nodejs npm
 
@@ -63,7 +63,7 @@ RUN rm -rf node_modules log/* tmp/* /tmp && \
     find /usr/local/bundle/gems -name "*.html" -delete
 
 # Build runtime image
-FROM ruby:3.4.8-alpine3.23 AS production
+FROM ruby:3.4.10-alpine3.23 AS production
 
 # The application runs from /app
 WORKDIR /app
@@ -82,8 +82,7 @@ RUN apk add --no-cache libpq
 # proj-util: provides cs2cs, required by Gias::CSVTransformer::CoordinateTransformer
 RUN apk add --no-cache proj-util
 
-# https://security.snyk.io/vuln/SNYK-ALPINE323-OPENSSL-15993266
-RUN apk add --no-cache libcrypto3=3.5.6-r0
+RUN apk add --no-cache libcrypto3
 
 # Copy files generated in the builder image
 COPY --from=builder /app /app
