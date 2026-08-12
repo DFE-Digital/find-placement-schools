@@ -45,6 +45,12 @@ variable "enable_postgres_backup_storage" {
   default     = false
   description = "Create a storage account to store database dumps"
 }
+
+variable "server_version" {
+  type = string
+  default = "16"
+  description = "Sets version of postgres DB server"
+}
 variable "docker_image" {
   type        = string
   description = "Docker image full name to identify it in the registry. Includes docker registry, repository and tag e.g.: ghcr.io/dfe-digital/teacher-pay-calculator:673f6309fd0c907014f44d6732496ecd92a2bcd0"
