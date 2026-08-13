@@ -48,7 +48,7 @@ variable "enable_postgres_backup_storage" {
 
 variable "server_version" {
   type = string
-  default = "16"
+  default = "17"
   description = "Sets version of postgres DB server"
 }
 variable "docker_image" {
