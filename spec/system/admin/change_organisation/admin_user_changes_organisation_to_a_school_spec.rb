@@ -5,17 +5,17 @@ RSpec.describe "Admin user changes organisation to a school", type: :system do
     Timecop.freeze(Date.new(2025, 10, 15)) do
       given_that_schools_exist
       and_i_am_signed_in
-    then_i_see_the_admin_dashboard
+      then_i_see_the_admin_dashboard
 
-    when_i_navigate_to_select_school_organisation_option
-    then_i_see_the_select_a_school_to_view_page
-    and_i_see_all_schools
+      when_i_navigate_to_select_school_organisation_option
+      then_i_see_the_select_a_school_to_view_page
+      and_i_see_all_schools
 
-    when_i_select_hogwarts
-    then_i_see_the_add_placement_details_page
+      when_i_select_hogwarts
+      then_i_see_the_add_placement_details_page
 
-    when_i_click_on_return_to_dashboard
-    then_i_see_the_admin_dashboard
+      when_i_click_on_return_to_dashboard
+      then_i_see_the_admin_dashboard
     end
   end
 
