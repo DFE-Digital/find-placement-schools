@@ -19,15 +19,13 @@ RSpec.describe School::UserMailer, type: :mailer do
 
         This is not a commitment to offer school placements but it helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
 
-        This service is being trialled by the Department for Education with schools and teacher training providers in England.
-
         [Sign in to Find placement schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email)
 
         If you do not have DfE Sign-in, create an account. You can then return to this email to access the service.
 
         If you need help or have feedback for us, contact [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk).
 
-        Regards
+        Regards,
 
         Find placement schools team
       EMAIL
@@ -72,7 +70,7 @@ RSpec.describe School::UserMailer, type: :mailer do
 
         If you have any questions or feedback, please contact the team at [find.placementschools@education.gov.uk](mailto:find.placementschools@education.gov.uk).
 
-        Regards
+        Regards,
 
         Find placement schools team
       EMAIL
@@ -120,8 +118,6 @@ RSpec.describe School::UserMailer, type: :mailer do
         Please sign in this week to register your school's ability to offer school placements for trainee teachers. If you are not the right staff member to do this, sign in to the service now to add the appropriate colleague(s) as a user.
 
         This is not a commitment to offer school placements but it helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
-
-        This service is being trialled by the Department for Education with schools and teacher training providers in England.
 
         [Sign in to Find placement schools](http://localhost/sign-in?utm_campaign=school&utm_medium=notification&utm_source=email)
 
