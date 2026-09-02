@@ -2,7 +2,8 @@ require "rails_helper"
 
 RSpec.describe "Multi org user changes organisation", type: :system do
   scenario do
-    given_i_am_signed_in
+    Timecop.freeze(Date.new(2025, 10, 15)) do
+      given_i_am_signed_in
     then_i_see_the_change_organisation_page
 
     when_i_select_hogwarts
@@ -13,6 +14,7 @@ RSpec.describe "Multi org user changes organisation", type: :system do
 
     when_i_select_order_of_the_phoenix
     then_i_see_the_find_placements_page_for_order_of_the_phoenix
+    end
   end
 
   private

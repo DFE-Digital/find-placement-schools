@@ -2,8 +2,9 @@ require "rails_helper"
 
 RSpec.describe "Admin user changes organisation to a school", type: :system do
   scenario do
-    given_that_schools_exist
-    and_i_am_signed_in
+    Timecop.freeze(Date.new(2025, 10, 15)) do
+      given_that_schools_exist
+      and_i_am_signed_in
     then_i_see_the_admin_dashboard
 
     when_i_navigate_to_select_school_organisation_option
@@ -15,6 +16,7 @@ RSpec.describe "Admin user changes organisation to a school", type: :system do
 
     when_i_click_on_return_to_dashboard
     then_i_see_the_admin_dashboard
+    end
   end
 
   private
