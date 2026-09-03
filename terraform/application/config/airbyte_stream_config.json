@@ -1,0 +1,753 @@
+{
+  "configurations": {
+    "streams": [
+      {
+        "name": "user_memberships",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "organisation_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "user_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "updated_at"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "first_name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "last_name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "email_address"
+            ]
+          },
+          {
+            "fieldPath": [
+              "admin"
+            ]
+          },
+          {
+            "fieldPath": [
+              "dfe_sign_in_uid"
+            ]
+          },
+          {
+            "fieldPath": [
+              "last_signed_in_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "selected_organisation_id"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "placement_subjects",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "code"
+            ]
+          },
+          {
+            "fieldPath": [
+              "phase"
+            ]
+          },
+          {
+            "fieldPath": [
+              "parent_subject_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "updated_at"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "organisation_contacts",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "organisation_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "first_name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "last_name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "email_address"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "role"
+            ]
+          },
+          {
+            "fieldPath": [
+              "telephone"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "previous_placements",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "school_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "academic_year_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "subject_name"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "organisation_addresses",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "organisation_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "address_1"
+            ]
+          },
+          {
+            "fieldPath": [
+              "address_2"
+            ]
+          },
+          {
+            "fieldPath": [
+              "address_3"
+            ]
+          },
+          {
+            "fieldPath": [
+              "town"
+            ]
+          },
+          {
+            "fieldPath": [
+              "city"
+            ]
+          },
+          {
+            "fieldPath": [
+              "county"
+            ]
+          },
+          {
+            "fieldPath": [
+              "postcode"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "updated_at"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "academic_years",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "starts_on"
+            ]
+          },
+          {
+            "fieldPath": [
+              "ends_on"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "updated_at"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "organisations",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "urn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "ukprn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "code"
+            ]
+          },
+          {
+            "fieldPath": [
+              "longitude"
+            ]
+          },
+          {
+            "fieldPath": [
+              "latitude"
+            ]
+          },
+          {
+            "fieldPath": [
+              "email_address"
+            ]
+          },
+          {
+            "fieldPath": [
+              "type"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "admissions_policy"
+            ]
+          },
+          {
+            "fieldPath": [
+              "district_admin_code"
+            ]
+          },
+          {
+            "fieldPath": [
+              "district_admin_name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "gender"
+            ]
+          },
+          {
+            "fieldPath": [
+              "group"
+            ]
+          },
+          {
+            "fieldPath": [
+              "local_authority_code"
+            ]
+          },
+          {
+            "fieldPath": [
+              "local_authority_name"
+            ]
+          },
+          {
+            "fieldPath": [
+              "maximum_age"
+            ]
+          },
+          {
+            "fieldPath": [
+              "minimum_age"
+            ]
+          },
+          {
+            "fieldPath": [
+              "percentage_free_school_meals"
+            ]
+          },
+          {
+            "fieldPath": [
+              "phase"
+            ]
+          },
+          {
+            "fieldPath": [
+              "religious_character"
+            ]
+          },
+          {
+            "fieldPath": [
+              "school_capacity"
+            ]
+          },
+          {
+            "fieldPath": [
+              "send_provision"
+            ]
+          },
+          {
+            "fieldPath": [
+              "special_classes"
+            ]
+          },
+          {
+            "fieldPath": [
+              "telephone"
+            ]
+          },
+          {
+            "fieldPath": [
+              "total_boys"
+            ]
+          },
+          {
+            "fieldPath": [
+              "total_girls"
+            ]
+          },
+          {
+            "fieldPath": [
+              "total_pupils"
+            ]
+          },
+          {
+            "fieldPath": [
+              "type_of_establishment"
+            ]
+          },
+          {
+            "fieldPath": [
+              "urban_or_rural"
+            ]
+          },
+          {
+            "fieldPath": [
+              "website"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "placement_preferences",
+        "syncMode": "incremental_append",
+        "cursorField": [
+          "_ab_cdc_lsn"
+        ],
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "_ab_cdc_lsn"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_deleted_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "_ab_cdc_updated_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "academic_year_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "organisation_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_by_id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "appetite"
+            ]
+          },
+          {
+            "fieldPath": [
+              "placement_details"
+            ]
+          },
+          {
+            "fieldPath": [
+              "created_at"
+            ]
+          },
+          {
+            "fieldPath": [
+              "updated_at"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "airbyte_heartbeat",
+        "syncMode": "full_refresh_overwrite",
+        "primaryKey": [
+          [
+            "id"
+          ]
+        ],
+        "selectedFields": [
+          {
+            "fieldPath": [
+              "id"
+            ]
+          },
+          {
+            "fieldPath": [
+              "last_heartbeat"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
