@@ -2,11 +2,12 @@ require "rails_helper"
 
 RSpec.describe InterestTagComponent, type: :component do
   subject(:component) do
-    described_class.new(school:, academic_year:)
+    described_class.new(school:, academic_year:, status:)
   end
 
   let(:academic_year) { AcademicYear.next }
   let(:school) { create(:school, placement_preferences:) }
+  let(:status) { nil }
 
   before do
     render_inline(component)
@@ -70,6 +71,16 @@ RSpec.describe InterestTagComponent, type: :component do
 
     it "renders the correct tag" do
       expect(page).to have_css(".govuk-tag--blue")
+    end
+  end
+
+  context "when a status override is provided" do
+    let(:placement_preferences) { [ build(:placement_preference, appetite: "actively_looking") ] }
+    let(:status) { "previously_offered" }
+
+    it "renders the overridden tag instead of the calculated status" do
+      expect(page).to have_content "Previously hosted placements"
+      expect(page).to have_css ".govuk-tag--blue"
     end
   end
 end

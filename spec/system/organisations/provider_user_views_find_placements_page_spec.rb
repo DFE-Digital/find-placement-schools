@@ -29,9 +29,13 @@ RSpec.describe "Provider user views find placements", type: :system do
     expect(page).to have_title("Find placements")
     expect(service_navigation).to have_current_item("Find placements")
     expect(page).to have_h1("Find placements")
+    expect(page).to have_content("What do the placement statuses mean?")
+
+    find("summary", text: "What do the placement statuses mean?").click
+
+    expect(page).to have_content("schools who have indicated they are offering placements")
 
     expect(page).to have_h2("Hogwarts")
-    expect(page).to have_tag("Potentially offering placements", "yellow")
     expect(page).to have_h3("School details")
     expect(page).to have_result_detail_row("Phase (age range)", "Secondary (11 to 18)")
     expect(page).to have_result_detail_row("Establishment group", "Local authority maintained schools")
