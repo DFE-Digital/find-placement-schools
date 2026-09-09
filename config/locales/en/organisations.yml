@@ -92,6 +92,14 @@ en:
       schools_found:
         one: "%{count} school found"
         other: "%{count} schools found"
+      placement_statuses_summary:
+        summary_text: What do the placement statuses mean?
+        actively_looking: schools who have indicated they are offering placements
+        interested: schools who have indicated they may be able to offer placements
+        previously_offered: schools who have previously hosted placements in the last four years and have not completed their placement information
+        not_participating: schools who have not completed their placement information and who have not previously hosted placements in the last four years
+        not_open: schools who have indicated they are not offering placements
+      previously_hosted_placements: Previously hosted placements
       view_map: View on map
       hide_map: Hide map
       results_alphabetical: Results sorted alphabetically
