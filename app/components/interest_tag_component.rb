@@ -17,11 +17,12 @@ class InterestTagComponent < ApplicationComponent
 
   private_constant :INTEREST_COLOURS, :INTEREST_TEXT
 
-  def initialize(school:, academic_year:, classes: [], html_attributes: {})
+  def initialize(school:, academic_year:, status: nil, classes: [], html_attributes: {})
     super(classes:, html_attributes:)
 
     @school = school
     @academic_year = academic_year
+    @status = status&.to_s
   end
 
   def call
@@ -30,7 +31,7 @@ class InterestTagComponent < ApplicationComponent
 
   private
 
-  attr_reader :school, :academic_year
+  attr_reader :school, :academic_year, :status
 
   def interest_colour
     INTEREST_COLOURS[calculated_status]
@@ -41,6 +42,8 @@ class InterestTagComponent < ApplicationComponent
   end
 
   def calculated_status
+    return status if status.present?
+
     if actively_looking?
       "actively_looking"
     elsif interested?
