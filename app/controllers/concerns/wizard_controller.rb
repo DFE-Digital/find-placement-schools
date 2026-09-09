@@ -3,6 +3,7 @@ module WizardController
 
   included do
     helper_method :current_step_path, :back_link_path, :step_path, :index_path
+    after_action :persist_wizard_state
 
     def new
       redirect_to step_path(@wizard.first_step)
@@ -11,6 +12,17 @@ module WizardController
     def edit; end
 
     private
+
+    def wizard_state
+      @wizard_state ||= session.fetch(state_key, {}).dup
+    end
+
+    def persist_wizard_state
+      return unless instance_variable_defined?(:@wizard)
+      return unless @wizard.respond_to?(:state)
+
+      session[state_key] = @wizard.state.dup
+    end
 
     def state_key
       @state_key ||= params.fetch(:state_key, BaseWizard.generate_state_key)
