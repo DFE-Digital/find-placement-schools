@@ -25,7 +25,7 @@ class Admin::Users::OnboardUsersController < AdminController
   private
 
   def set_wizard
-    state = session[state_key] ||= {}
+    state = wizard_state
     current_step = params[:step]&.to_sym
     @wizard = ::OnboardUsersWizard.new(params:, state:, current_step:)
   end

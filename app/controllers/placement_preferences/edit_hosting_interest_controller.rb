@@ -38,7 +38,7 @@ class PlacementPreferences::EditHostingInterestController < ApplicationControlle
   end
 
   def set_wizard
-    state = session[state_key] ||= {}
+    state = wizard_state
     current_step = params[:step]&.to_sym
     @wizard = EditHostingInterestWizard.new(
       placement_preference: @placement_preference,
