@@ -102,6 +102,7 @@ RSpec.describe "Provider user filters schools by name", type: :system do
   def then_i_see_no_schools
     expect(page).to have_h2("0 schools found")
     expect(page).to have_element(:p, text: "There are no schools that match your selection. Try searching again, or removing one or more filters.")
+    expect(page).not_to have_content("What do the placement statuses mean?")
   end
 
   def and_i_see_my_made_up_school_name_search_by_name_filter
