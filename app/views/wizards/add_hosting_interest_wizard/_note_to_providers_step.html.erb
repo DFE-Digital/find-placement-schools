@@ -12,9 +12,18 @@
         <%= t(".caption", academic_year_name: wizard.academic_year.short_name) %>
       </span>
 
+      <h1 class="govuk-heading-l"><%= t(".title") %></h1>
+
+      <div class="govuk-hint" id="note-to-providers-hint">
+        <p class="govuk-!-margin-bottom-2"><%= t(".hint_intro") %></p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li><%= t(".hint_item_1") %></li>
+          <li><%= t(".hint_item_2") %></li>
+        </ul>
+      </div>
+
       <%= f.govuk_text_area :note,
-          label: { size: "l", text: t(".title"), tag: "h1" },
-          hint: { text: t(".hint") } %>
+          label: { text: t(".title"), hidden: true } %>
 
       <%= f.govuk_submit t(".continue") %>
     </div>
