@@ -319,8 +319,17 @@ RSpec.describe "School user successfully adds their hosting interest, including 
       :label,
       text: "Is there anything about your school you would like providers to know? (optional)",
     )
-    expect(page).to have_hint(
-      "Include any reasonable adjustments your school can offer trainee teachers with disabilities or other needs, for example wheelchair access.",
+    expect(page).to have_css(
+      ".govuk-hint",
+      text: "Share any information that providers might be interested in knowing about your school. This could include:",
+    )
+    expect(page).to have_css(
+      ".govuk-hint ul.govuk-list--bullet li",
+      text: "accessibility information about your school",
+    )
+    expect(page).to have_css(
+      ".govuk-hint ul.govuk-list--bullet li",
+      text: "whether placements are already filled or likely to be filled soon",
     )
     expect(page).to have_field("Is there anything about your school you would like providers to know? (optional)")
   end
