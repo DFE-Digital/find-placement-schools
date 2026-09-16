@@ -88,10 +88,10 @@ jobs:
         sha: ${{ needs.build.outputs.docker-image-tag }}
         terraform-base: ${{ env.TERRAFORM_BASE }}
         healthcheck: ${{ env.HEALTHCHECK_CMD }}
-        # db-seed: true
-        # smoke-test: true
-        # gcp-wip: projects/712009772377/locations/global/workloadIdentityPools/find-placement-schools/providers/find-placement-schools
-        # gcp-project-id: rugged-abacus-218110
+        db-seed: true
+        smoke-test: true
+        gcp-wip: projects/712009772377/locations/global/workloadIdentityPools/find-placement-schools/providers/find-placement-schools
+        gcp-project-id: rugged-abacus-218110
 
   deploy:
     name: Deploy environments

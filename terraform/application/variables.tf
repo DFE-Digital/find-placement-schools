@@ -28,7 +28,7 @@ variable "service_name" {
 }
 variable "service_short" {
   type        = string
-  description = "Short name to identify the service. Up to 6 charcters."
+  description = "Short name to identify the service. Up to 6 characters."
 }
 variable "deploy_azure_backing_services" {
   type        = bool
@@ -82,8 +82,11 @@ variable "send_traffic_to_maintenance_page" {
 }
 
 locals {
-  postgres_ssl_mode = var.enable_postgres_ssl ? "require" : "disable"
-
+  postgres_ssl_mode          = var.enable_postgres_ssl ? "require" : "disable"
+  BIGQUERY_AIRBYTE_DATASET   = var.airbyte_enabled ? local.gcp_dataset_name : null
+  AIRBYTE_SERVER_URL         = var.airbyte_enabled ? "https://airbyte-${var.namespace}.${module.cluster_data.ingress_domain}" : null
+  BIGQUERY_HIDDEN_POLICY_TAG = var.airbyte_enabled ? "projects/rugged-abacus-218110/locations/europe-west2/taxonomies/69524444121704657/policyTags/6523652585511281766" : null
+  AIRBYTE_INTERNAL_DATASET   = var.airbyte_enabled ? "${local.gcp_dataset_name}_internal" : null
 }
 
 variable "enable_logit" { default = true }
