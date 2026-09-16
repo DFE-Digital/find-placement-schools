@@ -19,10 +19,17 @@ module "application_configuration" {
     BIGQUERY_TABLE_NAME = var.enable_dfe_analytics_federated_auth ? module.dfe_analytics[0].bigquery_table_name : null
     BIGQUERY_DATASET    = var.enable_dfe_analytics_federated_auth ? module.dfe_analytics[0].bigquery_dataset : null
   }
-  secret_variables = {
+  secret_variables = merge({
     DATABASE_URL = module.postgres.url
     GOOGLE_CLOUD_CREDENTIALS = var.enable_dfe_analytics_federated_auth ? module.dfe_analytics[0].google_cloud_credentials : null
-  }
+  },
+  {
+    AIRBYTE_CONFIGURATION = var.airbyte_enabled ? jsonencode({
+    SOURCE_ID      = module.airbyte[0].airbyte_source_id
+    DESTINATION_ID = module.airbyte[0].airbyte_destination_id
+    CONNECTION_ID  = module.airbyte[0].airbyte_connection_id
+    }) : null
+  })
 }
 
 module "web_application" {
