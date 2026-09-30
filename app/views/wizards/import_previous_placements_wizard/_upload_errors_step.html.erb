@@ -44,6 +44,9 @@
                 <% if current_step.missing_academic_year_rows.include?(csv_row_index) %>
                   <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.missing_academic_year") %></strong><br>
                 <% end %>
+                <% if current_step.invalid_academic_year_rows.include?(csv_row_index) %>
+                  <strong class="error-text"><%= t("wizards.import_previous_placements_wizard.upload_errors_step.csv_table.errors.invalid_academic_year") %></strong><br>
+                <% end %>
                 <%= csv_row["academic_year_start_date"] %>
               </p>
             <% end %>
