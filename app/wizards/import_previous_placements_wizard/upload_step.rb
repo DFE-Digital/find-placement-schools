@@ -3,6 +3,7 @@ class ImportPreviousPlacementsWizard::UploadStep < BaseStep
   attribute :csv_content
   attribute :file_name
   attribute :missing_academic_year_rows, default: []
+  attribute :invalid_academic_year_rows, default: []
   attribute :missing_subject_name_rows, default: []
 
   REQUIRED_HEADERS = %w[academic_year_start_date school_urn subject_name].freeze
@@ -65,6 +66,7 @@ class ImportPreviousPlacementsWizard::UploadStep < BaseStep
     end
 
     missing_academic_year_rows.blank? &&
+      invalid_academic_year_rows.blank? &&
       missing_subject_name_rows.blank?
   end
 
@@ -88,13 +90,18 @@ class ImportPreviousPlacementsWizard::UploadStep < BaseStep
 
   def reset_input_attributes
     self.missing_academic_year_rows = []
+    self.invalid_academic_year_rows = []
     self.missing_subject_name_rows = []
   end
 
   def validate_academic_year(row, row_number)
-    return if row["academic_year_start_date"].present?
+    academic_year = row["academic_year_start_date"]
 
-    missing_academic_year_rows << row_number
+    if academic_year.blank?
+      missing_academic_year_rows << row_number
+    elsif !academic_year.strip.match?(/\A\d{4}\z/)
+      invalid_academic_year_rows << row_number
+    end
   end
 
   def validate_subject_name(row, row_number)

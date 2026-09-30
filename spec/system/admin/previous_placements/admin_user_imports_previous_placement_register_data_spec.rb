@@ -68,7 +68,7 @@ RSpec.describe "Admin user imports previous placement register data", type: :sys
     expect(page).to have_h2("Preview of import.csv")
     expect(page).to have_table_row(
       "1" => "2",
-      "academic_year_start_date" => "2025-09-01",
+      "academic_year_start_date" => "2025",
       "school_urn" => "100003",
       "subject_name" => "Computing",
     )

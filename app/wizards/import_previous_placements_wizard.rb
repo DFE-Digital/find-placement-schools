@@ -41,9 +41,13 @@ class ImportPreviousPlacementsWizard < BaseWizard
 
       {
         school_id: school.id,
-        academic_year_id: AcademicYear.for_date(Date.parse(row["academic_year_start_date"])).id,
+        academic_year_id: AcademicYear.for_date(academic_year_start_date(row["academic_year_start_date"])).id,
         subject_name: row["subject_name"]
       }
     end
+  end
+
+  def academic_year_start_date(year)
+    Date.new(year.to_i, AcademicYear::START_DATE[:month], AcademicYear::START_DATE[:day])
   end
 end

@@ -29,7 +29,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
       context "when the csv_content is present" do
         let(:csv_content) do
           "academic_year_start_date,school_urn,subject_name,subject_code,number_of_placements\r\n" \
-            "2025-09-01,123456,Computing,11,5"
+            "2025,123456,Computing,11,5"
         end
         let(:attributes) { { csv_content: } }
 
@@ -115,10 +115,23 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
         end
       end
 
+      context "when the csv_content contains an academic_year_start_date which is not a year" do
+        let(:csv_content) do
+          "academic_year_start_date,school_urn,subject_name,subject_code\r\n" \
+            "2025-09-01,123456,Computing,11"
+        end
+        let(:attributes) { { csv_content: } }
+
+        it "returns false and assigns the csv row to the 'invalid_academic_year_rows' attribute" do
+          expect(csv_inputs_valid).to be(false)
+          expect(step.invalid_academic_year_rows).to contain_exactly(0)
+        end
+      end
+
       context "when csv_content is missing an subject_name" do
         let(:csv_content) do
           "academic_year_start_date,school_urn,subject_name,subject_code\r\n" \
-            "2025-09-01,123456,,11"
+            "2025,123456,,11"
         end
         let(:attributes) { { csv_content: } }
 
@@ -134,7 +147,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
         let(:placement_subject) { create(:placement_subject) }
         let(:csv_content) do
           "academic_year_start_date,school_urn,subject_name\r\n" \
-            "#{academic_year.starts_on},#{school.urn},#{placement_subject.name},#{placement_subject.code}"
+            "#{academic_year.starts_on.year},#{school.urn},#{placement_subject.name},#{placement_subject.code}"
         end
         let(:attributes) { { csv_content: } }
 
@@ -163,7 +176,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
       it "reads a given CSV and assigns the content to the csv_content attribute,
         and assigns the associated claim IDs to the claim_ids attribute" do
         expect(step.csv_content).to eq(
-          "academic_year_start_date,school_urn,subject_name\n2025-09-01,100003,Computing\n"
+          "academic_year_start_date,school_urn,subject_name\n2025,100003,Computing\n"
         )
       end
     end
@@ -173,7 +186,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
 
       let(:csv_content) do
         "academic_year_start_date,school_urn,subject_name\r\n" \
-          "2025-09-01,123456,Computing"
+          "2025,123456,Computing"
       end
       let(:attributes) { { csv_content: } }
 
@@ -186,7 +199,7 @@ RSpec.describe ImportPreviousPlacementsWizard::UploadStep, type: :model do
 
         expect(csv[0]).to be_a(CSV::Row)
         expect(csv[0].to_h).to eq({
-          "academic_year_start_date" => "2025-09-01",
+          "academic_year_start_date" => "2025",
           "school_urn" => "123456",
           "subject_name" => "Computing"
         })

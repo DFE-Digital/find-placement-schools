@@ -21,7 +21,7 @@ RSpec.describe ImportPreviousPlacementsWizard::ConfirmationStep, type: :model do
   let(:csv) { CSV.parse(csv_content, headers: true, skip_blanks: true) }
   let(:csv_content) do
     "academic_year_start_date,school_urn,subject_name,subject_code,number_of_placements\r\n" \
-      "2025-09-01,123456,Computing,11,5"
+      "2025,123456,Computing,11,5"
   end
 
   describe "delegations" do
