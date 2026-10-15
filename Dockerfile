@@ -84,6 +84,10 @@ RUN apk add --no-cache proj-util
 
 RUN apk add --no-cache libcrypto3
 
+# Pull in the zlib security fix (1.3.2-r1) ahead of the base image. Unpinned so it
+# keeps working once the base image catches up.
+RUN apk add --no-cache --upgrade zlib
+
 # Copy files generated in the builder image
 COPY --from=builder /app /app
 COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
