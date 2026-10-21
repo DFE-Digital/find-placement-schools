@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.3"
+gem "rails", "~> 8.1.4"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use postgresql as the database for Active Record
@@ -75,7 +75,7 @@ gem "pundit"
 
 gem "okcomputer", "~> 1.19"
 
-gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.15.17"
+gem "dfe-analytics", github: "DFE-Digital/dfe-analytics", tag: "v1.16.1"
 
 gem "google-cloud-bigquery", "1.64.0"
 gem "google-apis-bigquery_v2", "0.106.0"
