@@ -119,6 +119,51 @@ RSpec.describe Users::PlacementPreferences::Remind do
       end
     end
 
+    context "when the school only has a preference for the current academic year" do
+      let(:last_signed_in_at) { 2.weeks.ago }
+
+      before do
+        create(:placement_preference, created_by: user, organisation: school, academic_year: AcademicYear.current)
+      end
+
+      it "sends a reminder for the next academic year" do
+        expect { user_placement_preference_remind_service }.to enqueue_mail(
+          School::UserMailer,
+          :placement_preferences_reminder_notification,
+        ).with(user, school, AcademicYear.next)
+      end
+    end
+
+    context "when the user belongs to several schools" do
+      let(:last_signed_in_at) { 2.weeks.ago }
+      let(:other_school) { create(:school) }
+      let(:user) { create(:user, last_signed_in_at:, organisations: [ school, other_school ]) }
+
+      before { user }
+
+      context "when only one school is missing a preference" do
+        before do
+          create(:placement_preference, created_by: user, organisation: other_school, academic_year: AcademicYear.next)
+        end
+
+        it "reminds the user about the school missing a preference only" do
+          expect { user_placement_preference_remind_service }.to enqueue_mail(
+            School::UserMailer,
+            :placement_preferences_reminder_notification,
+          ).with(user, school, AcademicYear.next).exactly(:once)
+        end
+      end
+
+      context "when both schools are missing a preference" do
+        it "sends a reminder for each school" do
+          expect { user_placement_preference_remind_service }.to have_enqueued_mail(
+            School::UserMailer,
+            :placement_preferences_reminder_notification,
+          ).twice
+        end
+      end
+    end
+
     context "when there are more than 100 users to remind" do
       150.times do
         let!("user_#{_1}") do

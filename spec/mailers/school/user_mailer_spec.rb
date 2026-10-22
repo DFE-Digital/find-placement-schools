@@ -158,10 +158,12 @@ RSpec.describe School::UserMailer, type: :mailer do
 
   describe "placement_preferences_reminder_notification" do
     subject(:placement_preferences_reminder_notification) do
-      described_class.placement_preferences_reminder_notification(user)
+      described_class.placement_preferences_reminder_notification(user, school, academic_year)
     end
 
     let(:user) { create(:user) }
+    let(:school) { create(:school, name: "Hogwarts") }
+    let(:academic_year) { AcademicYear.next }
 
     it "sends a sign in reminder to the user" do
       expect(placement_preferences_reminder_notification.to).to contain_exactly(user.email_address)
@@ -173,7 +175,7 @@ RSpec.describe School::UserMailer, type: :mailer do
 
         Thank you for signing in to the Department for Education’s new Find Placement Schools service.
 
-        We’ve noticed your school hasn’t yet recorded its ability to host trainee teachers on placements in academic year 2026/27. Please sign in to the service and record this information as soon as you can.
+        We’ve noticed Hogwarts hasn’t yet recorded its ability to host trainee teachers on placements in academic year #{academic_year.decorate.short_name}. Please sign in to the service and record this information as soon as you can.
 
         This is not a commitment to offer school placements but it helps teacher training providers know whether to contact you and helps the Department for Education understand school capacity to support teacher training.
 

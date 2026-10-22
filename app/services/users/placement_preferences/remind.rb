@@ -1,9 +1,13 @@
 class Users::PlacementPreferences::Remind < ApplicationService
   def call
     wait_time = 0.minutes
-    idle_users.find_in_batches(batch_size: 100) do |batch|
-      batch.each do |user|
-        School::UserMailer.placement_preferences_reminder_notification(user).deliver_later(wait: wait_time)
+    idle_memberships.find_in_batches(batch_size: 100) do |batch|
+      batch.each do |membership|
+        School::UserMailer.placement_preferences_reminder_notification(
+          membership.user,
+          membership.organisation,
+          academic_year,
+        ).deliver_later(wait: wait_time)
       end
 
       wait_time += 1.minute
@@ -12,14 +16,22 @@ class Users::PlacementPreferences::Remind < ApplicationService
 
   private
 
-  def idle_schools
-    @idle_schools ||= School.includes(:users, :placement_preferences)
-      .without_preference_for(AcademicYear.next)
-      .where.associated(:users)
+  def academic_year
+    @academic_year ||= AcademicYear.next
   end
 
-  def idle_school_users
-    @idle_school_users ||= User.joins(:organisations).where(organisations: { id: idle_schools.ids })
+  def idle_schools
+    @idle_schools ||= School.without_preference_for(academic_year)
+  end
+
+  # One membership per user and school, so a user belonging to several schools
+  # is reminded about each school that is missing a preference.
+  def idle_memberships
+    @idle_memberships ||= UserMembership
+      .includes(:user, :organisation)
+      .joins(:user)
+      .where(organisation_id: idle_schools.select(:id))
+      .merge(idle_users)
   end
 
   def idle_users
@@ -31,7 +43,7 @@ class Users::PlacementPreferences::Remind < ApplicationService
   end
 
   def first_reminder_users
-    idle_school_users
+    User
       .where(
         "last_signed_in_at > ? AND last_signed_in_at < ?",
         first_reminder_cadence.beginning_of_day,
@@ -44,7 +56,7 @@ class Users::PlacementPreferences::Remind < ApplicationService
   end
 
   def second_reminder_users
-    idle_school_users
+    User
       .where(
         "last_signed_in_at > ? AND last_signed_in_at < ?",
         second_reminder_cadence.beginning_of_day,
@@ -57,7 +69,7 @@ class Users::PlacementPreferences::Remind < ApplicationService
   end
 
   def third_reminder_users
-    idle_school_users
+    User
       .where(
         "last_signed_in_at > ? AND last_signed_in_at < ?",
         third_reminder_cadence.beginning_of_day,
