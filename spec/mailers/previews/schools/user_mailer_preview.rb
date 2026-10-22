@@ -4,7 +4,7 @@ class Schools::UserMailerPreview < ActionMailer::Preview
   end
 
   def placement_preferences_reminder_notification
-    School::UserMailer.placement_preferences_reminder_notification(user)
+    School::UserMailer.placement_preferences_reminder_notification(user, School.new(name: "Example School"), AcademicYear.next)
   end
 
   def user_feedback_request_notification

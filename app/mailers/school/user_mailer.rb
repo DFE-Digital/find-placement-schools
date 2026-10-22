@@ -38,12 +38,14 @@ class School::UserMailer < ApplicationMailer
                  )
   end
 
-  def placement_preferences_reminder_notification(user)
+  def placement_preferences_reminder_notification(user, school, academic_year)
     notify_email to: user.email_address,
                  subject: t(".subject"),
                  body: t(
                    ".body",
                    user_name: user.first_name,
+                   school_name: school.name,
+                   academic_year_name: academic_year.decorate.short_name,
                    service_name:,
                    support_email:,
                    sign_in_url: sign_in_url(utm_source: "email", utm_medium: "notification", utm_campaign: "school")
