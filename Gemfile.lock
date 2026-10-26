@@ -191,13 +191,13 @@ GEM
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
-    faraday (2.14.3)
-      faraday-net_http (>= 2.0, < 3.5)
+    faraday (2.15.0)
+      faraday-net_http (>= 2.0, < 3.6)
       json
       logger
     faraday-follow_redirects (0.5.0)
       faraday (>= 1, < 3)
-    faraday-net_http (3.4.4)
+    faraday-net_http (3.5.0)
       net-http (~> 0.5)
     fugit (1.13.0)
       et-orbi (~> 1.4)
@@ -207,9 +207,9 @@ GEM
       csv (>= 3.0.0)
     globalid (1.4.0)
       activesupport (>= 6.1)
-    google-apis-bigquery_v2 (0.106.0)
+    google-apis-bigquery_v2 (0.108.0)
       google-apis-core (>= 0.15.0, < 2.a)
-    google-apis-core (1.2.5)
+    google-apis-core (1.4.0)
       addressable (~> 2.9)
       faraday (~> 2.13)
       faraday-follow_redirects (~> 0.3)
@@ -229,12 +229,12 @@ GEM
     google-cloud-core (1.9.0)
       google-cloud-env (>= 1.0, < 3.a)
       google-cloud-errors (~> 1.0)
-    google-cloud-env (2.4.0)
+    google-cloud-env (2.4.1)
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
     google-cloud-errors (1.7.0)
-    google-logging-utils (0.2.0)
-    googleauth (1.17.3)
+    google-logging-utils (0.2.1)
+    googleauth (1.17.6)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -288,7 +288,7 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
-    jwt (3.2.0)
+    jwt (3.3.0)
       base64
     kamal (2.12.0)
       activesupport (>= 7.0)
@@ -345,7 +345,7 @@ GEM
       stimulus-rails
       turbo-rails
     msgpack (1.8.5)
-    multi_json (1.21.1)
+    multi_json (1.21.2)
     multi_xml (0.6.0)
     net-http (0.9.1)
       uri (>= 0.11.1)
@@ -519,7 +519,7 @@ GEM
     regexp_parser (2.12.0)
     reline (0.7.0)
       io-console (~> 0.5)
-    representable (3.2.0)
+    representable (3.3.1)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
@@ -603,7 +603,7 @@ GEM
       logger
     shoulda-matchers (8.0.1)
       activesupport (>= 7.2)
-    signet (0.22.0)
+    signet (0.22.1)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 4.0)
@@ -769,7 +769,7 @@ DEPENDENCIES
   erb_lint
   factory_bot_rails
   geocoder (~> 1.8)
-  google-apis-bigquery_v2 (= 0.106.0)
+  google-apis-bigquery_v2 (= 0.108.0)
   google-cloud-bigquery (= 1.64.0)
   govuk-components
   govuk_design_system_formbuilder
