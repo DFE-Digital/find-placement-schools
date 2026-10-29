@@ -85,7 +85,6 @@ This project depends on:
 * [NodeJS](https://nodejs.org/)
 * [Yarn](https://yarnpkg.com/)
 * [PostgreSQL](https://www.postgresql.org/)
-* [cmake](#cmake)
 
 ### asdf toolchain
 
@@ -104,16 +103,6 @@ To ensure `pg` compiles correctly use:
 
 ```sh
 ASDF_POSTGRES_VERSION=17.2 bundle install
-```
-
-### cmake
-
-cmake is required to build some native extensions, specifically the `rugged` gem used by `undercover`, used for test
-coverage reporting.
-
-```sh
-# macOS
-brew install cmake
 ```
 
 ### yarn
