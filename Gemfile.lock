@@ -265,8 +265,6 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
-    imagen (0.2.0)
-      parser (>= 2.5, != 2.5.1.1)
     importmap-rails (2.1.0)
       actionpack (>= 6.0.0)
       activesupport (>= 6.0.0)
@@ -584,7 +582,6 @@ GEM
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (3.4.0)
-    rugged (1.9.0)
     securerandom (0.4.1)
     selenium-webdriver (4.45.0)
       base64 (~> 0.2)
@@ -609,7 +606,6 @@ GEM
       jwt (>= 1.5, < 4.0)
     simplecov (1.2.0)
     simplecov-lcov (0.9.0)
-    simplecov_json_formatter (0.1.4)
     smart_properties (1.17.0)
     solargraph (0.60.4)
       ast (~> 2.4.3)
@@ -692,15 +688,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
-    undercover (0.8.5)
-      base64
-      benchmark
-      bigdecimal
-      imagen (>= 0.2.0)
-      rainbow (>= 2.1, < 4.0)
-      rugged (>= 0.27, < 1.10)
-      simplecov
-      simplecov_json_formatter
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
@@ -814,7 +801,6 @@ DEPENDENCIES
   thruster
   timecop (~> 0.9.11)
   tzinfo-data
-  undercover
   uri (= 1.1.1)
   web-console
   webmock (~> 3.26)
