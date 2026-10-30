@@ -19,6 +19,7 @@ multiple organisation types to switch between their organisations.
 
     * [Prerequisites](#prerequisites)
     * [asdf toolchain](#asdf-toolchain)
+    * [Yarn](#yarn)
     * [Environment variables](#environment-variables)
     * [Database](#database)
     * [Node & assets](#node--assets)
@@ -43,7 +44,7 @@ the service.
 
 ## Architecture
 
-* Rails **8.0.2** app (API+server-rendered views) using the **GOV.UK Design System** via `govuk-components` and
+* Ruby on Rails app (API+server-rendered views) using the **GOV.UK Design System** via `govuk-components` and
   `govuk_design_system_formbuilder`.
 * Two “service contexts”: **schools** and **providers** with distinct navigation and controllers.
 * Database-backed **sessions** (`activerecord-session_store`).
@@ -54,7 +55,7 @@ the service.
 ## Tech stack
 
 * **Ruby**: *3.4.12* (managed via asdf)
-* **Rails**: 8.0.2
+* **Rails**: see [`Gemfile.lock`](Gemfile.lock) for the resolved version
 * **DB**: PostgreSQL (tested with **17.2**)
 * **Job queue**: `solid_queue`
 * **Cache**: `solid_cache`
@@ -69,7 +70,7 @@ the service.
 ## Requirements
 
 * Postgres **17.x** (server + headers)
-* NodeJS **≥ 18** and Yarn (via asdf)
+* The Node.js version pinned in [`.tool-versions`](.tool-versions), with Yarn managed by Corepack
 * Build tools (for native gems)
 
 > macOS users: install `asdf` via Homebrew; Linux users: follow asdf docs.
@@ -88,14 +89,16 @@ This project depends on:
 
 ### asdf toolchain
 
-Install the required tools and then install versions pinned in `.tool-versions`:
+Install the required asdf plugins and the versions pinned for the application in `.tool-versions`:
 
 ```sh
 brew install asdf # on macOS
 asdf plugin add ruby
 asdf plugin add nodejs
 asdf plugin add postgres
-asdf install
+asdf install ruby
+asdf install nodejs
+asdf install postgres
 ```
 
 When installing the `pg` gem, Bundler executes outside the project directory and can miss the pinned Postgres version.
@@ -105,15 +108,26 @@ To ensure `pg` compiles correctly use:
 ASDF_POSTGRES_VERSION=17.2 bundle install
 ```
 
-### yarn
-
-To manage different Yarn versions per project, it is [recommended to use `corepack`](https://yarnpkg.com/corepack), the
-Yarn version is managed in the `.yarnrc.yml` file.
+Terraform is also pinned in `.tool-versions` for infrastructure work, but is not needed to run the application. To install
+it with asdf when working on infrastructure:
 
 ```sh
-npm install -g corepack
-corepack enable
+asdf plugin add terraform
+asdf install terraform
 ```
+
+### Yarn
+
+Use [Corepack](https://yarnpkg.com/corepack) to enable the project-pinned Yarn version:
+
+```sh
+corepack enable
+asdf reshim
+yarn --version # 4.9.2
+```
+
+The committed `.yarnrc.yml` `yarnPath` points to `.yarn/releases/yarn-4.9.2.cjs`, which is the source of truth for Yarn
+in this repository; Yarn is not managed by asdf.
 
 ### Quick start
 
@@ -201,11 +215,13 @@ Useful notes:
 ### Linting & static analysis
 
 * Ruby style: `rubocop-rails-omakase`
-* ERB templates: `erb_lint`
 * Security scanner: `brakeman`
 
+`bin/lint` runs RuboCop with `--autocorrect-all` and modifies files. For check-only linting and static analysis, run:
+
 ```sh
-bin/lint
+bin/rubocop
+bin/brakeman --no-pager
 ```
 
 ### Intellisense
