@@ -29,16 +29,16 @@ SimpleCov.start "rails" do
   enable_coverage :branch
 
   # Ignore test coverage for these files
-  add_filter "lib/tasks/auto_annotate_models.rake"
+  skip "lib/tasks/auto_annotate_models.rake"
 
-  add_group "Components", "app/components"
-  add_group "Decorators", "app/decorators"
-  add_group "Forms", "app/forms"
-  add_group "Policies", "app/policies"
-  add_group "Queries", "app/queries"
-  add_group "Services", "app/services"
-  add_group "Validators", "app/validators"
-  add_group "Wizards", "app/wizards"
+  group "Components", "app/components"
+  group "Decorators", "app/decorators"
+  group "Forms", "app/forms"
+  group "Policies", "app/policies"
+  group "Queries", "app/queries"
+  group "Services", "app/services"
+  group "Validators", "app/validators"
+  group "Wizards", "app/wizards"
 end
 
 # `expect(...).not_to matcher.and matcher` is not supported, since it creates a bit of an ambiguity.

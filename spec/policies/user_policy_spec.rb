@@ -66,4 +66,12 @@ RSpec.describe UserPolicy do
       end
     end
   end
+
+  permissions :remove?, :destroy? do
+    let(:user) { create(:user) }
+
+    it "denies access to remove or destroy the current user" do
+      expect(user_policy).not_to permit(user, user)
+    end
+  end
 end
