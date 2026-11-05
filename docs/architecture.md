@@ -1,12 +1,22 @@
-# Architecture
+# Architecture: how the service fits together
 
 Find placement schools helps schools publish their willingness to host initial teacher training placements and helps providers find potential partner schools. It does not allocate trainees or book placements.
 
-Start with the [handover guide](../handover-document.md). Read [application flows](application-flows.md) for user journeys and [deployment](deployment.md) for environment and release details.
+This guide explains the main parts of the service and what each does. You do not need to recognise every tool name:
+the important distinction is between the part that shows pages, the part that runs tasks in the background and the
+database where they keep information.
+
+Start with the [handover guide](../handover-document.md) for a reading path and glossary.
+Read [application flows](application-flows.md) for what users do and [deployment](deployment.md) for how we release changes.
 
 ## System context
 
-The application is a server-rendered Rails service, with a small internal JSON endpoint for its map view. Register data arrives through a support upload, not a live API.
+Rails, the web framework we use, builds pages and sends them to the user's browser. The browser also asks the service
+for information needed to display maps. Schools and providers mainly use pages and forms, rather than a separate data
+service for other organisations to connect to.
+
+The diagram shows the people and other services involved. Information about past placements arrives as a file uploaded
+by support; we do not fetch it directly from Register trainee teachers.
 
 ```mermaid
 flowchart LR
@@ -24,78 +34,114 @@ flowchart LR
   App --> Analytics[DfE Analytics and BigQuery]
 ```
 
-Arrows show user access or the direction of data/request flow, not network permissions. See the [integration register](integrations.md) for contracts and failure behaviour.
+Arrows show who uses the service and where information travels. They do not show who has permission to access each
+system. See [integrations](integrations.md) for what we use each service for and what happens if it fails.
 
 ## Runtime
 
-Terraform defines separate web and worker workloads on Azure Kubernetes Service (AKS). The database stores business data, sessions and Solid Queue state.
+The hosted service has three main parts:
+
+- The **web application** responds when someone opens a page or submits a form.
+- The **worker** handles waiting tasks, such as imports and emails, without keeping the user's page open.
+- The **database** stores school/user information, sign-in and form progress, and waiting tasks.
+
+Azure Kubernetes Service (AKS) is the hosting platform that runs the web application and worker.
+Terraform files describe how those resources should be set up. Azure Front Door receives visits and directs them
+to the application, or to a maintenance page when we need one.
 
 ```mermaid
 flowchart TB
   Browser[Browser] --> Edge[Azure Front Door]
-  Edge --> Web[Rails web workload]
+  Edge --> Web[Web application]
   Edge -. maintenance routing .-> Maintenance[Static maintenance page]
-  Web --> DB[(PostgreSQL)]
-  Web --> Queue[Active Job / Solid Queue adapter]
+  Web --> DB[(Database: PostgreSQL)]
+  Web --> Queue[Code that adds waiting tasks]
   Queue --> DB
-  Worker[Solid Queue worker workload] --> DB
+  Worker[Background worker: Solid Queue] --> DB
   Worker --> External[Imports, email and analytics services]
-  Migration[Migration job] --> DB
-  Vault[Azure Key Vault] --> Config[Kubernetes configuration and secrets]
+  Migration[Database preparation task] --> DB
+  Vault[Azure Key Vault] --> Config[Application settings and secrets]
   Config --> Web
   Config --> Worker
   Config --> Migration
 ```
 
-The queue box is an application adapter, not another server or database. Production uses an Azure PostgreSQL flexible server; review apps use an in-cluster database. The shared deployment action orchestrates rollout; the application repository declares the migration job and web/worker configuration.
+The box for adding waiting tasks is code (the "queue adapter"), not another server.
+The live service uses Azure's managed PostgreSQL database. Temporary review copies use a database running within
+the hosting platform instead.
+
+When we release a change, shared automation sets up the new version. A separate migration task prepares any database
+changes. Key Vault keeps secret settings, which are passed to the parts that need them rather than stored in this code.
 
 Sources: [application Terraform](../terraform/application/application.tf), [database Terraform](../terraform/application/database.tf), [migration job](../terraform/application/job.tf), [deployment workflow](../.github/workflows/build-and-deploy.yml).
 
 ## Main implementation choices
 
-| Concern | Implementation |
-| --- | --- |
-| Web application | Rails, Puma and server-rendered ERB; GOV.UK components and form builder |
-| Browser behaviour | Stimulus, GOV.UK Frontend, esbuild and Sass; Propshaft serves built assets |
-| Data | PostgreSQL, UUID business identifiers, organisation single-table inheritance (STI) and JSONB preference details |
-| Authentication | OmniAuth OpenID Connect for DfE Sign-in; developer personas selected by configuration |
-| Authorisation | Pundit policies plus admin-controller checks; users work in a selected organisation |
-| Sessions | `activerecord-session_store` in the application database, including wizard state |
-| Background work | Active Job with Solid Queue in production; dedicated hosted worker |
-| Queue UI | Mission Control Jobs at `/jobs`, using `AdminDashboardController` |
-| Cache | `Rails.cache` is used for travel times. Production does not explicitly configure a durable/shared cache store. Do not assume caching is shared across replicas. |
-| Logging and health | Semantic logging/Logit, Sentry, OkComputer and Rails `/up`; see [operations](operations.md) |
-| Hosting | AKS/shared DfE Terraform modules, not Kamal deployment |
+### For developers: tools and their roles
 
-`solid_cache` and `kamal` appear in the [Gemfile](../Gemfile), but their presence is not evidence that they are used. There are no Solid Cache tables in the current schema. Read the manifests and [tool versions](../.tool-versions) rather than relying on versions copied into prose.
+The names below help you find the relevant code and settings. The explanation is more important than memorising the names.
+
+| Part | Tools and purpose |
+| --- | --- |
+| Web pages | Rails builds the pages, Puma handles web requests, and ERB templates/GOV.UK components control how pages look. |
+| Browser behaviour | Stimulus and GOV.UK Frontend add page interactions. esbuild and Sass prepare JavaScript/styles; Propshaft serves the resulting files. |
+| Stored information | PostgreSQL is the database. Records have UUID identifiers. Schools/providers share a table (STI); preference answers use flexible JSONB storage. See the [data guide](data-model.md). |
+| Checking who someone is | OmniAuth connects to DfE Sign-in using OpenID Connect, a standard sign-in protocol. Developers can select test identities called personas instead. |
+| Checking what someone may do | Pundit rules and admin checks control permissions for the selected organisation. |
+| Remembering a visit | `activerecord-session_store` keeps session information in the database, including unfinished forms. |
+| Background tasks | Active Job adds work to Solid Queue. A separate worker runs those tasks on the hosted service. |
+| Viewing tasks | Admins use Mission Control Jobs at `/jobs` to see waiting and failed work. |
+| Remembering travel results | `Rails.cache` can reuse travel times. Production does not explicitly set up a shared store, so different copies of the application may not reuse each other's results. |
+| Finding problems | Logs, Sentry error reports and health checks help diagnose failures; see [operations](operations.md). |
+| Hosting | Shared AKS/Terraform setup, rather than Kamal. |
+
+`solid_cache` and `kamal` are listed as dependencies in the [Gemfile](../Gemfile), but are not set up for these roles.
+There are no Solid Cache tables in the database structure. For current software versions, check the dependency files
+and [tool versions](../.tool-versions), which are easier to keep up to date than copies in this guide.
 
 ## Code map
 
+Developers can use this table to find the part to change. You can skip it if you only need the service overview.
+
 | Location | Responsibility |
 | --- | --- |
-| [Controllers](../app/controllers/) | HTTP entry points, authentication, selected-organisation context and wizard orchestration |
-| [Models](../app/models/) | Data relationships, validations and domain scopes |
-| [Policies](../app/policies/) | Pundit permission rules; review the action-specific rule rather than assuming a uniform role matrix |
-| [Wizards](../app/wizards/) and [forms](../app/forms/) | Multi-page input and branch-specific validation |
-| [Queries](../app/queries/) | School/provider search, filtering and ordering |
-| [Services](../app/services/) and [lib](../lib/) | Imports, external clients, travel time and user notifications |
-| [Jobs](../app/jobs/) and [mailers](../app/mailers/) | Asynchronous execution and notification templates |
-| [Decorators](../app/decorators/), [presenters](../app/presenters/) and [components](../app/components/) | Presentation logic |
-| [JavaScript](../app/javascript/) and [assets](../app/assets/) | Browser controllers, maps and styles |
-| [Configuration](../config/) | Rails environments, routes, recurring work, analytics field configuration and initializers |
-| [Specs](../spec/) | Behaviour checks, factories, support helpers and mail previews |
-| [Terraform](../terraform/) and [workflows](../.github/workflows/) | Infrastructure declaration and delivery/operational automation |
+| [Controllers](../app/controllers/) | Respond to page requests, check sign-in and move users through forms |
+| [Models](../app/models/) | Describe records, their connections and the rules for saving them |
+| [Policies](../app/policies/) | Check permission for each action |
+| [Wizards](../app/wizards/) and [forms](../app/forms/) | Decide which questions to show and check the answers |
+| [Queries](../app/queries/) | Find, filter and sort schools/providers |
+| [Services](../app/services/) and [lib](../lib/) | Carry out tasks such as imports, travel calculations and notifications |
+| [Jobs](../app/jobs/) and [mailers](../app/mailers/) | Run background tasks and prepare emails |
+| [Decorators](../app/decorators/), [presenters](../app/presenters/) and [components](../app/components/) | Prepare information for display |
+| [JavaScript](../app/javascript/) and [assets](../app/assets/) | Add browser interactions, maps and styles |
+| [Configuration](../config/) | Set up the application, page addresses, scheduled tasks and analytics |
+| [Specs](../spec/) | Automated tests, made-up test data and email previews |
+| [Terraform](../terraform/) and [workflows](../.github/workflows/) | Describe hosting and automate releases/maintenance |
 
 ## Identity and organisation boundaries
 
-Users must already have an application user record; a successful DfE Sign-in alone does not grant service access. Memberships link users to schools/providers. The selected organisation is stored on the user record, so it is not an independent context per browser tab. Admin users can use the admin organisation-switching routes.
+DfE Sign-in checks someone's identity, but the person must also have a user record in this service. A membership
+connects them to a school or provider. People with several memberships can choose which organisation to work with.
+The choice is saved against their user record, so changing organisation in one tab can affect another tab too.
+Admins have separate pages for switching organisations.
 
-[ApplicationController](../app/controllers/application_controller.rb) enforces sign-in by default and handles Pundit denials with a flash message and redirect. [AdminController](../app/controllers/admin_controller.rb) returns 403 for signed-in non-admin users. Individual controllers/policies determine further access.
+### For developers: permission checks
 
-There are two files defining `DfeSignInUser`: the [model](../app/models/dfe_sign_in_user.rb) and a [service with the same constant](../app/services/dfe_sign_in_user.rb). They differ in session fields and method signatures. The model contains the user lookup used by the controller. Check autoloading and [authentication specs](../spec/) before changing this area; this documentation does not resolve that pre-existing duplication.
+[ApplicationController](../app/controllers/application_controller.rb) normally requires sign-in. If a Pundit permission
+check fails, it sends the user back with a message. [AdminController](../app/controllers/admin_controller.rb) returns
+HTTP 403 ("forbidden") for signed-in users who are not admins. Check the rule for the specific action when making changes.
+
+Two files define the same Ruby class, `DfeSignInUser`: the [model](../app/models/dfe_sign_in_user.rb) and a
+[service](../app/services/dfe_sign_in_user.rb). They expect different inputs and session fields. The model has the user
+lookup the controller calls. Check how Rails loads these files and the [sign-in tests](../spec/models/dfe_sign_in_user_spec.rb)
+before changing them; the duplication is not fixed by this documentation.
 
 ## Decisions and documentation boundaries
 
-The [ADRs](../adr/) explain the confirmed rationale for STI, JSONB, wizards and Solid Queue. The historical initial data model is not the current ERD: use the [data model](data-model.md).
+The [decision records](../adr/) explain why the team chose shared organisation storage, flexible preference answers,
+multi-page forms and Solid Queue. The original data diagram records an early design; use the [data guide](data-model.md)
+for the current structure.
 
-This is an implementation reference, not a claim that external services are reachable or that recovery has been rehearsed. Dashboard information, assurance reports, policies and incident guidance are maintained in Confluence and are not reproduced or linked here.
+This guide describes the code and settings. It does not show that other services are currently available or that recovery
+has been practised. Dashboard information, reports, policies and incident guidance stay in Confluence, without copies
+or links here.

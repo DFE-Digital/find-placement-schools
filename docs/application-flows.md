@@ -1,47 +1,59 @@
-# Application flows
+# Application flows: what users can do
 
-The service has school, provider and admin journeys. An organisation membership controls where a user can work; it does not represent a placement.
+Schools publish their interest in hosting placements. Providers search for schools. Admins help users and upload data.
+A membership gives a user access to an organisation; it does not mean they have arranged a placement.
 
 ## Sign-in and organisation selection
 
-`SIGN_IN_METHOD` selects personas or DfE Sign-in. It is not a fallback if DfE Sign-in fails. The application session model uses a two-hour inactivity timeout.
+The service checks who someone is, then checks whether they have access here. Real sign-in uses DfE Sign-in;
+developers can use made-up test identities called personas. A setting, `SIGN_IN_METHOD`, chooses between them.
+A failed DfE Sign-in does not switch the user to a persona.
+
+The service remembers a signed-in visit in a session. After two hours without activity, the user needs to sign in again.
 
 ```mermaid
 sequenceDiagram
   actor User
   participant Browser
   participant Rails
-  participant Identity as OmniAuth / IdP
-  participant DB as PostgreSQL
+  participant Identity as Sign-in service
+  participant DB as Database
   User->>Browser: Open sign-in
-  Browser->>Identity: Begin selected authentication method
-  Identity->>Rails: Callback with identity payload
-  Rails->>DB: Look up application user by UID or email
+  Browser->>Identity: Ask the user to sign in
+  Identity->>Rails: Return sign-in details
+  Rails->>DB: Find user by sign-in ID or email
   alt Known user
-    Rails->>DB: Update last signed-in timestamp
-    Rails->>Rails: Resolve admin / memberships / selected organisation
-    Rails-->>Browser: Redirect to dashboard, organisation choice or service journey
+    Rails->>DB: Record when they signed in
+    Rails->>Rails: Check role and organisations
+    Rails-->>Browser: Open dashboard, organisation choice or service page
   else Unknown user
     Rails->>Rails: Clear session
     Rails-->>Browser: Redirect to sign-in with access message
   end
 ```
 
-For regular users with one organisation, the redirect concern selects it. With several organisations, it asks the user to choose. Admins without a selected organisation go to the dashboard. Schools with no preferences are directed into preference creation; other schools see their preferences; providers see the school-search interface.
+If a regular user belongs to one organisation, the service chooses it. If they belong to several, it asks them to choose.
+Admins without a selected organisation see the dashboard. A school with no preferences is asked to add one; other schools
+see their preferences. Providers see the school search.
 
-The selected organisation lives on `User`, not just in the session. Provider selection can trigger a feedback survey if the user has not already been marked as sent one. Consult [OrganisationRedirectable](../app/controllers/concerns/organisation_redirectable.rb), [SessionsController](../app/controllers/sessions_controller.rb) and the [authentication caveat](architecture.md#identity-and-organisation-boundaries) before modifying this behaviour.
+The organisation choice is saved against the user, so changing it in one tab can affect another tab. Choosing a provider
+can also send a feedback survey if one has not already been recorded as sent.
+
+For developers: this behaviour is in [OrganisationRedirectable](../app/controllers/concerns/organisation_redirectable.rb)
+and [SessionsController](../app/controllers/sessions_controller.rb). Read the
+[sign-in code warning](architecture.md#identity-and-organisation-boundaries) before changing it.
 
 ## Hosting preferences
 
-Schools record their appetite for a particular academic year:
+Schools say how interested they are in hosting for an academic year. The code calls this their `appetite`:
 
-- `actively_looking`: ready to discuss placements, with contact, phases and relevant details.
-- `interested`: interested in hosting, with less definite selections where supported.
-- `not_open`: not hosting, with contact and reason/confirmation steps.
+- **Actively looking** (`actively_looking`): ready to discuss placements, with contact and teaching details.
+- **Interested** (`interested`): interested but may not yet know all the details.
+- **Not open** (`not_open`): not hosting, with contact details and a reason.
 
 ```mermaid
 flowchart TD
-  Start[Choose academic year] --> Appetite[Choose appetite]
+  Start[Choose academic year] --> Appetite[Choose level of interest]
   Appetite --> Active[Actively looking]
   Appetite --> Interested[Interested]
   Appetite --> Closed[Not open]
@@ -56,20 +68,37 @@ flowchart TD
   Closed --> CContact[School contact]
   CContact --> Reason[Reason not hosting]
   Reason --> Sure[Confirm not hosting]
-  Check --> Save[Save active wizard steps to preference]
+  Check --> Save[Save the relevant answers]
   Confirm --> Save
   Sure --> Save
 ```
 
-This is a summary, not an exhaustive map of every conditional child-subject page. [AddHostingInterestWizard](../app/wizards/add_hosting_interest_wizard.rb) defines the branches; [PlacementPreferenceCreatable](../app/wizards/concerns/placement_preference_creatable.rb) builds phase-dependent steps. `unknown` is a supported option in some interested selections; consult each step's validation before adding a new value.
+The questions change to fit earlier answers. For example, a school interested in secondary teaching sees subject
+questions, while primary teaching uses year groups. The diagram summarises those choices rather than showing every page.
 
-Contact information can be saved before the final confirmation: wizard initialisation calls `save_contact_details` when a populated contact step is present. Do not assume an abandoned wizard has made no database changes. Final save validates the assembled steps, stores only populated active-step state, and the create controller queues a feedback email and resets wizard state. Editing reuses the saved preference details through [EditHostingInterestWizard](../app/wizards/edit_hosting_interest_wizard.rb).
+Contact details can be saved before the final confirmation. Leaving a form unfinished therefore does not always mean
+nothing has been saved. At the end, the service checks the answers and keeps those relevant to the chosen questions.
+Creating a preference also schedules a feedback email and clears the form's temporary progress.
+
+For developers: [AddHostingInterestWizard](../app/wizards/add_hosting_interest_wizard.rb) and
+[PlacementPreferenceCreatable](../app/wizards/concerns/placement_preference_creatable.rb) choose the questions.
+Some interested options allow `unknown`; check the step's rules before adding values.
+`save_contact_details` can save during wizard setup. [EditHostingInterestWizard](../app/wizards/edit_hosting_interest_wizard.rb)
+starts editing from the stored answers.
 
 ## Wizard state and JSONB
 
-[WizardController](../app/controllers/concerns/wizard_controller.rb) uses a generated state key in the URL and stores a copy of wizard state in the database-backed session after each action. [BaseWizard](../app/wizards/base_wizard.rb) determines the next/back step from the current conditional step list. Invalid input re-renders the step rather than advancing.
+A **wizard** is a form spread across several pages. The service remembers the answers as the user moves forwards
+or backwards. If an answer needs correcting, it keeps the user on that question.
 
-The following is a synthetic **fragment**, not a complete valid preference:
+### For developers: how answers are saved
+
+[WizardController](../app/controllers/concerns/wizard_controller.rb) gives each form a generated state key in its URL
+and copies progress into the database-backed session after each action.
+[BaseWizard](../app/wizards/base_wizard.rb) works out the next/back step from the questions currently needed.
+
+Completed preference answers are stored as **JSONB**, a database format for flexible, named groups of values.
+Here is a made-up **part** of a preference, not a complete valid submission:
 
 ```json
 {
@@ -86,29 +115,50 @@ The following is a synthetic **fragment**, not a complete valid preference:
 }
 ```
 
-The subject UUID is illustrative and must be replaced with a real local subject for a test. Root step keys determine how details are consumed by search and presentation. Child-subject steps have keys that include the selected subject identifier. There is no database FK from these arrays to `placement_subjects`. Changing a step name or JSON shape therefore needs a compatibility plan for existing preferences and in-progress sessions.
+The long subject identifier is an example; replace it with an existing subject in your local database for a test.
+Names such as `phase` and `secondary_subject_selection` tell search and display code where to find answers.
+Follow-up subject steps include the selected subject's identifier in their name.
+
+The database does not check these subject links against `placement_subjects`. If you change step names or answer
+structure, plan how old preferences and unfinished forms will still work.
 
 ## Provider search
 
-[SchoolsQuery](../app/queries/schools_query.rb) combines name/URN/postcode, academic-year, hosting appetite/history, phase, subject and location filters.
+Providers can search by school name, school number (URN), postcode, year, hosting interest/history, teaching phase,
+subject and location.
 
-- Phase and subject filters read `phase.phases` and `secondary_subject_selection.subject_ids` inside JSONB.
-- Location search caps the radius at 50 and orders by the geocoder's distance result. Travel-time enrichment is separate; it is not the distance-filter calculation.
-- Without location coordinates, ranking is: actively looking, interested, hosted in the previous academic year, other schools, then not open; names break ties.
-- The `previously_hosted` filter considers history before the selected year, whereas the ranking check uses the previous academic year.
-- The academic-year condition includes schools with a matching preference or no preference row at all; do not describe it as an unrestricted view of every school's latest preference.
-- If hosting-filter lookup produces no IDs, the current query returns the existing scope rather than an empty result. This is observed behaviour, not a promise that every visible result satisfies that filter.
+Without a location, the usual order is actively looking, interested, hosted last year, other schools, then not open.
+School names break ties. Location searches use distance; travel-time information is added separately.
 
-Avoid changing search documentation based on intended behaviour alone: check query specs and the SQL/JSON paths.
+### For developers: search details and current limits
+
+[SchoolsQuery](../app/queries/schools_query.rb) implements the filters and sorting:
+
+- Phase and subject answers are read from `phase.phases` and `secondary_subject_selection.subject_ids` in JSONB.
+- Location search caps the radius value at 50 and uses the geocoder's distance order. It does not filter by travel time.
+- `previously_hosted` means any history before the selected year; the default ranking uses just the previous academic year.
+- Filtering by year includes schools with a preference for that year or no preference record at all. It is not simply
+  each school's latest preference.
+- If the hosting filter finds no matching identifiers, the current code leaves the existing results unchanged rather
+  than returning no schools. Some visible results may therefore not match that filter.
+
+Check the query tests and stored answer paths when changing these rules.
 
 ## Academic years
 
-[AcademicYear](../app/models/academic_year.rb) defines 1 September through 31 August. `for_date` finds the year covering a date or creates it on demand. `current`, `next` and `previous` use that method; no annual manual year-creation runbook is required.
+Academic years run from 1 September to 31 August. The service creates a year record when it needs one, so support does
+not need to add the next year manually.
 
-`for_display` returns the current year and following year, with a third year shown in June. Reminders target `AcademicYear.next`, not necessarily the year a user last viewed.
+For developers: [AcademicYear](../app/models/academic_year.rb) uses `for_date` for this lookup/creation.
+`current`, `next` and `previous` call it. `for_display` offers this year and next year, plus a third year in June.
+Reminders concern next year's preference, not necessarily the year the user last opened.
 
 ## Admin and support journeys
 
-Admin users can switch organisation context, add/remove users, onboard school/provider users by CSV, add admins and import previous-placement data. Use the [import runbook](runbooks/data-imports.md) for input formats, partial-failure behaviour and verification.
+Admins can choose an organisation to help, add or remove users, add admins and upload files for user access or past
+placements. The [upload guide](runbooks/data-imports.md) explains the file formats, what can be skipped and how to check
+the result.
 
-Data & Insights supplies Register placement information; support uploads it. The code creates historical records, not trainee bookings. Permission checks are action-specific in [policies](../app/policies/) and admin controllers, so verify them when adding a route rather than relying only on hidden navigation.
+Data & Insights supplies Register information; support uploads it. This adds past-placement records, not bookings.
+For developers: [policies](../app/policies/) and admin controllers check each action's permissions. Hiding a link alone
+is not an access check.

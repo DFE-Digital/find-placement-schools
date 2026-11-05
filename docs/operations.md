@@ -1,92 +1,122 @@
 # Operating the service
 
-Start with read-only checks and use supported admin journeys before reaching for a production console. Technical procedures here are based on code/configuration, not evidence that every workflow has run successfully.
+This guide helps support staff and developers check whether the service is working and decide what to investigate.
+Start by looking, not changing. Use the admin pages where possible; direct access to the live application's console
+should be left to someone with the right permission and experience.
 
-Support hours, availability targets, RTO and RPO are **not agreed**. Dashboard information, assurance reports, policies and incident guidance are maintained in Confluence and are not reproduced or linked here.
+These steps come from the code/settings, not a record of successful rehearsals. Support hours, reliability targets,
+maximum acceptable recovery time (RTO) and acceptable data loss (RPO) are **not agreed**.
+Dashboard information, reports, policies and incident guidance stay in Confluence, without copies or links here.
 
 ## Access and first checks
 
-Obtain authorised access to the intended environment through the team's access process. The previous handover reports PM approval and Azure PIM for production; confirm the current arrangement before use. Application admin permission is separate from Azure/cluster access.
+Check you have permission for the right environment. The previous handover described PM approval and Azure PIM
+(time-limited elevated access) for production; confirm this is still the process. Being a service admin does not give
+you hosting-platform access.
 
-1. Establish impact and environment; check the deployed version at `/healthcheck/sha`.
-2. Check `/up`, `/healthcheck` and `/healthcheck/database`. A passing web check does not verify the worker, maps, email or reference-data freshness.
-3. Check web and worker rollout/replica status, then admin `/jobs` for failed or delayed work.
-4. Inspect relevant application/error logs without copying personal data or credentials into a ticket.
-5. Before any mutation, agree the intended change, approval, validation and recovery path.
+1. Find out who is affected and which environment has the problem. `/healthcheck/sha` shows the running version.
+2. Check `/up`, `/healthcheck` and `/healthcheck/database`. Passing these checks does not prove that emails, maps or
+   background tasks work, or that school information is up to date.
+3. Ask a developer/operator to check the running website and worker copies. Admins can check `/jobs` for delayed or failed tasks.
+4. Read the relevant error reports/logs. Keep personal information and secret values out of tickets.
+5. Before changing anything, agree who approves it, what should happen, how to check it and how to recover if it fails.
 
-For an authorised operator with Azure CLI, `kubectl` and `kubelogin`, the Makefile can fetch credentials and show both deployments:
+### For developers/operators: checking the running copies
+
+With approved access and the Azure CLI, `kubectl` and `kubelogin` tools installed, this Makefile shortcut shows the
+website and worker status:
 
 ```sh
 make production show-service CONFIRM_PRODUCTION=yes
 ```
 
-This reads deployment status but its prerequisites change the local Azure account/kubeconfig. Expected output includes `find-placement-schools-production` and its `-worker` deployment. Verify cluster and namespace; do not infer them from the Rails environment name alone.
+It reads the status but first changes your local Azure account selection and Kubernetes connection settings.
+Expected output includes `find-placement-schools-production` and its `-worker` deployment. Check the cluster/namespace
+(the hosting group and area containing the application) against the environment table, rather than guessing from its name.
 
 Sources: [Makefile](../Makefile), [health checks](../config/initializers/okcomputer.rb) and [deployment environment matrix](deployment.md#environments).
 
 ## Recurring work
 
-The following is [config/recurring.yml](../config/recurring.yml), under the `production` key. No application time zone is configured, so these schedules use the default UTC context. Confirm the effective scheduler clock if platform settings change.
+These tasks run regularly on production. Times are UTC, so local UK time differs during British Summer Time.
+The schedule is in [config/recurring.yml](../config/recurring.yml) under `production`. The application does not set a
+different time zone; check the scheduler's clock if hosting settings change.
 
 | Schedule | Job/command | Effect |
 | --- | --- | --- |
-| Daily 00:00 | `DfE::Analytics::EntityTableCheckJob` | Analytics entity checks on the `dfe_analytics` queue |
+| Daily 00:00 | `DfE::Analytics::EntityTableCheckJob` | Check application records for reporting through the `dfe_analytics` task queue |
 | Daily 01:00 | `PublishTeacherTraining::Subject::SyncAllJob` | Import subject data |
 | Daily 01:00 | `PublishTeacherTraining::Provider::SyncAllJob` | Import provider/address data |
 | Daily 02:00 | `BankHolidays::SyncJob` | Import England/Wales bank holidays |
-| Daily 03:00 | `GIAS::SyncAllSchoolsJob` | School/address import and attempted removal of absent schools without preferences |
+| Daily 03:00 | `GIAS::SyncAllSchoolsJob` | Update schools/addresses; try to remove missing schools that have no preferences |
 | Daily 09:00 | `UserSignInReminderJob` | School invitation reminders |
 | Daily 10:00 | `CompletePlacementPreferenceReminderJob` | School preference-completion reminders |
-| Hourly at :12 | `SolidQueue::Job.clear_finished_in_batches` | Clear finished-job records in batches |
+| Hourly at :12 | `SolidQueue::Job.clear_finished_in_batches` | Remove records of completed tasks in batches |
 
-Hosted staging (`staging`), development (`az_development`) and review (`review`) do not match that recurring configuration key. Do not expect nightly refreshes or reminders there merely because a worker exists.
+Staging, hosted development and review apps use different Rails environment names. They do not match this schedule,
+so having a worker there does not mean these imports/reminders run automatically.
 
-[Queue configuration](../config/queue.yml) defines wildcard queue processing, three worker threads and `JOB_CONCURRENCY` defaulting to one process. It only names development/test/production environment sections. Verify startup logs/effective configuration before assuming custom Rails environments inherit that configuration. Hosted workers run `bundle exec bin/jobs`; local Puma can run Solid Queue when `SOLID_QUEUE_IN_PUMA=true`.
+### For developers: worker settings
 
-On-demand work includes CSV onboarding, Register imports and mail delivery. [ApplicationJob](../app/jobs/application_job.rb) does not enable an application-wide retry policy. Check the failure and side effects before retrying in Mission Control.
+[config/queue.yml](../config/queue.yml) asks workers to handle all queues, using three threads (parallel task handlers)
+and one process by default (`JOB_CONCURRENCY`). It only names development/test/production sections, so check startup
+logs before assuming other environment names inherit them. Hosted workers run `bundle exec bin/jobs`.
+Locally, Puma can start Solid Queue when `SOLID_QUEUE_IN_PUMA=true`.
+
+Uploads and emails also create tasks when needed. [ApplicationJob](../app/jobs/application_job.rb) does not define a
+shared automatic retry rule. Before rerunning a task in Mission Control, check what it already changed.
 
 ## Reminders and mail
 
-- Invitation reminders select school memberships whose user has never signed in, for schools missing next year's preference. Cadence is based on user creation: two weeks ago, then one month earlier, then another month earlier.
-- Preference reminders use the user's last sign-in on the corresponding cadence dates, again for next year's missing preferences. A user with several school memberships can receive a reminder for each school.
-- Bulk onboarding staggers notification batches of 100 by a minute. Reminder services also stagger batches.
-- Membership removal queues an email. Preference creation queues a feedback request; provider selection can queue a survey.
-- `deliver_later` is deferred when enqueued on a known bank holiday. See [integration details](integrations.md#notifications-and-bank-holidays).
+- Invitation reminders go to users who have never signed in, where their school has no preference for next year.
+  The code selects users created on three particular dates: two weeks ago, one month before that, and another month before that.
+- Preference reminders use those same date offsets from the user's last sign-in, for schools missing next year's
+  preference. A person working with several schools can get an email for each.
+- Bulk onboarding sends invitation batches of 100 a minute apart. Reminder tasks also space their batches apart.
+- Removing membership schedules an email. Creating a preference schedules a feedback request; choosing a provider can
+  schedule a survey.
+- Emails scheduled on a known bank holiday are moved to the next working day. See [email details](integrations.md#notifications-and-bank-holidays).
 
-Reminder replay is not a no-op: there is no universal once-only delivery ledger in these services. Review affected users and queued mail before re-running a reminder job.
+Running a reminder task again can send emails again. These services do not share a record guaranteeing each message
+is sent only once. Check who is affected and what is already waiting before rerunning it.
 
 Sources: [invitation reminder](../app/services/users/invite/remind.rb), [preference reminder](../app/services/users/placement_preferences/remind.rb), [mailers](../app/mailers/).
 
 ## Troubleshooting
 
-| Symptom | Read-only checks | Next boundary |
+| Problem | What to check first | What to do next |
 | --- | --- | --- |
-| User cannot sign in | Selected sign-in method, identity callback logs, pre-existing application user and email/UID match | Use approved user onboarding; DfE identity alone does not grant application membership |
-| Organisation missing for user | Membership and selected organisation; admin versus regular switching route | Use supported membership/admin flows, not a blind SQL change |
-| Schools/providers/subjects stale | Last sync job/logs, source availability, resulting records, environment's recurring configuration | [Import runbook](runbooks/data-imports.md); sync can mutate/delete or partly succeed |
-| Map/travel time missing | Browser request to map-key endpoint, effective key configuration, Maps/Routes enablement, quotas and client errors | Empty map-key response is currently HTTP 200; Routes expects complete duration entries |
-| Imports appear successful but data missing | Confirmation means enqueueing; check job completion, input identifiers and skipped rows | Compare expected rows with resulting records before replay |
-| Mail absent or duplicated | Queue status, template/configuration, bank-holiday deferral, reminder scope and previous replay | Do not blindly retry delivery or restore queued mail |
-| Analytics gaps or WAL growth | `dfe_analytics` queue, entity checks, Airbyte/WAL workflow output | Event dispatch and replication are separate; start with repair workflow dry-run |
-| Bad release or database loss | Image SHA, migration state, database health and workload status | [Recovery runbook](runbooks/recovery.md) before rollback/restore |
+| User cannot sign in | Sign-in method, sign-in logs and whether their user record matches their email/ID | Use approved onboarding; DfE Sign-in alone does not give access here |
+| User cannot see an organisation | Their membership and selected organisation, and which switching page they used | Use admin pages; ask a developer before changing database records directly |
+| School/provider/subject information is old | Last import result, source availability and whether this environment has a schedule | Follow the [upload/import guide](runbooks/data-imports.md); a refresh can delete or partly update data |
+| Map/travel times are missing | Ask a developer to check the key, Google settings, usage limits and browser errors | A successful key request can contain an empty key; travel requests also need complete results |
+| Upload looks successful but records are missing | Was the task only queued? Did it finish, and were identifiers known? | Compare expected and saved records before uploading again |
+| Email is missing or repeated | Waiting/failed mail tasks, delivery settings, holiday delay and previous reruns | Check before resending or restarting old tasks |
+| Reporting is incomplete or database change logs are growing | Analytics queue, record checks and Airbyte monitoring output | The two reporting paths are separate; use the repair tool's no-change dry run first |
+| Release failed or data was lost | Running version, database changes/health and website/worker status | Follow the [recovery guide](runbooks/recovery.md) before undoing a release or restoring data |
 
-These are code-derived diagnostic paths, not a catalogue of confirmed recurring incidents.
+These suggestions come from how the code works; they are not a list of known recurring incidents.
 
 ## Existing automated operations
 
 | Workflow | Schedule and scope |
 | --- | --- |
 | [Database backup](../.github/workflows/backup-db.yml) | Production daily 04:00 UTC; manual environment selection |
-| [WAL monitor](../.github/workflows/database-replication-monitor.yml) | Staging/production every six hours |
-| [Airbyte repair](../.github/workflows/fix-airbyte-replication.yml) | Production Sunday hourly 00:00-09:00 UTC; scheduled mode can mutate replication slots |
+| [WAL monitor](../.github/workflows/database-replication-monitor.yml) | Checks database change-log growth in staging/production every six hours |
+| [Airbyte repair](../.github/workflows/fix-airbyte-replication.yml) | Production Sunday hourly 00:00-09:00 UTC; can change the setup used to copy data |
 | [Infrastructure validation](../.github/workflows/validate-infrastructure.yml) | Production daily 07:00 UTC |
-| [Review reconciliation](../.github/workflows/review-app-reconcile.yml) | Sunday 08:00 UTC; scheduled stale-app deletion |
+| [Review reconciliation](../.github/workflows/review-app-reconcile.yml) | Sunday 08:00 UTC; deletes review apps no longer needed |
 | [Uncached build](../.github/workflows/build-nocache.yml) | Sunday 12:30 UTC; rebuild only |
 
-Schedules demonstrate configured intent, not successful runs. Use workflow output to verify completion. Recovery and retention evidence are not established by this table.
+The schedules show what is meant to run. Check each workflow's output to see whether it actually succeeded.
+This table does not show that recovery has been practised or that retention rules are enforced.
 
 ## Operational changes
 
-Prefer the [import runbook](runbooks/data-imports.md) and [recovery runbook](runbooks/recovery.md). Makefile targets can scale web/worker workloads or enable database logging; these are mutations, may affect cost/data exposure, and can be reverted by subsequent Terraform reconciliation.
+Use the [upload guide](runbooks/data-imports.md) and [recovery guide](runbooks/recovery.md) for changes.
+Developers/operators can also use Makefile shortcuts to change the number of running website/worker copies or turn on
+database logs. Those changes can affect cost and what information is logged; a later Terraform run can reset them.
 
-Academic years are created on demand by the application; there is no manual year-creation task to schedule. Ownership/cadence for requesting Register data remains a handover question, separate from the existing upload automation.
+The service creates academic years as needed; there is no annual manual year-creation task.
+We still need to confirm when Register data should be requested and who approves the handoff, even though the upload
+itself is already supported.

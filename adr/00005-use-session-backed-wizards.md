@@ -6,30 +6,34 @@ Date: 2026-11-04
 
 Accepted
 
-Retrospective record of the existing implementation. The date above is the recording date, not the original
-decision date. The team confirmed the rationale during handover documentation.
+Written after the feature was built. The date above is when we recorded the explanation, not when the choice
+was made. The team confirmed the reasons while preparing the handover.
 
 ## Context
 
-The service needs conditional multi-page forms that follow GOV.UK's one-question-per-page style.
-The team had used session-backed wizards successfully on Claim funding for mentor training.
+People answer questions across several pages, with later questions depending on earlier answers.
+This follows GOV.UK's one-question-per-page style. The team had already used this approach successfully on
+Claim funding for mentor training.
 
 ## Decision
 
-Reuse that approach: define steps and validation in wizard/step objects, orchestrate them from controllers and retain
-in-progress state in the database-backed Rails session under a generated state key.
+Reuse that approach and remember answers while someone moves between pages. In the code, a multi-page form is called
+a **wizard**. Its steps define the questions and answer checks; controllers handle the web requests.
 
-The prior service experience and suitability for the question-per-page pattern are the confirmed rationale.
-This does not imply the two services have identical implementations.
+Unfinished answers are kept in the user's **session**, the application's saved record of their browser visit.
+Rails stores that session in the database and uses a generated key to separate form state.
+
+The team confirmed the previous service's experience and the fit with one-question-per-page as the reasons.
+The two services do not necessarily use identical code.
 
 ## Consequences
 
-Controllers can share next/back navigation and state persistence, while each wizard defines its conditional steps.
-State is tied to the session rather than being a separate durable draft resource.
+Forms can reuse next/back navigation and answer storage while choosing their own questions.
+Unfinished answers belong to the session; they are not a separate draft that a user can always return to later.
 
-Changing step names or shapes can affect unfinished journeys and persisted JSONB details. Sessions can hold uploaded
-CSV content and contact information, so they are sensitive data. Some preference details are saved before final
-confirmation; an abandoned wizard is not necessarily a transaction with no effects.
+Renaming questions or changing answer structures can affect both unfinished forms and saved JSONB details (the
+flexible answer format). Sessions can contain uploaded files and contact details, so treat them as sensitive.
+Some preference details are saved before final confirmation: leaving a form unfinished does not mean nothing changed.
 
 ## Implementation
 

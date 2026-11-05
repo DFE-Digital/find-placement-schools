@@ -6,30 +6,35 @@ Date: 2026-11-04
 
 Accepted
 
-Retrospective record of the existing implementation. The date above is the recording date, not the original
-decision date. The team confirmed the rationale during handover documentation.
+Written after the feature was built. The date above is when we recorded the explanation, not when the choice
+was made. The team confirmed the reasons while preparing the handover.
 
 ## Context
 
-Placement details were complex and changing during the service's early stages. Defining a fixed set of tables then
-would have constrained that exploration. Different preference types also need different validation.
+Early in the service, the questions about placements were complex and still changing. Schools also needed different
+questions depending on their answers. A fixed database structure for every answer would have made it harder to
+explore and change those questions.
 
 ## Decision
 
-Store variable placement details in `placement_preferences.placement_details` as PostgreSQL JSONB, using the wizard
-steps to collect and validate the shape appropriate to the selected appetite/phases.
+Keep the changing answers together in a flexible structure. The multi-page form collects and checks the answers
+needed for the school's level of interest and teaching phases.
 
-The team considers a table-based structure potentially possible now, but reports no performance concern motivating
-a change. Keep the existing representation; this ADR does not approve a normalisation project or claim a benchmark.
+For developers, this uses PostgreSQL's **JSONB** format in `placement_preferences.placement_details`. JSONB stores
+named pieces of information without needing a separate database column for each answer.
+
+The team thinks separate tables may be possible now, but has not reported a performance problem that calls for a
+change. Keep the current approach. This record neither starts a redesign nor claims it has been benchmarked.
 
 ## Consequences
 
-The service can adapt question sets and validations without introducing a table for every early variation.
-The trade-off is that JSONB references have no database foreign keys and step names become part of a persisted contract.
-Search and presentation depend on known JSON paths.
+Questions and answer checks can change without adding a table for every variation.
+The trade-off is more responsibility in application code. The database cannot check that an ID inside these answers
+still points to a real record (there is no foreign key for it). Search and display code also depend on the saved
+question names and where answers sit in the structure.
 
-Future changes need to account for existing preferences and in-progress sessions. A decision to normalise should
-explain its benefit and migration approach rather than assume that relational storage is automatically required.
+Changes must account for answers already saved and people partway through a form. If moving to separate tables
+would help, explain that benefit and how to move the data safely rather than treating it as automatically necessary.
 
 ## Implementation
 
