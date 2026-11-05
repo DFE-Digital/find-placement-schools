@@ -1,5 +1,3 @@
-# Readme
-
 # Find placement schools
 
 > A Ruby on Rails application that allows **schools** to publish their placement preferences and **providers** to find
@@ -8,6 +6,9 @@
 
 This service has different interfaces for schools and providers, whilst also allowing users with affiliations to
 multiple organisation types to switch between their organisations.
+
+New to the service? Start with the [developer and operations handover](handover-document.md) for a reading
+path, architecture diagrams, current ERDs, interface references and runbooks.
 
 ## Table of contents
 
@@ -36,21 +37,24 @@ multiple organisation types to switch between their organisations.
 
 ## Overview
 
-This service enables **providers** to find  **schools** with **placements**  based on the preferences that they list on
-the service.
+This service enables **providers** to find **schools** that may host placements based on their published preferences
+and previous-placement history. It does not allocate trainees or book placements.
 
-* **School interface**: create and manage placement preferences, set dates/subjects/locations.
+* **School interface**: create and manage hosting preferences for an academic year.
 * **Provider interface**: find schools who the provider may want to work with.
+* **Admin interface**: support users and organisations, onboard users and import previous-placement data.
 
 ## Architecture
 
-* Ruby on Rails app (API+server-rendered views) using the **GOV.UK Design System** via `govuk-components` and
+* Server-rendered Ruby on Rails app with an internal map-key JSON endpoint, using the **GOV.UK Design System** via `govuk-components` and
   `govuk_design_system_formbuilder`.
 * Two “service contexts”: **schools** and **providers** with distinct navigation and controllers.
 * Database-backed **sessions** (`activerecord-session_store`).
 * **Solid Queue** for background jobs; **Mission Control Jobs** UI for observability.
-* **Solid Cache** (DB-backed) for Rails.cache.
+* `Rails.cache` for travel times; production does not configure a shared/durable store. The bundled Solid Cache gem is not wired up.
 * Geocoding by **geocoder** (e.g. for location-based search).
+
+See [architecture and runtime diagrams](docs/architecture.md) and the [current data model](docs/data-model.md).
 
 ## Tech stack
 
@@ -58,20 +62,21 @@ the service.
 * **Rails**: see [`Gemfile.lock`](Gemfile.lock) for the resolved version
 * **DB**: PostgreSQL (tested with **17.2**)
 * **Job queue**: `solid_queue`
-* **Cache**: `solid_cache`
+* **Cache**: `Rails.cache`; see [runtime configuration](docs/architecture.md#main-implementation-choices)
 * **Auth**: OmniAuth OpenID Connect (DfE Sign-in)
 * **Assets**: `jsbundling-rails` + `cssbundling-rails` (Node + Yarn), `propshaft`
 * **HTTP**: `httparty`
 * **Pagination**: `pagy`
 * **Presentation**: `draper`
 * **Logging**: `rails_semantic_logger`
-* **Deployment**: `kamal`
+* **Deployment**: Azure Kubernetes Service (AKS), Terraform and GitHub Actions
 
 ## Requirements
 
 * Postgres **17.x** (server + headers)
 * The Node.js version pinned in [`.tool-versions`](.tool-versions), with Yarn managed by Corepack
 * Build tools (for native gems)
+* PROJ's `cs2cs` command for GIAS coordinate conversion (`brew install proj` on macOS, `proj-bin` on Debian/Ubuntu)
 
 > macOS users: install `asdf` via Homebrew; Linux users: follow asdf docs.
 
@@ -140,28 +145,27 @@ and [start the development server](#running-the-app):
 ```
 
 This script can be re-run at any time to ensure your environment is up to date.
-Seeding the database will not be repeated if the database already exists.
+It uses `db:prepare`; seeds run when Rails prepares a newly created database, not on every normal re-run.
+It also clears local logs/tempfiles. To prepare without starting the server, use `bin/setup --skip-server`.
+Initial seeding imports GIAS schools and Publish subjects, so allow external network access and provide PROJ.
 
 ### Environment variables
 
-We use `dotenv-rails` in development and test. Create a `.env.development.local` file (not committed):
+We use `dotenv-rails` in development and test. `bin/setup` copies [`.env.example`](.env.example) to
+`.env.development.local` if it is absent. Edit that ignored local file; never commit real credentials.
 
 ```dotenv
-# .env.example
-
 SIGN_IN_METHOD=persona
-#SIGN_IN_METHOD=dfe-sign-in
-
-APP_BASE_URL=localhost:3000
-
-#DFE Sign in config
-DFE_SIGN_IN_ISSUER_URL=https://dev-oidc.signin.education.gov.uk
-DFE_SIGN_IN_CLIENT_ID=ittMentorSchoolPlacement
-DFE_SIGN_IN_SECRET=TBD
-GIAS_CSV_BASE_URL=https://ea-edubase-api-prod.azurewebsites.net/edubase/downloads/public
-
+APP_BASE_URL=http://localhost:3000
 SOLID_QUEUE_IN_PUMA=true
 ```
+
+Retain the public GIAS/Publish base URLs from the example. Replace the Google Maps placeholder before testing maps/routes;
+`TBD` is not a working key. Development config uses Notify for email, so use approved development configuration and
+recipients before triggering onboarding/reminders. Tests use test mail delivery instead.
+
+For DfE Sign-in, set `SIGN_IN_METHOD=dfe-sign-in`, the issuer/client/secret variables and an approved callback URL.
+`APP_BASE_URL` must be an absolute URL including its scheme for callback construction. See the [integration register](docs/integrations.md).
 
 ### Database
 
@@ -194,8 +198,10 @@ The app should be available at **[http://localhost:3000](http://localhost:3000)*
 
 ## Authentication
 
-We use **DfE Sign-in** via **OmniAuth OpenID Connect**. Currently we sign in with personas in development; DfE-Sign in
-will be implemented in future.
+DfE Sign-in via OmniAuth OpenID Connect is implemented. `SIGN_IN_METHOD` selects `dfe-sign-in` or
+`persona` (the default, used for local development). It does not automatically fall back to personas on failure.
+Users also need an application user record and relevant organisation membership.
+See [sign-in and organisation selection](docs/application-flows.md#sign-in-and-organisation-selection).
 
 ## Testing
 
@@ -211,6 +217,8 @@ Useful notes:
 * Time-sensitive tests use `timecop`.
 * External requests are stubbed with `webmock`.
 * Controller specs are enabled via `rails-controller-testing`.
+
+See [testing](docs/testing.md) for test database/assets/browser prerequisites, targeted commands and CI behaviour.
 
 ### Linting & static analysis
 
@@ -242,6 +250,11 @@ VS Code setting:
 
 ## Docs & ADRs
 
+The [handover guide](handover-document.md) indexes the [architecture](docs/architecture.md),
+[current ERDs](docs/data-model.md), [application flows](docs/application-flows.md),
+[HTTP interfaces](docs/api.md), [integrations](docs/integrations.md), [testing](docs/testing.md),
+[deployment](docs/deployment.md), [operations](docs/operations.md) and [runbooks](docs/runbooks/).
+
 We keep Architecture Decision Records in [`/adr`](adr/). Generate a new ADR with:
 
 ```sh
@@ -250,4 +263,6 @@ bin/bundle exec rladr new "Title of the decision"
 
 ## Infrastructure validation workflow
 
-The scheduled workflow defined in `.github/workflows/validate-infra.yml` runs Terraform plan validations for the AKS cluster plus domains infrastructure/environment each day at **07:00 UTC** against **production** only. Failures and drift notifications are sent to the SD Infra alerts Teams channel via the `TEAMS_WEBHOOK_URL_INFRA` secret.
+The [Validate Infra workflow](.github/workflows/validate-infrastructure.yml) runs Terraform plan validations for the AKS
+application plus domains infrastructure/environment each day at **07:00 UTC** against **production** only.
+Notifications use the `TEAMS_WEBHOOK_URL_INFRA` secret. See [deployment](docs/deployment.md) for infrastructure boundaries.
