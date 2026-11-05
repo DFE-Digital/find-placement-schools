@@ -1,12 +1,36 @@
-# Data model
+# Data model: what we store
 
-The service stores organisation membership, schools' hosting preferences and historical evidence of placements. A preference is not a booked placement, and a previous-placement record does not identify a trainee.
+The database keeps the information the service needs: schools, providers, users, who belongs to which organisation,
+and what schools have said about hosting placements. It also keeps information about past placements.
 
-The authoritative structure is [db/schema.rb](../db/schema.rb). Model behaviour is in [app/models](../app/models/). [ADR 00002](../adr/00002-initial-data-model.md) records the original design, not today's complete schema.
+A school's preference is not a booking. A past-placement record does not identify an individual trainee.
+
+## The main connections
+
+- A user can belong to more than one school or provider. Each connection is called a **membership**.
+- Schools and providers share an **organisation** record, with extra details that depend on the type.
+- A school's **placement preference** records its interest in hosting for an **academic year**.
+- **Subjects** help describe the placements a school is interested in.
+- **Previous placements** show past hosting by school, year and subject name.
+- **Bank holidays** help decide when to send emails.
+
+The diagram below shows these connections. The detailed table after it is for developers checking what the database
+allows. [db/schema.rb](../db/schema.rb) is the source for the database structure; [models](../app/models/) add rules
+in the application. The [original design record](../adr/00002-initial-data-model.md) is historical, not the current structure.
 
 ## Business ERD
 
-This diagram shows database foreign-key relationships with solid lines. Dotted lines show model/application links without a database foreign key. Columns are selected identifiers and domain fields, not a full schema dump.
+An entity relationship diagram (ERD) is a map of stored information. Each box is a table: a collection of records of
+the same kind. Lines show how records connect.
+
+For developers reading the symbols:
+
+- `PK` is a primary key: the record's own identifier. A UUID is a long unique identifier.
+- `FK` is a foreign key: a link the database checks against another table.
+- `UK` means the value must be unique when present.
+- A circle means the connection is optional; a crow's-foot end means there can be many records.
+- Solid lines here mark links checked by database foreign keys. Dotted lines mark links used by the code but not checked
+  that way by the database. Some column names are left out to keep the diagram readable.
 
 ```mermaid
 erDiagram
@@ -89,37 +113,58 @@ erDiagram
   }
 ```
 
-`bank_holidays` is independent; it supports email scheduling rather than placement relationships. `School` and `Provider` are Ruby subclasses of `Organisation`, not additional tables. Subject IDs inside JSONB are application links, not relational joins.
+`bank_holidays` sits on its own because it helps with email timing, not school membership. `School` and `Provider` are
+two types of `Organisation` in the code, rather than separate database tables.
 
-## Important invariants and limits
+Some preference answers are stored together as JSONB, a flexible set of named answers. Subject identifiers in those
+answers are not database-checked links. See the [worked example](application-flows.md#wizard-state-and-jsonb).
 
-| Data | Meaning and enforcement |
+## Important rules and limits
+
+### For developers: rules and gaps
+
+These are rules to bear in mind when changing data. A rule checked only by Ruby code may be bypassed by a direct database
+update. "Required" means the value cannot be empty at the level described.
+
+| Data | Rules and things to watch |
 | --- | --- |
-| Organisations | `name` is required. `type` implements STI. School URN and provider code are required/unique in their respective models; partial unique indexes constrain School URN and Provider `(type, code)`. Do not treat UKPRN as unique. |
-| Addresses | `organisation_id` is non-null, a FK and unique: at most one address per organisation. An organisation need not yet have an address. |
-| Contacts | The model declares `has_one`, but the schema permits several contacts per organisation. Email and organisation are non-null. Contact information also appears in preference JSONB; it is not automatically a FK to this table. |
-| Users | Names and email are required; email is normalised and database-unique. `dfe_sign_in_uid` is nullable and not uniquely indexed. `selected_organisation_id` is optional and has no FK. |
-| Memberships | Both FKs are non-null. There is no unique composite database index on `(user_id, organisation_id)`; do not assume the database prevents duplicate memberships. |
-| Preferences | Organisation, academic year and creator IDs are non-null; only the first two have FKs. `appetite` is validated by the model as `actively_looking`, `interested` or `not_open`; the column itself allows null. No database uniqueness constraint guarantees one preference per organisation/year. |
-| JSONB details | Variable, step-keyed data. Step objects/wizards validate it; the `PlacementPreference` model does not define a full JSON schema. See [application flows](application-flows.md). |
-| Subjects | `phase` is `primary` or `secondary`. Codes are database-unique when present; parent IDs have an index but no FK. SEND is a preference phase, not a subject enum value. |
-| Previous placements | School and year are non-null FKs. Subject is stored as text, not a subject FK. Model uniqueness covers school, subject name and year, but there is no corresponding database unique index. |
-| Academic years | Name and dates are required; names are database-unique. The model checks end date is not before start date. See [year selection](application-flows.md#academic-years). |
-| Bank holidays | Date is required and unique; title is required. The sync imports England and Wales events. |
+| Organisations | Need a name. The `type` field distinguishes schools/providers in the shared table, a pattern called single-table inheritance (STI). School URNs and provider codes must be present in their models; database rules prevent duplicates for the relevant type. UKPRN, another organisation identifier, is not guaranteed to be unique. |
+| Addresses | The database allows at most one address per organisation and checks that the organisation exists. An organisation can have no address yet. |
+| Contacts | The code expects one contact, but the database allows several. Each needs an email and organisation. Contact answers saved with a preference are separate from this table. |
+| Users | Need names and an email. The email is tidied and must be unique. The DfE Sign-in identifier can be empty or repeated. The selected organisation is optional and has no database foreign key. |
+| Memberships | Must link to an existing user and organisation. The database does not prevent two records for the same pair. |
+| Preferences | Need organisation, year and creator IDs. Only organisation/year have database foreign keys. The code checks the interest level (`appetite`), but the database column can be empty. The database does not guarantee one preference per school/year. |
+| JSONB details | Answers are grouped by form step. Those steps check the answers; the preference model does not define one complete fixed structure. See [application flows](application-flows.md). |
+| Subjects | `phase` is primary or secondary. Subject codes must be unique when present. Parent-subject links are not checked by a database foreign key. SEND can be selected in a preference, but is not a subject phase value. |
+| Previous placements | Must link to an existing school and year. The subject is a name, not a link to the subjects table. The code checks for duplicates by school/year/subject, but there is no matching database uniqueness rule. |
+| Academic years | Need a name and dates. Names must be unique; the code checks the end is not before the start. See [year selection](application-flows.md#academic-years). |
+| Bank holidays | Need a unique date and a title. The import uses England and Wales holidays. |
 
-Organisation fields also hold school characteristics, contact channels and coordinates imported from GIAS/Publish. The schema is the field dictionary for those imported attributes; mapping code is in the [GIAS importer](../app/services/gias/csv_importer.rb) and [provider importer](../app/services/publish_teacher_training/provider/importer.rb).
+Organisation records also hold school details, contact information and map coordinates downloaded from GIAS and Publish.
+Developers can see the full list in the schema and how values are copied in the
+[school importer](../app/services/gias/csv_importer.rb) and [provider importer](../app/services/publish_teacher_training/provider/importer.rb).
 
 ## Deletion is not a retention policy
 
-School and academic-year models destroy associated previous placements; deleting a parent subject destroys its child subjects through the model. Other associations do not provide a universal cascading delete. Foreign keys can block removal, and `delete_all` bypasses model callbacks.
+Deleting one record does not always delete everything connected to it. Through the models, deleting a school or academic
+year also deletes its previous-placement records; deleting a parent subject deletes its child subjects. Other links
+behave differently, and database checks can stop a deletion.
 
-In particular, the GIAS importer attempts to delete schools absent from the source that have no preferences. Existing foreign-key references can still prevent deletion. Do not infer a general cleanup or retention guarantee from this import.
+For developers: `delete_all` skips the model's automatic actions. The GIAS import uses it to try to remove schools
+missing from the downloaded data that have no preferences. Other linked records can still stop that deletion.
 
-Use the supported admin/service flows for membership removal. [Users::Remove](../app/services/users/remove.rb) removes the membership and enqueues a notification; it is not a complete user-data erasure process. Retention and related policy material are maintained in Confluence.
+Use the supported admin pages to remove membership. [Users::Remove](../app/services/users/remove.rb) removes that link
+and schedules an email; it does not erase all information about the person. These behaviours are not a promise that
+data is deleted after a particular period. Retention policies stay in Confluence.
 
 ## Framework storage
 
-These are operational tables in the same schema/database, not extra domain entities. Restoring this database also restores session and queued-work state.
+### For developers: tables that keep the application running
+
+Alongside school and user records, the same database holds sign-in/form progress and background tasks. The tables below
+track waiting, running, blocked and failed tasks. They are not additional placement records.
+
+This matters during recovery: restoring the database brings back those tasks and sessions too.
 
 ```mermaid
 erDiagram
@@ -168,8 +213,14 @@ erDiagram
   }
 ```
 
-The six execution tables each have a unique `job_id` FK with database cascading deletion when their job is deleted. This diagram omits their repeated columns. Pauses and semaphores hold queue/concurrency state; dotted process/task links are not database FKs. Sessions contain authentication and unfinished wizard data and must be treated as sensitive.
+Each of the six execution tables links to a task by a unique `job_id`. The database removes those execution records
+when the task is deleted. Repeated columns are left out of the diagram.
+
+Pauses record stopped queues. Semaphores help limit how many tasks run at once. The dotted process/task links are
+not checked by database foreign keys. Sessions hold sign-in details and unfinished answers, so treat them as sensitive.
 
 ## Maintaining this guide
 
-When changing a migration, model association, JSONB step or import mapping, update the affected diagram, invariant and example in the same change. Do not edit the schema to match the diagram: migrations and Rails schema generation remain authoritative.
+When changing stored data, its rules or an import, update the matching explanation, diagram and example.
+Developers should make database changes through migrations (versioned database-change scripts), not by editing the
+schema file to match this guide. Rails generates that file from the database.

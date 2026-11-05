@@ -6,29 +6,32 @@ Date: 2026-11-04
 
 Accepted
 
-Retrospective record of the existing implementation. The date above is the recording date, not the original
-decision date. The team confirmed the rationale during handover documentation.
+Written after the feature was built. The date above is when we recorded the explanation, not when the choice
+was made. The team confirmed the reasons while preparing the handover.
 
 ## Context
 
-The service needs background imports, notifications and scheduled work. The team does not need a more complex
-Redis-based arrangement for these requirements and wants to keep operating costs down.
+Some tasks take time or need to happen later, such as imports and emails. They should run separately from the page
+someone is waiting to view. The team wants to meet that need without extra hosting complexity and cost.
 
 ## Decision
 
-Use Solid Queue through Active Job, with queue state in PostgreSQL and a dedicated worker workload in hosted
-deployment. Locally, Puma can run the queue supervisor using `SOLID_QUEUE_IN_PUMA`.
+Use **Solid Queue** to keep a list of background tasks in the database the service already needs. A separate
+**worker** runs those tasks on the hosted service.
 
-The team confirmed that this meets current needs and avoids introducing Redis. No quantified cost comparison or
-original alternatives assessment has been supplied.
+For developers, tasks use Rails' Active Job interface and PostgreSQL queue tables. Locally, the Puma web server can
+also run the queue supervisor with `SOLID_QUEUE_IN_PUMA`.
+
+The team confirmed this meets current needs and avoids Redis, an extra data service used by some other queue tools.
+We do not have measured cost savings or the original comparison of alternatives.
 
 ## Consequences
 
-Background execution can use the database already needed by the service rather than an additional Redis dependency.
-Queue work and business activity share database resources, and database recovery restores queued work as well.
+There is one less service to run, but background tasks and normal website activity share database capacity.
+Recovering the database also brings back its saved task list, so old tasks may run again.
 
-Operators must check failed jobs, recurring configuration and replay side effects. Using Active Job does not itself
-provide an application-wide retry policy or exactly-once notification delivery.
+Operators need to check failed tasks, schedules and what might happen if a task is repeated.
+Active Job does not by itself make every failed task retry or guarantee an email is sent only once.
 
 ## Implementation
 

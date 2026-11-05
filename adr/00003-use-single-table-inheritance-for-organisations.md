@@ -6,29 +6,33 @@ Date: 2026-11-04
 
 Accepted
 
-Retrospective record of the existing implementation. The date above is the recording date, not the original
-decision date. The team confirmed the rationale during handover documentation.
+Written after the feature was built. The date above is when we recorded the explanation, not when the choice
+was made. The team confirmed the reasons while preparing the handover.
 
 ## Context
 
-Schools and providers share most organisation fields and need to work with the same commands. Only some attributes
-and behaviours differ. Separate representations would make those shared operations harder to keep consistent.
+Schools and training providers both have names, contact information and users who belong to them. Much of the code
+needs to treat them in the same way, although some details differ. Keeping two completely separate ways of storing
+them would make those shared tasks harder to keep consistent.
 
 ## Decision
 
-Use one `organisations` table, with `School` and `Provider` inheriting from `Organisation` through Rails single-table
-inheritance (STI). Keep shared relationships and behaviour in the base model and type-specific validation in the subclasses.
+Store schools and providers together, so shared tasks can use the same code. Keep rules that only apply to a school
+or provider with that type.
 
-The shared-command requirement and mostly shared fields are the team's confirmed reasons for this choice. No original
-alternatives assessment has been supplied.
+For developers, Rails calls this **single-table inheritance (STI)**. `School` and `Provider` build on `Organisation`
+and use the same `organisations` table.
+
+The team confirmed shared commands and mostly shared fields as the reasons. We do not have the original comparison
+of alternatives.
 
 ## Consequences
 
-Schools and providers can participate in common membership and organisation-selection flows. The table also contains
-fields that only apply to one type, so callers must not assume every organisation has a school URN or provider code.
+Membership and organisation-choice pages can work with either type. Some columns only apply to one type:
+do not expect every organisation to have a school URN (school number) or a provider code.
 
-Type-specific partial unique indexes protect school URNs and provider codes. Changing STI names or splitting the table
-requires a migration/compatibility plan for references and existing data.
+The database prevents duplicate school URNs and duplicate provider codes for the relevant types, using partial unique
+indexes. Renaming the types or separating the table later would need a plan to move existing data and keep links working.
 
 ## Implementation
 

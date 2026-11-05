@@ -1,14 +1,13 @@
 # Find placement schools
 
-> A Ruby on Rails application that allows **schools** to publish their placement preferences and **providers** to find
-> schools that are open to, or interested in hosting placements to facilitate more placements across the initial teacher
-> training (ITT) market.
+Find placement schools helps schools say whether they can host trainee teachers, and helps teacher-training providers
+find schools to work with.
 
-This service has different interfaces for schools and providers, whilst also allowing users with affiliations to
-multiple organisation types to switch between their organisations.
+Schools and providers have different pages. People who work with more than one organisation can switch between them.
 
-New to the service? Start with the [developer and operations handover](handover-document.md) for a reading
-path, architecture diagrams, current ERDs, interface references and runbooks.
+**New to the service?** Start with the [handover guide](handover-document.md). It has reading routes for PMs/DMs,
+developers and support staff, plus explanations, diagrams and step-by-step guides.
+The rest of this README mainly helps developers run their own local copy.
 
 ## Table of contents
 
@@ -37,39 +36,45 @@ path, architecture diagrams, current ERDs, interface references and runbooks.
 
 ## Overview
 
-This service enables **providers** to find **schools** that may host placements based on their published preferences
-and previous-placement history. It does not allocate trainees or book placements.
+Providers can search using schools' published interests and past hosting history.
+The service helps them start a conversation; it does not allocate trainees or book placements.
 
-* **School interface**: create and manage hosting preferences for an academic year.
-* **Provider interface**: find schools who the provider may want to work with.
-* **Admin interface**: support users and organisations, onboard users and import previous-placement data.
+* **Schools**: say whether and how they might host placements for an academic year.
+* **Providers**: find schools they may want to work with.
+* **Admins**: help users and organisations, add users and upload past-placement information.
 
 ## Architecture
 
-* Server-rendered Ruby on Rails app with an internal map-key JSON endpoint, using the **GOV.UK Design System** via `govuk-components` and
-  `govuk_design_system_formbuilder`.
-* Two “service contexts”: **schools** and **providers** with distinct navigation and controllers.
-* Database-backed **sessions** (`activerecord-session_store`).
-* **Solid Queue** for background jobs; **Mission Control Jobs** UI for observability.
-* `Rails.cache` for travel times; production does not configure a shared/durable store. The bundled Solid Cache gem is not wired up.
-* Geocoding by **geocoder** (e.g. for location-based search).
+The main parts are a website, a database and a worker that handles tasks such as imports and emails.
+The website uses the GOV.UK Design System, with separate pages/navigation for schools and providers.
 
-See [architecture and runtime diagrams](docs/architecture.md) and the [current data model](docs/data-model.md).
+For developers:
+
+* Ruby on Rails prepares pages on the server. An internal JSON address supplies the browser's map key.
+* `activerecord-session_store` keeps browser-session information in the database.
+* Solid Queue runs background tasks; admins use Mission Control Jobs to see their progress.
+* `Rails.cache` temporarily saves travel-time results. Production has no configured shared/durable cache;
+  the included Solid Cache library is not connected.
+* `geocoder` turns locations into coordinates, for example when searching by location.
+
+See the [architecture diagrams](docs/architecture.md) and [database guide](docs/data-model.md) for explanations.
 
 ## Tech stack
+
+These are the main tools/libraries used by the application. You do not need to know them all to read the handover.
 
 * **Ruby**: *3.4.12* (managed via asdf)
 * **Rails**: see [`Gemfile.lock`](Gemfile.lock) for the resolved version
 * **DB**: PostgreSQL (tested with **17.2**)
 * **Job queue**: `solid_queue`
 * **Cache**: `Rails.cache`; see [runtime configuration](docs/architecture.md#main-implementation-choices)
-* **Auth**: OmniAuth OpenID Connect (DfE Sign-in)
-* **Assets**: `jsbundling-rails` + `cssbundling-rails` (Node + Yarn), `propshaft`
-* **HTTP**: `httparty`
-* **Pagination**: `pagy`
-* **Presentation**: `draper`
-* **Logging**: `rails_semantic_logger`
-* **Deployment**: Azure Kubernetes Service (AKS), Terraform and GitHub Actions
+* **Sign-in**: OmniAuth OpenID Connect connects to DfE Sign-in
+* **Browser scripts/styles**: `jsbundling-rails` + `cssbundling-rails` (Node + Yarn), `propshaft`
+* **Requests to other services**: `httparty`
+* **Splitting results into pages**: `pagy`
+* **Preparing information for display**: `draper`
+* **Application logs**: `rails_semantic_logger`
+* **Hosting/releases**: Azure Kubernetes Service (AKS), Terraform and GitHub Actions
 
 ## Requirements
 
@@ -81,6 +86,9 @@ See [architecture and runtime diagrams](docs/architecture.md) and the [current d
 > macOS users: install `asdf` via Homebrew; Linux users: follow asdf docs.
 
 ## Setup
+
+Run these commands on your own development machine, not against a hosted environment.
+Local setup downloads public school/subject information; do not copy production data into your local database.
 
 ### Prerequisites
 
@@ -94,7 +102,8 @@ This project depends on:
 
 ### asdf toolchain
 
-Install the required asdf plugins and the versions pinned for the application in `.tool-versions`:
+`asdf` manages tool versions so developers use the same ones. Install its plugins and the versions listed in
+`.tool-versions`:
 
 ```sh
 brew install asdf # on macOS
@@ -136,23 +145,24 @@ in this repository; Yarn is not managed by asdf.
 
 ### Quick start
 
-Run the setup script to install gems,
-install [Node dependencies](#node--assets), [create the environment variables file](#environment-variables), [create and seed the database](#database),
+Run the setup script to install Ruby libraries (gems),
+install [browser-build dependencies](#node--assets), [create the settings file](#environment-variables), [create the database and starter data](#database),
 and [start the development server](#running-the-app):
 
 ```sh
   bin/setup
 ```
 
-This script can be re-run at any time to ensure your environment is up to date.
-It uses `db:prepare`; seeds run when Rails prepares a newly created database, not on every normal re-run.
-It also clears local logs/tempfiles. To prepare without starting the server, use `bin/setup --skip-server`.
-Initial seeding imports GIAS schools and Publish subjects, so allow external network access and provide PROJ.
+You can run it again to update local setup. It uses `db:prepare`: starter data (seeds) loads for a newly created
+database, not every normal rerun. It also clears local logs/temporary files.
+Use `bin/setup --skip-server` to prepare without starting the website.
+The first load downloads GIAS schools and Publish subjects, so it needs internet access and PROJ.
 
 ### Environment variables
 
-We use `dotenv-rails` in development and test. `bin/setup` copies [`.env.example`](.env.example) to
-`.env.development.local` if it is absent. Edit that ignored local file; never commit real credentials.
+Environment variables are named settings supplied when the application starts. In development/test,
+`dotenv-rails` reads them from local files. `bin/setup` copies [`.env.example`](.env.example) to
+`.env.development.local` if needed. Edit that file for your setup; Git ignores it. Never commit real passwords or keys.
 
 ```dotenv
 SIGN_IN_METHOD=persona
@@ -169,7 +179,7 @@ For DfE Sign-in, set `SIGN_IN_METHOD=dfe-sign-in`, the issuer/client/secret vari
 
 ### Database
 
-Create and seed the database:
+Create the database and load starter data:
 
 ```sh
 bin/setup
@@ -179,7 +189,7 @@ bundle exec rails db:create db:migrate db:seed
 
 ### Node & assets
 
-Install JS and CSS dependencies and build once:
+Assets are the JavaScript (browser behaviour) and CSS (styles) sent to the browser. Install their libraries and build them:
 
 ```sh
 yarn install
@@ -188,7 +198,7 @@ bin/rails assets:precompile # optional for dev; `bin/dev` will build on the fly
 
 ## Running the app
 
-For local development we recommend `bin/dev` (Procfile-based) which runs Rails, JS and CSS watchers together:
+Use `bin/dev` to run the local website and rebuild browser scripts/styles as files change:
 
 ```sh
 bin/dev
@@ -198,14 +208,14 @@ The app should be available at **[http://localhost:3000](http://localhost:3000)*
 
 ## Authentication
 
-DfE Sign-in via OmniAuth OpenID Connect is implemented. `SIGN_IN_METHOD` selects `dfe-sign-in` or
-`persona` (the default, used for local development). It does not automatically fall back to personas on failure.
-Users also need an application user record and relevant organisation membership.
+`SIGN_IN_METHOD` chooses real DfE Sign-in (`dfe-sign-in`) or test personas (`persona`, the default for local development).
+Personas let you try the service as a made-up user. They are not a fallback when real sign-in fails.
+Real users also need a user record here and membership of the right organisation; DfE Sign-in alone is not enough.
 See [sign-in and organisation selection](docs/application-flows.md#sign-in-and-organisation-selection).
 
 ## Testing
 
-We use **RSpec** with **Capybara** and **Selenium WebDriver** for system tests.
+RSpec runs our automated tests. Capybara and Selenium WebDriver let browser tests follow a user's steps.
 
 ```sh
 bundle exec rspec
@@ -214,9 +224,9 @@ bundle exec rspec
 Useful notes:
 
 * Screenshots on failure are saved by `capybara-screenshot`.
-* Time-sensitive tests use `timecop`.
-* External requests are stubbed with `webmock`.
-* Controller specs are enabled via `rails-controller-testing`.
+* `timecop` lets tests control the date/time.
+* `webmock` supplies fake responses instead of calling external services.
+* `rails-controller-testing` supports tests of request-handling code.
 
 See [testing](docs/testing.md) for test database/assets/browser prerequisites, targeted commands and CI behaviour.
 
@@ -250,12 +260,13 @@ VS Code setting:
 
 ## Docs & ADRs
 
-The [handover guide](handover-document.md) indexes the [architecture](docs/architecture.md),
-[current ERDs](docs/data-model.md), [application flows](docs/application-flows.md),
-[HTTP interfaces](docs/api.md), [integrations](docs/integrations.md), [testing](docs/testing.md),
-[deployment](docs/deployment.md), [operations](docs/operations.md) and [runbooks](docs/runbooks/).
+The [handover guide](handover-document.md) links to [how the service fits together](docs/architecture.md),
+[what we store](docs/data-model.md), [user journeys](docs/application-flows.md),
+[web interfaces](docs/api.md), [other services we rely on](docs/integrations.md), [tests](docs/testing.md),
+[releases](docs/deployment.md), [support checks](docs/operations.md) and [step-by-step guides](docs/runbooks/).
 
-We keep Architecture Decision Records in [`/adr`](adr/). Generate a new ADR with:
+Architecture Decision Records (ADRs) explain an important choice, why we made it and its trade-offs.
+They live in [`/adr`](adr/). Developers can create one with:
 
 ```sh
 bin/bundle exec rladr new "Title of the decision"
@@ -263,6 +274,7 @@ bin/bundle exec rladr new "Title of the decision"
 
 ## Infrastructure validation workflow
 
-The [Validate Infra workflow](.github/workflows/validate-infrastructure.yml) runs Terraform plan validations for the AKS
-application plus domains infrastructure/environment each day at **07:00 UTC** against **production** only.
-Notifications use the `TEAMS_WEBHOOK_URL_INFRA` secret. See [deployment](docs/deployment.md) for infrastructure boundaries.
+The [Validate Infra workflow](.github/workflows/validate-infrastructure.yml) checks each day at **07:00 UTC** whether
+production hosting differs from the saved Terraform settings for the application and website routing.
+It reports through Teams using `TEAMS_WEBHOOK_URL_INFRA`. It does not apply changes.
+See [deployment](docs/deployment.md) for the developer details.
