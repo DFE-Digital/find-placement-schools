@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :schools, -> { where(type: "School") }, through: :user_memberships, source: :organisation
   has_many :providers, -> { where(type: "Provider") }, through: :user_memberships, source: :organisation
   has_many :placement_preferences, class_name: "PlacementPreference", foreign_key: :created_by_id
+  has_many :placement_preference_reminders, dependent: :delete_all
 
   normalizes :email_address, with: ->(email_address) { email_address.strip.downcase }
 

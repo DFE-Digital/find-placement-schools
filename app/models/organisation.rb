@@ -6,6 +6,7 @@ class Organisation < ApplicationRecord
 
   has_many :user_memberships
   has_many :users, through: :user_memberships
+  has_many :placement_preference_reminders, dependent: :delete_all
 
   validates :name, presence: true
 

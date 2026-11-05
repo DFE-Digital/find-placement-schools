@@ -93,6 +93,13 @@ shared:
     - type_of_establishment
     - urban_or_rural
     - website
+  :placement_preference_reminders:
+    - id
+    - user_id
+    - organisation_id
+    - academic_year_id
+    - created_at
+    - updated_at
   :placement_preferences:
     - id
     - academic_year_id

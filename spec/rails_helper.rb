@@ -81,6 +81,7 @@ RSpec.configure do |config|
   config.include GeocodingHelper
   config.include ViewComponent::TestHelpers, type: :component
   config.include DfESignInUserHelper
+  config.include ActiveSupport::Testing::TimeHelpers
   config.include GovukComponentMatchers, type: :system
 
   config.around(:each, :persona_sign_in, type: :system) do |example|
