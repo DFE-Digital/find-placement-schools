@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_25_100251) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_05_103000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -100,6 +100,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_100251) do
     t.index ["type", "code"], name: "index_organisations_on_type_and_code", unique: true, where: "((type)::text = 'Provider'::text)"
     t.index ["ukprn"], name: "index_organisations_on_ukprn"
     t.index ["urn"], name: "index_organisations_on_urn", unique: true, where: "((type)::text = 'School'::text)"
+  end
+
+  create_table "placement_preference_reminders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "academic_year_id", null: false
+    t.datetime "created_at", null: false
+    t.uuid "organisation_id", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["academic_year_id"], name: "index_placement_preference_reminders_on_academic_year_id"
+    t.index ["organisation_id"], name: "index_placement_preference_reminders_on_organisation_id"
+    t.index ["user_id", "organisation_id", "academic_year_id"], name: "index_placement_preference_reminders_on_membership_and_year"
   end
 
   create_table "placement_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -290,6 +301,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_25_100251) do
 
   add_foreign_key "organisation_addresses", "organisations"
   add_foreign_key "organisation_contacts", "organisations"
+  add_foreign_key "placement_preference_reminders", "academic_years"
+  add_foreign_key "placement_preference_reminders", "organisations"
+  add_foreign_key "placement_preference_reminders", "users"
   add_foreign_key "placement_preferences", "academic_years"
   add_foreign_key "placement_preferences", "organisations"
   add_foreign_key "previous_placements", "academic_years"

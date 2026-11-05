@@ -6,136 +6,162 @@ RSpec.describe Users::PlacementPreferences::Remind do
   it_behaves_like "a service object"
 
   let(:school) { create(:school) }
+  let(:last_signed_in_at) { 2.weeks.ago }
   let(:user) { create(:user, last_signed_in_at:, organisations: [ school ]) }
 
+  def expect_reminder
+    expect { user_placement_preference_remind_service }.to have_enqueued_mail(
+      School::UserMailer,
+      :placement_preferences_reminder_notification,
+    ).with(user, school, AcademicYear.next).exactly(:once)
+  end
+
+  def expect_no_reminder
+    expect { user_placement_preference_remind_service }.not_to have_enqueued_mail(
+      School::UserMailer,
+      :placement_preferences_reminder_notification,
+    )
+  end
+
   describe "#call" do
-    context "when the school has placement preferences" do
+    context "when the school has a placement preference for the next academic year" do
+      before do
+        create(:placement_preference, created_by: user, organisation: school, academic_year: AcademicYear.next)
+      end
+
+      it "does not send an email to the school user" do
+        expect_no_reminder
+      end
+    end
+
+    context "when the school does not have a placement preference" do
+      before { user }
+
+      context "when the user signed in less than 2 weeks ago" do
+        let(:last_signed_in_at) { 13.days.ago }
+
+        it "does not send an email to the school user" do
+          expect_no_reminder
+        end
+      end
+
+      context "when the user has never signed in" do
+        let(:last_signed_in_at) { nil }
+
+        it "does not send an email to the school user" do
+          expect_no_reminder
+        end
+      end
+
       context "when the user signed in 2 weeks ago" do
-        let(:last_signed_in_at) { 2.weeks.ago }
-        let(:placement_preference) do
-          create(
-            :placement_preference,
-            created_by: user,
+        it "sends an email to the user" do
+          expect_reminder
+        end
+
+        it "records the reminder" do
+          expect { user_placement_preference_remind_service }.to change(PlacementPreferenceReminder, :count).by(1)
+          expect(PlacementPreferenceReminder.last).to have_attributes(
+            user:,
             organisation: school,
             academic_year: AcademicYear.next,
           )
         end
+      end
 
+      context "when the user signed in a long time ago" do
+        let(:last_signed_in_at) { 6.months.ago }
+
+        it "sends an email to the user" do
+          expect_reminder
+        end
+      end
+
+      context "when the user has already been sent fewer than 3 reminders" do
         before do
-          placement_preference
+          create(:placement_preference_reminder, user:, organisation: school, created_at: 2.months.ago)
+          create(:placement_preference_reminder, user:, organisation: school, created_at: 1.month.ago)
         end
 
-        it "does not send an email to the school user" do
-          expect { user_placement_preference_remind_service }.not_to enqueue_mail(
-            School::UserMailer,
-            :placement_preferences_reminder_notification,
-          )
-        end
-      end
-    end
-
-    context "when the school does not have a placement preferences" do
-      before { user }
-
-      context "when the user signed in less than 2 weeks ago" do
-        let(:last_signed_in_at) { 1.week.ago }
-
-        it "does not send an email to the school user" do
-          expect { user_placement_preference_remind_service }.not_to enqueue_mail(
-            School::UserMailer,
-            :placement_preferences_reminder_notification,
-          )
+        it "sends an email to the user" do
+          expect_reminder
         end
       end
 
-      context "when the user signed in exactly 2 weeks ago" do
-        let(:last_signed_in_at) { 2.week.ago }
+      context "when the user has already been sent 3 reminders" do
+        before do
+          3.times do |i|
+            create(:placement_preference_reminder, user:, organisation: school, created_at: (i + 1).months.ago)
+          end
+        end
 
-        it "does not send an email to the school user" do
-          expect { user_placement_preference_remind_service }.to enqueue_mail(
-            School::UserMailer,
-            :placement_preferences_reminder_notification,
-          )
+        it "does not send an email to the user" do
+          expect_no_reminder
+        end
+
+        context "when the user signs in again" do
+          let(:last_signed_in_at) { 3.weeks.ago }
+
+          it "still does not send an email to the user" do
+            expect_no_reminder
+          end
         end
       end
 
-      context "when the user was signed in more than 2 weeks ago" do
-        context "when the user was signed in less that a month and 2 weeks ago" do
-          let(:last_signed_in_at) { 2.week.ago - 1.week }
-
-          it "does not send an email to the user" do
-            expect { user_placement_preference_remind_service }.not_to enqueue_mail(
-              School::UserMailer,
-              :placement_preferences_reminder_notification,
-            )
+      context "when the 3 reminders were for a previous academic year" do
+        before do
+          3.times do
+            create(:placement_preference_reminder, user:, organisation: school, academic_year: AcademicYear.current)
           end
         end
 
-        context "when the user was signed in exactly a month and 2 weeks ago" do
-          let(:last_signed_in_at) { 2.week.ago - 1.month }
+        it "sends an email to the user" do
+          expect_reminder
+        end
+      end
 
-          it "sends an email to the user" do
-            expect { user_placement_preference_remind_service }.to enqueue_mail(
-              School::UserMailer,
-              :placement_preferences_reminder_notification,
-            )
-          end
+      context "when the user was reminded in the last 3 weeks" do
+        before do
+          create(:placement_preference_reminder, user:, organisation: school, created_at: 20.days.ago)
         end
 
-        context "when the user was signed in more than a month and 2 weeks ago" do
-          context "when the user was signed in less that 2 months and 2 weeks ago" do
-            let(:last_signed_in_at) { 1.month.ago - 3.week }
+        it "does not send an email to the user" do
+          expect_no_reminder
+        end
+      end
 
-            it "does not send an email to the user" do
-              expect { user_placement_preference_remind_service }.not_to enqueue_mail(
-                School::UserMailer,
-                :placement_preferences_reminder_notification,
-              )
+      context "when the service is run twice" do
+        it "only sends one email" do
+          described_class.call
+
+          expect_no_reminder
+        end
+      end
+
+      context "when the service is run every month and the user keeps signing in" do
+        it "sends at most 3 emails" do
+          5.times do |month|
+            travel_to(month.months.from_now) do
+              user.update!(last_signed_in_at: 2.weeks.ago)
+              described_class.call
             end
           end
 
-          context "when the user was signed in exactly 2 months and 2 weeks ago" do
-            let(:last_signed_in_at) { 2.week.ago - 2.month }
-
-            it "sends an email to the user" do
-              expect { user_placement_preference_remind_service }.to enqueue_mail(
-                School::UserMailer,
-                :placement_preferences_reminder_notification,
-              )
-            end
-          end
-
-          context "when the user was signed in more than 2 month and 2 weeks ago" do
-            let(:last_signed_in_at) { 3.months.ago }
-
-            it "does not send an email to the user" do
-              expect { user_placement_preference_remind_service }.not_to enqueue_mail(
-                School::UserMailer,
-                :placement_preferences_reminder_notification,
-              )
-            end
-          end
+          expect(PlacementPreferenceReminder.where(user:, organisation: school).count).to eq(3)
         end
       end
     end
 
     context "when the school only has a preference for the current academic year" do
-      let(:last_signed_in_at) { 2.weeks.ago }
-
       before do
         create(:placement_preference, created_by: user, organisation: school, academic_year: AcademicYear.current)
       end
 
       it "sends a reminder for the next academic year" do
-        expect { user_placement_preference_remind_service }.to enqueue_mail(
-          School::UserMailer,
-          :placement_preferences_reminder_notification,
-        ).with(user, school, AcademicYear.next)
+        expect_reminder
       end
     end
 
     context "when the user belongs to several schools" do
-      let(:last_signed_in_at) { 2.weeks.ago }
       let(:other_school) { create(:school) }
       let(:user) { create(:user, last_signed_in_at:, organisations: [ school, other_school ]) }
 
@@ -147,10 +173,7 @@ RSpec.describe Users::PlacementPreferences::Remind do
         end
 
         it "reminds the user about the school missing a preference only" do
-          expect { user_placement_preference_remind_service }.to enqueue_mail(
-            School::UserMailer,
-            :placement_preferences_reminder_notification,
-          ).with(user, school, AcademicYear.next).exactly(:once)
+          expect_reminder
         end
       end
 
@@ -160,6 +183,18 @@ RSpec.describe Users::PlacementPreferences::Remind do
             School::UserMailer,
             :placement_preferences_reminder_notification,
           ).twice
+        end
+      end
+
+      context "when the user has had 3 reminders for one school only" do
+        before do
+          3.times do |i|
+            create(:placement_preference_reminder, user:, organisation: other_school, created_at: (i + 1).months.ago)
+          end
+        end
+
+        it "still reminds the user about the other school" do
+          expect_reminder
         end
       end
     end
