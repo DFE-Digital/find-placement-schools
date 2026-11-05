@@ -24,6 +24,24 @@ RSpec.describe CompletePlacementPreferenceReminderJob, type: :job do
         expect(described_class.send_day?(Date.new(2026, 11, 3))).to be(false)
       end
     end
+
+    context "when the 1st is a bank holiday" do
+      before { create(:bank_holiday, date: Date.new(2027, 1, 1), title: "New Year Day") }
+
+      it "is the next working day" do
+        expect(described_class.send_day?(Date.new(2027, 1, 1))).to be(false) # Friday
+        expect(described_class.send_day?(Date.new(2027, 1, 4))).to be(true) # Monday
+      end
+    end
+
+    context "when the 1st is a weekend and the following Monday is a bank holiday" do
+      before { create(:bank_holiday, date: Date.new(2027, 5, 3), title: "Early May bank holiday") }
+
+      it "is the Tuesday" do
+        expect(described_class.send_day?(Date.new(2027, 5, 3))).to be(false)
+        expect(described_class.send_day?(Date.new(2027, 5, 4))).to be(true)
+      end
+    end
   end
 
   describe "#perform" do
