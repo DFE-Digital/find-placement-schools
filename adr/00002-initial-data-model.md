@@ -6,6 +6,9 @@ Date: 2025-07-18
 
 Accepted
 
+This is the historical initial design. For the implemented schema and current relationships, see the
+[current data model](../docs/data-model.md).
+
 ---
 
 ## Context
