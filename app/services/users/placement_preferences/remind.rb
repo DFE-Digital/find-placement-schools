@@ -14,25 +14,35 @@ class Users::PlacementPreferences::Remind < ApplicationService
   def call
     wait_time = 0.minutes
     remindable_memberships.find_in_batches(batch_size: 100) do |batch|
-      batch.each do |membership|
-        PlacementPreferenceReminder.create!(
-          user: membership.user,
-          organisation: membership.organisation,
-          academic_year:,
-        )
-
-        School::UserMailer.placement_preferences_reminder_notification(
-          membership.user,
-          membership.organisation,
-          academic_year,
-        ).deliver_later(wait: wait_time)
-      end
+      batch.each { |membership| remind(membership, wait: wait_time) }
 
       wait_time += 1.minute
     end
   end
 
   private
+
+  # Locks the membership and rechecks eligibility so overlapping runs cannot
+  # exceed the cap. Solid Queue shares the primary database, so the reminder
+  # record and the enqueued email are committed (or rolled back) together.
+  def remind(membership, wait:)
+    UserMembership.transaction do
+      UserMembership.lock.find(membership.id)
+      next unless remindable_memberships.exists?(membership.id)
+
+      PlacementPreferenceReminder.create!(
+        user: membership.user,
+        organisation: membership.organisation,
+        academic_year:,
+      )
+
+      School::UserMailer.placement_preferences_reminder_notification(
+        membership.user,
+        membership.organisation,
+        academic_year,
+      ).deliver_later(wait:)
+    end
+  end
 
   def academic_year
     @academic_year ||= AcademicYear.next

@@ -129,6 +129,34 @@ RSpec.describe Users::PlacementPreferences::Remind do
         end
       end
 
+      context "when the email cannot be enqueued" do
+        let(:mailer_double) { double }
+
+        before do
+          allow(School::UserMailer).to receive(:placement_preferences_reminder_notification).and_return(mailer_double)
+          allow(mailer_double).to receive(:deliver_later).and_raise(ActiveJob::EnqueueError)
+        end
+
+        it "does not record the reminder" do
+          expect { user_placement_preference_remind_service }.to raise_error(ActiveJob::EnqueueError)
+          expect(PlacementPreferenceReminder.count).to eq(0)
+        end
+      end
+
+      context "when the membership is no longer eligible by the time it is processed" do
+        before do
+          allow(UserMembership).to receive(:transaction).and_wrap_original do |original, &block|
+            create(:placement_preference_reminder, user:, organisation: school)
+            original.call(&block)
+          end
+        end
+
+        it "does not send an email to the user" do
+          expect_no_reminder
+          expect(PlacementPreferenceReminder.count).to eq(1)
+        end
+      end
+
       context "when the service is run twice" do
         it "only sends one email" do
           described_class.call
@@ -139,8 +167,11 @@ RSpec.describe Users::PlacementPreferences::Remind do
 
       context "when the service is run every month and the user keeps signing in" do
         it "sends at most 3 emails" do
+          # Stay within one academic year so AcademicYear.next does not change.
+          start_of_academic_year = AcademicYear.current.starts_on.beginning_of_day
+
           5.times do |month|
-            travel_to(month.months.from_now) do
+            travel_to(start_of_academic_year + month.months) do
               user.update!(last_signed_in_at: 2.weeks.ago)
               described_class.call
             end
