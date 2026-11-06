@@ -13,7 +13,7 @@ class Users::PlacementPreferences::Remind < ApplicationService
 
   def call
     wait_time = 0.minutes
-    remindable_memberships.find_in_batches(batch_size: 100) do |batch|
+    eligible_memberships.preload(:user, :organisation).find_in_batches(batch_size: 100) do |batch|
       batch.each { |membership| remind(membership, wait: wait_time) }
 
       wait_time += 1.minute
@@ -28,7 +28,7 @@ class Users::PlacementPreferences::Remind < ApplicationService
   def remind(membership, wait:)
     UserMembership.transaction do
       UserMembership.lock.find(membership.id)
-      next unless remindable_memberships.exists?(membership.id)
+      next unless eligible_memberships.exists?(membership.id)
 
       PlacementPreferenceReminder.create!(
         user: membership.user,
@@ -54,9 +54,8 @@ class Users::PlacementPreferences::Remind < ApplicationService
 
   # One membership per user and school, so a user belonging to several schools
   # is reminded about each school that is missing a preference.
-  def remindable_memberships
+  def eligible_memberships
     UserMembership
-      .includes(:user, :organisation)
       .joins(:user)
       .where(organisation_id: idle_schools.select(:id))
       .where(users: { last_signed_in_at: ..SIGN_IN_GRACE_PERIOD.ago })
