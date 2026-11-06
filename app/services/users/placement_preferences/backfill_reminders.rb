@@ -42,8 +42,7 @@ class Users::PlacementPreferences::BackfillReminders < ApplicationService
 
   def candidate_memberships
     UserMembership
-      .includes(:user)
-      .joins(:user)
+      .eager_load(:user)
       .where(organisation_id: School.without_preference_for(academic_year).select(:id))
       .where(users: { last_signed_in_at: (replay_from - 2.weeks - 2.months - WINDOW_MARGIN).beginning_of_day.. })
   end
