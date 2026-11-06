@@ -42,3 +42,5 @@ PlacementSubject.last(3).each do |placement_subject|
     academic_year: AcademicYear.for_date(Date.today - 1.year),
   )
 end
+
+load Rails.root.join("db/seeds/placement_preferences.rb")
