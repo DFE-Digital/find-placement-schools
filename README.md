@@ -54,7 +54,7 @@ the service.
 
 ## Tech stack
 
-* **Ruby**: *3.4.12* (managed via asdf)
+* **Ruby**: *3.4.13* (managed via asdf)
 * **Rails**: see [`Gemfile.lock`](Gemfile.lock) for the resolved version
 * **DB**: PostgreSQL (tested with **17.2**)
 * **Job queue**: `solid_queue`
