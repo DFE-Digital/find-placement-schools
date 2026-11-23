@@ -3,8 +3,9 @@
 This guide is for support staff uploading past-placement data or adding several users at once. Use the admin pages,
 rather than a one-off script in the live application.
 
-Both uploads add a task to a waiting list. A confirmation message means the task was queued, not that every row was
-saved. Check the task and resulting records before telling someone the upload is complete.
+These uploads use background tasks, but a success message does not prove a task was queued or every row was saved.
+For user onboarding, if no rows can be used, the page still shows success without adding a task.
+Check the input, task and resulting records before telling someone the upload is complete.
 
 Before uploading, confirm the environment, your admin access, where the file came from and what should change.
 Practise a new format with made-up data outside production. Keep real files and contact lists out of repository docs.
@@ -101,7 +102,8 @@ the source file's encoding if names are garbled.
 
 1. Confirm the type, environment, organisation identifiers and permission to send invitations.
 2. Upload, review validation errors and confirm once.
-3. Check `Users::CreateCollectionJob`, then its queued mail jobs.
+3. Look for `Users::CreateCollectionJob`, then its queued mail jobs. If no task is present, check whether all rows
+   were skipped as described below before treating this as a worker problem.
 4. Check sample users' memberships and compare the expected users with those added. An invitation arriving in an
    inbox is not proof that every membership was added.
 
@@ -109,10 +111,15 @@ The form checks names and email addresses, but skips rows with blank identifiers
 A file can therefore pass the displayed checks but still omit a user. The background task skips people already linked
 to the organisation, adds users/memberships as needed and schedules invitation batches of 100 a minute apart.
 
+If every school URN or provider code is unknown in the chosen environment, all rows are skipped. The page still shows
+success, but no `Users::CreateCollectionJob` is queued and no users are added. This is skipped input, not a worker
+failure. Check the organisation type, environment and identifiers before correcting the file and uploading again.
+The same no-task outcome applies whenever no usable rows remain.
+
 The upload is not all-or-nothing. Running it again may skip memberships already added while other rows still need
 fixing. Check before retrying: failed tasks are not always safe to repeat and emails are not guaranteed to send once only.
 
-Sources: [OnboardUsersWizard](../../app/wizards/onboard_users_wizard.rb), [school step](../../app/wizards/onboard_users_wizard/school_upload_step.rb), [provider step](../../app/wizards/onboard_users_wizard/provider_upload_step.rb), [collection job](../../app/jobs/users/create_collection_job.rb).
+Sources: [OnboardUsersWizard](../../app/wizards/onboard_users_wizard.rb), [onboarding controller](../../app/controllers/admin/users/onboard_users_controller.rb), [school step](../../app/wizards/onboard_users_wizard/school_upload_step.rb), [provider step](../../app/wizards/onboard_users_wizard/provider_upload_step.rb), [collection job](../../app/jobs/users/create_collection_job.rb).
 
 ## Reference-data refresh
 

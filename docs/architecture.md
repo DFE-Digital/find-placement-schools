@@ -9,6 +9,54 @@ database where they keep information.
 Start with the [handover guide](../handover-document.md) for a reading path and glossary.
 Read [application flows](application-flows.md) for what users do and [deployment](deployment.md) for how we release changes.
 
+## Service overview
+
+The diagram below shows the service at a level suitable for architecture discussions. The Rails application serves
+school, provider and admin journeys. It stores the service's data in PostgreSQL and delegates imports, notifications
+and analytics delivery to a Solid Queue worker. External systems provide identity, reference data, maps and reporting;
+the service helps users find potential partners but does not allocate or book placements.
+
+```mermaid
+flowchart LR
+  subgraph Users
+    SchoolUsers[School users]
+    ProviderUsers[Provider users]
+    AdminUsers[DfE admin and support users]
+  end
+
+  subgraph Platform[Find placement schools]
+    Edge[Azure Front Door]
+    Web[Rails web application]
+    Worker[Solid Queue background worker]
+    Database[(PostgreSQL)]
+  end
+
+  subgraph External[External services]
+    SignIn[DfE Sign-in]
+    Reference[GIAS and Publish reference data]
+    Register[Register placement CSV via Data and Insights]
+    Google[Google Maps and Routes]
+    Notify[GOV.UK Notify]
+    Analytics[DfE Analytics and Airbyte]
+  end
+
+  SchoolUsers --> Edge
+  ProviderUsers --> Edge
+  AdminUsers --> Edge
+  Edge --> Web
+  Web <--> Database
+  Web --> Worker
+  Worker <--> Database
+
+  Web <--> SignIn
+  Worker --> Reference
+  Register --> Worker
+  Web <--> Google
+  Worker --> Notify
+  Worker --> Analytics
+  Database --> Analytics
+```
+
 ## System context
 
 Rails, the web framework we use, builds pages and sends them to the user's browser. The browser also asks the service
@@ -93,10 +141,10 @@ The names below help you find the relevant code and settings. The explanation is
 | Viewing tasks | Admins use Mission Control Jobs at `/jobs` to see waiting and failed work. |
 | Remembering travel results | `Rails.cache` can reuse travel times. Production does not explicitly set up a shared store, so different copies of the application may not reuse each other's results. |
 | Finding problems | Logs, Sentry error reports and health checks help diagnose failures; see [operations](operations.md). |
-| Hosting | Shared AKS/Terraform setup, rather than Kamal. |
+| Hosting | Shared AKS/Terraform setup. Kamal is not used. |
 
-`solid_cache` and `kamal` are listed as dependencies in the [Gemfile](../Gemfile), but are not set up for these roles.
-There are no Solid Cache tables in the database structure. For current software versions, check the dependency files
+The Rails template originally added `solid_cache` and `kamal`. Neither was ever set up, so both have been removed from
+the [Gemfile](../Gemfile). There are no Solid Cache tables in the database structure. For current software versions, check the dependency files
 and [tool versions](../.tool-versions), which are easier to keep up to date than copies in this guide.
 
 ## Code map
@@ -139,8 +187,10 @@ before changing them; the duplication is not fixed by this documentation.
 ## Decisions and documentation boundaries
 
 The [decision records](../adr/) explain why the team chose shared organisation storage, flexible preference answers,
-multi-page forms and Solid Queue. The original data diagram records an early design; use the [data guide](data-model.md)
-for the current structure.
+multi-page forms and Solid Queue. The original data diagram ([ADR 2](../adr/00002-initial-data-model.md)) records an
+early design. [ADR 7](../adr/00007-record-changes-to-the-initial-data-model.md) records the tables added since:
+`previous_placements`, `bank_holidays`, `sessions` and the Solid Queue tables. Use the [data guide](data-model.md) for
+the current structure.
 
 This guide describes the code and settings. It does not show that other services are currently available or that recovery
 has been practised. Dashboard information, reports, policies and incident guidance stay in Confluence, without copies

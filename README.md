@@ -53,8 +53,8 @@ For developers:
 * Ruby on Rails prepares pages on the server. An internal JSON address supplies the browser's map key.
 * `activerecord-session_store` keeps browser-session information in the database.
 * Solid Queue runs background tasks; admins use Mission Control Jobs to see their progress.
-* `Rails.cache` temporarily saves travel-time results. Production has no configured shared/durable cache;
-  the included Solid Cache library is not connected.
+* `Rails.cache` temporarily saves travel-time results. Production has no configured shared/durable cache.
+  Solid Cache is not used.
 * `geocoder` turns locations into coordinates, for example when searching by location.
 
 See the [architecture diagrams](docs/architecture.md) and [database guide](docs/data-model.md) for explanations.

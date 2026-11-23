@@ -6,6 +6,8 @@ Date: 2025-07-18
 
 Accepted
 
+Amended by [ADR 7: Record changes to the initial data model](00007-record-changes-to-the-initial-data-model.md).
+
 This is the historical initial design. For the implemented schema and current relationships, see the
 [current data model](../docs/data-model.md).
 
