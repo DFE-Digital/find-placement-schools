@@ -55,7 +55,11 @@ flowchart TD
 
 There are two separate automated processes. **Continuous integration (CI)** checks security, code style and tests.
 **Build and Deploy** prepares and releases the application. In these workflow files, the release does not wait for CI
-to finish. GitHub may have additional branch or approval rules, but those are not defined or checked here.
+to finish.
+
+A merge to `main` goes to development, staging and then production automatically. No GitHub environment needs an
+approval before it deploys. The team does not use special release processes or change
+freezes.
 
 ### For developers: release automation
 
@@ -112,8 +116,11 @@ so changes can be reviewed and applied consistently.
 
 `application_configuration` passes ordinary and secret settings to the running application, using environment files,
 Key Vault and values from other modules. Keep passwords, tokens and secret output out of source control and docs.
-Changing a secret needs coordination with everything using it; an approved step-by-step rotation process is not
-established here.
+Changing a secret needs coordination with everything using it. Secrets are rotated when needed, not on a schedule,
+and there is no written rotation procedure.
+
+Hosted copies do not need `config/master.key`. The app does not use Rails encrypted credentials; `SECRET_KEY_BASE` and
+other secrets come from Key Vault as environment variables.
 
 For authorised infrastructure work, these examples target development and production respectively:
 
@@ -128,8 +135,9 @@ the Azure account, replace a local copy of shared code and set up Terraform's co
 Do not substitute `terraform-apply` (make changes) or `terraform-destroy` (remove resources) for a preview command.
 
 [Validate Infra](../.github/workflows/validate-infrastructure.yml) runs daily at 07:00 UTC. It compares production hosting
-with the saved settings for the application and website routing, then reports differences through Teams. It does not
-release a change or demonstrate that recovery works.
+with the saved settings for the application and website routing, then reports differences to the SD Infra alerts Teams
+channel. The infrastructure team owns investigating and fixing drift. The workflow does not release a change or
+demonstrate that recovery works.
 
 ## Release safety
 

@@ -137,7 +137,7 @@ The names below help you find the relevant code and settings. The explanation is
 | Checking who someone is | OmniAuth connects to DfE Sign-in using OpenID Connect, a standard sign-in protocol. Developers can select test identities called personas instead. |
 | Checking what someone may do | Pundit rules and admin checks control permissions for the selected organisation. |
 | Remembering a visit | `activerecord-session_store` keeps session information in the database, including unfinished forms. |
-| Background tasks | Active Job adds work to Solid Queue. A separate worker runs those tasks on the hosted service. |
+| Background tasks | Active Job adds work to Solid Queue. One separate worker, with three threads, runs every queue on the hosted service. |
 | Viewing tasks | Admins use Mission Control Jobs at `/jobs` to see waiting and failed work. |
 | Remembering travel results | `Rails.cache` can reuse travel times. Production does not explicitly set up a shared store, so different copies of the application may not reuse each other's results. |
 | Finding problems | Logs, Sentry error reports and health checks help diagnose failures; see [operations](operations.md). |
@@ -183,6 +183,9 @@ Two files define the same Ruby class, `DfeSignInUser`: the [model](../app/models
 [service](../app/services/dfe_sign_in_user.rb). They expect different inputs and session fields. The model has the user
 lookup the controller calls. Check how Rails loads these files and the [sign-in tests](../spec/models/dfe_sign_in_user_spec.rb)
 before changing them; the duplication is not fixed by this documentation.
+
+`DfeSignInUser#user` looks users up by `dfe_sign_in_uid` or `email_address`, but nothing writes `dfe_sign_in_uid` to
+the user record. Matching therefore depends on the email address alone.
 
 ## Decisions and documentation boundaries
 

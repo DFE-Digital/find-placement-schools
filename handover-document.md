@@ -50,14 +50,15 @@ and links are intentionally not included in this repository.
 - **Developers** need the software listed in the README and made-up test data. First-time setup also downloads
   public school and subject information.
 - **Application admins** need an existing authorised user record and can access admin journeys and `/jobs`.
-- **People managing hosting** need separate permission to use Azure and the release tools. The earlier handover
-  described approval through the PM and time-limited Azure access; confirm that this is still the process.
+- **People managing hosting** need separate permission to use Azure and the release tools. For production, the PM
+  approves and access is activated through Azure PIM; see [access](docs/operations.md#access-and-first-checks).
 - **Anyone recovering the database** needs to account for unfinished forms and waiting tasks as well as school/user
   information. Restoring an old copy can bring back emails that were waiting to be sent.
 
-Support hours and reliability targets are **not agreed**. Nor are the maximum acceptable recovery time or amount of
-data loss after an outage. Running extra copies of the application and taking backups helps, but does not settle those
-decisions.
+The development team supports the service during working hours, with no out-of-hours cover. Reliability targets,
+the maximum acceptable recovery time and the acceptable amount of data loss after an outage are **not agreed**.
+Running extra copies of the application and taking backups helps, but does not settle those decisions. See the
+[support model](docs/operations.md#support-model).
 
 ## What these guides can tell you
 
@@ -90,11 +91,13 @@ still explains setup, and the original decision records remain as a history of t
 
 | Question | Current position |
 | --- | --- |
-| What support and recovery promises should the service make? | Not agreed; the service owner needs to decide these. |
+| What support and recovery promises should the service make? | Working-hours support by the development team. No SLAs, RTO, RPO or disaster recovery plan; the service owner needs to decide these. |
 | When should we ask for Register data, and who approves the upload? | Data & Insights supplies it and support uploads it. The timing and approval steps still need confirming. |
-| Have we practised restoring data and safely restarting tasks? | These guides do not establish that. Fix or resolve the [known settings gaps](docs/runbooks/recovery.md#known-configuration-gaps-resolve-before-relying-on-these-workflows) before relying on the recovery tools. |
+| Have we practised restoring data and safely restarting tasks? | No. Backups have never been restored, and are kept for only 7 days. Fix or resolve the [known settings gaps](docs/runbooks/recovery.md#known-configuration-gaps-resolve-before-relying-on-these-workflows) before relying on the recovery tools. |
 | How would we switch the service to a recovered database? | A tool can create a recovered copy, but the full switchover steps still need agreeing with the hosting team. |
 | Why was the shared Azure hosting platform chosen? | We have documented how it is used, but do not yet have the original reason for that choice. |
+| Should users be matched by DfE Sign-in ID as well as email? | The service never saves the sign-in ID, so a changed email address locks a user out. See [sign-in](docs/application-flows.md#sign-in-and-organisation-selection). |
+| Should old sessions and removed users be deleted? | Nothing deletes them today. See [data retention](docs/data-model.md#deletion-is-not-a-retention-policy). |
 
 These questions are separate from the material kept in Confluence; we are not asking for that material to be copied here.
 

@@ -2,8 +2,8 @@
 
 This guide helps developers and operators choose what to do when a release fails or data is lost.
 It explains the available tools and what still needs to be agreed before using them. It is not a tested,
-ready-to-run recovery plan. Support commitments, maximum acceptable recovery time (RTO) and acceptable data loss
-(RPO) are not agreed.
+ready-to-run recovery plan. There is no disaster recovery plan, and no maximum acceptable recovery time (RTO) or
+acceptable data loss (RPO) is agreed. Backups have never been restored or tested.
 
 Incident guidance stays in Confluence, without copies or links here. Agree who is authorised to lead the change
 before changing a live service.
@@ -41,6 +41,9 @@ Showing a maintenance page does not stop background tasks or undo things such as
 
 ## Maintenance mode
 
+Before turning maintenance mode on in production, get agreement from the dev lead or PM. The delivery manager tells
+users and stakeholders.
+
 [Set maintenance mode](../../.github/workflows/maintenance.yml) accepts `environment` (`development` or `production`) and `mode` (`enable` or `disable`). It routes traffic through the shared maintenance action.
 
 The [Makefile](../../Makefile) also offers these production commands, **only after authorisation**:
@@ -57,12 +60,16 @@ requests back to the application. You need the right GitHub/Azure permissions an
 Both commands fetch hosting credentials and change your local Kubernetes connection settings (`kubeconfig`).
 Never put tokens in commands recorded in documentation.
 
+While maintenance is on, the failover script also creates a temporary `teacherservices.cloud` address that still
+reaches the real application. It prints that address; use it to test a fix before letting users back in. The address
+comes from `maintenance_page/manifests/<environment>/ingress_temp_to_main.yml`.
+
 Check the public website shows maintenance, then check normal service after disabling it. A later Terraform release
 can reset routing unless its saved settings also include maintenance mode.
 
 ## Failed application release
 
-The previous handover described undoing the failing pull request and releasing that change through the usual process.
+The team's usual fix is to revert the failing pull request and let Build and Deploy release the revert.
 The [Build and Deploy workflow](../../.github/workflows/build-and-deploy.yml) can also release an already-built version,
 identified by `docker-image-tag`.
 
@@ -87,8 +94,16 @@ or restore yesterday's database just to fix faulty code: that could lose valid w
 - `db-server` lets you choose another server, such as one recovered to an earlier time. Give its backup a distinct name.
 
 Before recovering, check that the backup really succeeded, that the saved file can be read, and that its time and source
-environment are right. A schedule or enabled storage does not prove a usable backup exists. We have not established
-how long backups must be kept or evidence of a successful restore test here.
+environment are right. A schedule or enabled storage does not prove a usable backup exists.
+
+How long backups last, from the shared [Postgres module](../../terraform/application/vendor/modules/aks/aks/postgres/resources.tf):
+
+| Backup | Kept for |
+| --- | --- |
+| Daily `.sql` files in Azure storage | 7 days, then deleted by the `DeleteAfter7Days` rule. Deleted files can be recovered for a further 7 days. Storage is geo-redundant (GRS). |
+| Azure point-in-time restore | 7 days, the Azure default. Geo-redundant backup is not turned on. |
+
+So the oldest data you can recover is about a week old. No backup has ever been restored to prove it works.
 
 ## Restore mechanisms
 

@@ -85,9 +85,32 @@ against forged form requests, called CSRF protection.
 The addresses are not grouped under an API version and there is no OpenAPI specification (a machine-readable API guide).
 The application code does not set its own request-rate limit.
 
-For developers: hosting settings pass `rate_limit_max` of 1000 for production and 300 for development/staging, with
-`block_ip` enabled. These numbers alone do not tell us the time period or which requests are counted. Check the shared
-hosting module before treating them as requests-per-minute limits.
+Rate limiting happens before requests reach the application, in the Azure Front Door firewall (WAF):
 
-See [domain settings](../terraform/domains/environment_domains/config/) and [integrations](integrations.md).
-An address passing a health check is not a reliability promise; service targets are not agreed.
+| Environment | Limit |
+| --- | --- |
+| Production | 1,000 requests per IP address in 5 minutes |
+| Staging and development | 300 requests per IP address in 5 minutes |
+
+A visitor over the limit gets HTTP 429 ("too many requests") until the 5-minute window moves on. The limit counts every
+request, including pages, assets and the map-key request. Requests from the shared AKS platform's own addresses are
+always allowed.
+
+These are the shared platform defaults. They have not been load tested for this service, and the team has not seen any
+429 responses.
+
+### For developers: firewall rules and known gaps
+
+The shared [rate-limit module](../terraform/application/vendor/modules/aks/domains/environment_domains/rate_limit.tf)
+creates these rules from the [domain settings](../terraform/domains/environment_domains/config/):
+
+- `all`: blocks an IP address after `rate_limit_max` requests in 5 minutes.
+- `AKS`: allows the platform's own addresses.
+- `blockIP`: created **disabled**, with the placeholder address `10.1.1.1`. Setting `block_ip: true` does not block
+  anyone. To block an address, someone must enable the rule and set the real address.
+
+The application has a `/429` route, but `app/views/errors/too_many_requests.html.erb` does not exist. Visiting it
+raises a missing-template error. Front Door returns its own 429 response, so users over the limit do not see this page.
+
+See [integrations](integrations.md). An address passing a health check is not a reliability promise; service targets
+are not agreed.

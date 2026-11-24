@@ -157,6 +157,13 @@ Use the supported admin pages to remove membership. [Users::Remove](../app/servi
 and schedules an email; it does not erase all information about the person. These behaviours are not a promise that
 data is deleted after a particular period. Retention policies stay in Confluence.
 
+No scheduled job deletes old data. In particular:
+
+- Expired sessions are never cleared from the `sessions` table, which can include sign-in details and unfinished
+  form answers.
+- Removing a user's last membership leaves their user record in place.
+- Database backups are kept for 7 days (see [backups](runbooks/recovery.md#backups)).
+
 ## Framework storage
 
 ### For developers: tables that keep the application running

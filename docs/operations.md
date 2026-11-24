@@ -4,15 +4,27 @@ This guide helps support staff and developers check whether the service is worki
 Start by looking, not changing. Use the admin pages where possible; direct access to the live application's console
 should be left to someone with the right permission and experience.
 
-These steps come from the code/settings, not a record of successful rehearsals. Support hours, reliability targets,
-maximum acceptable recovery time (RTO) and acceptable data loss (RPO) are **not agreed**.
+These steps come from the code/settings, not a record of successful rehearsals.
 Dashboard information, reports, policies and incident guidance stay in Confluence, without copies or links here.
+
+## Support model
+
+| Question | Team's position |
+| --- | --- |
+| Who responds? | The development team, during working hours. There is no out-of-hours cover. |
+| How severe is it? | Use the Teacher Services incident playbook levels, P1 to P3. |
+| Who do we escalate to? | It depends on the fault. For a code fault, revert the pull request. For a hosting fault, go to the infrastructure team. |
+| Service levels, RTO and RPO? | None agreed. |
+| Incident history? | No incidents to date and no recurring Sentry errors. |
 
 ## Access and first checks
 
-Check you have permission for the right environment. The previous handover described PM approval and Azure PIM
-(time-limited elevated access) for production; confirm this is still the process. Being a service admin does not give
-you hosting-platform access.
+Being a service admin does not give you hosting-platform access. For production:
+
+1. Ask the service PM for approval.
+2. Activate access through Azure PIM (time-limited elevated access). Approval usually takes 5 to 10 minutes.
+3. If the usual approver is away, ask the backup approvers in the team's Teams channels.
+4. In an emergency, contact the key people directly.
 
 1. Find out who is affected and which environment has the problem. `/healthcheck/sha` shows the running version.
 2. Check `/up`, `/healthcheck` and `/healthcheck/database`. Passing these checks does not prove that emails, maps or
@@ -35,6 +47,19 @@ Expected output includes `find-placement-schools-production` and its `-worker` d
 (the hosting group and area containing the application) against the environment table, rather than guessing from its name.
 
 Sources: [Makefile](../Makefile), [health checks](../config/initializers/okcomputer.rb) and [deployment environment matrix](deployment.md#environments).
+
+### For developers/operators: production console
+
+Use the admin pages first. If a fix needs the Rails console on production, this is the team's procedure:
+
+- Use it at your own discretion, with production access approved as above.
+- No second person needs to approve it, and console sessions are not audited.
+- Read before you change anything. Record what you ran and the outcome on the support query.
+
+There is no Makefile shortcut for the console. After `make production get-cluster-credentials CONFIRM_PRODUCTION=yes`,
+open a shell in the website deployment in the `bat-production` namespace with `kubectl exec`, then run `bin/rails console`.
+Hosted copies do not need `config/master.key`: the app does not use encrypted credentials, and `SECRET_KEY_BASE`
+comes from the environment.
 
 ## Recurring work
 
@@ -59,7 +84,8 @@ so having a worker there does not mean these imports/reminders run automatically
 ### For developers: worker settings
 
 [config/queue.yml](../config/queue.yml) asks workers to handle all queues, using three threads (parallel task handlers)
-and one process by default (`JOB_CONCURRENCY`). It only names development/test/production sections, so check startup
+and one process by default (`JOB_CONCURRENCY`). There is one worker for everything, so a long import can delay emails
+and analytics tasks. It only names development/test/production sections, so check startup
 logs before assuming other environment names inherit them. Hosted workers run `bundle exec bin/jobs`.
 Locally, Puma can start Solid Queue when `SOLID_QUEUE_IN_PUMA=true`.
 
@@ -80,13 +106,16 @@ shared automatic retry rule. Before rerunning a task in Mission Control, check w
 Running a reminder task again can send emails again. These services do not share a record guaranteeing each message
 is sent only once. Check who is affected and what is already waiting before rerunning it.
 
+Emails go through the shared Schools Digital GOV.UK Notify account. Notify allows 3,000 emails a minute; the service
+sends at most about 100 a minute. Nothing monitors delivery. To check whether an email arrived, look it up in Notify.
+
 Sources: [invitation reminder](../app/services/users/invite/remind.rb), [preference reminder](../app/services/users/placement_preferences/remind.rb), [mailers](../app/mailers/).
 
 ## Troubleshooting
 
 | Problem | What to check first | What to do next |
 | --- | --- | --- |
-| User cannot sign in | Sign-in method, sign-in logs and whether their user record matches their email/ID | Use approved onboarding; DfE Sign-in alone does not give access here |
+| User cannot sign in | Sign-in method, sign-in logs and whether their user record has the same email address as DfE Sign-in | Use approved onboarding; DfE Sign-in alone does not give access here. The service matches users by email, so a changed email address locks them out |
 | User cannot see an organisation | Their membership and selected organisation, and which switching page they used | Use admin pages; ask a developer before changing database records directly |
 | School/provider/subject information is old | Last import result, source availability and whether this environment has a schedule | Follow the [upload/import guide](runbooks/data-imports.md); a refresh can delete or partly update data |
 | Map/travel times are missing | Ask a developer to check the key, Google settings, usage limits and browser errors | A successful key request can contain an empty key; travel requests also need complete results |
@@ -104,12 +133,15 @@ These suggestions come from how the code works; they are not a list of known rec
 | [Database backup](../.github/workflows/backup-db.yml) | Production daily 04:00 UTC; manual environment selection |
 | [WAL monitor](../.github/workflows/database-replication-monitor.yml) | Checks database change-log growth in staging/production every six hours |
 | [Airbyte repair](../.github/workflows/fix-airbyte-replication.yml) | Production Sunday hourly 00:00-09:00 UTC; can change the setup used to copy data |
-| [Infrastructure validation](../.github/workflows/validate-infrastructure.yml) | Production daily 07:00 UTC |
+| [Infrastructure validation](../.github/workflows/validate-infrastructure.yml) | Production daily 07:00 UTC; reports drift to the SD Infra alerts Teams channel. The infrastructure team owns fixing drift |
 | [Review reconciliation](../.github/workflows/review-app-reconcile.yml) | Sunday 08:00 UTC; deletes review apps no longer needed |
 | [Uncached build](../.github/workflows/build-nocache.yml) | Sunday 12:30 UTC; rebuild only |
 
 The schedules show what is meant to run. Check each workflow's output to see whether it actually succeeded.
-This table does not show that recovery has been practised or that retention rules are enforced.
+Backups have never been restored or tested.
+
+No job deletes old data. Expired browser sessions stay in the `sessions` table, and removed users keep their user record.
+See [data retention](data-model.md#deletion-is-not-a-retention-policy).
 
 ## Operational changes
 

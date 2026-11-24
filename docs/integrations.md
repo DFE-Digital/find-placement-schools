@@ -32,8 +32,8 @@ Dashboard details, assurance reports, policies and incident guidance are maintai
 ## Ownership and support
 
 Each integration needs a named owner, an agreed service level, a renewal date (where there is a contract or paid plan)
-and a support route. None of these were recorded in the repository or handover material, so they are listed as gaps.
-The product owner must confirm each **TBC** before handover is signed off.
+and a support route. Most of these were not recorded in the repository or handover material, so they are listed as
+gaps. The product owner must confirm each **TBC** before handover is signed off.
 
 The "Provided by" column is the organisation that runs the service. "Our owner" is the person or team in this service
 responsible for the relationship, credentials and renewal.
@@ -45,12 +45,12 @@ responsible for the relationship, credentials and renewal.
 | Publish teacher training | DfE | TBC | None (public API) | Not applicable | TBC | Provider and subject data goes out of date |
 | Register trainee teachers (via Data and Insights) | DfE | TBC | None (manual file) | Not applicable | TBC | No new past-placement data |
 | Google Maps and Routes | Google | TBC | TBC | Billing account and quota owner TBC | TBC | Maps and travel times stop |
-| GOV.UK Notify | GDS | TBC | TBC | Not applicable. Free allowance and key rotation owner TBC | TBC | Invitations and reminders not sent |
+| GOV.UK Notify | GDS, through the shared Schools Digital account | Schools Digital (shared account). Templates and bounces are handled at Schools Digital level | 3,000 emails a minute; we send about 100. No delivery monitoring | Not applicable. Key rotation ad hoc | Check the message in Notify | Invitations and reminders not sent |
 | GOV.UK bank holidays | GDS | TBC | None (public data) | Not applicable | TBC | Emails may send on a bank holiday |
 | DfE Analytics and BigQuery | DfE | TBC | TBC | TBC | TBC | Reporting gaps |
 | Airbyte | DfE (shared platform module) | TBC | TBC | TBC | TBC | Reporting copies stall; WAL can grow |
 | Sentry | Sentry | TBC | TBC | TBC | TBC | Errors go unreported |
-| Logit / Azure monitoring | Logit.io / Microsoft, via Teacher Services platform | TBC | TBC | Platform managed. Confirm with platform team | TBC | Logs unavailable |
+| Logit / Azure monitoring | Logit.io / Microsoft, via Teacher Services platform | Infrastructure team | TBC | Platform managed | Infrastructure team | Logs unavailable |
 | StatusCake | StatusCake | TBC | TBC | TBC | TBC | Downtime not alerted |
 
 When an entry is confirmed, replace **TBC** with the team or role, not a personal email address. Record contract

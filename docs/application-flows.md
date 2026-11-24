@@ -21,7 +21,7 @@ sequenceDiagram
   User->>Browser: Open sign-in
   Browser->>Identity: Ask the user to sign in
   Identity->>Rails: Return sign-in details
-  Rails->>DB: Find user by sign-in ID or email
+  Rails->>DB: Find user by email (sign-in ID is never saved)
   alt Known user
     Rails->>DB: Record when they signed in
     Rails->>Rails: Check role and organisations
@@ -31,6 +31,10 @@ sequenceDiagram
     Rails-->>Browser: Redirect to sign-in with access message
   end
 ```
+
+The lookup checks the DfE Sign-in ID or the email address, but the service never saves the sign-in ID to the user
+record. In practice users are matched by email only. If someone's email changes in DfE Sign-in, they lose access
+until an admin updates their user record.
 
 If a regular user belongs to one organisation, the service chooses it. If they belong to several, it asks them to choose.
 Admins without a selected organisation see the dashboard. A school with no preferences is asked to add one; other schools
