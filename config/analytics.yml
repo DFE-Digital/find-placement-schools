@@ -109,3 +109,10 @@ shared:
     - placement_details
     - created_at
     - updated_at
+  :deleted_entities:
+    - id
+    - entity_id
+    - entity_name
+    - deleted_records
+    - created_at
+    - updated_at

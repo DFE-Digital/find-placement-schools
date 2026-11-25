@@ -36,15 +36,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_24_141500) do
     t.index ["date"], name: "index_bank_holidays_on_date", unique: true
   end
 
-  create_table "deletions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "deleted_entities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "entity_id"
+    t.string "entity_name"
+    t.jsonb "deleted_records"
     t.datetime "created_at", null: false
-    t.datetime "deleted_at", null: false
-    t.jsonb "deleted_records", default: {}, null: false
-    t.uuid "entity_id", null: false
-    t.string "entity_type", null: false
-    t.string "table_names", default: [], null: false, array: true
     t.datetime "updated_at", null: false
-    t.index ["entity_type", "entity_id"], name: "index_deletions_on_entity_type_and_entity_id"
   end
 
   create_table "organisation_addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
