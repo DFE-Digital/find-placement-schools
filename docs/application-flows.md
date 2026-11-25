@@ -155,7 +155,8 @@ not need to add the next year manually.
 
 For developers: [AcademicYear](../app/models/academic_year.rb) uses `for_date` for this lookup/creation.
 `current`, `next` and `previous` call it. `for_display` offers this year and next year, plus a third year in June.
-Reminders concern next year's preference, not necessarily the year the user last opened.
+Reminders concern next year's preference, not necessarily the year the user last opened. Preference reminders go out
+monthly, at most three per user, school and year; see [reminders](operations.md#reminders-and-mail).
 
 ## Admin and support journeys
 

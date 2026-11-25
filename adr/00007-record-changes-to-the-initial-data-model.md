@@ -18,6 +18,7 @@ added tables that ADR 2 does not describe:
 - `previous_placements`
 - `bank_holidays`
 - `sessions`
+- `placement_preference_reminders`
 - the Solid Queue tables (`solid_queue_*`)
 
 Without a record of these changes, the decision history and the running system drift apart. Readers of ADR 2 could
@@ -34,6 +35,7 @@ Keep ADR 2 as the record of the original design. Use this ADR to record the tabl
 | `previous_placements` | Records which schools hosted placements in past academic years, by subject. Admins upload this from a Register trainee teachers CSV supplied by Data and Insights. Providers use it to find schools with hosting experience. | Belongs to a school (`organisations`) and an `academic_years` row. `subject_name` is text, not a link to `placement_subjects`. |
 | `bank_holidays` | Stores England and Wales bank holidays from GOV.UK, so emails due on a bank holiday move to the next working day. | None. It does not relate to schools or users. |
 | `sessions` | Stores browser sessions in the database through `activerecord-session_store`, including sign-in details and unfinished form answers. | None. Treat contents as sensitive. |
+| `placement_preference_reminders` | Records each preference reminder email, so a user gets at most three per school and academic year however often they sign in. Replaced the old daily schedule, which used sign-in dates and had no cap. | Belongs to a user, an organisation and an `academic_years` row. Deleted with its user or organisation. |
 | `solid_queue_*` | Stores background, scheduled and recurring tasks for Solid Queue. See [ADR 6](00006-use-solid-queue-for-background-work.md). | Framework tables only. Not business data. |
 
 Organisations still use single-table inheritance for `School` and `Provider`, as described in

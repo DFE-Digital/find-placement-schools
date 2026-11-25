@@ -192,7 +192,7 @@ the user record. Matching therefore depends on the email address alone.
 The [decision records](../adr/) explain why the team chose shared organisation storage, flexible preference answers,
 multi-page forms and Solid Queue. The original data diagram ([ADR 2](../adr/00002-initial-data-model.md)) records an
 early design. [ADR 7](../adr/00007-record-changes-to-the-initial-data-model.md) records the tables added since:
-`previous_placements`, `bank_holidays`, `sessions` and the Solid Queue tables. Use the [data guide](data-model.md) for
+`previous_placements`, `bank_holidays`, `sessions`, `placement_preference_reminders` and the Solid Queue tables. Use the [data guide](data-model.md) for
 the current structure.
 
 This guide describes the code and settings. It does not show that other services are currently available or that recovery

@@ -75,7 +75,7 @@ different time zone; check the scheduler's clock if hosting settings change.
 | Daily 02:00 | `BankHolidays::SyncJob` | Import England/Wales bank holidays |
 | Daily 03:00 | `GIAS::SyncAllSchoolsJob` | Update schools/addresses; try to remove missing schools that have no preferences |
 | Daily 09:00 | `UserSignInReminderJob` | School invitation reminders |
-| Daily 10:00 | `CompletePlacementPreferenceReminderJob` | School preference-completion reminders |
+| 10:00 on the 1st to 7th of each month | `CompletePlacementPreferenceReminderJob` | School preference-completion reminders. The job only sends on the month's first working day (skipping weekends and bank holidays); other days it does nothing |
 | Hourly at :12 | `SolidQueue::Job.clear_finished_in_batches` | Remove records of completed tasks in batches |
 
 Staging, hosted development and review apps use different Rails environment names. They do not match this schedule,
@@ -96,15 +96,19 @@ shared automatic retry rule. Before rerunning a task in Mission Control, check w
 
 - Invitation reminders go to users who have never signed in, where their school has no preference for next year.
   The code selects users created on three particular dates: two weeks ago, one month before that, and another month before that.
-- Preference reminders use those same date offsets from the user's last sign-in, for schools missing next year's
-  preference. A person working with several schools can get an email for each.
+- Preference reminders go out once a month, on the first working day, for schools missing next year's preference.
+  A user is reminded only if they last signed in more than two weeks ago. Each user gets at most three reminders per
+  school and academic year, at least three weeks apart. A person working with several schools can get an email for each.
+- Each preference reminder is recorded in the `placement_preference_reminders` table, so signing in again does not
+  reset the count. Reminders sent under the old daily schedule were backfilled into that table when the change deployed.
 - Bulk onboarding sends invitation batches of 100 a minute apart. Reminder tasks also space their batches apart.
 - Removing membership schedules an email. Creating a preference schedules a feedback request; choosing a provider can
   schedule a survey.
 - Emails scheduled on a known bank holiday are moved to the next working day. See [email details](integrations.md#notifications-and-bank-holidays).
 
-Running a reminder task again can send emails again. These services do not share a record guaranteeing each message
-is sent only once. Check who is affected and what is already waiting before rerunning it.
+Running the invitation reminder again can send emails again, because it keeps no record of what it sent. The preference
+reminder is safer: its cap and three-week gap stop a same-day rerun from emailing the same people. Check who is affected
+and what is already waiting before rerunning either.
 
 Emails go through the shared Schools Digital GOV.UK Notify account. Notify allows 3,000 emails a minute; the service
 sends at most about 100 a minute. Nothing monitors delivery. To check whether an email arrived, look it up in Notify.
@@ -142,6 +146,16 @@ Backups have never been restored or tested.
 
 No job deletes old data. Expired browser sessions stay in the `sessions` table, and removed users keep their user record.
 See [data retention](data-model.md#deletion-is-not-a-retention-policy).
+
+## Security and assurance
+
+| Question | Team's position |
+| --- | --- |
+| Automated scanning | CI runs Brakeman; the release build scans the container image with Snyk. See [deployment](deployment.md#for-developers-release-automation). |
+| Fix times for vulnerabilities | No agreed timescales. |
+| Outstanding findings | None known. |
+| Pen test, accessibility audit, DSA, DPIA and retention policy | Held by the delivery manager, outside this repository. |
+| Secret rotation | Done when needed, with no schedule or written procedure. |
 
 ## Operational changes
 

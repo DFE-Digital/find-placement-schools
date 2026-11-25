@@ -13,6 +13,7 @@ A school's preference is not a booking. A past-placement record does not identif
 - **Subjects** help describe the placements a school is interested in.
 - **Previous placements** show past hosting by school, year and subject name.
 - **Bank holidays** help decide when to send emails.
+- **Placement preference reminders** record each reminder email, so a user gets at most three per school and year.
 
 The diagram below shows these connections. The detailed table after it is for developers checking what the database
 allows. [db/schema.rb](../db/schema.rb) is the source for the database structure; [models](../app/models/) add rules
@@ -46,6 +47,9 @@ erDiagram
   users ||..o{ placement_preferences : created_by
   organisations o|..o{ users : selected_organisation
   placement_subjects o|..o{ placement_subjects : parent_subject
+  users ||--o{ placement_preference_reminders : receives
+  organisations ||--o{ placement_preference_reminders : about
+  academic_years ||--o{ placement_preference_reminders : for_year
 
   organisations {
     uuid id PK
@@ -111,6 +115,13 @@ erDiagram
     date date UK
     string title
   }
+  placement_preference_reminders {
+    uuid id PK
+    uuid user_id FK
+    uuid organisation_id FK
+    uuid academic_year_id FK
+    datetime created_at "When the reminder was sent"
+  }
 ```
 
 `bank_holidays` sits on its own because it helps with email timing, not school membership. `School` and `Provider` are
@@ -137,6 +148,7 @@ update. "Required" means the value cannot be empty at the level described.
 | JSONB details | Answers are grouped by form step. Those steps check the answers; the preference model does not define one complete fixed structure. See [application flows](application-flows.md). |
 | Subjects | `phase` is primary or secondary. Subject codes must be unique when present. Parent-subject links are not checked by a database foreign key. SEND can be selected in a preference, but is not a subject phase value. |
 | Previous placements | Must link to an existing school and year. The subject is a name, not a link to the subjects table. The code checks for duplicates by school/year/subject, but there is no matching database uniqueness rule. |
+| Preference reminders | One row per reminder sent. Must link to an existing user, organisation and year. Deleting a user or organisation deletes its reminder rows directly (`delete_all`). The cap of three is enforced by [Remind](../app/services/users/placement_preferences/remind.rb) under a row lock, not by a database rule. Rows for reminders sent before this table existed were backfilled by a data migration. |
 | Academic years | Need a name and dates. Names must be unique; the code checks the end is not before the start. See [year selection](application-flows.md#academic-years). |
 | Bank holidays | Need a unique date and a title. The import uses England and Wales holidays. |
 
