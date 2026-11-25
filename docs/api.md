@@ -101,7 +101,7 @@ These are the shared platform defaults. They have not been load tested for this 
 
 ### For developers: firewall rules and known gaps
 
-The shared [rate-limit module](../terraform/application/vendor/modules/aks/domains/environment_domains/rate_limit.tf)
+The shared [rate-limit module](https://github.com/DFE-Digital/terraform-modules/blob/stable/domains/environment_domains/rate_limit.tf)
 creates these rules from the [domain settings](../terraform/domains/environment_domains/config/):
 
 - `all`: blocks an IP address after `rate_limit_max` requests in 5 minutes.

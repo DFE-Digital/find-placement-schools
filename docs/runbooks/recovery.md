@@ -96,7 +96,7 @@ or restore yesterday's database just to fix faulty code: that could lose valid w
 Before recovering, check that the backup really succeeded, that the saved file can be read, and that its time and source
 environment are right. A schedule or enabled storage does not prove a usable backup exists.
 
-How long backups last, from the shared [Postgres module](../../terraform/application/vendor/modules/aks/aks/postgres/resources.tf):
+How long backups last, from the shared [Postgres module](https://github.com/DFE-Digital/terraform-modules/blob/stable/aks/postgres/resources.tf):
 
 | Backup | Kept for |
 | --- | --- |
