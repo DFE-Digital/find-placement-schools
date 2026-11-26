@@ -1,0 +1,2 @@
+class DeletedEntity < ApplicationRecord
+end
